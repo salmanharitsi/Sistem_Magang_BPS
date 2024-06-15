@@ -16,7 +16,7 @@
 
     {{-- Navbar section --}}
     <nav
-        class="sticky top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[2]">
+        class="sticky top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[100]">
         <div class="flex gap-3">
             <div class="flex items-center justify-start md:justify-center border-r md:border-white border-transparent">
                 <img class="w-[80%] mr-1" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
@@ -29,7 +29,7 @@
         <div class="hidden lg:flex items-center justify-center gap-7 text-white text-sm">
             <a href="#beranda" class="nav-link py-1">Beranda</a>
             <a href="#fungsi-bagian" class="nav-link py-1">Informasi bagian</a>
-            <a href="#fungsi-bagian" class="nav-link py-1">FAQs</a>
+            <a href="#faqs" class="nav-link py-1">FAQs</a>
             <a href=""
                 class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
                 <i class="fas fa-user"></i>
@@ -50,7 +50,7 @@
         </div>
         <a href="#beranda" class="nav-link py-1">Beranda</a>
         <a href="#fungsi-bagian" class="nav-link py-1">Informasi bidang</a>
-        <a href="#fungsi-bagian" class="nav-link py-1">FAQs</a>
+        <a href="#faqs" class="nav-link py-1">FAQs</a>
         <a href="" class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
             <i class="fas fa-user"></i>
             <p class="font-medium">Masuk ke akun</p>
@@ -59,8 +59,8 @@
 
     {{-- Beranda section --}}
     <section id="beranda">
-        <div class="m-0 p-0 w-full h-[75vh] absolute gradient-overlay z-[0]">
-            <img src="{{ asset('assets/home/beranda/BPS.jpg') }}" alt="BPS image" class= "object-cover w-full h-full">
+        <div class="m-0 p-0 w-full h-[75vh] absolute gradient-overlay z-[0] parallax-beranda">
+            {{-- <img src="{{ asset('assets/home/beranda/BPS.jpg') }}" alt="BPS image" class= "object-cover w-full h-full"> --}}
         </div>
         <div class="relative px-[20px] md:px-[10%] h-[75vh] flex flex-col items-end text-end justify-center gap-8">
             <h1 class="font-bold text-white text-[33px] md:text-[41px] lg:text-[54px] leading-snug delay-[300ms] duration-[600ms] taos:translate-x-[200px] taos:opacity-0"
@@ -145,8 +145,29 @@
         </div>
     </section>
 
-    <section>
-        
+    <!-- FaQs Section -->
+    <section id="faqs" class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10 flex items-center flex-col gap-[24px] bg-gray-100">
+        <div class="w-[87%] flex flex-col items-start justify-center gap-1">
+            <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Frequently asked questions</h1>
+            <p class="text-gray-600 text-[16px]">Butuh bantuan? Coba cek terlebih dahulu pertanyaan yang sering ditanyakan berikut</p>
+        </div>
+        <div class="w-full flex flex-col justify-center items-center mt-[20px]">
+            <div class="w-[87%]">
+                @foreach($faqs as $index => $faq)
+                    <div class="accordion-item delay-[{{ ($index + 1) * 100 }}ms] duration-[600ms] taos:translate-y-[100px] taos:opacity-0">
+                        <div class="accordion-title flex justify-between items-center py-[20px] border-b border-[#E1E3E3] gap-5 cursor-pointer">
+                            <p class="text-[#6C6F70] text-[16px]">{{ $faq['question'] }}</p>
+                            <i class="transition-transform duration-300 fa-solid fa-arrow-down text-[#6C6F70]"></i>
+                        </div>
+                        <div class="accordion-content overflow-hidden transition-all duration-300 max-h-0">
+                            <div class="p-[20px] bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg">
+                                <p class="text-white">{{ $faq['answer'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>        
     </section>
 
     <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>

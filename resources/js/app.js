@@ -3,6 +3,7 @@ import "./bootstrap";
 document.addEventListener("DOMContentLoaded", function () {
     hamburgerButton();
     slider();
+    faqToggle();
 });
 
 //fungsi untuk menangani tombol navbar responsif
@@ -121,4 +122,26 @@ function slider() {
     // Initialize button states
     updateButtonStates(false, true);
     
+}
+
+function faqToggle() {
+    const accordionItems = document.querySelectorAll('.accordion-item');
+
+    accordionItems.forEach(item => {
+        const accordionTitle = item.querySelector('.accordion-title');
+        const accordionContent = item.querySelector('.accordion-content');
+        const accordionIcon = item.querySelector('.fa-arrow-down');
+
+        accordionTitle.addEventListener('click', function () {
+            accordionTitle.classList.toggle('active');
+            
+            if (accordionContent.style.maxHeight) {
+                accordionContent.style.maxHeight = null;
+                accordionIcon.style.transform = 'rotate(0deg)';
+            } else {
+                accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+                accordionIcon.style.transform = 'rotate(180deg)';
+            }
+        });
+    });
 }

@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 * {
-    font-family: 'poppins';
+    font-family: "poppins";
     scroll-behavior: smooth;
 }
 
-@media screen and (min-width: 900px){
-    body{
+@media screen and (min-width: 900px) {
+    body {
         width: 100vw;
         overflow-x: hidden;
     }
@@ -21,13 +21,13 @@
 }
 
 .nav-link::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
-    bottom: -2px; 
+    bottom: -2px;
     width: 0;
     height: 2px;
-    background-color: white; 
+    background-color: white;
     transition: width 0.3s ease-in-out;
 }
 
@@ -57,15 +57,24 @@
 
 /* css untuk gradient img beranda */
 .gradient-overlay::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity:90%;
+    opacity: 90%;
     background: linear-gradient(to top, black, transparent);
     z-index: 1;
+}
+
+/* css untuk parallax img beranda */
+.parallax-beranda {
+    background-image: url("../../public/assets/home/beranda/BPS.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 /* css hover card informasi fungsi bagian */
@@ -81,7 +90,7 @@ li .rounded-lg {
 .icon-info {
     position: relative;
     display: inline-block;
-    z-index: 10;
+    z-index: 2;
 }
 
 .icon-container:hover ~ .overlay {
@@ -90,7 +99,9 @@ li .rounded-lg {
 }
 
 li .rounded-lg .overlay {
-    background: linear-gradient(to left, #3f89ff, #1a3ba8);
+    background: linear-gradient(to left, #2162cc, #1845da);
     transition: opacity 0.3s ease-in-out;
     z-index: 1;
 }
+
+

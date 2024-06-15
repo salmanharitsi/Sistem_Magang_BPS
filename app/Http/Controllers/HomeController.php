@@ -40,6 +40,25 @@ class HomeController
             ]
         ];
 
-        return view('home', compact('fungsi_bagian'));
+        $faqs = [
+            [
+                'question' => 'Berapa lama magang di BPS Provinsi Riau?',
+                'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
+            ],
+            [
+                'question' => 'Bisakah untuk konversi mata kuliah?',
+                'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
+            ],
+            [
+                'question' => 'Apakah magang ini paid atau dibayar?',
+                'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
+            ],
+            [
+                'question' => 'Apakah penempatan ditentukan langsung oleh BPS?',
+                'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
+            ],
+        ];
+
+        return view('home', compact('fungsi_bagian', 'faqs'));
     }
 }
