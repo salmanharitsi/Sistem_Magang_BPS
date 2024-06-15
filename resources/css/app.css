@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: 'poppins';
+    scroll-behavior: smooth;
+}
+
+@media screen and (min-width: 900px){
+    body{
+        width: 100vw;
+        overflow-x: hidden;
+    }
+}
+
+/* css memberikan animasi garis di navbar home page*/
+.nav-link {
+    position: relative;
+    text-decoration: none;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px; 
+    width: 0;
+    height: 2px;
+    background-color: white; 
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* css untuk animasi responsif navbar di home page */
+.slide-down-enter {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+.slide-down-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.5s;
+}
+.slide-down-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+.slide-down-exit-active {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+/* css untuk gradient img beranda */
+.gradient-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity:90%;
+    background: linear-gradient(to top, black, transparent);
+    z-index: 1;
+}
+
+/* css hover card informasi fungsi bagian */
+li .rounded-lg {
+    position: relative;
+    overflow: hidden;
+}
+
+.icon-container {
+    position: relative;
+}
+
+.icon-info {
+    position: relative;
+    display: inline-block;
+    z-index: 10;
+}
+
+.icon-container:hover ~ .overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+li .rounded-lg .overlay {
+    background: linear-gradient(to left, #3f89ff, #1a3ba8);
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1;
+}
