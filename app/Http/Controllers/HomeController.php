@@ -50,7 +50,7 @@ class HomeController
                 'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
             ],
             [
-                'question' => 'Apakah magang ini paid atau dibayar?',
+                'question' => 'Apakah magang ini paid atau unpaid?',
                 'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
             ],
             [

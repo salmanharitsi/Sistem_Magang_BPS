@@ -45,6 +45,7 @@ function hamburgerButton() {
         });
 }
 
+//fungsi untuk menangani tombol next dan prev slider
 function slider() {
     let sliderContainer = document.getElementById("sliderContainer");
     let slider = document.getElementById("slider");
@@ -118,14 +119,13 @@ function slider() {
             updateButtonStates(false, true);
         }
     }
-    
-    // Initialize button states
     updateButtonStates(false, true);
-    
 }
 
+//fungsi untuk menangani tombol faqs
 function faqToggle() {
     const accordionItems = document.querySelectorAll('.accordion-item');
+    let activeItem = null; 
 
     accordionItems.forEach(item => {
         const accordionTitle = item.querySelector('.accordion-title');
@@ -133,14 +133,26 @@ function faqToggle() {
         const accordionIcon = item.querySelector('.fa-arrow-down');
 
         accordionTitle.addEventListener('click', function () {
-            accordionTitle.classList.toggle('active');
-            
+            if (activeItem && activeItem !== item) {
+                const activeTitle = activeItem.querySelector('.accordion-title');
+                const activeContent = activeItem.querySelector('.accordion-content');
+                const activeIcon = activeItem.querySelector('.fa-arrow-down');
+                
+                activeContent.style.maxHeight = null;
+                activeIcon.style.transform = 'rotate(0deg)';
+                activeTitle.classList.remove('active');
+            }
+
             if (accordionContent.style.maxHeight) {
                 accordionContent.style.maxHeight = null;
                 accordionIcon.style.transform = 'rotate(0deg)';
+                accordionTitle.classList.remove('active');
+                activeItem = null;
             } else {
                 accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
                 accordionIcon.style.transform = 'rotate(180deg)';
+                accordionTitle.classList.add('active');
+                activeItem = item;
             }
         });
     });
