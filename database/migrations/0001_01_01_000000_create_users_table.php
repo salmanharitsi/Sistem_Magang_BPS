@@ -11,14 +11,43 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('name')->unique();
+            $table->timestamps();
+        });
+
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('nomor_induk')->unique();
+            $table->string('institusi');
+            $table->string('jurusan');
+            $table->string('kartu_tanda');
+            $table->string('nomor_hp');
             $table->timestamps();
+        });
+
+        Schema::create('roles_users', function (Blueprint $table) {
+            $table->uuid('user_id');
+            $table->uuid('role_id');
+            $table->timestamps();
+        
+            $table->primary(['user_id', 'role_id']);
+        
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
+        
+            $table->foreign('role_id')
+                  ->references('id')
+                  ->on('roles')
+                  ->onDelete('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -42,7 +71,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('roles_users');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('roles');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

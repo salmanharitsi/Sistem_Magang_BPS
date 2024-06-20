@@ -30,7 +30,7 @@
             <a href="#beranda" class="nav-link py-1">Beranda</a>
             <a href="#fungsi-bagian" class="nav-link py-1">Informasi bagian</a>
             <a href="#faqs" class="nav-link py-1">FAQs</a>
-            <a href=""
+            <a href="{{url('/login')}}"
                 class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
                 <i class="fas fa-user"></i>
                 <p class="font-medium">Masuk ke akun</p>
@@ -51,7 +51,7 @@
         <a href="#beranda" class="nav-link py-1">Beranda</a>
         <a href="#fungsi-bagian" class="nav-link py-1">Informasi bidang</a>
         <a href="#faqs" class="nav-link py-1">FAQs</a>
-        <a href="" class="px-5 py-3 mb-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
+        <a href="{{url('/login')}}" class="px-5 py-3 mb-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
             <i class="fas fa-user"></i>
             <p class="font-medium">Masuk ke akun</p>
         </a>
@@ -63,9 +63,9 @@
             {{-- <img src="{{ asset('assets/home/beranda/BPS.jpg') }}" alt="BPS image" class= "object-cover w-full h-full"> --}}
         </div>
         <div class="relative px-[20px] md:px-[10%] h-[75vh] flex flex-col items-end text-end justify-center gap-8">
-            <h1 class="font-bold text-white text-[33px] md:text-[41px] lg:text-[54px] leading-snug delay-[300ms] duration-[600ms] taos:translate-x-[200px] taos:opacity-0"
+            <h1 class="font-bold text-white text-[33px] md:text-[41px] lg:text-[54px] leading-snug delay-[300ms] duration-[600ms] taos:translate-x-[-200px] taos:opacity-0"
                 data-taos-offset="100">Program Magang <br> Bersama Badan Pusat Statistik <br> Provinsi Riau</h1>
-            <p class="font-light text-white text-[14px] md:text-[18px] delay-[600ms] duration-[600ms] taos:translate-x-[200px] taos:opacity-0"
+            <p class="font-light text-white text-[14px] md:text-[18px] delay-[600ms] duration-[600ms] taos:translate-x-[-200px] taos:opacity-0"
                 data-taos-offset="100">Daftarkan diri untuk mengikuti program magang yang ditawarkan oleh <br> Badan
                 Pusat Statistik Provinsi Riau. Kembangkan potensi diri <br> bersama statistisi berpengalaman.</p>
             <div
@@ -179,7 +179,7 @@
 
     {{-- FaQs Section --}}
     <section id="faqs"
-        class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100">
+        class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100 overflow-hidden">
         <div class="w-[87%] flex flex-col items-start justify-center gap-1">
             <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Frequently asked questions</h1>
             <p class="text-gray-600 text-[16px]">Butuh bantuan? Coba cek terlebih dahulu pertanyaan yang sering
@@ -207,7 +207,7 @@
     </section>
 
     {{-- Footer setion --}}
-    <footer class="flex flex-col w-full h-fit gap-7 px-2 py-5 md:px-[10%] md:py-10 bg-gradient-to-r from-blue-900 to-blue-500">
+    <footer class="flex flex-col w-full h-fit gap-7 px-5 py-5 md:px-[10%] md:py-10 bg-gradient-to-r from-blue-900 to-blue-500">
         <div class="flex gap-3">
             <div class="flex items-center justify-start md:justify-center border-r border-white border-transparent">
                 <img class="w-[100%] mr-1" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
@@ -219,8 +219,8 @@
         </div>
         <div class="flex flex-col md:flex-row justify-between gap-5">
             <div class="flex items-end text-white">
-                <p class="lg:w-[50%]">Badan Pusat Statistik Provinsi Riau (Statistics of Riau Province)
-
+                <p class="lg:w-[50%] font-light">
+                    Badan Pusat Statistik Provinsi Riau (Statistics of Riau Province)
                     Jl. Pattimura No. 12 Pekanbaru - Riau, Indonesia,
                     <br>
                     Telp (62-761) 23042
@@ -230,13 +230,13 @@
                     Mailbox: riau@bps.go.id
                 </p>
             </div>
-            <div class="w-fit p-3 bg-white rounded-lg">
-                <img src="{{ asset('assets/berakhlak.jpg') }}" alt="Berakhlak logo image">
+            <div class="w-[50%] h-fit bg-white rounded-lg">
+                <img src="{{ asset('assets/cover.webp') }}" alt="Berakhlak logo image">
             </div>
         </div>
-        <span class="w-full border-dashed border-b border-white"></span>
+        <span class="w-full border-b border-white"></span>
         <div class="flex flex-col-reverse md:flex-row gap-3 items-center justify-between">
-            <div class="text-white">
+            <div class="text-white font-light">
                 <h1>Hak Cipta © 2024 Badan Pusat Statistik</h1>
             </div> 
             <div class="flex gap-5 text-white">

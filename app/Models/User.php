@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -20,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nomor_induk',
+        'institusi',
+        'kartu_tanda',
+        'jurusan',
+        'nomor_hp'
     ];
 
     /**
@@ -43,5 +49,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Boot function from Laravel.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->id = Str::uuid();
+        });
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'roles_users', 'user_id', 'role_id')
+                    ->withTimestamps();
     }
 }

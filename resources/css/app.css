@@ -55,7 +55,7 @@
     transition: opacity 0.5s, transform 0.5s;
 }
 
-/* css untuk gradient img beranda dan about */
+/* css untuk gradient img */
 .gradient-overlay::after {
     content: "";
     position: absolute;
@@ -77,6 +77,36 @@
     height: 100%;
     opacity: 90%;
     background: linear-gradient(to right, black, transparent);
+    z-index: 1;
+}
+
+.gradient-overlay-login::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    opacity: 100%;
+    background: linear-gradient(to left, rgb(255, 255, 255), transparent);
+    z-index: 1;
+}
+
+@media screen and (max-width: 1024px) {
+    .gradient-overlay-login::after {
+        background: transparent;
+    }
+}
+
+.gradient-overlay-registrasi::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    opacity: 100%;
+    background: linear-gradient(to top, rgb(243 244 246), transparent);
     z-index: 1;
 }
 
@@ -104,7 +134,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4); /* Adjust the opacity to make it darker or lighter */
+    background-color: rgba(
+        0,
+        0,
+        0,
+        0.4
+    ); /* Adjust the opacity to make it darker or lighter */
     z-index: 1;
 }
 
@@ -135,5 +170,8 @@ li .rounded-lg .overlay {
     z-index: 1;
 }
 
-
-
+.test-setan:focus {
+    border-color: #3b82f6; /* Tailwind's blue-500 color */
+    outline: none; /* Remove default browser outline */
+    box-shadow: none; /* Remove any box shadow */
+}
