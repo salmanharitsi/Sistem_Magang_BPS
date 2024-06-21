@@ -21,4 +21,5 @@ export default {
   plugins: [
     require('taos/plugin')
   ],
+  darkMode: 'class',
 }

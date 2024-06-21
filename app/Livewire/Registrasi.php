@@ -83,10 +83,13 @@ class Registrasi extends Component
 
     public function create_user()
     {
+        // Validasi data input
         $validatedData = $this->validate();
 
+        // Menyimpan gambar ke penyimpanan publik
         $imagePath = $this->kartu_tanda->store('kartu_tanda', 'public', );
 
+        // Membuat instance user baru dan mengisi properti dengan data yang divalidasi
         $user = new User();
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
@@ -97,13 +100,15 @@ class Registrasi extends Component
         $user->nomor_hp = $validatedData['nomor_hp'];
         $user->password = Hash::make($validatedData['password']);
         $user->remember_token = Str::uuid()->toString();
-
+        
+        // Menyimpan user ke database
         $user->save();
 
+        // Mengarahkan pengguna kembali ke halaman registrasi dengan pesan sukses
         return redirect('/registrasi')->with([
             'success' => [
-                "title" => "User Register Succesfully",
-                "message" => "Akun berhasil didaftarkan"
+                "title" => "Registrasi Berhasil!",
+                "message" => "Akun berhasil didaftarkan, silahkan masuk"
             ]
         ]);
     }

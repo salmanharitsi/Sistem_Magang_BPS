@@ -120,15 +120,15 @@
                                             class="icon-info fa-solid fa-arrow-left p-3 bg-gradient-to-r from-blue-400 to-blue-700 rounded-full cursor-pointer rotate-45"></i>
                                     </div>
                                     <div
-                                        class="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center text-white text-center p-5 opacity-0 pointer-events-none transition-opacity duration-500">
+                                        class="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center text-white text-center p-5 opacity-0 pointer-events-none transition-opacity duration-500 bg-gradient-to-r from-blue-50 to-blue-200 border border-blue-700">
                                         <div class="p-5">
-                                            <h2 class="text-[22px] font-semibold">Rekomendasi Jurusan</h2>
+                                            <h2 class="text-[22px] font-semibold text-blue-700">Rekomendasi Jurusan</h2>
                                             <div class="w-full flex justify-end mt-[-5px]">
                                                 <img class="w-[70%]"
-                                                    src="{{ asset('assets/home/fungsi_bagian/underline-white.svg') }}"
+                                                    src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
                                                     alt="">
                                             </div>
-                                            <div class="mt-3 text-[14px] font-light flex">
+                                            <div class="mt-3 text-[14px] text-gray-800 font-normal flex">
                                                 <p>
                                                     @foreach ($item['jurusan'] as $jurusan)
                                                         {{ $jurusan }},
@@ -196,8 +196,8 @@
                             <i class="transition-transform duration-300 fa-solid fa-arrow-down text-[#6C6F70]"></i>
                         </div>
                         <div class="accordion-content overflow-hidden transition-all duration-300 max-h-0">
-                            <div class="p-[20px] bg-gradient-to-r from-blue-900 to-blue-500 rounded-lg">
-                                <p class="text-white">{{ $faq['answer'] }}</p>
+                            <div class="p-[20px] bg-gradient-to-r from-blue-100 to-blue-300 border border-blue-700 rounded-lg">
+                                <p class="text-gray-800 text-[15px]">{{ $faq['answer'] }}</p>
                             </div>
                         </div>
                     </div>

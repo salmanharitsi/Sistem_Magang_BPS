@@ -165,13 +165,14 @@ li .rounded-lg {
 }
 
 li .rounded-lg .overlay {
-    background: linear-gradient(to left, #2162cc, #1845da);
+    /* background: linear-gradient(to left, #2162cc, #1845da); */
     transition: opacity 0.3s ease-in-out;
     z-index: 1;
+    border-radius: 8px;
 }
 
-.test-setan:focus {
-    border-color: #3b82f6; /* Tailwind's blue-500 color */
-    outline: none; /* Remove default browser outline */
-    box-shadow: none; /* Remove any box shadow */
+@media screen and (min-width: 1190px) and (max-width: 1800px) {
+    .registrasi {
+        height: 125vh !important;
+    }
 }
