@@ -11,4 +11,10 @@ class UserNormalController
     {
         return view('usernormal.dashboard');
     }
+
+    public function get_status_pengajuan()
+    {
+        return view('usernormal.pengajuan');
+    }
+
 }

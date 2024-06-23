@@ -91,7 +91,7 @@ class Registrasi extends Component
 
         // Membuat instance user baru dan mengisi properti dengan data yang divalidasi
         $user = new User();
-        $user->name = $validatedData['name'];
+        $user->name = ucwords(strtolower(trim($validatedData['name'])));
         $user->email = $validatedData['email'];
         $user->nomor_induk = $validatedData['nomor_induk'];
         $user->institusi = $validatedData['institusi'];

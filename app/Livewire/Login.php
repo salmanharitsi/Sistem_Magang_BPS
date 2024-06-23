@@ -4,14 +4,13 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Login extends Component
 {
     #[Validate]
-    public $email, $password;
+    public $email, $password, $remember;
 
     public function rules()
     {
@@ -37,7 +36,8 @@ class Login extends Component
     public function login()
     {
         $this->validate();
-        
+        $remember = !empty($this->remember) ? true : false;
+
         if (!User::where('email', $this->email)->exists()) {
             
             return redirect('/login')->with([
@@ -47,7 +47,7 @@ class Login extends Component
             ]);
         }
 
-        if (Auth::attempt(['email' => $this->email, 'password' => $this->password], true)) {
+        if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $remember)) {
             return redirect()->intended('dashboard')->with([
                 'success' => [
                     "title" => "Berhasil masuk",

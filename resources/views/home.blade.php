@@ -14,6 +14,8 @@
 
 <body>
 
+    @include('_message')
+    
     {{-- Navbar section --}}
     <nav
         class="sticky top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[100]">
@@ -99,7 +101,7 @@
                 <ul id="slider" class="flex w-full mt-5 md:mt-0">
                     @foreach ($fungsi_bagian as $item)
                         <li class="px-2 py-2 md:py-5 md:px-5">
-                            <div class="rounded-lg border p-5 bg-white flex flex-col h-full relative overflow-hidden">
+                            <div class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col h-full relative overflow-hidden">
                                 <div class="w-[20%]">
                                     <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
                                         alt="">

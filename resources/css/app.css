@@ -9,7 +9,7 @@
 
 @media screen and (min-width: 900px) {
     body {
-        width: 100vw;
+        /* width: 100vw; */
         overflow-x: hidden;
     }
 }
@@ -144,7 +144,7 @@
 }
 
 /* css hover card informasi fungsi bagian */
-li .rounded-lg {
+li .fungsi-card-parent {
     position: relative;
     overflow: hidden;
 }
@@ -164,7 +164,7 @@ li .rounded-lg {
     pointer-events: auto;
 }
 
-li .rounded-lg .overlay {
+li .fungsi-card-parent .overlay {
     /* background: linear-gradient(to left, #2162cc, #1845da); */
     transition: opacity 0.3s ease-in-out;
     z-index: 1;

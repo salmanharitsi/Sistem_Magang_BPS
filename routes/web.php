@@ -12,9 +12,13 @@ Route::get('/', [HomeController::class, 'index']);
 
 // Route auth page
 Route::get('/login', [AuthController::class, 'get_login_page']);
+Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/registrasi', [AuthController::class, 'get_registrasi_page']);
+Route::get('/forgot-password', [AuthController::class, 'get_forgot_password_page']);
+Route::get('/reset/{token}', [AuthController::class, 'get_reset_password_page']);
 
 // Route untuk user biasa
 Route::group(['middleware' => 'usernormal'], function(){
     Route::get('dashboard', [UserNormalController::class, 'get_dashboard']);
+    Route::get('pengajuan', [UserNormalController::class, 'get_status_pengajuan']);
 });
