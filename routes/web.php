@@ -19,6 +19,8 @@ Route::get('/reset/{token}', [AuthController::class, 'get_reset_password_page'])
 
 // Route untuk user biasa
 Route::group(['middleware' => 'usernormal'], function(){
-    Route::get('dashboard', [UserNormalController::class, 'get_dashboard']);
-    Route::get('pengajuan', [UserNormalController::class, 'get_status_pengajuan']);
+    Route::get('dashboard', [UserNormalController::class, 'get_dashboard'])->name('usernormal.dashboard');
+    Route::get('pengajuan', [UserNormalController::class, 'get_status_pengajuan'])->name('usernormal.pengajuan');
+    Route::get('profil', [HomeController::class, 'get_user_profil'])->name('usernormal.profil');
+    Route::get('ubah-password', [HomeController::class, 'get_ubah_password'])->name('usernormal.ubah-password');
 });

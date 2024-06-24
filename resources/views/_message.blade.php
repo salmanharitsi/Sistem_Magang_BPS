@@ -1,9 +1,8 @@
-
-{{-- Success Tostr --}}
+{{-- Success Toast --}}
 @if (!empty(session('success')))
     <div id="toast-success"
         class="toast-hidden z-[1000] fixed top-3 right-3 flex items-center w-full max-w-xs md:max-w-sm p-4 mb-4 text-white bg-green-500 rounded-lg shadow-2xl
-                delay-[100ms] duration-[300ms] taos:translate-x-[100px] taos:opacity-0"
+                translate-x-full opacity-0 transition-all duration-300"
         role="alert">
         <div
             class="inline-flex items-center justify-center flex-shrink-0 rounded-lg bg-green-500 text-green-800">
@@ -24,11 +23,11 @@
     </div>
 @endif
 
-{{-- Error Tostr --}}
+{{-- Error Toast --}}
 @if (!empty(session('error')))
     <div id="toast-danger"
         class="toast-hidden z-[1000] fixed top-3 right-3 flex items-center w-full max-w-xs md:max-w-sm p-4 mb-4 text-white bg-red-600 rounded-lg shadow-2xl
-                delay-[100ms] duration-[300ms] taos:translate-x-[100px] taos:opacity-0"
+                translate-x-full opacity-0 transition-all duration-300"
         role="alert">
         <div
             class="inline-flex items-center justify-center flex-shrink-0 rounded-lg bg-red-600 text-red-800">
@@ -47,30 +46,40 @@
     </div>
 @endif
 
-<script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const toasts = document.querySelectorAll('.toast-hidden');
-        toasts.forEach(toast => {
-            // Auto remove after 5 seconds
+    const toasts = document.querySelectorAll('.toast-hidden');
+
+    toasts.forEach(toast => {
+        // Make the toast visible
+        setTimeout(() => {
+            toast.classList.remove('translate-x-full', 'opacity-0');
+            toast.classList.add('translate-x-0', 'opacity-100');
+        }, 100); // Delay to start the animation
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            toast.classList.remove('translate-x-0', 'opacity-100');
+            toast.classList.add('translate-x-full', 'opacity-0');
             setTimeout(() => {
+                toast.remove();
+            }, 300); // Match this duration with CSS transition duration
+        }, 5000);
+
+        // Remove on close button click
+        const closeButton = toast.querySelector('[data-dismiss-target]');
+        if (closeButton) {
+            closeButton.addEventListener('click', function () {
+                toast.classList.remove('translate-x-0', 'opacity-100');
                 toast.classList.add('translate-x-full', 'opacity-0');
                 setTimeout(() => {
                     toast.remove();
-                }, 500); 
-            }, 5000); 
-
-            // Remove on close button click
-            const closeButton = toast.querySelector('[data-dismiss-target]');
-            if (closeButton) {
-                closeButton.addEventListener('click', function () {
-                    toast.classList.add('translate-x-full', 'opacity-0');
-                    setTimeout(() => {
-                        toast.remove();
-                    }, 500); 
-                });
-            }
-        });
+                }, 300); // Match this duration with CSS transition duration
+            });
+        }
     });
+});
+
 </script>

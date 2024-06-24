@@ -61,4 +61,20 @@ class HomeController
 
         return view('home', compact('fungsi_bagian', 'faqs'));
     }
+
+    public function get_user_profil()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('public.profil');
+    }
+
+    public function get_ubah_password()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('public.ubah-password');
+    }
 }

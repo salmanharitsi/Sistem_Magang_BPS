@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Pengajuan')
+@section('title', 'User Profil')
 
 @section('content')
     <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
@@ -8,7 +8,7 @@
         <div class="flex flex-col gap-6">
             <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <h4 class="text-gray-700 text-lg font-semibold mb-4 dark:text-white">
-                    Cari Pengajuan
+                    User Profil
                 </h4>
                 <div class="flex items-center justify-between relative group">
                     <input type="text" name="" id="" placeholder="" wire:model.live=""

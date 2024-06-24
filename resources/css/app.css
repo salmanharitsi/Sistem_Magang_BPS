@@ -176,3 +176,20 @@ li .fungsi-card-parent .overlay {
         height: 125vh !important;
     }
 }
+
+/* Tambahkan CSS ini untuk gaya sidebar yang mengecil */
+.aside-collapsed {
+    width: 80px; /* Ukuran sidebar saat mengecil */
+}
+
+.aside-collapsed .sidebar-nav ul li a span {
+    display: none; /* Sembunyikan teks menu saat sidebar mengecil */
+}
+
+.aside-collapsed .sidebar-nav ul li a i {
+    margin-right: 0; /* Atur margin icon */
+}
+
+.aside-collapsed #toggle-sidebar i {
+    transform: rotate(180deg); /* Putar ikon tombol saat sidebar mengecil */
+}

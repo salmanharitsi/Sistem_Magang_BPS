@@ -56,21 +56,4 @@
             icon.classList.add('fa-eye');
         }
     }
-
-    function openPreview(url) {
-        const screenWidth = window.screen.width;
-        const screenHeight = window.screen.height;
-        const width = screenWidth / 2;
-        const height = screenHeight / 2;
-        const left = (screenWidth - width) / 2;
-        const top = (screenHeight - height) / 2;
-
-        const newWindow = window.open(
-            '',
-            '',
-            `width=${width},height=${height},top=${top},left=${left}`
-        );
-        newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
-        newWindow.document.title = "Image Preview";
-    }
 </script>

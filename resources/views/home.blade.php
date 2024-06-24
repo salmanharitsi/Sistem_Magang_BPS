@@ -15,7 +15,7 @@
 <body>
 
     @include('_message')
-    
+
     {{-- Navbar section --}}
     <nav
         class="sticky top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[100]">
@@ -32,11 +32,19 @@
             <a href="#beranda" class="nav-link py-1">Beranda</a>
             <a href="#fungsi-bagian" class="nav-link py-1">Informasi bagian</a>
             <a href="#faqs" class="nav-link py-1">FAQs</a>
-            <a href="{{url('/login')}}"
-                class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
-                <i class="fas fa-user"></i>
-                <p class="font-medium">Masuk ke akun</p>
-            </a>
+            @if (Auth::check())
+                <a href="{{ url('/login') }}"
+                    class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
+                    <i class="fas fa-user"></i>
+                    <p class="font-medium">{{Auth::user()->name}}</p>
+                </a>
+            @else
+                <a href="{{ url('/login') }}"
+                    class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
+                    <i class="fas fa-user"></i>
+                    <p class="font-medium">Masuk ke akun</p>
+                </a>
+            @endif
         </div>
         <div class="lg:hidden">
             <button id="menu-toggle" class="text-white focus:outline-none">
@@ -53,10 +61,19 @@
         <a href="#beranda" class="nav-link py-1">Beranda</a>
         <a href="#fungsi-bagian" class="nav-link py-1">Informasi bidang</a>
         <a href="#faqs" class="nav-link py-1">FAQs</a>
-        <a href="{{url('/login')}}" class="px-5 py-3 mb-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
-            <i class="fas fa-user"></i>
-            <p class="font-medium">Masuk ke akun</p>
-        </a>
+        @if (Auth::check())
+            <a href="{{ url('/login') }}"
+                class="px-5 py-3 mb-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
+                <i class="fas fa-user"></i>
+                <p class="font-medium">{{Auth::user()->name}}</p>
+            </a>
+        @else
+            <a href="{{ url('/login') }}"
+                class="px-5 py-3 mb-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
+                <i class="fas fa-user"></i>
+                <p class="font-medium">Masuk ke akun</p>
+            </a>
+        @endif
     </div>
 
     {{-- Beranda section --}}
@@ -101,7 +118,8 @@
                 <ul id="slider" class="flex w-full mt-5 md:mt-0">
                     @foreach ($fungsi_bagian as $item)
                         <li class="px-2 py-2 md:py-5 md:px-5">
-                            <div class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col h-full relative overflow-hidden">
+                            <div
+                                class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col h-full relative overflow-hidden">
                                 <div class="w-[20%]">
                                     <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
                                         alt="">
@@ -198,7 +216,8 @@
                             <i class="transition-transform duration-300 fa-solid fa-arrow-down text-[#6C6F70]"></i>
                         </div>
                         <div class="accordion-content overflow-hidden transition-all duration-300 max-h-0">
-                            <div class="p-[20px] bg-gradient-to-r from-blue-100 to-blue-300 border border-blue-700 rounded-lg">
+                            <div
+                                class="p-[20px] bg-gradient-to-r from-blue-100 to-blue-300 border border-blue-700 rounded-lg">
                                 <p class="text-gray-800 text-[15px]">{{ $faq['answer'] }}</p>
                             </div>
                         </div>
@@ -209,7 +228,8 @@
     </section>
 
     {{-- Footer setion --}}
-    <footer class="flex flex-col w-full h-fit gap-7 px-5 py-5 md:px-[10%] md:py-10 bg-gradient-to-r from-blue-900 to-blue-500">
+    <footer
+        class="flex flex-col w-full h-fit gap-7 px-5 py-5 md:px-[10%] md:py-10 bg-gradient-to-r from-blue-900 to-blue-500">
         <div class="flex gap-3">
             <div class="flex items-center justify-start md:justify-center border-r border-white border-transparent">
                 <img class="w-[100%] mr-1" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
@@ -240,7 +260,7 @@
         <div class="flex flex-col-reverse md:flex-row gap-3 items-center justify-between">
             <div class="text-white font-light">
                 <h1>Hak Cipta © 2024 Badan Pusat Statistik</h1>
-            </div> 
+            </div>
             <div class="flex gap-5 text-white">
                 <a href=""><i class="fa-brands fa-instagram"></i></a>
                 <a href=""><i class="fa-brands fa-youtube"></i></a>

@@ -3,27 +3,32 @@
 @section('title', 'User dashboard')
 
 @section('content')
+    <div class="w-full h-44 rounded-lg bg-blue-500 relative overflow-hidden">
+        <img class="absolute inset-0 w-full h-full object-cover" src="{{ asset('assets/images/usernormal/bg-dash.svg') }}"
+            alt="">
+        <p class="flex h-full w-full px-6 items-center justify-start text-white text-xl md:text-3xl font-normal">Selamat
+            datang di<span class="font-medium ml-1 md:ml-2">SIMAGANG</span></p>
+    </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-        <div class="col-span-2 card rounded-xl bg-white p-5 h-full dark:bg-gray-700 transition-all duration-200">
-            <div class="">
-                <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
-                    <i class="ti ti-alert-circle text-lg"></i>
-                    <p class="text-sm">Kamu belum terdaftar program magang, <span class="text-amber-500"><a href="">ajukan magang</a></span></p>
-                </div>
+    <div class="grid grid-cols-1 mt-6 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+        <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div
+                class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                <i class="ti ti-alert-circle text-lg"></i>
+                <p class="text-sm">Kamu belum terdaftar program magang</p>
             </div>
         </div>
 
         <div class="flex flex-col gap-6">
-            <div class="card rounded-xl bg-white p-5 h-full dark:bg-gray-700 transition-all duration-200">
+            <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <h4 class="text-gray-500 text-lg font-semibold mb-4 dark:text-white">
                     Traffic Distribution
                 </h4>
                 <div class="flex items-center justify-between gap-12">
-            
+
                 </div>
             </div>
-            <div class="card rounded-xl bg-white p-5 h-full dark:bg-gray-700 transition-all duration-200">
+            <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <div class="flex gap-6 items-center justify-between">
                     <div class="flex flex-col gap-4">
                         <h4 class="text-gray-500 text-lg font-semibold dark:text-white">
