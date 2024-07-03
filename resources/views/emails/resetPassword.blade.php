@@ -7,6 +7,7 @@
 Halo, {{ $user->name }}. Lupa Password?
 
 <p>Reset password kamu</p>
+
 @component('mail::button', ['url' => url('reset/'.$user->remember_token)])
     Reset Password
 @endcomponent

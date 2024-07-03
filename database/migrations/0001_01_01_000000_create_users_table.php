@@ -11,43 +11,43 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name')->unique();
-            $table->timestamps();
-        });
-
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
+            //biodata
+            $table->string('foto_profil')->nullable();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
-            $table->string('nomor_induk')->unique();
+            $table->string('nomor_hp');
+            $table->string('tentang_saya')->nullable();
+            $table->string('jenis_kelamin')->nullable();
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->string('alamat')->nullable();
+            //akademik
             $table->string('institusi');
             $table->string('jurusan');
+            $table->string('nomor_induk')->unique();
+            $table->string('kartu_penduduk')->nullable();
+            $table->string('original_filename_ktp')->nullable();
             $table->string('kartu_tanda');
-            $table->string('nomor_hp');
+            $table->string('original_filename_kartu')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('roles_users', function (Blueprint $table) {
+        Schema::create('pengajuan', function (Blueprint $table){
+            $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->uuid('role_id');
+            $table->string('jenis_magang');
+            $table->string('bidang_tujuan');
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
+            $table->enum('status_pengajuan', ['waiting', 'reject', 'accept-first', 'accept-final'])->default('waiting');
             $table->timestamps();
-        
-            $table->primary(['user_id', 'role_id']);
-        
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
-        
-            $table->foreign('role_id')
-                  ->references('id')
-                  ->on('roles')
-                  ->onDelete('cascade');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -58,12 +58,14 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->uuid('user_id')->nullable()->index(); 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+        
     }
 
     /**
@@ -71,9 +73,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles_users');
+        Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
-        Schema::dropIfExists('roles');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

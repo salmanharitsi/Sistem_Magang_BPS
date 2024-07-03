@@ -7,20 +7,27 @@ document.addEventListener("DOMContentLoaded", function () {
 //fungsi memberikan highlight ke menu yg sedang dipilih
 function highlightActiveMenuItem() {
     const links = document.querySelectorAll("a.menu-item");
-    links.forEach((link) =>
-        window.location.pathname.includes(link.getAttribute("href"))
-            ? link.classList.add(
-                  "bg-blue-600",
-                  "text-white",
-                  "hover:text-white",
-                  "font-regular",
-                  "dark:text-[#0f1214]",
-                  "dark:from-blue-400",
-                  "dark:to-blue-700"
-              )
-            : link.classList.remove("bg-blue-50", "text-blue-600")
-    );
+    const currentPath = window.location.pathname;
+
+    links.forEach((link) => {
+        const linkPath = link.getAttribute("href");
+
+        if (currentPath.includes(linkPath) && linkPath !== "/") {
+            link.classList.add(
+                "bg-blue-600",
+                "text-white",
+                "hover:text-white",
+                "font-regular",
+                "dark:text-[#0f1214]",
+                "dark:from-blue-400",
+                "dark:to-blue-700"
+            );
+        } else {
+            link.classList.remove("bg-blue-50", "text-blue-600");
+        }
+    });
 }
+
 
 function toggleSidebar() {
     const toggleSidebarButton = document.getElementById('toggle-sidebar');
@@ -44,8 +51,8 @@ function toggleSidebar() {
             icons.forEach(icon => {
                 icon.classList.add('ps-2');
             });
-            loaderItem.classList.add('ml-[18%]');
-            loaderItem.classList.remove('ml-[5%]');
+            loaderItem.classList.add('lg:ml-[18%]');
+            loaderItem.classList.remove('lg:ml-[5%]');
         } else {
             if (localStorage.getItem('sidebarCollapsed') === 'true') {
                 sidebar.classList.add('aside-collapsed');
@@ -57,8 +64,8 @@ function toggleSidebar() {
                 icons.forEach(icon => {
                     icon.classList.remove('ps-2');
                 });
-                loaderItem.classList.add('ml-[5%]');
-                loaderItem.classList.remove('ml-[18%]');
+                loaderItem.classList.add('lg:ml-[5%]');
+                loaderItem.classList.remove('lg:ml-[18%]');
             } else {
                 sidebar.classList.remove('aside-collapsed');
                 pageWrapper.style.marginLeft = '270px';

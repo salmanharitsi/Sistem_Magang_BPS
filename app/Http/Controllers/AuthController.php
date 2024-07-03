@@ -15,6 +15,13 @@ class AuthController
         return view('auth.login');
     }
 
+    public function get_login_pegawai_page(){
+        if (!empty(Auth::check())) {
+            return redirect('dashboard');
+        }
+        return view('auth.login_pegawai');
+    }
+
     public function get_registrasi_page(){
         if (!empty(Auth::check())) {
             return redirect('dashboard');

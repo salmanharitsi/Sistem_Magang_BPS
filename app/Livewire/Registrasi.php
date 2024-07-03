@@ -86,6 +86,9 @@ class Registrasi extends Component
         // Validasi data input
         $validatedData = $this->validate();
 
+        // Mendapatkan nama asli file
+        $originalFilename = $this->kartu_tanda->getClientOriginalName();
+
         // Menyimpan gambar ke penyimpanan publik
         $imagePath = $this->kartu_tanda->store('kartu_tanda', 'public', );
 
@@ -94,18 +97,19 @@ class Registrasi extends Component
         $user->name = ucwords(strtolower(trim($validatedData['name'])));
         $user->email = $validatedData['email'];
         $user->nomor_induk = $validatedData['nomor_induk'];
-        $user->institusi = $validatedData['institusi'];
-        $user->jurusan = $validatedData['jurusan'];
+        $user->institusi = ucwords(strtolower(trim($validatedData['institusi'])));
+        $user->jurusan = ucwords(strtolower(trim($validatedData['jurusan'])));
         $user->kartu_tanda = $imagePath;
+        $user->original_filename_kartu = $originalFilename;
         $user->nomor_hp = $validatedData['nomor_hp'];
         $user->password = Hash::make($validatedData['password']);
         $user->remember_token = Str::uuid()->toString();
-        
+
         // Menyimpan user ke database
         $user->save();
 
         // Mengarahkan pengguna kembali ke halaman registrasi dengan pesan sukses
-        return redirect('/registrasi')->with([
+        return redirect('/login')->with([
             'success' => [
                 "title" => "Registrasi Berhasil!",
                 "message" => "Akun berhasil didaftarkan, silahkan masuk"

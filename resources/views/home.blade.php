@@ -12,6 +12,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
+@if (Auth::check())
+    @php
+        $firstLetter = strtoupper(substr(Auth::user()->name, 0, 1));
+    @endphp
+@endif
+
 <body>
 
     @include('_message')
@@ -33,11 +39,23 @@
             <a href="#fungsi-bagian" class="nav-link py-1">Informasi bagian</a>
             <a href="#faqs" class="nav-link py-1">FAQs</a>
             @if (Auth::check())
-                <a href="{{ url('/login') }}"
-                    class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
-                    <i class="fas fa-user"></i>
-                    <p class="font-medium">{{Auth::user()->name}}</p>
-                </a>
+                @if (!empty(Auth::user()->foto_profil))
+                    <a href="{{ url('/dashboard') }}"
+                        class="px-2 py-2 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
+                        <img src="{{ Storage::url(Auth::user()->foto_profil) }}" alt="Preview Foto Profil"
+                            class="w-9 h-9 object-cover rounded-full outline outline-blue-600 cursor-pointer">
+                        <p class="font-medium">{{ Str::limit(Auth::user()->name, 9, '...') }}</p>
+                    </a>
+                @else
+                    <a href="{{ url('/dashboard') }}"
+                        class="px-2 py-2 rounded-3xl flex items-center justify-center gap-2 bg-white text-blue-500">
+                        <div
+                            class="w-9 h-9 flex items-center text-lg justify-center rounded-full bg-blue-600 text-white cursor-pointer">
+                            <h1>{{ $firstLetter }}</h1>
+                        </div>
+                        <p class="font-medium">{{ Str::limit(Auth::user()->name, 9, '...') }}</p>
+                    </a>
+                @endif
             @else
                 <a href="{{ url('/login') }}"
                     class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
@@ -63,9 +81,11 @@
         <a href="#faqs" class="nav-link py-1">FAQs</a>
         @if (Auth::check())
             <a href="{{ url('/login') }}"
-                class="px-5 py-3 mb-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
-                <i class="fas fa-user"></i>
-                <p class="font-medium">{{Auth::user()->name}}</p>
+                class="px-2 py-2 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
+                <img src="{{ Storage::url(Auth::user()->foto_profil) }}" alt="Preview Foto Profil"
+                    class="w-9 h-9 object-cover rounded-full outline outline-blue-600 cursor-pointer"
+                    onclick="openPreview('{{ Storage::url(Auth::user()->foto_profil) }}')">
+                <p class="font-medium">{{ Str::limit(Auth::user()->name, 15, '...') }}</p>
             </a>
         @else
             <a href="{{ url('/login') }}"
@@ -130,7 +150,8 @@
                                         {{ $item['title'] }}</h2>
                                     <div class="w-full flex justify-end mt-[-5px]">
                                         <img class="w-[50%]"
-                                            src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}" alt="">
+                                            src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
+                                            alt="">
                                     </div>
                                     <p class="mt-5 text-[15px] text-gray-500">{{ $item['description'] }}</p>
                                 </div>
@@ -142,7 +163,8 @@
                                     <div
                                         class="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center text-white text-center p-5 opacity-0 pointer-events-none transition-opacity duration-500 bg-gradient-to-r from-blue-50 to-blue-200 border border-blue-700">
                                         <div class="p-5">
-                                            <h2 class="text-[22px] font-semibold text-blue-700">Rekomendasi Jurusan</h2>
+                                            <h2 class="text-[22px] font-semibold text-blue-700">Rekomendasi Jurusan
+                                            </h2>
                                             <div class="w-full flex justify-end mt-[-5px]">
                                                 <img class="w-[70%]"
                                                     src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
@@ -229,7 +251,7 @@
 
     {{-- Footer setion --}}
     <footer
-        class="flex flex-col w-full h-fit gap-7 px-5 py-5 md:px-[10%] md:py-10 bg-gradient-to-r from-blue-900 to-blue-500">
+        class="flex flex-col w-full h-fit gap-7 px-5 py-5 md:px-[10%] md:py-7 bg-gradient-to-r from-blue-900 to-blue-500">
         <div class="flex gap-3">
             <div class="flex items-center justify-start md:justify-center border-r border-white border-transparent">
                 <img class="w-[100%] mr-1" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">

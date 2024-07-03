@@ -1,5 +1,5 @@
 <form class="space-y-4 " wire:submit.prevent="reset_password">
-    <div class="mt-4 mb-7">
+    <div class="mb-7">
         <label for="curPassword" class="block mb-1 text-sm font-normal">Password saat ini</label>
         <div class="relative group">
             <input type="password" name="curPassword" id="curPassword" placeholder="Masukkan password"
@@ -12,7 +12,7 @@
         </div>
         @if ($errors->has('curPassword'))
             <ul class="list-disc pl-5 text-red-600 text-[11px] mt-2">
-                @foreach ($errors->get('password') as $message)
+                @foreach ($errors->get('curPassword') as $message)
                     <li>{{ $message }}</li>
                 @endforeach
             </ul>

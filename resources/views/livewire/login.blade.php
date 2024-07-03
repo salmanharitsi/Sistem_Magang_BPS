@@ -38,6 +38,9 @@
         Masuk
     </button>
     <div class="text-sm text-center text-gray-700">
+        Masuk sebagai <a href="{{ url('/login-pegawai') }}" class="text-blue-500 hover:underline">Pembimbing</a>
+    </div>
+    <div class="text-sm text-center text-gray-700">
         Belum punya akun? <a href="{{ url('/registrasi') }}" class="text-blue-500 hover:underline">Registrasi</a>
     </div>
 </form>

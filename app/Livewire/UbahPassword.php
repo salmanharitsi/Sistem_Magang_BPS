@@ -65,7 +65,7 @@ class UbahPassword extends Component
         $user->password = Hash::make($this->password);
         $user->save();
 
-        return redirect('/ubah-password')->with([
+        return redirect('/dashboard')->with([
             'success' => [
                 "title" => "Password berhasil diperbarui",
             ]

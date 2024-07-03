@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
     <!-- Core Css -->
     <link rel="stylesheet" href="./assets/css/theme.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>@yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/dashboard.js'])
@@ -32,7 +35,7 @@
         <!-- Layout Sidebar -->
         <!-- -------------- -->
         <aside id="application-sidebar-brand"
-            class="hs-overlay hs-overlay-open:translate-x-0 dark:bg-[#14181b] -translate-x-full transform hidden xl:block xl:translate-x-0 xl:end-auto xl:bottom-0 fixed xl:top-5 xl:left-auto top-0 left-0 with-vertical h-screen z-[999] shrink-0 w-[270px] shadow-lg lg:rounded-lg bg-white left-sidebar transition-all duration-200">
+            class="hs-overlay hs-overlay-open:translate-x-0 dark:bg-[#14181b] -translate-x-full transform hidden xl:block xl:translate-x-0 xl:end-auto xl:bottom-0 fixed xl:top-5 xl:left-auto top-0 left-0 with-vertical h-screen z-[999] shrink-0 w-[270px] card rounded-none lg:rounded-lg bg-white left-sidebar transition-all duration-200">
             <div class="p-4 flex justify-between items-center">
                 <a href="/" class="text-nowrap flex">
                     <div class="flex items-center justify-start md:justify-center border-transparent">
@@ -47,6 +50,14 @@
                         <li class="text-xs font-bold pb-[5px]">
                             <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
                             <span class="text-xs text-gray-600 font-semibold">HOME</span>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
+                                href="/">
+                                <i class="ti ti-home ps-2 text-xl"></i>
+                                <span>Beranda</span>
+                            </a>
                         </li>
 
                         <li class="sidebar-item">
@@ -66,7 +77,7 @@
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
                                 href="/pengajuan">
                                 <i class="ti ti-list-check ps-2 text-xl"></i>
-                                <span>Status Pengajuan</span>
+                                <span>Riwayat Pengajuan</span>
                             </a>
                         </li>
 
@@ -100,19 +111,20 @@
                     <!-- -------------- -->
                     <!-- Layout Header -->
                     <!-- -------------- -->
-                    <div class="flex gap-[23px] sticky top-5 z-10">
+                    <div class="flex gap-[23px] sticky top-5 z-50">
                         <div
-                            class="bg-white dark:bg-[#14181b] lg:flex items-center justify-center px-5 rounded-lg shadow hidden transition duration-200">
+                            class="bg-white dark:bg-[#14181b] lg:flex items-center justify-center px-5 rounded-lg card hidden transition duration-200">
                             <button id="toggle-sidebar" class="text-gray-700 dark:text-white hover:text-blue-600">
                                 <i class="ti ti-menu-2 text-xl"></i>
                             </button>
                         </div>
                         <header
-                            class="bg-white shadow rounded-lg w-full text-sm py-4 px-6 transition-all duration-200 dark:bg-[#14181b]">
+                            class="bg-white card rounded-lg w-full text-sm py-4 px-6 transition-all duration-200 dark:bg-[#14181b]">
                             <!-- ========== HEADER ========== -->
                             <nav class="w-full h-full flex items-center justify-between" aria-label="Global">
-                                <div class="text-xl dark:text-white max-xl:hidden">
+                                <div class="text-xl dark:text-white max-xl:hidden flex items-center gap-3">
                                     <h1>Halo! <span class="font-medium">{{ Auth::user()->name }}</span></h1>
+                                    <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif"  width="28px">
                                 </div>
                                 <ul class="icon-nav flex items-center gap-4">
                                     <li class="relative xl:hidden dark:text-white">
@@ -143,12 +155,13 @@
                                     <div class="flex items-center gap-4">
                                         <div
                                             class="hs-dropdown relative inline-flex [--placement:bottom-right] sm:[--trigger:hover]">
-                                            @if (Auth::user()->foto_profil != null)
+                                            @if (!empty(Auth::user()->foto_profil))
                                                 <a
                                                     class="relative hs-dropdown-toggle cursor-pointer align-middle rounded-full">
-                                                    <img class="object-cover w-9 h-9 rounded-full"
-                                                        src="./assets/images/profile/user-1.jpg" alt=""
-                                                        aria-hidden="true" />
+                                                    <img id=""
+                                                        src="{{ Storage::url(Auth::user()->foto_profil) }}"
+                                                        alt="Preview Foto Profil"
+                                                        class="w-9 h-9 object-cover rounded-full outline outline-blue-600" aria-hidden="true">
                                                 </a>
                                             @else
                                                 <a
@@ -158,7 +171,7 @@
                                                         {{ $firstLetter }}</h1>
                                                 </a>
                                             @endif
-                                            <div class="card hs-dropdown-menu transition-[opacity,margin] rounded-md duration hs-dropdown-open:opacity-100 opacity-0 mt-2 w-[300px] md:w-[350px] hidden z-[12] bg-gray-100 dark:bg-gray-800"
+                                            <div class="card hs-dropdown-menu transition-[opacity,margin] rounded-md duration hs-dropdown-open:opacity-100 opacity-0 mt-2 w-[300px] md:w-[350px] hidden z-[12] bg-white dark:bg-gray-800"
                                                 aria-labelledby="hs-dropdown-custom-icon-trigger">
                                                 <div class="rounded-md overflow-hidden flex flex-col gap-2">
                                                     <div class="w-full h-20 bg-blue-400 relative">
@@ -168,12 +181,22 @@
                                                     </div>
                                                     <div
                                                         class="flex items-center gap-4 mx-4 -mt-12 px-3 py-3 bg-white bg-opacity-30 backdrop-filter backdrop-blur-lg rounded-md shadow">
-                                                        <h1
-                                                            class="w-12 h-12 flex items-center justify-center text-xl text-white bg-blue-600 rounded-lg">
-                                                            {{ $firstLetter }}
-                                                        </h1>
-                                                        <p class="text-lg text-blue-800 font-medium">
-                                                            {{ Auth::user()->name }}</p>
+                                                        @if (!empty(Auth::user()->foto_profil))
+                                                            <img id=""
+                                                            src="{{ Storage::url(Auth::user()->foto_profil) }}"
+                                                            alt="Preview Foto Profil"
+                                                            class="w-12 h-12 object-cover rounded-lg outline outline-blue-600">
+                                                        @else
+                                                            <h1
+                                                                class="w-12 h-12 flex items-center justify-center text-xl text-white bg-blue-600 rounded-lg">
+                                                                {{ $firstLetter }}
+                                                            </h1>
+                                                        @endif
+                                                        <div>
+                                                            <p class="text-lg text-gray-800 font-medium">
+                                                                {{ Auth::user()->name }}</p>
+                                                            <p class="text-[12px] text-gray-600">Siswa/Mahasiswa</p>
+                                                        </div>
                                                     </div>
 
                                                     <a href="/profil"
@@ -220,7 +243,7 @@
                     <div id="pjax-container">
                         @yield('content')
                         <div id="loader"
-                            class="hidden w-full fixed inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50">
+                            class="hidden w-full fixed inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50 z-[1000] lg:z-20">
                             <img src="{{ asset('assets/loader-dash.svg') }}" class="img-loader max-w-16 rounded-lg"
                                 alt="Loading...">
                         </div>
@@ -233,6 +256,7 @@
 
     <!-- Add your scripts here -->
     @livewireScripts
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="./assets/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="./assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
@@ -253,6 +277,14 @@
 
         $(document).on('pjax:complete', function() {
             // Hide the loader
+        });
+
+        $('a.pjax-link').on('click', function(e) {
+            var targetUrl = $(this).attr('href');
+
+            if (window.location.pathname === targetUrl) {
+                e.preventDefault();
+            }
         });
     </script>
 

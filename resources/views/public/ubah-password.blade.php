@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Profil')
+@section('title', 'User Edit Password')
 
 @section('content')
     <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
@@ -14,7 +14,7 @@
                 <i class="ti ti-alert-triangle text-lg"></i>
                 <p class="text-sm">Perhatikan kombinasi password kamu!</p>
             </div>
-            <div class="md:px-[20%] md:py-[4%]">
+            <div class="md:px-[0%] md:py-[2%] mt-3 md:mt-0">
                 @livewire('ubah-password')
             </div>
         </div>
