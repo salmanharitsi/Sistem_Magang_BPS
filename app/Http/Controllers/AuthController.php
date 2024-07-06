@@ -12,10 +12,16 @@ class AuthController
         if (!empty(Auth::check())) {
             return redirect('dashboard');
         }
+        if (!empty(Auth::guard('pegawai')->check())) {
+            return redirect('dashboard-admin');
+        }
         return view('auth.login');
     }
 
     public function get_login_pegawai_page(){
+        if (!empty(Auth::guard('pegawai')->check())) {
+            return redirect('dashboard-admin');
+        }
         if (!empty(Auth::check())) {
             return redirect('dashboard');
         }
@@ -53,11 +59,22 @@ class AuthController
 
     public function logout()
     {
-        Auth::logout();
-        return redirect(url('/'))->with([
-            'success' => [
-                "title" => "Berhasil keluar",
-            ]
-        ]);
+        if (Auth::guard('pegawai')->check()) {
+            Auth::guard('pegawai')->logout();
+            return redirect(url('/'))->with([
+                'success' => [
+                    "title" => "Berhasil keluar",
+                ]
+            ]);
+        }
+
+        if (Auth::check()) {
+            Auth::logout();
+            return redirect(url('/'))->with([
+                'success' => [
+                    "title" => "Berhasil keluar",
+                ]
+            ]);
+        }
     }
 }

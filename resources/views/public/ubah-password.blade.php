@@ -1,4 +1,12 @@
-@extends('layouts.app')
+@php
+    if (Auth::check()) {
+        $layout = 'layouts.app';
+    } elseif (Auth::guard('pegawai')->check()) {
+        $layout = 'layouts.admin';
+    }
+@endphp
+
+@extends($layout)
 
 @section('title', 'User Edit Password')
 

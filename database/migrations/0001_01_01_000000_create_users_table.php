@@ -37,6 +37,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('pegawai', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('name');
+            $table->string('fungsi_bagian');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('nomor_induk')->unique();
+            $table->enum('role_temp', ['regular', 'admin'])->default('regular')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('pengajuan', function (Blueprint $table){
             $table->uuid('id')->primary();
             $table->uuid('user_id');
@@ -59,7 +72,9 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->uuid('user_id')->nullable()->index(); 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->uuid('pegawai_id')->nullable()->index(); 
+            $table->foreign('pegawai_id')->references('id')->on('pegawai')->onDelete('cascade');  
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -75,6 +90,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('pegawai');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

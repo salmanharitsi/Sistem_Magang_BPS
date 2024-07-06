@@ -17,6 +17,11 @@
         $firstLetter = strtoupper(substr(Auth::user()->name, 0, 1));
     @endphp
 @endif
+@if (Auth::guard('pegawai')->check())
+    @php
+        $firstLetter = strtoupper(substr(Auth::guard('pegawai')->user()->name, 0, 1));
+    @endphp
+@endif
 
 <body>
 
@@ -56,6 +61,15 @@
                         <p class="font-medium">{{ Str::limit(Auth::user()->name, 9, '...') }}</p>
                     </a>
                 @endif
+            @elseif(Auth::guard('pegawai')->check())
+                <a href="{{ url('/dashboard-admin') }}"
+                    class="px-2 py-2 rounded-3xl flex items-center justify-center gap-2 bg-white text-blue-500">
+                    <div
+                        class="w-9 h-9 flex items-center text-lg justify-center rounded-full bg-blue-600 text-white cursor-pointer">
+                        <h1>{{ $firstLetter }}</h1>
+                    </div>
+                    <p class="font-medium">{{ Str::limit(Auth::guard('pegawai')->user()->name, 9, '...') }}</p>
+                </a>
             @else
                 <a href="{{ url('/login') }}"
                     class="px-5 py-3 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
@@ -112,7 +126,7 @@
                 <a href=""
                     class="rounded-[10px] w-full md:px-9 py-3 bg-blue-600 text-white text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-blue-500">Alur
                     Pendaftaran</a>
-                <a href=""
+                <a href="{{ Auth::check() ? '/dashboard' : '/login' }}"
                     class="rounded-[10px] w-full md:px-9 py-3 bg-white text-[#514E4E] text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-[#e2e2e2]">Telusuri
                     Program</a>
             </div>
@@ -161,7 +175,7 @@
                                             class="icon-info fa-solid fa-arrow-left p-3 bg-gradient-to-r from-blue-400 to-blue-700 rounded-full cursor-pointer rotate-45"></i>
                                     </div>
                                     <div
-                                        class="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center text-white text-center p-5 opacity-0 pointer-events-none transition-opacity duration-500 bg-gradient-to-r from-blue-50 to-blue-200 border border-blue-700">
+                                        class="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center text-white text-center p-5 opacity-0 pointer-events-none transition-opacity duration-500 bg-gradient-to-r from-blue-100 to-blue-200 border border-blue-700">
                                         <div class="p-5">
                                             <h2 class="text-[22px] font-semibold text-blue-700">Rekomendasi Jurusan
                                             </h2>

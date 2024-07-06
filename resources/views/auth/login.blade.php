@@ -26,7 +26,7 @@
                 <img class="w-[90px]" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
             </div>
             <div class="flex flex-col w-full items-start gap-4 text-gray-800">
-                <h1 class="font-semibold text-lg md:text-2xl">Selamat Datang di <br> Website Pengelolaan Magang </h1>
+                <h1 class="font-semibold text-lg md:text-2xl">Selamat Datang di <br> Sistem Pengelolaan Magang </h1>
                 <p class="font-normal text-sm">Masuk untuk menggunakan layanan</p>
             </div>
             <div class="w-full rounded-lg ">

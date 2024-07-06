@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\NoCacheMiddleware;
 use App\Http\Middleware\UserNormalMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,7 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'usernormal' => UserNormalMiddleware::class
+            'usernormal' => UserNormalMiddleware::class,
+            'admin' => AdminMiddleware::class,
+            'no-cache' => NoCacheMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

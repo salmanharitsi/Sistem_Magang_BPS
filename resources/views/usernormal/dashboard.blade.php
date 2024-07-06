@@ -30,29 +30,53 @@
                 <li
                     class="step1-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
                     <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0">
+                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
+                        data-tooltip-target="tooltip-profil">
                         <i class="ti ti-user text-2xl text-gray-500 "></i>
                     </span>
+                    <div id="tooltip-profil" role="tooltip"
+                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                        Kelengkapan Profil
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
                 </li>
                 <li
                     class="step2-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
                     <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0">
+                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
+                        data-tooltip-target="tooltip-pengajuan">
                         <i class="ti ti-clipboard-text text-2xl text-gray-500"></i>
                     </span>
+                    <div id="tooltip-pengajuan" role="tooltip"
+                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                        Mengajukan Program Magang
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
                 </li>
                 <li
                     class="step3-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
                     <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0">
+                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
+                        data-tooltip-target="tooltip-diterima">
                         <i class="ti ti-clipboard-check text-2xl text-gray-500"></i>
                     </span>
+                    <div id="tooltip-diterima" role="tooltip"
+                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                        Lolos Seleksi Program
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
                 </li>
                 <li class="step4-active flex items-center w-fit">
                     <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0">
+                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
+                        data-tooltip-target="tooltip-surat-pengantar">
                         <i class="ti ti-file-info text-2xl text-gray-500"></i>
                     </span>
+                    <div id="tooltip-surat-pengantar" role="tooltip"
+                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                        Mengupload Surat Pengantar
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
                 </li>
             </ol>
             @if (Auth::user()->tentang_saya == null ||
@@ -95,13 +119,7 @@
                     <p class="text-sm">
                         Pengajuan magang kamu untuk jenis magang
                         <span class="text-green-700 font-semibold">
-                            @if (Auth::user()->pengajuan->jenis_magang == 'kp')
-                                Kerja Praktik
-                            @elseif(Auth::user()->pengajuan->jenis_magang == 'pkl')
-                                Praktik Kerja Lapangan
-                            @else
-                                {{ Auth::user()->pengajuan->jenis_magang }}
-                            @endif
+                            {{ Auth::user()->pengajuan->jenis_magang }}
                         </span>
                         sudah berhasil terkirim
                     </p>
@@ -109,7 +127,8 @@
                         <span
                             class="text-green-700 font-semibold">{{ Carbon::parse(Auth::user()->pengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-green-700 font-semibold">{{ Carbon::parse(Auth::user()->pengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span
+                            class="text-green-700 font-semibold">{{ Carbon::parse(Auth::user()->pengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
                     </p>
                     <a href="/pengajuan"
                         class="pjax-link bg-green-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
@@ -139,9 +158,14 @@
                 var step1 = document.querySelector('.step1-active');
                 if (step1) {
                     var span = step1.querySelector('span');
+                    var div = step1.querySelector('#tooltip-profil');
                     if (span) {
                         span.classList.remove('bg-gray-100');
                         span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
                     }
                     var icon = step1.querySelector('i');
                     if (icon) {
@@ -157,9 +181,14 @@
                     step1.classList.remove('after:border-gray-100', 'after:bg-gray-100');
                     step1.classList.add('after:border-blue-600', 'after:bg-blue-600');
                     var span = step1.querySelector('span');
+                    var div = step1.querySelector('#tooltip-profil');
                     if (span) {
                         span.classList.remove('bg-gray-100');
                         span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
                     }
                     var icon = step1.querySelector('i');
                     if (icon) {
@@ -169,9 +198,14 @@
                 }
                 if (step2) {
                     var span = step2.querySelector('span');
+                    var div = step2.querySelector('#tooltip-pengajuan');
                     if (span) {
                         span.classList.remove('bg-gray-100');
                         span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
                     }
                     var icon = step2.querySelector('i');
                     if (icon) {

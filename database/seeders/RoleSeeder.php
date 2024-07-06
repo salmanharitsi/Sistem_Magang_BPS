@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\RolePegawai;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -14,13 +13,12 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $role = [
-            ["name" => "peserta_magang"],
             ["name" => "pembimbing"],
             ["name" => "admin"],
         ];
 
         foreach($role as $data){
-            Role::create($data);
+            RolePegawai::create($data);
         }
     }
 }

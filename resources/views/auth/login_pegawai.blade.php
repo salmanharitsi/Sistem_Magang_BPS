@@ -22,15 +22,15 @@
             <img src="{{ asset('assets/home/beranda/BPS.jpg') }}" alt="BPS image" class= "object-cover w-full h-full">
         </div>
         <div class="relative px-5 py-5 md:px-20 md:py-10 flex flex-col items-center justify-center gap-7 z-10 basis-[35%]">
-            <div class="flex w-full items-center justify-start md:justify-center md:mb-8">
-                <img class="w-[90px]" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
+            <div class="flex w-full items-center justify-start md:justify-center">
+                <img class="w-[70px]" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
             </div>
             <div class="flex flex-col w-full items-start gap-4 text-gray-800">
-                <h1 class="font-semibold text-lg md:text-2xl">Selamat Datang di <br> Website Pengelolaan Magang </h1>
+                <h1 class="font-semibold text-lg md:text-2xl">Selamat Datang di <br> Sistem Pengelolaan Magang </h1>
                 <p class="font-normal text-sm">Masuk untuk menggunakan layanan</p>
             </div>
             <div class="w-full rounded-lg ">
-                {{-- @livewire('login-pegawai') --}}
+                @livewire('login-pegawai')
             </div>
         </div>
     </div>

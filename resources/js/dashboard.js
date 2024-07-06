@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     highlightActiveMenuItem();
     toggleSidebar();
-    
 });
 
 //fungsi memberikan highlight ke menu yg sedang dipilih

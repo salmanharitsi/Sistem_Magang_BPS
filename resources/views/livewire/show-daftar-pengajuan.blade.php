@@ -25,22 +25,16 @@
                         No
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-left">
+                        Nama
+                    </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
+                        Asal Instansi
+                    </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
                         Jenis Magang
                     </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
-                        Bidang Tujuan
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
-                        Tanggal Mulai
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
-                        Tanggal Selesai
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
-                        Tanggal Diajukan
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-center">
-                        Status
+                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
+                        Aksi
                     </th>
                 </tr>
             </thead>
@@ -49,32 +43,25 @@
                     <tr class="bg-white border-b hover:bg-gray-50">
                         <td class="py-4 px-6 w-[30px]">{{ $pengajuan->firstItem() + $index }}</td>
                         <td class="py-4 px-6 text-left">
-                            {{$data->jenis_magang}}
+                            {{ $data->user->name }}
                         </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
+                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->user->institusi }}</td>
                         </td>
-
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->format('j-F-Y') }}
+                        <td class="py-4 px-6 text-left">{{ $data->jenis_magang }}
                         </td>
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}
-                        </td>
-                        <td class="py-4 px-6 text-left">{{ $data->created_at->format('j-F-Y') }}</td>
-                        <td class="py-4 px-6 flex items-center justify-center">
-                            <p
-                                class="px-3 py-1 rounded-full text-amber-700 border-amber-600 border-2 flex justify-between w-fit items-center bg-amber-50">
-                                @if ($data->status_pengajuan == 'waiting')
-                                    menunggu
-                                @elseif($data->status_pengajuan == 'reject')
-                                    ditolak
-                                @endif
-                            </p>
+                        <td class="py-4 px-6 flex justify-center">
+                            <a href="/detail-pengajuan/{{$data->user->id}}"
+                                class="pjax-link w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                <i class="ti ti-files"></i>
+                                <p class="text-sm whitespace-nowrap">Review</p>
+                            </a>
                         </td>
                     </tr>
                 @empty
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="7" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Belum ada data pengajuan</p>
+                            <p class="font-semibold text-md">Tidak ada data pengajuan</p>
                         </td>
                     </tr>
                 @endforelse
