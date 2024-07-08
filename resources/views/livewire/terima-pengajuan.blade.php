@@ -65,12 +65,7 @@
         <div class="flex gap-2 items-center">
             <input id="checkbox1" type="checkbox" onchange="toggleSubmitButton()"
                 class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300">
-            <p class="text-[12px]">Apakah kamu sudah yakin semua data diisi dengan benar?</p>
-        </div>
-        <div class="flex gap-2 items-center">
-            <input id="checkbox2" type="checkbox" onchange="toggleSubmitButton()"
-                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300">
-            <p class="text-[12px]">Menyetujui keputusan hasil seleksi dari Badan Pusat Statistik Provinsi Riau</p>
+            <p class="text-[12px]">Yakin menerima pengajuan ini?</p>
         </div>
     </div>
 
@@ -82,10 +77,9 @@
 <script>
     function toggleSubmitButton() {
         var checkbox1 = document.getElementById('checkbox1');
-        var checkbox2 = document.getElementById('checkbox2');
         var submitBtn = document.getElementById('submitBtn');
 
-        if (checkbox1.checked && checkbox2.checked) {
+        if (checkbox1.checked) {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;

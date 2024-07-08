@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController
 {
@@ -28,8 +29,14 @@ class AdminController
         if (request()->pjax()) {
             return false;
         }
-        
+
         $user = User::find($id);
+
+        if ($user == null) {
+            abort(404);
+        }
+
         return view('admin.detail-pengajuan', compact('user'));
+
     }
 }

@@ -42,6 +42,9 @@
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
                         Status
                     </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-center">
+                        Aksi
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -53,21 +56,26 @@
                         </td>
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
                         </td>
-
                         <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->format('j-F-Y') }}
                         </td>
                         <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}
                         </td>
                         <td class="py-4 px-6 text-left">{{ $data->created_at->format('j-F-Y') }}</td>
-                        <td class="py-4 px-6 flex items-center justify-center">
+                        <td class="py-4 px-6">
                             <p
-                                class="px-3 py-1 rounded-full text-amber-700 border-amber-600 border-2 flex justify-between w-fit items-center bg-amber-50">
+                                class="px-3 py-1 text-[13px] rounded-full text-amber-700 border-amber-600 border-2 flex justify-between w-fit items-center bg-amber-50">
                                 @if ($data->status_pengajuan == 'waiting')
                                     menunggu
                                 @elseif($data->status_pengajuan == 'reject')
                                     ditolak
                                 @endif
                             </p>
+                        </td>
+                        <td class="py-4 px-6">
+                            <a href=""
+                                class="pjax-link w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                <i class="ti ti-eye"></i>
+                            </a>
                         </td>
                     </tr>
                 @empty

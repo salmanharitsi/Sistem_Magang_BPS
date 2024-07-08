@@ -164,13 +164,56 @@
                 </div>
             </div>
         </div>
-        <!-- Start coding here -->
-        <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
-            {{-- @livewire('show-daftar-pengajuan') --}}
+
+        <div
+            class="col-span-4 card flex flex-col gap-5 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="flex flex-col md:flex-row items-center gap-5 justify-between">
+                <button
+                    class="btn-terima-pengajuan w-full text-sm md:w-1/2 p-2 font-medium bg-blue-600 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-blue-600 hover:border-blue-600 transition-all duration-200">
+                    Terima pengajuan
+                </button>
+                <button
+                    class="btn-tolak-pengajuan w-full text-sm md:w-1/2 p-2 font-medium bg-red-600 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-red-600 hover:border-red-600 transition-all duration-200">
+                    Tolak pengajuan
+                </button>
+            </div>
+            <div class="act-terima-pengajuan hidden ">
+                @livewire('terima-pengajuan')
+            </div>
+            <div class="act-tolak-pengajuan hidden ">
+                @livewire('show-daftar-pengajuan')
+            </div>
         </div>
 
     </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const terimaBtn = document.querySelector('.btn-terima-pengajuan');
+            const tolakBtn = document.querySelector('.btn-tolak-pengajuan');
+            const terimaDiv = document.querySelector('.act-terima-pengajuan');
+            const tolakDiv = document.querySelector('.act-tolak-pengajuan');
+
+            terimaBtn.addEventListener('click', function() {
+                terimaDiv.classList.remove('hidden');
+                terimaDiv.classList.add('fade-in-div', 'show-div');
+                tolakDiv.classList.remove('show-div');
+                tolakDiv.classList.add('hidden');
+                terimaDiv.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+            tolakBtn.addEventListener('click', function() {
+                tolakDiv.classList.remove('hidden');
+                tolakDiv.classList.add('fade-in-div', 'show-div');
+                terimaDiv.classList.remove('show-div');
+                terimaDiv.classList.add('hidden');
+                tolakDiv.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
         function openPreview(url) {
             const screenWidth = window.screen.width;
             const screenHeight = window.screen.height;
