@@ -47,7 +47,7 @@
             </div>
             <p class="font-normal text-sm text-gray-600">Pastikan data pribadi kamu benar</p>
             <span class="border-b border-gray-300 block my-4"></span>
-            <div class="mt-4 w-full md:w-[70%]">
+            <div class="mt-4">
                 <h6 class="text-[17px] font-semibold text-gray-800">Tentang Saya</h6>
                 @if (!empty(Auth::user()->tentang_saya))
                     <p class="text-gray-600 text-sm">

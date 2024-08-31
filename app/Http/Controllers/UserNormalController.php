@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Pengajuan;
 
 class UserNormalController
 {
@@ -23,4 +22,39 @@ class UserNormalController
         return view('usernormal.pengajuan');
     }
 
+    public function get_pengajuan_saya($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $pengajuan = Pengajuan::find($id);
+
+        if ($pengajuan == null) {
+            abort(404);
+        }
+
+        return view('usernormal.pengajuan-saya', compact('pengajuan'));
+    }
+
+    public function delete_pengajuan($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $pengajuan = Pengajuan::find($id);
+        
+        if ($pengajuan == null) {
+            abort(404);
+        }
+        
+        $pengajuan->delete();
+
+        return redirect(url('/pengajuan'))->with([
+            'success' => [
+                "title" => "Pengajuan berhasil dihapus",
+            ]
+        ]);
+    }
 }

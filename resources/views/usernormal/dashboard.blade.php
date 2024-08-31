@@ -36,7 +36,7 @@
                     </span>
                     <div id="tooltip-profil" role="tooltip"
                         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                        Kelengkapan Profil
+                        Melengkapi Profil
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </li>

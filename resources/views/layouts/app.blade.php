@@ -12,10 +12,12 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
     <!-- Core Css -->
-    <link rel="stylesheet" href="./assets/css/theme.css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}" />
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <title>@yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/dashboard.js'])
@@ -257,12 +259,12 @@
     <!-- Add your scripts here -->
     @livewireScripts
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="./assets/libs/simplebar/dist/simplebar.min.js"></script>
-    <script src="./assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
-    <script src="./assets/libs/@preline/dropdown/index.js"></script>
-    <script src="./assets/libs/@preline/overlay/index.js"></script>
-    <script src="./assets/js/sidebarmenu.js"></script>
+    <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/iconify-icon/dist/iconify-icon.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/@preline/dropdown/index.js') }}"></script>
+    <script src="{{ asset('assets/libs/@preline/overlay/index.js') }}"></script>
+    <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
     <script>
         $(document).pjax('a.pjax-link', '#pjax-container', {

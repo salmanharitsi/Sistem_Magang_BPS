@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Pengajuan;
 
 class AdminController
 {
@@ -30,13 +28,12 @@ class AdminController
             return false;
         }
 
-        $user = User::find($id);
+        $pengajuan = Pengajuan::find($id);
 
-        if ($user == null) {
+        if ($pengajuan == null) {
             abort(404);
         }
 
-        return view('admin.detail-pengajuan', compact('user'));
-
+        return view('admin.detail-pengajuan', compact('pengajuan'));
     }
 }

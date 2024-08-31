@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\Pengajuan;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 

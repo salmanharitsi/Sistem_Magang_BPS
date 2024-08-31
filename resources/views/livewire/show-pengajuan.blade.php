@@ -61,7 +61,7 @@
                         <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}
                         </td>
                         <td class="py-4 px-6 text-left">{{ $data->created_at->format('j-F-Y') }}</td>
-                        <td class="py-4 px-6">
+                        <td class="py-4 px-6 flex items-center justify-center min-h-32 md:min-h-24">
                             <p
                                 class="px-3 py-1 text-[13px] rounded-full text-amber-700 border-amber-600 border-2 flex justify-between w-fit items-center bg-amber-50">
                                 @if ($data->status_pengajuan == 'waiting')
@@ -72,7 +72,7 @@
                             </p>
                         </td>
                         <td class="py-4 px-6">
-                            <a href=""
+                            <a href="{{ route('usernormal.pengajuan-saya', $data->id) }}"
                                 class="pjax-link w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-eye"></i>
                             </a>
@@ -80,9 +80,14 @@
                     </tr>
                 @empty
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
-                        <td colspan="7" class="py-10 text-gray-300">
+                        <td colspan="8" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
                             <p class="font-semibold text-md">Belum ada data pengajuan</p>
+                            <a href="/dashboard"
+                                class="pjax-link flex items-center justify-center mx-[45%] mt-3 gap-1 bg-blue-600 border border-transparent px-2 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                <i class="ti ti-files"></i>
+                                <p class="text-sm whitespace-nowrap">Ajukan</p>
+                            </a>
                         </td>
                     </tr>
                 @endforelse

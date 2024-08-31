@@ -1,6 +1,6 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
-@section('title', 'Detail Pengajuan')
+@section('title', 'Pengajuan Saya')
 
 @section('content')
     @php
@@ -11,10 +11,10 @@
     <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
 
         <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-            <a href="/daftar-pengajuan" class="pjax-link w-fit flex items-center gap-1">
+            <a href="/pengajuan" class="pjax-link w-fit flex items-center gap-1">
                 <i class="ti ti-chevron-left text-xl"></i>
                 <h4 class="text-gray-900 font-semibold text-xl dark:text-white">
-                    Detail Pengajuan
+                    Pengajuan Saya
                 </h4>
             </a>
         </div>
@@ -168,22 +168,18 @@
 
         <div
             class="col-span-4 card flex flex-col gap-5 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-            <div class="flex flex-col md:flex-row items-center gap-5 justify-between">
-                <button
-                    class="btn-terima-pengajuan w-full text-sm md:w-1/2 p-2 font-medium bg-blue-600 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-blue-600 hover:border-blue-600 transition-all duration-200">
-                    Terima pengajuan
-                </button>
-                <button
-                    class="btn-tolak-pengajuan w-full text-sm md:w-1/2 p-2 font-medium bg-red-600 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-red-600 hover:border-red-600 transition-all duration-200">
-                    Tolak pengajuan
-                </button>
-            </div>
-            <div class="act-terima-pengajuan hidden ">
+            <button
+                class="btn-delete-pengajuan w-full p-2 flex items-center justify-center gap-2 font-medium bg-red-600 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-red-600 hover:border-red-600 transition-all duration-200">
+                <i class="ti ti-trash text-sm"></i>
+                <p class="text-sm">Hapus Pengajuan</p>
+            </button>
+
+            <div class="act-delete-pengajuan hidden ">
                 <div class="justify-center items-center w-full max-h-full">
                     <div class="relative p-4 w-full max-h-full">
                         <div class="relative">
                             <button
-                                class="close-modal-terima absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                class="close-modal absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -197,18 +193,19 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
-                                <h3 class="mb-5 text-[15px] font-normal text-gray-500 dark:text-gray-400">Apakah yakin
-                                    menerima pengajuan milik <span class="font-bold">{{ $pengajuan->user->name }}</span>
-                                    ini?</h3>
+                                <h3 class="mb-5 text-[15px] font-normal text-gray-500 dark:text-gray-400">Apakah kamu yakin
+                                    ingin menghapus pengajuan ini?</h3>
                                 <form action="{{ route('usernormal.delete-pengajuan', $pengajuan->id) }}" method="POST"
                                     class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
                                     <button type="submit"
-                                        class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center cursor-pointer">
-                                        Ya, Terima
+                                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center cursor-pointer">
+                                        Ya, Hapus
                                     </button>
                                 </form>
                                 <button
-                                    class="close-modal-terima py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                    class="close-modal py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                     Tidak
                                 </button>
                             </div>
@@ -216,98 +213,29 @@
                     </div>
                 </div>
             </div>
-            <div class="act-tolak-pengajuan hidden ">
-                <div class="justify-center items-center w-full max-h-full">
-                    <div class="relative p-4 w-full max-h-full">
-                        <div class="relative">
-                            <button
-                                class="close-modal-tolak absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                </svg>
-                                <span class="sr-only">Close modal</span>
-                            </button>
-                            <div class="p-4 md:p-5 text-center">
-                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                                <h3 class="mb-5 text-[15px] font-normal text-gray-500 dark:text-gray-400">Apakah yakin
-                                    menolak pengajuan milik <span class="font-bold">{{ $pengajuan->user->name }}</span>
-                                    ini?</h3>
-                                <form action="{{ route('usernormal.delete-pengajuan', $pengajuan->id) }}" method="POST"
-                                    class="flex flex-col items-center justify-center gap-5">
-                                    <div class="w-full md:w-[60%]">
-                                        <textarea id="message" rows="4"
-                                            class="block p-2 w-full text-[13px] text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Masukkan pesan jika ada" maxlength="255"></textarea>
-                                    </div>
-                                    <div class="flex items-center justify-center">
-                                        <button type="submit"
-                                            class="text-white w-fit bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center cursor-pointer">
-                                            Ya, Tolak
-                                        </button>
-                                        <button type="button"
-                                            class="close-modal-tolak w-fit py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                            Tidak
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
 
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const terimaBtn = document.querySelector('.btn-terima-pengajuan');
-            const tolakBtn = document.querySelector('.btn-tolak-pengajuan');
-            const terimaDiv = document.querySelector('.act-terima-pengajuan');
-            const tolakDiv = document.querySelector('.act-tolak-pengajuan');
-            const closeMdlsTerima = document.querySelectorAll('.close-modal-terima');
-            const closeMdlsTolak = document.querySelectorAll('.close-modal-tolak');
+            const deleteBtn = document.querySelector('.btn-delete-pengajuan');
+            const deleteDiv = document.querySelector('.act-delete-pengajuan');
+            const closeMdls = document.querySelectorAll('.close-modal');
 
-            terimaBtn.addEventListener('click', function() {
-                terimaDiv.classList.remove('hidden');
-                terimaDiv.classList.add('fade-in-div', 'show-div');
-                tolakDiv.classList.remove('show-div');
-                tolakDiv.classList.add('hidden');
-                terimaDiv.scrollIntoView({
+            deleteBtn.addEventListener('click', function() {
+                deleteDiv.classList.remove('hidden');
+                deleteDiv.classList.add('fade-in-div', 'show-div');
+                deleteDiv.scrollIntoView({
                     behavior: 'smooth'
                 });
             });
 
-            tolakBtn.addEventListener('click', function() {
-                tolakDiv.classList.remove('hidden');
-                tolakDiv.classList.add('fade-in-div', 'show-div');
-                terimaDiv.classList.remove('show-div');
-                terimaDiv.classList.add('hidden');
-                tolakDiv.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-
-            closeMdlsTerima.forEach(closeMdl => {
+            closeMdls.forEach(closeMdl => {
                 closeMdl.addEventListener('click', function() {
-                    terimaDiv.classList.remove('show-div');
-                    terimaDiv.classList.add('hidden');
-                    terimaDiv.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-
-            closeMdlsTolak.forEach(closeMdl => {
-                closeMdl.addEventListener('click', function() {
-                    tolakDiv.classList.remove('show-div');
-                    tolakDiv.classList.add('hidden');
-                    tolakDiv.scrollIntoView({
+                    deleteDiv.classList.remove('show-div');
+                    deleteDiv.classList.add('hidden');
+                    deleteDiv.scrollIntoView({
                         behavior: 'smooth'
                     });
                 });

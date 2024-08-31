@@ -18,16 +18,18 @@ Route::get('/forgot-password', [AuthController::class, 'get_forgot_password_page
 Route::get('/reset/{token}', [AuthController::class, 'get_reset_password_page']);
 
 // Route untuk user biasa
-Route::group(['middleware' => ['usernormal', 'no-cache']], function(){
+Route::group(['middleware' => ['usernormal', 'no-cache']], function () {
     Route::get('dashboard', [UserNormalController::class, 'get_dashboard'])->name('usernormal.dashboard');
     Route::get('pengajuan', [UserNormalController::class, 'get_status_pengajuan'])->name('usernormal.pengajuan');
     Route::get('profil', [HomeController::class, 'get_user_profil'])->name('usernormal.profil');
     Route::get('profil-edit', [HomeController::class, 'get_user_profil_edit'])->name('usernormal.profil-edit');
     Route::get('ubah-password', [HomeController::class, 'get_ubah_password'])->name('usernormal.ubah-password');
+    Route::get('pengajuan-saya/{id}', [UserNormalController::class, 'get_pengajuan_saya'])->name('usernormal.pengajuan-saya');
+    Route::delete('delete-pengajuan/{id}', [UserNormalController::class, 'delete_pengajuan'])->name('usernormal.delete-pengajuan');
 });
 
 // Route untuk admin
-Route::group(['middleware' => ['admin', 'no-cache']], function(){
+Route::group(['middleware' => ['admin', 'no-cache']], function () {
     Route::get('dashboard-admin', [AdminController::class, 'get_dashboard_admin'])->name('admin.dashboard');
     Route::get('ubah-password-admin', [HomeController::class, 'get_ubah_password'])->name('admin.ubah-password');
     Route::get('daftar-pengajuan', [AdminController::class, 'get_daftar_pengajuan'])->name('admin.daftar-pengajuan');

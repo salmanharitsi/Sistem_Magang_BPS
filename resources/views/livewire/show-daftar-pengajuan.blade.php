@@ -49,8 +49,8 @@
                         </td>
                         <td class="py-4 px-6 text-left">{{ $data->jenis_magang }}
                         </td>
-                        <td class="py-4 px-6 flex justify-center">
-                            <a href="/detail-pengajuan/{{$data->user->id}}"
+                        <td class="py-4 px-6 flex items-center justify-center min-h-32 md:min-h-fit">
+                            <a href="/detail-pengajuan/{{$data->id}}"
                                 class="pjax-link w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-files"></i>
                                 <p class="text-sm whitespace-nowrap">Review</p>
