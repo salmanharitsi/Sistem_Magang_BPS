@@ -85,7 +85,7 @@
         </div>
     </nav>
     <div id="mobile-menu"
-        class="hidden fixed lg:hidden rounded-b-lg px-[10%] py-3 w-full bg-gradient-to-r from-blue-900 to-blue-500 text-white text-sm flex items-center gap-5 justify-center flex-col z-[1]">
+        class="hidden fixed lg:hidden rounded-b-lg py-3 w-[100vw] bg-gradient-to-r from-blue-900 to-blue-500 text-white text-sm flex items-center gap-5 justify-center flex-col z-30 overflow-hidden">
         <div class="border-b border-white text-white w-full py-3 text-center flex flex-col gap-3">
             <h1 class="font-regular text-[21px]">Badan Pusat Statistik</h1>
             <p class="font-light text-[16px]">Provinsi Riau</p>
@@ -112,7 +112,7 @@
 
     {{-- Beranda section --}}
     <section id="beranda">
-        <div class="m-0 p-0 w-full h-[75vh] absolute gradient-overlay z-[0] parallax-beranda">
+        <div class="m-0 p-0 w-full h-[100vh] absolute gradient-overlay z-[0] parallax-beranda">
             {{-- <img src="{{ asset('assets/home/beranda/BPS.jpg') }}" alt="BPS image" class= "object-cover w-full h-full"> --}}
         </div>
         <div class="relative px-[20px] md:px-[10%] h-[75vh] flex flex-col items-end text-end justify-center gap-8">
@@ -134,7 +134,7 @@
     </section>
 
     {{-- Fungsi bagian section --}}
-    <section id="fungsi-bagian" class="w-full h-fit px-2 py-5 md:px-[5.5%] md:py-10 bg-gray-100">
+    <section id="fungsi-bagian" class="relative w-full h-fit px-2 py-5 md:px-[5.5%] md:py-10 bg-gray-100">
         <div class="md:px-[6%]">
             <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Kenali fungsi bagian di BPS </h1>
         </div>
@@ -215,9 +215,9 @@
             {{-- <img src="{{ asset('assets/home/beranda/BPS.jpg') }}" alt="BPS image" class= "object-cover w-full h-full"> --}}
         </div>
         <div class="relative px-[20px] md:px-[10%] h-[75vh] flex flex-col items-start text-start justify-center gap-8">
-            <h1 class="font-bold text-white text-[33px] md:text-[36px] lg:text-[49px] leading-snug delay-[300ms] duration-[600ms] taos:translate-x-[200px] taos:opacity-0"
+            <h1 class="font-bold text-white text-[33px] md:text-[36px] lg:text-[49px] leading-snug delay-[300ms] duration-[600ms] taos:translate-x-[-200px] taos:opacity-0"
                 data-taos-offset="100">Belum kenal dengan BPS?</h1>
-            <p class="font-light text-white text-[14px] w-[90%] lg:w-[60%] md:text-[18px] delay-[600ms] duration-[600ms] taos:translate-x-[200px] taos:opacity-0"
+            <p class="font-light text-white text-[14px] w-[90%] lg:w-[60%] md:text-[18px] delay-[600ms] duration-[600ms] taos:translate-x-[-200px] taos:opacity-0"
                 data-taos-offset="100">BPS atau Badan Pusat Statistik adalah Lembaga Pemerintah Non Kementerian yang
                 bertanggung
                 jawab langsung kepada Presiden. Sebelumnya, BPS merupakan Biro Pusat Statistik, yang dibentuk

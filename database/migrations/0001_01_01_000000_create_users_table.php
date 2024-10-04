@@ -55,7 +55,7 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->string('jenis_magang');
             $table->string('bidang_tujuan');
-            $table->string('komentar');
+            $table->text('komentar')->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->enum('status_pengajuan', ['waiting', 'reject', 'accept-first', 'accept-final'])->default('waiting');
