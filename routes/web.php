@@ -20,6 +20,7 @@ Route::get('/reset/{token}', [AuthController::class, 'get_reset_password_page'])
 // Route untuk user biasa
 Route::group(['middleware' => ['usernormal', 'no-cache']], function () {
     Route::get('dashboard', [UserNormalController::class, 'get_dashboard'])->name('usernormal.dashboard');
+    Route::get('pengisian-logbook', [UserNormalController::class, 'get_logbook'])->name('usernormal.pengisian-logbook');
     Route::get('pengajuan', [UserNormalController::class, 'get_status_pengajuan'])->name('usernormal.pengajuan');
     Route::get('profil', [HomeController::class, 'get_user_profil'])->name('usernormal.profil');
     Route::get('profil-edit', [HomeController::class, 'get_user_profil_edit'])->name('usernormal.profil-edit');
