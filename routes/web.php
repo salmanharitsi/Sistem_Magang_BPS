@@ -34,6 +34,7 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
     Route::get('dashboard-admin', [AdminController::class, 'get_dashboard_admin'])->name('admin.dashboard');
     Route::get('ubah-password-admin', [HomeController::class, 'get_ubah_password'])->name('admin.ubah-password');
     Route::get('daftar-pengajuan', [AdminController::class, 'get_daftar_pengajuan'])->name('admin.daftar-pengajuan');
+    Route::get('review-logbook', [AdminController::class, 'get_review_logbook'])->name('admin.review-logbook');
     Route::get('detail-pengajuan/{id}', [AdminController::class, 'get_detail_pengajuan'])->name('admin.detail-pengajuan');
 });
 
