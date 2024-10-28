@@ -36,13 +36,22 @@
                         class="flex flex-col md:flex-row items-center px-2 py-3 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                         <div class="flex items-center gap-2">
                             <i class="ti ti-file-text text-2xl text-gray-700"></i>
-                            <p class="text-gray-600 text-sm">Upload lampiran</p>
+                            <p class="text-gray-600 text-sm" id="file-name">Upload lampiran</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button type="button"
-                                class="px-3 py-2 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap">
-                                Upload File
-                            </button>
+                            <label for="file-upload" class="cursor-pointer">
+                                <div class="px-3 py-2 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap">
+                                    Upload File
+                                </div>
+                                <input 
+                                    id="file-upload" 
+                                    type="file" 
+                                    wire:model="lampiran"
+                                    class="hidden" 
+                                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                    onchange="displayFileName(this)"
+                                >
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -54,3 +63,10 @@
         </div>
     </div
 </div>
+
+<script>
+    function displayFileName(input) {
+        const fileName = input.files[0]?.name;
+        document.getElementById('file-name').textContent = fileName || 'Upload lampiran';
+    }
+</script>
