@@ -205,7 +205,7 @@
                     <h6 class="text-[17px] font-semibold text-gray-800">Kartu Tanda Penduduk</h6>
                     @if (!empty(Auth::user()->kartu_penduduk))
                         <div
-                            class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
+                            class="flex flex-col md:flex-row items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                             <div class="flex items-center gap-2">
                                 <i class="ti ti-file-text text-2xl text-gray-700"></i>
                                 <p class="text-gray-600 text-sm">{{ Auth::user()->original_filename_ktp }}</p>
@@ -228,7 +228,7 @@
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Kartu Tanda Siswa/Mahasiswa</h6>
                     @if (!empty(Auth::user()->kartu_tanda))
                         <div
-                            class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
+                            class="flex flex-col md:flex-row items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                             <div class="flex items-center gap-2">
                                 <i class="ti ti-file-text text-2xl text-gray-700"></i>
                                 <p class="text-gray-600 text-sm">{{ Auth::user()->original_filename_kartu }}</p>

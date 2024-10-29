@@ -67,6 +67,9 @@ class PengajuanMagang extends Component
         $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
         $pengajuan->save();
 
+        $user->status_magang = 'masa-daftar';
+        $user->save();
+
         return redirect('/dashboard')->with([
             'success' => [
                 "title" => "Berhasil mengajukan magang",

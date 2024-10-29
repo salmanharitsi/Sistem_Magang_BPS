@@ -19,6 +19,34 @@
             </a>
         </div>
 
+        @if ($pengajuan->status_pengajuan == 'accept-first')
+            <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+                <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                        <i class="ti ti-alert-circle text-lg"></i>
+                        <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ \Carbon\Carbon::parse($pengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
+                    </div>
+                </div>
+            </div>
+        @elseif ($pengajuan->status_pengajuan == 'reject-time')
+            <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+                <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
+                        <i class="ti ti-alert-triangle text-lg"></i>
+                        <p class="text-sm">Kamu melewati tenggat upload surat pengantar!, <span class="font-semibold underline"><a href="/dashboard" class="pjax-link">ajukan ulang</a></span></p>
+                    </div>
+                </div>
+            </div>
+        @elseif ($pengajuan->komentar != null)
+            <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+                <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
+                        <p class="text-sm"><span class="font-semibold">Pesan penolakan: </span>{{ $pengajuan->komentar }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
 
             <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -138,7 +166,7 @@
             <div class="mt-4">
                 <h6 class="text-[17px] font-semibold text-gray-800">Kartu Tanda Penduduk</h6>
                 <div
-                    class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
+                    class="flex flex-col md:flex-row items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
                         <p class="text-gray-600 text-sm">{{ $pengajuan->user->original_filename_ktp }}</p>
@@ -152,7 +180,7 @@
 
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Kartu Tanda Siswa/Mahasiswa</h6>
                 <div
-                    class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
+                    class="flex flex-col md:flex-row items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
                         <p class="text-gray-600 text-sm">{{ $pengajuan->user->original_filename_kartu }}</p>
@@ -166,6 +194,7 @@
             </div>
         </div>
 
+        @if ($pengajuan->status_pengajuan == 'waiting')
         <div
             class="col-span-4 card flex flex-col gap-5 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <button
@@ -214,6 +243,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
 
     </div>

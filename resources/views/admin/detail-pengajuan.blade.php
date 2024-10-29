@@ -166,6 +166,7 @@
             </div>
         </div>
 
+        @if ($pengajuan->status_pengajuan == "waiting")    
         <div
             class="col-span-4 card flex flex-col gap-5 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <div class="flex flex-col md:flex-row items-center gap-5 justify-between">
@@ -200,8 +201,9 @@
                                 <h3 class="mb-5 text-[15px] font-normal text-gray-500 dark:text-gray-400">Apakah yakin
                                     menerima pengajuan milik <span class="font-bold">{{ $pengajuan->user->name }}</span>
                                     ini?</h3>
-                                <form action="{{ route('usernormal.delete-pengajuan', $pengajuan->id) }}" method="POST"
+                                <form action="{{ route('admin.terima-pengajuan', $pengajuan->id) }}" method="POST"
                                     class="inline-block">
+                                    @csrf
                                     <button type="submit"
                                         class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center cursor-pointer">
                                         Ya, Terima
@@ -238,12 +240,24 @@
                                 <h3 class="mb-5 text-[15px] font-normal text-gray-500 dark:text-gray-400">Apakah yakin
                                     menolak pengajuan milik <span class="font-bold">{{ $pengajuan->user->name }}</span>
                                     ini?</h3>
-                                <form action="{{ route('usernormal.delete-pengajuan', $pengajuan->id) }}" method="POST"
+                                <form action="{{ route('admin.tolak-pengajuan', $pengajuan->id) }}" method="POST"
                                     class="flex flex-col items-center justify-center gap-5">
-                                    <div class="w-full md:w-[60%]">
-                                        <textarea id="message" rows="4"
+                                    @csrf
+                                    <div class="w-full md:w-[60%] text-start">
+                                        <h1 class="mb-1">Pesan</h1>
+                                        <textarea id="message" name="komentar" rows="4"
                                             class="block p-2 w-full text-[13px] text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Masukkan pesan jika ada" maxlength="255"></textarea>
+                                    </div>
+                                    <div class=" w-full md:w-[60%] text-start">
+                                        <h1>Saran Pesan</h1>
+                                        <div class="flex flex-wrap gap-2 mt-1 text-sm">
+                                            <button type="button" class="suggest-btn px-2 py-0.5 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Kuota magang saat ini sedang penuh')">Kuota magang saat ini sedang penuh</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Dokumen tidak sesuai, periksa kembali')">Dokumen tidak sesuai, periksa kembali</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Coba daftar pada divisi lain')">Coba daftar pada divisi lain</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Maaf, saat ini kami sedang tidak menerima magang')">Maaf, saat ini kami sedang tidak menerima magang</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Coba daftar pada periode lain')">Coba daftar pada periode lain</button>
+                                        </div>
                                     </div>
                                     <div class="flex items-center justify-center">
                                         <button type="submit"
@@ -262,6 +276,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
     </div>
     <script>
@@ -334,6 +349,11 @@
             } else {
                 alert('Preview dokumen tidak tersedia di tampilan mobile');
             }
+        }
+
+        function setMessage(text) {
+            const messageTextarea = document.getElementById('message');
+            messageTextarea.value = text;
         }
     </script>
 @endsection

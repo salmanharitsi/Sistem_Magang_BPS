@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->string('alamat')->nullable();
+            $table->enum('status_magang', ['aktif', 'masa-daftar', 'tidak-aktif'])->default('tidak-aktif')->nullable();
             //akademik
             $table->string('institusi');
             $table->string('jurusan');
@@ -58,7 +59,8 @@ return new class extends Migration
             $table->text('komentar')->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->enum('status_pengajuan', ['waiting', 'reject', 'accept-first', 'accept-final'])->default('waiting');
+            $table->date('tenggat')->nullable();
+            $table->enum('status_pengajuan', ['waiting', 'reject-time', 'reject-admin', 'reject-final', 'accept-first', 'accept-final'])->default('waiting');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -89,10 +91,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('sessions');
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
         Schema::dropIfExists('pegawai');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };

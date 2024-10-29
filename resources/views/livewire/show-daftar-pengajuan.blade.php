@@ -34,6 +34,9 @@
                         Jenis Magang
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
+                        status
+                    </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
                         Aksi
                     </th>
                 </tr>
@@ -49,9 +52,19 @@
                         </td>
                         <td class="py-4 px-6 text-left">{{ $data->jenis_magang }}
                         </td>
-                        <td class="py-4 px-6 flex items-center justify-center min-h-32 md:min-h-fit">
+                        <td class="py-4 px-6 text-center">
+                            <div
+                                class="text-[13px] w-fit items-center mx-auto">
+                                @if ($data->status_pengajuan == 'waiting')
+                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Diperiksa</p>
+                                @elseif($data->status_pengajuan == 'accept-first')
+                                    <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Surat Balasan</p>
+                                @endif
+                            </div>
+                        </td>
+                        <td class="py-4 px-6">
                             <a href="/detail-pengajuan/{{$data->id}}"
-                                class="pjax-link w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                class="pjax-link w-fit mx-auto flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-files"></i>
                                 <p class="text-sm whitespace-nowrap">Review</p>
                             </a>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\UpdatePengajuanStatusJob;
 use App\Models\Pengajuan;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController
 {
@@ -35,5 +37,58 @@ class AdminController
         }
 
         return view('admin.detail-pengajuan', compact('pengajuan'));
+    }
+
+    public function terima_pengajuan($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $pengajuan = Pengajuan::find($id);
+        
+        if ($pengajuan == null) {
+            abort(404);
+        }
+        
+        $pengajuan->status_pengajuan = "accept-first";
+        // Set tenggat to 7 days 
+        // $pengajuan->tenggat = now()->addDays(7);
+        // Set tenggat to 1 minute 
+        $pengajuan->tenggat = now()->addMinutes(2);
+        $pengajuan->save();
+
+        // Dispatch job untuk memperbarui status setelah tenggat
+        UpdatePengajuanStatusJob::dispatch($pengajuan)->delay(now()->addMinutes(2));
+
+        return redirect(url('/daftar-pengajuan'))->with([
+            'success' => [
+                "title" => "Berhasil menerima pengajuan",
+            ]
+        ]);
+    }
+
+    public function tolak_pengajuan($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $pengajuan = Pengajuan::find($id);
+        
+        if ($pengajuan == null) {
+            abort(404);
+        }
+        
+        $pengajuan->status_pengajuan = "reject-admin";
+        $komentar = request('komentar');
+        $pengajuan->komentar = $komentar;
+        $pengajuan->save();
+
+        return redirect(url('/daftar-pengajuan'))->with([
+            'success' => [
+                "title" => "Berhasil menolak pengajuan",
+            ]
+        ]);
     }
 }

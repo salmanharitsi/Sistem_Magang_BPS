@@ -23,7 +23,9 @@ class ShowDaftarPengajuan extends Component
     public function render()
     {
         // Build the base query
-        $query = Pengajuan::orderBy('created_at', 'desc');
+        $query = Pengajuan::orderBy('created_at', 'desc')
+            ->where('status_pengajuan', 'waiting')
+            ->orWhere('status_pengajuan', 'accept-first');
 
         // Apply search filter if search term is provided
         if ($this->search) {
