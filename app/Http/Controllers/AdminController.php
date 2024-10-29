@@ -24,6 +24,14 @@ class AdminController
         return view('admin.daftar-pengajuan');
     }
 
+    public function get_review_logbook()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('admin.review-logbook');
+    }
+
     public function get_detail_pengajuan($id)
     {
         if (request()->pjax()) {

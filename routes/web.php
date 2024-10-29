@@ -20,6 +20,7 @@ Route::get('/reset/{token}', [AuthController::class, 'get_reset_password_page'])
 // Route untuk user biasa
 Route::group(['middleware' => ['usernormal', 'no-cache']], function () {
     Route::get('dashboard', [UserNormalController::class, 'get_dashboard'])->name('usernormal.dashboard');
+    Route::get('add-logbook', [UserNormalController::class, 'get_logbook'])->name('usernormal.pengisian-logbook');
     Route::get('pengajuan', [UserNormalController::class, 'get_status_pengajuan'])->name('usernormal.pengajuan');
     Route::get('profil', [HomeController::class, 'get_user_profil'])->name('usernormal.profil');
     Route::get('profil-edit', [HomeController::class, 'get_user_profil_edit'])->name('usernormal.profil-edit');
@@ -34,6 +35,7 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
     Route::get('dashboard-admin', [AdminController::class, 'get_dashboard_admin'])->name('admin.dashboard');
     Route::get('ubah-password-admin', [HomeController::class, 'get_ubah_password'])->name('admin.ubah-password');
     Route::get('daftar-pengajuan', [AdminController::class, 'get_daftar_pengajuan'])->name('admin.daftar-pengajuan');
+    Route::get('review-logbook', [AdminController::class, 'get_review_logbook'])->name('admin.review-logbook');
     Route::get('detail-pengajuan/{id}', [AdminController::class, 'get_detail_pengajuan'])->name('admin.detail-pengajuan');
     Route::post('terima-pengajuan/{id}', [AdminController::class, 'terima_pengajuan'])->name('admin.terima-pengajuan');
     Route::post('tolak-pengajuan/{id}', [AdminController::class, 'tolak_pengajuan'])->name('admin.tolak-pengajuan');
