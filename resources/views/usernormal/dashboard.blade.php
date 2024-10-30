@@ -204,7 +204,7 @@
                 @php
                     $pengajuan = Auth::user()->pengajuan()->where('status_pengajuan', 'reject-time')->first();
                 @endphp
-                <div class="w-full h-fit p-3 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
+                <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
                     <i class="ti ti-circle-x text-4xl md:text-5xl"></i>
                     <p class="text-sm">
                         Pengajuan magang kamu untuk jenis magang
@@ -213,7 +213,7 @@
                         </span>
                         ditolak
                     </p>
-                    <p class="text-sm">Untuk periode:
+                    <p class="text-sm -mt-2">Untuk periode:
                         <span class="text-red-700 font-semibold">{{ Carbon::parse($pengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
                         sampai dengan
                         <span class="text-red-700 font-semibold">{{ Carbon::parse($pengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
@@ -231,7 +231,7 @@
                 @php
                     $pengajuan = Auth::user()->pengajuan()->where('status_pengajuan', 'reject-admin')->first();
                 @endphp
-                <div class="w-full h-fit py-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
+                <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
                     <h1 class="text-xl font-semibold rounded-full text-white px-10 py-1.5 bg-gradient-to-r from-[#FF0000] to-[#6C2323]">Maaf Kamu Belum Diterima, <span class="font-normal">Pada</span></h1>
                     <p class="text-sm">
                         jenis magang

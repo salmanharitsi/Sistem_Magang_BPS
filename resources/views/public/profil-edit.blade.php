@@ -40,7 +40,7 @@
                     <h4 class="text-gray-800 text-2xl pb-3 border-b border-gray-300 font-semibold dark:text-white">
                         Biodata
                     </h4>
-                    <div class="md:px-[0%] md:py-[2%]">
+                    <div class="md:px-[0%] md:pt-[2%]">
                         @livewire('edit-biodata')
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     <h4 class="text-gray-800 text-2xl pb-3 border-b border-gray-300 font-semibold dark:text-white">
                         Akademik
                     </h4>
-                    <div class="md:px-[0%] md:py-[2%]">
+                    <div class="md:px-[0%] md:pt-[2%]">
                         @livewire('edit-akademik')
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     <h4 class="text-gray-800 text-2xl pb-3 border-b border-gray-300 font-semibold dark:text-white">
                         Dokumen
                     </h4>
-                    <div class="md:px-[0%] md:py-[2%]">
+                    <div class="md:px-[0%] md:pt-[2%]">
                         @livewire('edit-dokumen')
                     </div>
                 </div>

@@ -61,13 +61,16 @@ class AdminController
         
         $pengajuan->status_pengajuan = "accept-first";
         // Set tenggat to 7 days 
-        // $pengajuan->tenggat = now()->addDays(7);
+        $pengajuan->tenggat = now()->addDays(7);
         // Set tenggat to 1 minute 
-        $pengajuan->tenggat = now()->addMinutes(2);
+        // $pengajuan->tenggat = now()->addMinutes(1);
         $pengajuan->save();
 
         // Dispatch job untuk memperbarui status setelah tenggat
-        UpdatePengajuanStatusJob::dispatch($pengajuan)->delay(now()->addMinutes(2));
+        // Set tenggat to 7 days 
+        UpdatePengajuanStatusJob::dispatch($pengajuan)->delay(now()->addDays(7));
+        // Set tenggat to 1 minute 
+        // UpdatePengajuanStatusJob::dispatch($pengajuan)->delay(now()->addMinutes(1));
 
         return redirect(url('/daftar-pengajuan'))->with([
             'success' => [

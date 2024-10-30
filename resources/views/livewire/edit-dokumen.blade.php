@@ -1,4 +1,4 @@
-<form class="flex flex-col gap-3" wire:submit.prevent="update_dokumen">
+<form class="flex flex-col gap-5" wire:submit.prevent="update_dokumen">
     <div class="grid md:grid-cols-1 gap-4">
 
         <div>

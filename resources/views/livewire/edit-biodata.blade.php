@@ -2,7 +2,7 @@
     $firstLetter = strtoupper(substr(Auth::user()->name, 0, 1));
 @endphp
 
-<form class="flex flex-col gap-3" wire:submit="update_data">
+<form class="flex flex-col gap-5" wire:submit="update_data">
     <div class="">
         <label for="" class="block mb-1 text-md font-medium text-gray-700">Foto Profil</label>
         @if ($foto_profil)
