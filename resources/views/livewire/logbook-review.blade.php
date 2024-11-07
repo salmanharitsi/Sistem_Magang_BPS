@@ -16,7 +16,7 @@
     </div>
     <div class="col-span-4 card mt-6 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
         <div>
-            <label class="block mb-2 text-[20px] font-semibold">
+            <label class="block mb-2 text-[17px] font-semibold">
                 Kegiatan<span class="text-red-500 ml-1">*</span></label>
             <textarea wire:model="kegiatan"
                 class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
@@ -24,7 +24,7 @@
         </div>
         <div>
             <div class="mt-5">
-                <h6 class="text-[20px] font-semibold text-gray-800">Lampiran<span class="text-red-500 ml-1">*</span>
+                <h6 class="text-[17px] font-semibold text-gray-800">Lampiran<span class="text-red-500 ml-1">*</span>
                 </h6>
                 <div
                     class="flex flex-col md:flex-row items-center px-2 py-3 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
@@ -44,13 +44,13 @@
             </div>
         </div>
         <div class="mt-5">
-            <label class="block mb-2 text-[20px] font-semibold">
+            <label class="block mb-2 text-[17px] font-semibold">
                 Komentar<span class="text-red-500 ml-1">*</span></label>
             <textarea wire:model="komentar"
                 class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                 rows="2" placeholder="Masukkan komentar" required></textarea>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 mt-4 gap-4">
             <button type="submit"
                 class="w-full text-white bg-blue-600 hover:bg-blue-700 transition duration-300 ease-in-out focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-blue-400 disabled:cursor-not-allowed">
                 Terima Logbook
@@ -62,7 +62,7 @@
         </div>
 
     </div>
-</div </div>
+</div>
 
 <script>
     function displayFileName(input) {

@@ -31,6 +31,27 @@ class UserNormalController
         return view('usernormal.pengisian-logbook');
     }
 
+    public function get_upload_surat_pengantar_page()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        $user = Auth::user();
+
+        $pengajuan = Pengajuan::where('user_id', $user->id)
+            ->where('status_pengajuan', 'accept-first')
+            ->where('surat_pengantar', null)
+            ->first();
+
+        if (!$pengajuan) {
+            return redirect('/dashboard')->withErrors([
+                'error' => "Pengajuan not found or is not in 'accept-first' status."
+            ]);
+        }
+
+        return view('usernormal.surat-pengantar');
+    }
+
     public function get_pengajuan_saya($id)
     {
         if (request()->pjax()) {
@@ -54,13 +75,13 @@ class UserNormalController
 
         $pengajuan = Pengajuan::find($id);
         $user = Auth::user();
-        
+
         if ($pengajuan == null) {
             abort(404);
         }
-        
+
         $pengajuan->delete();
-        
+
         $user->status_magang = 'tidak-aktif';
         $user->save();
 
@@ -79,14 +100,14 @@ class UserNormalController
 
         $pengajuan = Pengajuan::find($id);
         $user = Auth::user();
-        
+
         if ($pengajuan == null) {
             abort(404);
         }
-        
+
         $pengajuan->status_pengajuan = "reject-final";
         $pengajuan->save();
-        
+
         $user->status_magang = 'tidak-aktif';
         $user->save();
 

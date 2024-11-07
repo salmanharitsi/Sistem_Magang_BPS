@@ -17,7 +17,7 @@
     </div>
     <div class="col-span-4 card mt-6 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
         <div>
-            <label class="block mb-2 text-[20px] font-semibold">
+            <label class="block mb-2 text-[17px] font-semibold">
                 Kegiatan<span class="text-red-500 ml-1">*</span></label>
             <textarea wire:model="kegiatan"
                 class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
@@ -25,7 +25,7 @@
         </div>
         <div>
             <div class="mt-5">
-                <h6 class="text-[20px] font-semibold text-gray-800">Lampiran<span class="text-red-500 ml-1">*</span>
+                <h6 class="text-[17px] font-semibold text-gray-800">Lampiran<span class="text-red-500 ml-1">*</span>
                 </h6>
                 <div
                     class="flex flex-col md:flex-row items-center px-2 py-3 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">

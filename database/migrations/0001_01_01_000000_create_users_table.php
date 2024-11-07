@@ -61,7 +61,30 @@ return new class extends Migration
             $table->date('tanggal_selesai');
             $table->date('tenggat')->nullable();
             $table->enum('status_pengajuan', ['waiting', 'reject-time', 'reject-admin', 'reject-final', 'accept-first', 'accept-final'])->default('waiting');
+            $table->string('surat_pengantar')->nullable();
+            $table->string('original_filename_surat_pengantar')->nullable();
             $table->timestamps();
+
+            //data akademik peserta
+            $table->string('institusi');
+            $table->string('jurusan');
+            $table->string('nomor_induk');
+
+            //data pribadi peserta
+            $table->string('foto_profil')->nullable();
+            $table->string('name');
+            $table->string('email');
+            $table->string('nomor_hp');
+            $table->string('tentang_saya');
+            $table->string('jenis_kelamin');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('alamat');
+
+            $table->string('kartu_penduduk');
+            $table->string('original_filename_ktp');
+            $table->string('kartu_tanda');
+            $table->string('original_filename_kartu');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

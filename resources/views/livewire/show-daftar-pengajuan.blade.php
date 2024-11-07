@@ -58,7 +58,11 @@
                                 @if ($data->status_pengajuan == 'waiting')
                                     <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Diperiksa</p>
                                 @elseif($data->status_pengajuan == 'accept-first')
-                                    <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Surat Balasan</p>
+                                    @if (is_null($data->surat_pengantar))
+                                        <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Surat Balasan</p>
+                                    @else
+                                        <p class="text-blue-700 border-blue-600 bg-blue-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Persetujuan Final</p>
+                                    @endif
                                 @endif
                             </div>
                         </td>
