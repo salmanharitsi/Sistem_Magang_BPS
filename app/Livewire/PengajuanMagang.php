@@ -65,7 +65,32 @@ class PengajuanMagang extends Component
         $pengajuan->bidang_tujuan = $validatedData['bidang_tujuan'];
         $pengajuan->tanggal_mulai = $validatedData['tanggal_mulai'];
         $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
+
+        //data akademik
+        $pengajuan->institusi = $user->institusi;
+        $pengajuan->jurusan = $user->jurusan;
+        $pengajuan->nomor_induk = $user->nomor_induk;
+
+        //data pribadi
+        $pengajuan->foto_profil = $user->foto_profil;
+        $pengajuan->name = $user->name;
+        $pengajuan->email = $user->email;
+        $pengajuan->nomor_hp = $user->nomor_hp;
+        $pengajuan->tentang_saya = $user->tentang_saya;
+        $pengajuan->jenis_kelamin = $user->jenis_kelamin;
+        $pengajuan->tempat_lahir = $user->tempat_lahir;
+        $pengajuan->tanggal_lahir = $user->tanggal_lahir;
+        $pengajuan->alamat = $user->alamat;
+
+        $pengajuan->kartu_penduduk = $user->kartu_penduduk;
+        $pengajuan->original_filename_ktp = $user->original_filename_ktp;
+        $pengajuan->kartu_tanda = $user->kartu_tanda;
+        $pengajuan->original_filename_kartu = $user->original_filename_kartu;
+
         $pengajuan->save();
+
+        $user->status_magang = 'masa-daftar';
+        $user->save();
 
         return redirect('/dashboard')->with([
             'success' => [

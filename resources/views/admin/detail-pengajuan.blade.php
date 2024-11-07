@@ -4,7 +4,7 @@
 
 @section('content')
     @php
-        $firstLetter = strtoupper(substr($pengajuan->user->name, 0, 1));
+        $firstLetter = strtoupper(substr($pengajuan->name, 0, 1));
         use Carbon\Carbon;
     @endphp
 
@@ -18,6 +18,24 @@
                 </h4>
             </a>
         </div>
+
+        @if (!is_null($pengajuan->surat_pengantar))
+            <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 border border-blue-600">
+                <h6 class="text-[17px] font-semibold text-gray-800">Surat Pengantar</h6>
+                <div
+                    class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <i class="ti ti-file-text text-2xl text-gray-700"></i>
+                        <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_surat_pengantar }}</p>
+                    </div>
+                    <button
+                        class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
+                        onclick="openPreview('{{ Storage::url($pengajuan->surat_pengantar) }}')">
+                        Cek surat
+                    </button>
+                </div>
+            </div>
+        @endif
 
         <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
 
@@ -58,15 +76,15 @@
                     </h4>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Asal Instansi</h6>
                     <p class="text-gray-600 text-sm">
-                        {{ $pengajuan->user->institusi }}
+                        {{ $pengajuan->institusi }}
                     </p>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Jurusan</h6>
                     <p class="text-gray-600 text-sm">
-                        {{ $pengajuan->user->jurusan }}
+                        {{ $pengajuan->jurusan }}
                     </p>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nomor Induk Siswa/Mahasiswa</h6>
                     <p class="text-gray-600 text-sm">
-                        {{ $pengajuan->user->nomor_induk }}
+                        {{ $pengajuan->nomor_induk }}
                     </p>
                 </div>
             </div>
@@ -79,11 +97,11 @@
                     Biodata
                 </h4>
                 <div class="mt-4">
-                    @if (!empty($pengajuan->user->foto_profil))
-                        <img id="profile-image" src="{{ Storage::url($pengajuan->user->foto_profil) }}"
+                    @if (!empty($pengajuan->foto_profil))
+                        <img id="profile-image" src="{{ Storage::url($pengajuan->foto_profil) }}"
                             alt="Preview Foto Profil"
                             class="w-28 h-28 object-cover rounded-full outline outline-blue-600 cursor-pointer"
-                            onclick="openPreview('{{ Storage::url($pengajuan->user->foto_profil) }}')">
+                            onclick="openPreview('{{ Storage::url($pengajuan->foto_profil) }}')">
                     @else
                         <h1 class="flex w-28 h-28 items-center justify-center text-3xl text-white bg-blue-600 rounded-full">
                             {{ $firstLetter }}
@@ -92,41 +110,41 @@
                 </div>
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tentang Saya</h6>
                 <p class="text-gray-600 text-sm">
-                    {{ $pengajuan->user->tentang_saya }}
+                    {{ $pengajuan->tentang_saya }}
                 </p>
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nama</h6>
                 <p class="text-gray-600 text-sm">
-                    {{ $pengajuan->user->name }}
+                    {{ $pengajuan->name }}
                 </p>
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Jenis Kelamin</h6>
                 <p class="text-gray-600 text-sm">
-                    {{ $pengajuan->user->jenis_kelamin }}
+                    {{ $pengajuan->jenis_kelamin }}
                 </p>
                 <div class="flex gap-5">
                     <div>
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tempat Lahir</h6>
                         <p class="text-gray-600 text-sm">
-                            {{ $pengajuan->user->tempat_lahir }}
+                            {{ $pengajuan->tempat_lahir }}
                         </p>
                     </div>
                     <div>
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         <p class="text-gray-600 text-sm">
-                            {{ Carbon::parse($pengajuan->user->tanggal_lahir)->format('j-F-Y') }}
+                            {{ Carbon::parse($pengajuan->tanggal_lahir)->format('j-F-Y') }}
                         </p>
                     </div>
                 </div>
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">No Handphone</h6>
                 <p class="text-gray-600 text-sm">
-                    {{ $pengajuan->user->nomor_hp }}
+                    {{ $pengajuan->nomor_hp }}
                 </p>
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Email</h6>
                 <p class="text-gray-600 text-sm">
-                    {{ $pengajuan->user->email }}
+                    {{ $pengajuan->email }}
                 </p>
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Alamat Lengkap</h6>
                 <p class="text-gray-600 text-sm">
-                    {{ $pengajuan->user->alamat }}
+                    {{ $pengajuan->alamat }}
                 </p>
             </div>
         </div>
@@ -141,11 +159,11 @@
                     class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
-                        <p class="text-gray-600 text-sm">{{ $pengajuan->user->original_filename_ktp }}</p>
+                        <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_ktp }}</p>
                     </div>
                     <button
                         class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
-                        onclick="openPreview('{{ Storage::url($pengajuan->user->kartu_penduduk) }}')">
+                        onclick="openPreview('{{ Storage::url($pengajuan->kartu_penduduk) }}')">
                         Lihat file
                     </button>
                 </div>
@@ -155,17 +173,18 @@
                     class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
-                        <p class="text-gray-600 text-sm">{{ $pengajuan->user->original_filename_kartu }}</p>
+                        <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_kartu }}</p>
                     </div>
                     <button
                         class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
-                        onclick="openPreview('{{ Storage::url($pengajuan->user->kartu_tanda) }}')">
+                        onclick="openPreview('{{ Storage::url($pengajuan->kartu_tanda) }}')">
                         Lihat file
                     </button>
                 </div>
             </div>
         </div>
 
+        @if ($pengajuan->status_pengajuan == "waiting")    
         <div
             class="col-span-4 card flex flex-col gap-5 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <div class="flex flex-col md:flex-row items-center gap-5 justify-between">
@@ -198,10 +217,11 @@
                                         stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
                                 <h3 class="mb-5 text-[15px] font-normal text-gray-500 dark:text-gray-400">Apakah yakin
-                                    menerima pengajuan milik <span class="font-bold">{{ $pengajuan->user->name }}</span>
+                                    menerima pengajuan milik <span class="font-bold">{{ $pengajuan->name }}</span>
                                     ini?</h3>
-                                <form action="{{ route('usernormal.delete-pengajuan', $pengajuan->id) }}" method="POST"
+                                <form action="{{ route('admin.terima-pengajuan', $pengajuan->id) }}" method="POST"
                                     class="inline-block">
+                                    @csrf
                                     <button type="submit"
                                         class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center cursor-pointer">
                                         Ya, Terima
@@ -236,14 +256,26 @@
                                         stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
                                 <h3 class="mb-5 text-[15px] font-normal text-gray-500 dark:text-gray-400">Apakah yakin
-                                    menolak pengajuan milik <span class="font-bold">{{ $pengajuan->user->name }}</span>
+                                    menolak pengajuan milik <span class="font-bold">{{ $pengajuan->name }}</span>
                                     ini?</h3>
-                                <form action="{{ route('usernormal.delete-pengajuan', $pengajuan->id) }}" method="POST"
+                                <form action="{{ route('admin.tolak-pengajuan', $pengajuan->id) }}" method="POST"
                                     class="flex flex-col items-center justify-center gap-5">
-                                    <div class="w-full md:w-[60%]">
-                                        <textarea id="message" rows="4"
+                                    @csrf
+                                    <div class="w-full md:w-[60%] text-start">
+                                        <h1 class="mb-1">Pesan</h1>
+                                        <textarea id="message" name="komentar" rows="4"
                                             class="block p-2 w-full text-[13px] text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Masukkan pesan jika ada" maxlength="255"></textarea>
+                                    </div>
+                                    <div class=" w-full md:w-[60%] text-start">
+                                        <h1>Saran Pesan</h1>
+                                        <div class="flex flex-wrap gap-2 mt-1 text-sm">
+                                            <button type="button" class="suggest-btn px-2 py-0.5 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Kuota magang saat ini sedang penuh')">Kuota magang saat ini sedang penuh</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Dokumen tidak sesuai, periksa kembali')">Dokumen tidak sesuai, periksa kembali</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Coba daftar pada divisi lain')">Coba daftar pada divisi lain</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Maaf, saat ini kami sedang tidak menerima magang')">Maaf, saat ini kami sedang tidak menerima magang</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Coba daftar pada periode lain')">Coba daftar pada periode lain</button>
+                                        </div>
                                     </div>
                                     <div class="flex items-center justify-center">
                                         <button type="submit"
@@ -262,6 +294,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
     </div>
     <script>
@@ -334,6 +367,11 @@
             } else {
                 alert('Preview dokumen tidak tersedia di tampilan mobile');
             }
+        }
+
+        function setMessage(text) {
+            const messageTextarea = document.getElementById('message');
+            messageTextarea.value = text;
         }
     </script>
 @endsection

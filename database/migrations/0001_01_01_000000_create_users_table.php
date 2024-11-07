@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->string('alamat')->nullable();
+            $table->enum('status_magang', ['aktif', 'masa-daftar', 'tidak-aktif'])->default('tidak-aktif')->nullable();
             //akademik
             $table->string('institusi');
             $table->string('jurusan');
@@ -55,11 +56,35 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->string('jenis_magang');
             $table->string('bidang_tujuan');
-            $table->string('komentar');
+            $table->text('komentar')->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->enum('status_pengajuan', ['waiting', 'reject', 'accept-first', 'accept-final'])->default('waiting');
+            $table->date('tenggat')->nullable();
+            $table->enum('status_pengajuan', ['waiting', 'reject-time', 'reject-admin', 'reject-final', 'accept-first', 'accept-final'])->default('waiting');
+            $table->string('surat_pengantar')->nullable();
+            $table->string('original_filename_surat_pengantar')->nullable();
             $table->timestamps();
+
+            //data akademik peserta
+            $table->string('institusi');
+            $table->string('jurusan');
+            $table->string('nomor_induk');
+
+            //data pribadi peserta
+            $table->string('foto_profil')->nullable();
+            $table->string('name');
+            $table->string('email');
+            $table->string('nomor_hp');
+            $table->string('tentang_saya');
+            $table->string('jenis_kelamin');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('alamat');
+
+            $table->string('kartu_penduduk');
+            $table->string('original_filename_ktp');
+            $table->string('kartu_tanda');
+            $table->string('original_filename_kartu');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -89,10 +114,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('sessions');
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
         Schema::dropIfExists('pegawai');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };

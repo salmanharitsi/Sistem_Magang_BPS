@@ -61,19 +61,21 @@
                         <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}
                         </td>
                         <td class="py-4 px-6 text-left">{{ $data->created_at->format('j-F-Y') }}</td>
-                        <td class="py-4 px-6 flex items-center justify-center min-h-32 md:min-h-24">
-                            <p
-                                class="px-3 py-1 text-[13px] rounded-full text-amber-700 border-amber-600 border-2 flex justify-between w-fit items-center bg-amber-50">
+                        <td class="py-4 px-6 text-center">
+                            <div
+                                class="text-[13px] mx-auto items-center w-fit">
                                 @if ($data->status_pengajuan == 'waiting')
-                                    menunggu
-                                @elseif($data->status_pengajuan == 'reject')
-                                    ditolak
+                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu</p>
+                                @elseif($data->status_pengajuan == 'accept-first')
+                                    <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Diterima</p>
+                                @elseif($data->status_pengajuan == 'reject-time' || $data->status_pengajuan == 'reject-admin' || $data->status_pengajuan == 'reject-final')
+                                    <p class="text-red-700 border-red-600 bg-red-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Ditolak</p>
                                 @endif
-                            </p>
+                            </div>
                         </td>
                         <td class="py-4 px-6">
                             <a href="{{ route('usernormal.pengajuan-saya', $data->id) }}"
-                                class="pjax-link w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-eye"></i>
                             </a>
                         </td>

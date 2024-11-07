@@ -22,7 +22,7 @@
                 <i class="ti ti-alert-triangle text-lg"></i>
                 <p class="text-sm">Perhatikan kombinasi password kamu!</p>
             </div>
-            <div class="md:px-[0%] md:py-[2%] mt-3 md:mt-0">
+            <div class="md:px-[0%] md:pt-[2%] mt-3 md:mt-0">
                 @livewire('ubah-password')
             </div>
         </div>
