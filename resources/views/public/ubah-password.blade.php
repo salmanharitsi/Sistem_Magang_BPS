@@ -2,7 +2,13 @@
     if (Auth::check()) {
         $layout = 'layouts.app';
     } elseif (Auth::guard('pegawai')->check()) {
-        $layout = 'layouts.admin';
+        $pegawai = Auth::guard('pegawai')->user();
+        
+        if ($pegawai->role_temp == 'admin') {
+            $layout = 'layouts.admin';
+        } elseif ($pegawai->role_temp == 'regular') {
+            $layout = 'layouts.pembimbing';
+        }
     }
 @endphp
 

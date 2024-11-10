@@ -54,7 +54,7 @@ class UbahPassword extends Component
         $this->validate();
 
         $user = Auth::user();
-        $admin = Auth::guard('pegawai')->user();
+        $pegawai = Auth::guard('pegawai')->user();
 
         if ($user) {
             if (!Hash::check($this->curPassword, $user->password)) {
@@ -75,23 +75,39 @@ class UbahPassword extends Component
             ]);
         }
 
-        if ($admin) {
-            if (!Hash::check($this->curPassword, $admin->password)) {
-                return redirect('/ubah-password-admin')->with([
-                    'error' => [
-                        "title" => "Password saat ini salah!",
+        if ($pegawai) {
+            if (!Hash::check($this->curPassword, $pegawai->password)) {
+                if ($pegawai->role_temp == 'admin') {
+                    return redirect('/ubah-password-admin')->with([
+                        'error' => [
+                            "title" => "Password saat ini salah!",
+                        ]
+                    ]);
+                } elseif ($pegawai->role_temp == 'regular') {
+                    return redirect('/ubah-password-pembimbing')->with([
+                        'error' => [
+                            "title" => "Password saat ini salah!",
+                        ]
+                    ]);
+                }
+            }
+    
+            $pegawai->password = $this->password;
+            $pegawai->save();
+    
+            if ($pegawai->role_temp == 'admin') {
+                return redirect('/dashboard-admin')->with([
+                    'success' => [
+                        "title" => "Password berhasil diperbarui",
+                    ]
+                ]);
+            } elseif ($pegawai->role_temp == 'regular') {
+                return redirect('/dashboard-pembimbing')->with([
+                    'success' => [
+                        "title" => "Password berhasil diperbarui",
                     ]
                 ]);
             }
-    
-            $admin->password = $this->password;
-            $admin->save();
-    
-            return redirect('/dashboard-admin')->with([
-                'success' => [
-                    "title" => "Password berhasil diperbarui",
-                ]
-            ]);
         }
 
     }
