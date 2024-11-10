@@ -62,13 +62,17 @@
                     </a>
                 @endif
             @elseif(Auth::guard('pegawai')->check())
-                <a href="{{ url('/dashboard-admin') }}"
+                @php
+                    $pegawai = Auth::guard('pegawai')->user();
+                    $dashboardUrl = $pegawai->role_temp == 'admin' ? '/dashboard-admin' : '/dashboard-pembimbing';
+                @endphp
+                <a href="{{ url($dashboardUrl) }}"
                     class="px-2 py-2 rounded-3xl flex items-center justify-center gap-2 bg-white text-blue-500">
                     <div
                         class="w-9 h-9 flex items-center text-lg justify-center rounded-full bg-blue-600 text-white cursor-pointer">
                         <h1>{{ $firstLetter }}</h1>
                     </div>
-                    <p class="font-medium">{{ Str::limit(Auth::guard('pegawai')->user()->name, 9, '...') }}</p>
+                    <p class="font-medium">{{ Str::limit($pegawai->name, 9, '...') }}</p>
                 </a>
             @else
                 <a href="{{ url('/login') }}"

@@ -270,7 +270,7 @@
                                     <div class=" w-full md:w-[60%] text-start">
                                         <h1>Saran Pesan</h1>
                                         <div class="flex flex-wrap gap-2 mt-1 text-sm">
-                                            <button type="button" class="suggest-btn px-2 py-0.5 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Kuota magang saat ini sedang penuh')">Kuota magang saat ini sedang penuh</button>
+                                            <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Kuota magang saat ini sedang penuh')">Kuota magang saat ini sedang penuh</button>
                                             <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Dokumen tidak sesuai, periksa kembali')">Dokumen tidak sesuai, periksa kembali</button>
                                             <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Coba daftar pada divisi lain')">Coba daftar pada divisi lain</button>
                                             <button type="button" class="suggest-btn px-2 py-1 bg-gray-100 text-gray-600 border border-gray-600 rounded-full" onclick="setMessage('Maaf, saat ini kami sedang tidak menerima magang')">Maaf, saat ini kami sedang tidak menerima magang</button>

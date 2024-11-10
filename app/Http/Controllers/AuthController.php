@@ -13,14 +13,26 @@ class AuthController
             return redirect('dashboard');
         }
         if (!empty(Auth::guard('pegawai')->check())) {
-            return redirect('dashboard-admin');
+            $pegawai = Auth::guard('pegawai')->user();
+            if($pegawai->role_temp == 'regular') {
+                return redirect('dashboard-pembimbing');
+            }
+            else if($pegawai->role_temp == 'admin') {
+                return redirect('dashboard-admin');
+            }
         }
         return view('auth.login');
     }
 
     public function get_login_pegawai_page(){
         if (!empty(Auth::guard('pegawai')->check())) {
-            return redirect('dashboard-admin');
+            $pegawai = Auth::guard('pegawai')->user();
+            if($pegawai->role_temp == 'regular') {
+                return redirect('dashboard-pembimbing');
+            }
+            else if($pegawai->role_temp == 'admin') {
+                return redirect('dashboard-admin');
+            }
         }
         if (!empty(Auth::check())) {
             return redirect('dashboard');

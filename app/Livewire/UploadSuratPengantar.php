@@ -18,7 +18,7 @@ class UploadSuratPengantar extends Component
     public function rules()
     {
         return [
-            'surat_pengantar' => 'max:2048'
+            'surat_pengantar' => 'required|max:2048'
         ];
     }
 
@@ -26,6 +26,7 @@ class UploadSuratPengantar extends Component
     {
         return [
             'surat_pengantar' => [
+                "required" => 'Surat pengantar tidak boleh kosong',
                 "max" => 'File tidak boleh lebih dari 2mb'
             ]
         ];

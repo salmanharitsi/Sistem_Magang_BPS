@@ -46,7 +46,6 @@ class LoginPegawai extends Component
         ];
 
         if (!Pegawai::where('email', $this->email)->exists()) {
-            dd($this->email);
             return redirect('/login-pegawai')->with([
                 'error' => [
                     "title" => "Email tidak terdaftar!",
@@ -55,11 +54,21 @@ class LoginPegawai extends Component
         }
 
         if (Auth::guard('pegawai')->attempt($credentials, $remember)) {
-            return redirect()->intended('dashboard-admin')->with([
-                'success' => [
-                    "title" => "Berhasil masuk",
-                ]
-            ]);
+            $pegawai = Auth::guard('pegawai')->user();
+
+            if ($pegawai->role_temp == 'admin') {
+                return redirect()->intended('dashboard-admin')->with([
+                    'success' => [
+                        "title" => "Berhasil masuk sebagai Admin",
+                    ]
+                ]);
+            } elseif ($pegawai->role_temp == 'regular') {
+                return redirect()->intended('dashboard-pembimbing')->with([
+                    'success' => [
+                        "title" => "Berhasil masuk sebagai Pembimbing",
+                    ]
+                ]);
+            }
         }
 
         return redirect('/login-pegawai')->with([

@@ -187,8 +187,8 @@
                         <p class="text-sm whitespace-nowrap">Cek pengajuan</p>
                     </a>
                 </div>
-                <div class="w-full h-fit p-3 mt-5 flex flex-col gap-3 md:flex-row items-start lg:items-center bg-green-100 rounded-lg text-green-600">
-                    <i class="ti ti-sparkles text-lg"></i>
+                <div class="w-full h-fit p-3 mt-5 flex gap-3 flex-row items-start lg:items-center bg-green-100 rounded-lg text-green-600">
+                    <i class="ti ti-sparkles text-lg -mt-1.5 md:-mt-0"></i>
                     <p class="text-sm">Cek email atau aplikasi secara berkala untuk mengetahui hasil seleksi.
                         Terimakasih sudah mengajukan magang di BPS Provinsi Riau</p>
                 </div>
@@ -253,7 +253,7 @@
             @endif
             @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'reject-admin')
                 <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
-                    <h1 class="text-xl font-semibold rounded-full text-white px-10 py-1.5 bg-gradient-to-r from-[#FF0000] to-[#6C2323]">Maaf Kamu Belum Diterima, <span class="font-normal">Pada</span></h1>
+                    <h1 class="md:text-xl font-semibold rounded-full text-white px-10 py-1.5 bg-gradient-to-r from-[#FF0000] to-[#6C2323]">Maaf Kamu Belum Diterima, <span class="font-normal">Pada</span></h1>
                     <p class="text-sm">
                         jenis magang
                         <span class="text-red-700 font-semibold">
