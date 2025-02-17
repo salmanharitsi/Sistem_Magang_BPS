@@ -2,16 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Models\Pengajuan; // Pastikan untuk mengimpor model Pengajuan
-use App\Models\User;
+use App\Models\Pengajuan;
 use Carbon\Carbon;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class UpdatePengajuanStatusJob implements ShouldQueue
+class UpdatePengajuanOverLimit implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -19,8 +18,6 @@ class UpdatePengajuanStatusJob implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct(Pengajuan $pengajuan)
     {
@@ -34,10 +31,12 @@ class UpdatePengajuanStatusJob implements ShouldQueue
      */
     public function handle()
     {
-        // Cek apakah tenggat waktu telah berlalu
-        if ($this->pengajuan->tenggat <= Carbon::now()) {
-            $this->pengajuan->status_pengajuan = 'reject-time';
-            $this->pengajuan->komentar = 'Kamu melewati tenggat waktu upload surat pengantar!';
+        if (Carbon::now()->startOfDay()->gte($this->pengajuan->tanggal_mulai) 
+            && ($this->pengajuan->status_pengajuan != 'reject-admin'
+            || $this->pengajuan->status_pengajuan != 'reject-time'
+            || $this->pengajuan->status_pengajuan != 'reject-final'
+            || $this->pengajuan->status_pengajuan != 'accept-final')) {
+            $this->pengajuan->status_pengajuan = 'reject-days';
             $this->pengajuan->tenggat = null;
             $this->pengajuan->save();
         }

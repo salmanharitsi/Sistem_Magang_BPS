@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\UpdatePengajuanOverLimit;
 use App\Models\Pengajuan;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
@@ -91,6 +92,8 @@ class PengajuanMagang extends Component
 
         $user->status_magang = 'masa-daftar';
         $user->save();
+
+        UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
 
         return redirect('/dashboard')->with([
             'success' => [

@@ -60,7 +60,7 @@ return new class extends Migration
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->date('tenggat')->nullable();
-            $table->enum('status_pengajuan', ['waiting', 'reject-time', 'reject-admin', 'reject-final', 'accept-first', 'accept-final'])->default('waiting');
+            $table->enum('status_pengajuan', ['waiting', 'reject-time', 'reject-days', 'reject-admin', 'reject-final', 'accept-first', 'accept-final'])->default('waiting');
             $table->string('surat_pengantar')->nullable();
             $table->string('original_filename_surat_pengantar')->nullable();
             $table->timestamps();
@@ -95,6 +95,21 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
+        Schema::create('magang', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->enum('status_magang', ['active', 'non-active'])->default('non-active');
+            $table->string('peserta_magang_id');
+            $table->string('jenis_magang');
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
+            $table->string('bidang_tujuan');
+
+            $table->uuid('pembimbing_pertama');
+            $table->foreign('pembimbing_pertama')->references('id')->on('pegawai')->onDelete('cascade');
+            $table->uuid('pembimbing_kedua');
+            $table->foreign('pembimbing_kedua')->references('id')->on('pegawai')->onDelete('cascade');
+        });
+
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->uuid('user_id')->nullable()->index(); 
@@ -115,6 +130,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('magang');
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
         Schema::dropIfExists('pegawai');

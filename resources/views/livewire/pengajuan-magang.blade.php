@@ -43,7 +43,7 @@
             <p class="text-sm mb-1 text-gray-500">Tentukan rencana mulai magang</p>
             <input type="date" name="tanggal_mulai" id="tanggal_mulai" wire:model.live="tanggal_mulai"
                 class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
-                min="{{ date('Y-m-d') }}" />
+                min="{{ date('Y-m-d', strtotime('+1 day')) }}" />
             @error('tanggal_mulai')
                 <span class="text-red-500 text-[11px]">{{ $message }}</span>
             @enderror

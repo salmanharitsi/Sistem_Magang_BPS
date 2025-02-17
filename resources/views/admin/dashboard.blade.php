@@ -15,116 +15,212 @@
     </div>
 
     <div class="grid grid-cols-1 mt-6 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-
-        <div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-            <div class="flex justify-between">
-                <div>
-                    <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
-                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Users this week</p>
-                </div>
-                <div
-                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                    12%
-                    <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 10 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 13V1m0 0L1 5m4-4 4 4" />
-                    </svg>
-                </div>
+        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+            <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
+                <i class="ti ti-file-search text-2xl"></i>
             </div>
-            <div id="area-chart"></div>
-            <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                <div class="flex justify-between items-center pt-5">
-                    <!-- Button -->
-                    <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
-                        data-dropdown-placement="bottom"
+            <div>
+                <h1 class="text-xl font-medium">Review Pengajuan</h1>
+                <p class="text-2xl font-bold">15</p>
+                <p class="text-sm font-normal text-blue-600">+2 perbulan ini</p>
+            </div>
+        </div>
+        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+            <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
+                <i class="ti ti-text-caption text-2xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-medium">Total Pengajuan</h1>
+                <p class="text-2xl font-bold">10</p>
+                <p class="text-sm font-normal text-blue-600">+2 perbulan ini</p>
+            </div>
+        </div>
+        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+            <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
+                <i class="ti ti-users text-2xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-medium">Total Magang</h1>
+                <p class="text-2xl font-bold">125</p>
+                <p class="text-sm font-normal text-blue-600">+6 perbulan ini</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 mt-6 lg:grid-cols-2 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+            <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
+                <i class="ti ti-users text-2xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-medium">Peserta Magang Aktif</h1>
+                <p class="text-2xl font-bold">25</p>
+                <p class="text-sm font-normal text-blue-600">+10 perbulan ini</p>
+            </div>
+        </div>
+        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+            <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
+                <i class="ti ti-users text-2xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-medium">Peserta Magang Selesai</h1>
+                <p class="text-2xl font-bold">100</p>
+                <p class="text-sm font-normal text-blue-600">+10 perbulan ini</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 mt-6 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+        <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 !pb-0">
+            <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+                <div>
+                    <h5 class="leading-none text-xl font-semibold text-gray-900 dark:text-white pb-1">Grafik Peserta Magang
+                    </h5>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Data bulanan per tahun</p>
+                </div>
+                <div class="flex items-center gap-4"> <!-- Added flex container for buttons -->
+                    <!-- Download Button -->
+                    <button onclick="downloadCSV()"
+                        class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white inline-flex items-center">
+                        <i class="ti ti-file-download text-xl"></i>
+                        Download CSV
+                    </button>
+
+                    <!-- Year Dropdown -->
+                    <button id="dropdownYearButton" data-dropdown-toggle="yearDropdown" data-dropdown-placement="bottom"
                         class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
                         type="button">
-                        Last 7 days
+                        Tahun <span id="selectedYear" class="ml-1">2023</span>
                         <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 1 4 4 4-4" />
                         </svg>
                     </button>
-                    <!-- Dropdown menu -->
-                    <div id="lastDaysdropdown"
+
+                    <!-- Dropdown Year Menu -->
+                    <div id="yearDropdown"
                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownYearButton">
+                            <li><a href="#" class="block px-4 py-2" onclick="updateChartYear(event, 2023)">2023</a>
                             </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
+                            <li><a href="#" class="block px-4 py-2" onclick="updateChartYear(event, 2024)">2024</a>
                             </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                    7 days</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                    30 days</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                    90 days</a>
+                            <li><a href="#" class="block px-4 py-2" onclick="updateChartYear(event, 2025)">2025</a>
                             </li>
                         </ul>
                     </div>
-                    <a href="#"
-                        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
-                        Users Report
-                        <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 9 4-4-4-4" />
-                        </svg>
-                    </a>
                 </div>
             </div>
-        </div>
 
+            <div id="column-chart"></div>
+        </div>
+    </div>
+
+    <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden mt-6">
+        <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar Pengajuan</div>
+        @livewire('show-daftar-pengajuan')
     </div>
 
     <script>
-        const options = {
-            chart: {
-                height: "100%",
-                maxWidth: "100%",
-                type: "area",
-                fontFamily: "Inter, sans-serif",
-                dropShadow: {
-                    enabled: false,
+       let chartData = {
+            2023: [
+                { month: "Jan", organic: 100, social: 200 },
+                { month: "Feb", organic: 150, social: 180 },
+                { month: "Mar", organic: 160, social: 210 },
+                { month: "Apr", organic: 120, social: 190 },
+                { month: "May", organic: 130, social: 170 },
+                { month: "Jun", organic: 140, social: 200 },
+                { month: "Jul", organic: 110, social: 220 },
+                { month: "Aug", organic: 180, social: 230 },
+                { month: "Sep", organic: 150, social: 210 },
+                { month: "Oct", organic: 170, social: 240 },
+                { month: "Nov", organic: 160, social: 200 },
+                { month: "Dec", organic: 170, social: 210 }
+            ],
+            2024: [
+                { month: "Jan", organic: 130, social: 230 },
+                { month: "Feb", organic: 110, social: 160 },
+                { month: "Mar", organic: 140, social: 180 },
+                { month: "Apr", organic: 150, social: 210 },
+                { month: "May", organic: 160, social: 190 },
+                { month: "Jun", organic: 170, social: 220 },
+                { month: "Jul", organic: 180, social: 240 },
+                { month: "Aug", organic: 150, social: 200 },
+                { month: "Sep", organic: 160, social: 230 },
+                { month: "Oct", organic: 140, social: 210 },
+                { month: "Nov", organic: 130, social: 220 },
+                { month: "Dec", organic: 190, social: 220 }
+            ],
+            2025: [
+                { month: "Jan", organic: 120, social: 210 },
+                { month: "Feb", organic: 140, social: 170 },
+                { month: "Mar", organic: 150, social: 200 },
+                { month: "Apr", organic: 160, social: 190 },
+                { month: "May", organic: 130, social: 180 },
+                { month: "Jun", organic: 170, social: 220 },
+                { month: "Jul", organic: 160, social: 230 },
+                { month: "Aug", organic: 180, social: 250 },
+                { month: "Sep", organic: 140, social: 210 },
+                { month: "Oct", organic: 150, social: 220 },
+                { month: "Nov", organic: 180, social: 240 },
+                { month: "Dec", organic: 200, social: 230 }
+            ]
+        };
+
+        let selectedYear = 2023;
+
+        function getSeriesData(year) {
+            return [
+                {
+                    name: "Peserta Masuk",
+                    color: "#1c64f2",
+                    data: chartData[year].map(item => ({ x: item.month, y: item.organic }))
                 },
+                {
+                    name: "Peserta Keluar",
+                    color: "#75b547",
+                    data: chartData[year].map(item => ({ x: item.month, y: item.social }))
+                }
+            ];
+        }
+
+        const options = {
+            colors: ["#1c64f2", "#75b547"],
+            series: getSeriesData(selectedYear),
+            chart: {
+                type: "bar",
+                height: "320px",
+                fontFamily: "Inter, sans-serif",
                 toolbar: {
                     show: false,
                 },
             },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "70%",
+                },
+            },
             tooltip: {
-                enabled: true,
-                x: {
-                    show: false,
+                shared: true,
+                intersect: false,
+                style: {
+                    fontFamily: "Inter, sans-serif",
                 },
             },
-            fill: {
-                type: "gradient",
-                gradient: {
-                    opacityFrom: 0.55,
-                    opacityTo: 0,
-                    shade: "#1C64F2",
-                    gradientToColors: ["#1C64F2"],
+            states: {
+                hover: {
+                    filter: {
+                        type: "darken",
+                        value: 1,
+                    },
                 },
-            },
-            dataLabels: {
-                enabled: false,
             },
             stroke: {
-                width: 6,
+                show: true,
+                width: 0,
+                colors: ["transparent"],
             },
             grid: {
                 show: false,
@@ -132,36 +228,79 @@
                 padding: {
                     left: 2,
                     right: 2,
-                    top: 0
+                    top: -14
                 },
             },
-            series: [{
-                name: "New users",
-                data: [6500, 6418, 6456, 6526, 6356, 6456],
-                color: "#1A56DB",
-            }, ],
+            dataLabels: {
+                enabled: true,
+            },
+            legend: {
+                show: true,
+                position: "top",
+            },
             xaxis: {
-                categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February',
-                    '07 February'
-                ],
+                categories: chartData[selectedYear].map(item => item.month),
                 labels: {
-                    show: false,
-                },
-                axisBorder: {
-                    show: false,
-                },
-                axisTicks: {
-                    show: false,
-                },
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                    }
+                }
             },
             yaxis: {
-                show: false,
+                show: true,
+                labels: {
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                    }
+                }
             },
+            fill: {
+                opacity: 1,
+            }
+        };
+
+        const chart = new ApexCharts(document.getElementById("column-chart"), options);
+        chart.render();
+
+        function updateChartYear(event, year) {
+            event.preventDefault();
+            selectedYear = year;
+            document.getElementById("selectedYear").textContent = year;
+            chart.updateSeries(getSeriesData(year));
         }
 
-        if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
-            const chart = new ApexCharts(document.getElementById("area-chart"), options);
-            chart.render();
+        // Fungsi untuk mengunduh data sebagai CSV
+        function downloadCSV() {
+            // Membuat header CSV
+            let csvContent = "Month,Peserta Masuk,Peserta Keluar\n";
+            
+            // Menambahkan data untuk tahun yang dipilih
+            chartData[selectedYear].forEach(row => {
+                csvContent += `${row.month},${row.organic},${row.social}\n`;
+            });
+            
+            // Membuat blob dan link untuk mengunduh
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            
+            // Membuat URL untuk blob
+            const url = window.URL.createObjectURL(blob);
+            
+            // Mengatur properti link
+            link.setAttribute("href", url);
+            link.setAttribute("download", `peserta-data-${selectedYear}.csv`);
+            
+            // Menambahkan link ke dokumen
+            document.body.appendChild(link);
+            
+            // Mengklik link secara programatis
+            link.click();
+            
+            // Membersihkan
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
         }
     </script>
 

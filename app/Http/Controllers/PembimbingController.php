@@ -13,4 +13,12 @@ class PembimbingController
         }
         return view('pembimbing.dashboard');
     }
+
+    public function get_permintaan_pengajuan()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('pembimbing.permintaan-pengajuan');
+    }
 }
