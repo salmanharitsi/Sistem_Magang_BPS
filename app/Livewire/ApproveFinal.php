@@ -2,11 +2,16 @@
 
 namespace App\Livewire;
 
+use App\Models\Magang;
+use App\Models\Pengajuan;
+use App\Models\User;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use App\Models\Pegawai;
 
 class ApproveFinal extends Component
 {
+    #[Validate]
     public $pengajuan;
     public $pembimbingList;
     public $pembimbing1 = null;
@@ -21,6 +26,20 @@ class ApproveFinal extends Component
             ->get();
     }
 
+    public function rules()
+    {
+        return [
+            'pembimbing1' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'pembimbing1' => ['required' => 'Pembimbing 1 tidak boleh kosong'],
+        ];
+    }
+
     // Method untuk mendapatkan daftar pembimbing yang tersedia untuk pembimbing 2
     public function getPembimbing2Options()
     {
@@ -32,17 +51,51 @@ class ApproveFinal extends Component
     // Tambahkan method untuk menangani persetujuan
     public function terimaPengajuan()
     {
-        // Logika untuk menerima pengajuan
-        // ...
-        $this->showTerimaModal = false;
+        // $this->showTerimaModal = false;
+        $validateData = $this->validate();
+
+        $pengajuan = Pengajuan::find($this->pengajuan->id);
+        $user = User::query()->where('id', $this->pengajuan->user_id)->first();
+
+        $magang = new Magang();
+        $magang->status_magang = 'active';
+        $magang->user_id = $user->id;
+        $magang->jenis_magang = $pengajuan->jenis_magang;
+        $magang->tanggal_mulai = $pengajuan->tanggal_mulai;
+        $magang->tanggal_selesai = $pengajuan->tanggal_selesai;
+        $magang->bidang_tujuan = $pengajuan->bidang_tujuan;
+        $magang->pembimbing_pertama = $this->pembimbing1;
+        $magang->pembimbing_kedua = $this->pembimbing2 ?: null;
+        $magang->save();
+
+        $pengajuan->status_pengajuan = 'accept-final';
+        $pengajuan->save();
+
+        $user->status_magang = 'aktif';
+        $user->save();
+
+        $this->reset(['showTerimaModal', 'pembimbing1', 'pembimbing2']);
+
+        return redirect(url('/daftar-pengajuan'))->with([
+            'success' => [
+                'title' => 'Berhasil menerima pengajuan!'
+            ]
+        ]);
     }
 
     // Tambahkan method untuk menangani penolakan
     public function tolakPengajuan()
     {
-        // Logika untuk menolak pengajuan
-        // ...
-        $this->showTolakModal = false;
+        $pengajuan = Pengajuan::find($this->pengajuan->id);
+        $pengajuan->status_pengajuan = "reject-final";
+        $pengajuan->komentar = "Terdapat kesalahan pada surat pengantar, silahkan ajukan kembali";
+        $pengajuan->save();
+
+        return redirect(url('/daftar-pengajuan'))->with([
+            'success' => [
+                "title" => "Berhasil menolak pengajuan"
+            ]
+        ]);
     }
 
     public function setShowTerimaModal($value)

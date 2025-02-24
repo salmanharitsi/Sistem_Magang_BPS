@@ -23,6 +23,9 @@
                     <option value="{{ $pembimbing->id }}">{{ $pembimbing->name }}</option>
                 @endforeach
             </select>
+            @error('pembimbing1')
+                <span class="text-red-500 text-[11px]">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Pembimbing 2 Dropdown (Opsional) -->

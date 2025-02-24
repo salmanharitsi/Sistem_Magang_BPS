@@ -78,14 +78,6 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/permintaan-pengajuan">
-                                <i class="ti ti-list-check ps-2 text-xl"></i>
-                                <span class="whitespace-nowrap">Permintaan Pengajuan</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
                             <a class="menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
                                 href="/logout">
                                 <i class="ti ti-logout ps-2 text-xl"></i>

@@ -23,6 +23,13 @@ class UserNormalController
         return view('usernormal.pengajuan');
     }
 
+    public function get_magang(){
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('usernormal.magang');
+    }
+
     public function get_logbook()
     {
         if (request()->pjax()) {

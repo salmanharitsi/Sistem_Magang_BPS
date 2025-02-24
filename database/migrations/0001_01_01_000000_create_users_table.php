@@ -98,16 +98,17 @@ return new class extends Migration
         Schema::create('magang', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->enum('status_magang', ['active', 'non-active'])->default('non-active');
-            $table->string('peserta_magang_id');
+            $table->string('user_id');
             $table->string('jenis_magang');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->string('bidang_tujuan');
-
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->uuid('pembimbing_pertama');
             $table->foreign('pembimbing_pertama')->references('id')->on('pegawai')->onDelete('cascade');
-            $table->uuid('pembimbing_kedua');
+            $table->uuid('pembimbing_kedua')->nullable();
             $table->foreign('pembimbing_kedua')->references('id')->on('pegawai')->onDelete('cascade');
+            $table->timestamps();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
