@@ -69,6 +69,7 @@ class ApproveFinal extends Component
         $magang->save();
 
         $pengajuan->status_pengajuan = 'accept-final';
+        $pengajuan->tenggat = null;
         $pengajuan->save();
 
         $user->status_magang = 'aktif';

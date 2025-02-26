@@ -31,14 +31,23 @@ class UpdatePengajuanOverLimit implements ShouldQueue
      */
     public function handle()
     {
-        if (Carbon::now()->startOfDay()->gte($this->pengajuan->tanggal_mulai) 
-            && ($this->pengajuan->status_pengajuan != 'reject-admin'
-            || $this->pengajuan->status_pengajuan != 'reject-time'
-            || $this->pengajuan->status_pengajuan != 'reject-final'
-            || $this->pengajuan->status_pengajuan != 'accept-final')) {
-            $this->pengajuan->status_pengajuan = 'reject-days';
-            $this->pengajuan->tenggat = null;
-            $this->pengajuan->save();
+        // Ambil data pengajuan terbaru dari database
+        $pengajuan = Pengajuan::find($this->pengajuan->id);
+
+        // Pastikan pengajuan masih ada
+        if (!$pengajuan) {
+            return;
+        }
+
+        // Cek apakah tanggal mulai sudah lewat atau sama dengan hari ini
+        if (
+            Carbon::now()->startOfDay()->gte($pengajuan->tanggal_mulai)
+            && !in_array($pengajuan->status_pengajuan, ['reject-admin', 'reject-time', 'reject-final', 'accept-final'])
+        ) {
+
+            $pengajuan->status_pengajuan = 'reject-days';
+            $pengajuan->tenggat = null;
+            $pengajuan->save();
         }
     }
 }

@@ -152,17 +152,17 @@ class AdminController
         }
 
         $pengajuan->status_pengajuan = "accept-first";
-        // Set tenggat to 7 days 
-        $pengajuan->tenggat = now()->addDays(7);
-        // Set tenggat to 1 minute 
-        // $pengajuan->tenggat = now()->addMinutes(1);
+        
+        // Calculate tenggat based on tanggal_mulai
+        $tanggalMulai = Carbon::parse($pengajuan->tanggal_mulai);
+        $tenggatDefault = now()->addDays(7);
+        
+        // Set tenggat to either 7 days from now or tanggal_mulai, whichever comes first
+        $pengajuan->tenggat = $tanggalMulai->lt($tenggatDefault) ? $tanggalMulai->copy()->subDay() : $tenggatDefault;
         $pengajuan->save();
 
         // Dispatch job untuk memperbarui status setelah tenggat
-        // Set tenggat to 7 days 
-        UpdatePengajuanStatusJob::dispatch($pengajuan)->delay(now()->addDays(7));
-        // Set tenggat to 1 minute 
-        // UpdatePengajuanStatusJob::dispatch($pengajuan)->delay(now()->addMinutes(1));
+        UpdatePengajuanStatusJob::dispatch($pengajuan)->delay($pengajuan->tenggat);
 
         return redirect(url('/daftar-pengajuan'))->with([
             'success' => [
