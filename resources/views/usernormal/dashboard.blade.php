@@ -18,6 +18,8 @@
         @php
             // Get the latest pengajuan record for the user
             $latestPengajuan = Auth::user()->pengajuan()->latest('created_at')->first();
+            // Get the latest magang record for the user
+            $latestMagang = Auth::user()->magang()->latest('created_at')->first();
         @endphp
     
         @if (!is_null($latestPengajuan) && Auth::user()->status_magang === 'masa-daftar')
@@ -52,8 +54,15 @@
                         <p class="text-sm">Kamu melewati tenggat upload surat pengantar!</p>
                     </div>
                 </div>
+            @elseif ($latestPengajuan->status_pengajuan === 'reject-days')
+                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
+                        <i class="ti ti-alert-triangle text-lg"></i>
+                        <p class="text-sm">Masa pendaftaran melewati tanggal mulai magang, silahkan ajukan kembali</p>
+                    </div>
+                </div>
             {{-- Check if status is 'reject-admin' --}}
-            @elseif ($latestPengajuan->status_pengajuan === 'reject-admin')
+            @elseif ($latestPengajuan->status_pengajuan === 'reject-admin' || $latestPengajuan->status_pengajuan === 'reject-final')
                 <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                     <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                         <i class="ti ti-sparkles text-lg"></i>
@@ -79,7 +88,8 @@
     </div>
     
 
-    <div class="grid grid-cols-1 mt-6 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6 {{($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar') ? 'mt-6' : 'mt-0'}}">
+        @if (($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar'))
         <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <ol class="flex items-center w-full px-[5%] md:px-[15%]">
                 <li
@@ -227,7 +237,7 @@
                     </div>
                 @endif
             @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'reject-time')
+            @if (!is_null($latestPengajuan) && ($latestPengajuan->status_pengajuan === 'reject-time' || $latestPengajuan->status_pengajuan === 'reject-final') && Auth::user()->status_magang == 'masa-daftar')
                 <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
                     <i class="ti ti-circle-x text-4xl md:text-5xl"></i>
                     <p class="text-sm">
@@ -274,7 +284,39 @@
                     </form>
                 </div>
             @endif
+            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'reject-days')
+                <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
+                    <h1 class="md:text-xl font-semibold rounded-full text-white px-10 py-1.5 bg-gradient-to-r from-[#FF0000] to-[#6C2323]">Pengajuan Kamu Ditolak</h1>
+                    <p class="text-sm">
+                        jenis magang
+                        <span class="text-red-700 font-semibold">
+                            {{ $latestPengajuan->jenis_magang }}
+                        </span>
+                    </p>
+                    <p class="text-sm -mt-2">Untuk periode:
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        sampai dengan
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                    </p>
+                    <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
+                            <p class="text-sm whitespace-nowrap">Ajukan kembali</p>
+                        </button>
+                    </form>
+                </div>
+            @endif
         </div>
+        @endif
+        @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isFuture())
+            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <i class="ti ti-calendar-time text-lg"></i>
+                    <p class="text-sm">Magang kamu akan dimulai pada <span class="font-bold">{{ Carbon::parse($latestMagang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+                </div>
+            </div>
+        @endif
     </div>
 
     <script>
@@ -344,7 +386,7 @@
                     }
                 }
             @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'accept-first' && Auth::user()->status_magang == 'masa-daftar')
+            @if (!is_null($latestPengajuan) && ($latestPengajuan->status_pengajuan === 'accept-first' || $latestPengajuan->status_pengajuan === 'reject-final') && Auth::user()->status_magang == 'masa-daftar')
                 var step2 = document.querySelector('.step2-active');
                 var step3 = document.querySelector('.step3-active');
                 if (step2) {
@@ -384,7 +426,7 @@
                     }
                 }
             @endif
-            @if(!is_null($latestPengajuan) && !is_null($latestPengajuan->surat_pengantar))
+            @if(!is_null($latestPengajuan) && !is_null($latestPengajuan->surat_pengantar) && $latestPengajuan->status_pengajuan !== 'reject-days' && Auth::user()->status_magang == 'masa-daftar')
                 var step3 = document.querySelector('.step3-active');
                 var step4 = document.querySelector('.step4-active');
                 if (step3) {

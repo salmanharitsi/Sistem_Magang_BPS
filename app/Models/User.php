@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pengajuan::class);
     }
+
+    public function magang(): HasMany
+    {
+        return $this->hasMany(Magang::class);
+    }
 }

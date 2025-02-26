@@ -26,7 +26,7 @@
             <div
                 class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                 <i class="ti ti-alert-triangle text-lg"></i>
-                <p class="text-sm">Perhatikan kombinasi password kamu!</p>
+                <p class="text-sm">Perhatikan kombinasi password!</p>
             </div>
             <div class="md:px-[0%] md:pt-[2%] mt-3 md:mt-0">
                 @livewire('ubah-password')

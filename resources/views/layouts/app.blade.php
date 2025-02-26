@@ -26,6 +26,7 @@
 
 @php
     $firstLetter = strtoupper(substr(Auth::user()->name, 0, 1));
+    $latestMagang = Auth::user()->magang()->latest('created_at')->first();
 @endphp
 
 <body class="bg-[#f8f9fa] dark:bg-[#0f1214] transition-all duration-200">
@@ -98,7 +99,38 @@
                                 <span>Keluar</span>
                             </a>
                         </li>
+                        @if ($latestMagang)
+                            <li class="text-xs font-bold pb-[5px] mt-6">
+                                <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                                <span class="text-xs text-gray-600 font-semibold">MAGANG</span>
+                            </li>
 
+                            <li class="sidebar-item">
+                                <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                    href="/magang">
+                                    <i class="ti ti-list-check ps-2 text-xl"></i>
+                                    <span class="whitespace-nowrap">Riwayat Magang</span>
+                                </a>
+                            </li>
+
+                            @if ($latestMagang->status_magang == 'active')
+                                <li class="sidebar-item">
+                                    <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                        href="/logbook">
+                                        <i class="ti ti-notebook ps-2 text-xl"></i>
+                                        <span class="whitespace-nowrap">Logbook</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                        href="/presensi">
+                                        <i class="ti ti-brand-google-maps ps-2 text-xl"></i>
+                                        <span class="whitespace-nowrap">Presensi</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
                     </ul>
                 </nav>
             </div>

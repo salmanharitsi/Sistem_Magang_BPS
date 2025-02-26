@@ -20,7 +20,7 @@
         </div>
 
         @if (!is_null($pengajuan->surat_pengantar))
-            <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 border border-blue-600">
+            <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 border">
                 <h6 class="text-[17px] font-semibold text-gray-800">Surat Pengantar</h6>
                 <div
                     class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
@@ -35,6 +35,7 @@
                     </button>
                 </div>
             </div>
+            @livewire('approve-final', ['pengajuan' => $pengajuan])
         @endif
 
         <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
