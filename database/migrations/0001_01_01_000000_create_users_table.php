@@ -126,18 +126,32 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('logbook', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('magang_id');
+            $table->foreign('magang_id')->references('id')->on('magang')->onDelete('cascade');
+            $table->uuid('pembimbing_id')->nullable();
+            $table->foreign('pembimbing_id')->references('id')->on('pegawai')->onDelete('cascade');
+            $table->date('tanggal');
+            $table->text('deskripsi')->nullable();
+            $table->enum('status', ['waiting', 'approved', 'rejected'])->default('waiting');
+            $table->string('lampiran')->nullable();
+            $table->string('komentar')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->uuid('user_id')->nullable()->index(); 
+            $table->uuid('user_id')->nullable()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->uuid('pegawai_id')->nullable()->index(); 
-            $table->foreign('pegawai_id')->references('id')->on('pegawai')->onDelete('cascade');  
+            $table->uuid('pegawai_id')->nullable()->index();
+            $table->foreign('pegawai_id')->references('id')->on('pegawai')->onDelete('cascade');
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
-        
+
     }
 
     /**
@@ -147,6 +161,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('presensi');
+        Schema::dropIfExists('logbook');
         Schema::dropIfExists('magang');
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
