@@ -54,4 +54,9 @@ class Magang extends Model
     {
         return $this->hasMany(Presensi::class);
     }
+
+    public function logbook(): HasMany
+    {
+        return $this->hasMany(Logbook::class);
+    }
 }

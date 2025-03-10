@@ -42,7 +42,7 @@ class UserNormalController
         if (request()->pjax()) {
             return false;
         }
-        return view('usernormal.pengisian-logbook');
+        return view('usernormal.logbook');
     }
 
     public function get_upload_surat_pengantar_page()

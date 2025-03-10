@@ -2,13 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Jobs\GeneratePresensiJob;
-use App\Models\Magang;
-use App\Models\Pengajuan;
 use App\Models\User;
-use Livewire\Attributes\Validate;
-use Livewire\Component;
+use App\Models\Magang;
 use App\Models\Pegawai;
+use Livewire\Component;
+use App\Models\Pengajuan;
+use App\Jobs\GenerateLogbookJob;
+use App\Jobs\GeneratePresensiJob;
+use Livewire\Attributes\Validate;
 
 class ApproveFinal extends Component
 {
@@ -69,7 +70,10 @@ class ApproveFinal extends Component
         $magang->save(); // Simpan data magang ke database
 
         GeneratePresensiJob::dispatch($magang)
-            ->delay(now()->diffInSeconds($magang->tanggal_mulai)); 
+            ->delay(now()->diffInSeconds($magang->tanggal_mulai));
+
+         GenerateLogbookJob::dispatch($magang)
+            ->delay(now()->diffInSeconds($magang->tanggal_mulai));
 
         $pengajuan->status_pengajuan = 'accept-final';
         $pengajuan->tenggat = null;
