@@ -121,8 +121,11 @@ return new class extends Migration
             $table->time('jam_masuk')->nullable();
             $table->time('jam_keluar')->nullable();
             $table->enum('status', ['waiting', 'hadir', 'tidak-hadir', 'izin'])->default('waiting');
-            $table->string('foto_selfie')->nullable();
+            $table->string('foto_masuk')->nullable();
+            $table->string('foto_keluar')->nullable();
             $table->text('keterangan_izin')->nullable();
+            $table->string('lampiran')->nullable();
+            $table->string('original_filename_lampiran')->nullable();
             $table->timestamps();
         });
 

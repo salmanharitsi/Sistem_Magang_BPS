@@ -32,6 +32,9 @@ Route::group(['middleware' => ['usernormal', 'no-cache']], function () {
     Route::get('pengajuan-saya/{id}', [UserNormalController::class, 'get_pengajuan_saya'])->name('usernormal.pengajuan-saya');
     Route::delete('delete-pengajuan/{id}', [UserNormalController::class, 'delete_pengajuan'])->name('usernormal.delete-pengajuan');
     Route::post('pengajuan-ulang/{id}', [UserNormalController::class, 'pengajuan_ulang'])->name('usernormal.pengajuan-ulang');
+    Route::get('presensi/lapor-harian/{id}', [UserNormalController::class, 'get_lapor_harian'])->name('usernormal.lapor-harian');
+    Route::post('presensi/lapor-harian/{id}/submit', [UserNormalController::class, 'submit_laporan'])->name('usernormal.submit_laporan');
+    Route::get('presensi/lapor-izin/{id}', [UserNormalController::class, 'get_lapor_harian'])->name('usernormal.lapor-izin');
 });
 
 // Route untuk admin

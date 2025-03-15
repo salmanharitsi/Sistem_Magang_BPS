@@ -47,6 +47,14 @@ class ShowAllPresensi extends Component
     {
         $today = Carbon::today()->toDateString();
 
+        $this->selectedDate = $tanggal;
+        $this->selectedPresensi = $this->presensiData->where('tanggal', $tanggal)->first();
+
+        // Jika tanggal yang dipilih adalah hari ini, refresh halaman
+        if ($tanggal == Carbon::today()->toDateString()) {
+            return redirect()->to(request()->header('Referer'));
+        }
+
         // Cek jika tanggal lebih besar dari hari ini, maka tidak bisa diklik
         if ($tanggal > $today) {
             return;

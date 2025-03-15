@@ -14,7 +14,7 @@
 
     <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
         <!-- Pembimbing 1 Dropdown -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
             <label for="pembimbing1" class="block text-[17px] mb-1 font-semibold text-gray-800">Pembimbing 1</label>
             <select wire:model.live="pembimbing1" id="pembimbing1" name="pembimbing1" 
                 class="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Pembimbing 2 Dropdown (Opsional) -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
             <label for="pembimbing2" class="block text-[17px] mb-1 font-semibold text-gray-800">Pembimbing 2 <span class="text-[10px] text-gray-500">(Opsional)</span></label>
             <select wire:model="pembimbing2" id="pembimbing2" name="pembimbing2" 
                 class="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
@@ -40,7 +40,7 @@
             </select>
         </div>
 
-        <div class="flex flex-col md:flex-row items-center gap-5 justify-between md:col-span-2">
+        <div class="flex flex-col md:flex-row items-center gap-5 justify-between col-span-2">
             <button type="button" wire:click="setShowTerimaModal(true)"
                 class="w-full text-sm md:w-1/2 p-2 font-medium bg-blue-600 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-blue-600 hover:border-blue-600 transition-all duration-200">
                 Terima final

@@ -54,6 +54,8 @@ class GeneratePresensiJob implements ShouldQueue
                             'magang_id' => $magang->id,
                             'tanggal' => $tanggalMulai->toDateString(),
                             'status' => 'waiting',
+                            'created_at' => now(),
+                            'updated_at' => now(),
                         ];
                     }
                     $tanggalMulai->addDay();

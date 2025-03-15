@@ -31,7 +31,7 @@
                 </div>
             @else
                 <div
-                    class="flex items-center px-2 py-3 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
+                    class="flex flex-col md:flex-row items-center px-2 py-3 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
                         @if ($kartu_penduduk)
