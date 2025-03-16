@@ -90,12 +90,11 @@
         </div>
 
         <!-- Bagian Kanan: Detail Presensi -->
-        <div
-            class="w-full md:w-1/2 h-fit card dark:bg-gray-800 sm:rounded-lg overflow-hidden relative">
+        <div class="w-full md:w-1/2 h-fit card dark:bg-gray-800 sm:rounded-lg overflow-hidden relative">
             @if ($selectedPresensi)
                 @if (
                     $selectedPresensi->tanggal == Carbon::today()->toDateString() &&
-                        $selectedPresensi->status !== 'izin' && 
+                        $selectedPresensi->status !== 'izin' &&
                         $selectedPresensi->status !== 'tidak-hadir' &&
                         (!$selectedPresensi->jam_masuk || !$selectedPresensi->jam_keluar))
                     <div class="bg-white p-5 rounded-lg shadow-md">
@@ -219,7 +218,8 @@
                         class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                         <div class="flex gap-3 items-start lg:items-center">
                             <i class="ti ti-sparkles text-lg"></i>
-                            <p class="text-sm">Presensi tidak tersedia pada akhir pekan, selamat menikmati akhir pekan!</p>
+                            <p class="text-sm">Presensi tidak tersedia pada akhir pekan, selamat menikmati akhir pekan!
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -240,7 +240,8 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
 
-        let currentIndex = 0;
+        // Ambil nilai currentSlide dari Livewire
+        let currentIndex = @json($currentSlide);
         const totalItems = items.length;
 
         // Initialize carousel
@@ -434,8 +435,16 @@
                 }
                 // Tampilkan pesan error jika geolocation gagal
                 locationStatus.innerHTML = `
-                    <div class="mt-4 text-red-500">
-                        Gagal mendapatkan lokasi. Pastikan izin geolocation diaktifkan.
+                    <div class="mt-4 text-red-500 text-sm text-center">
+                        Gagal mendapatkan lokasi. Pastikan izin lokasi pada browser diaktifkan.
+                    </div>
+                    <div class="mt-5 flex flex-col gap-5">
+                        <form action="{{ route('usernormal.lapor-izin', $selectedPresensi->id) }}" method="get">
+                            <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
+                            <button type="submit" class="w-full bg-red-600 px-4 py-1.5 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-red-600 hover:border-red-600 transition-all duration-200 text-center cursor-pointer">
+                                Laporkan Izin
+                            </button>
+                        </form>
                     </div>
                 `;
                 if (mapLoading) {

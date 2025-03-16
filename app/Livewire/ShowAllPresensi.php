@@ -40,6 +40,35 @@ class ShowAllPresensi extends Component
             $today = Carbon::today()->toDateString();
             $this->selectedPresensi = $this->presensiData->where('tanggal', $today)->first();
             $this->selectedDate = $this->selectedPresensi ? $today : null;
+
+            // Hitung index slide berdasarkan bulan saat ini
+            $this->calculateCurrentSlide();
+        }
+    }
+
+    protected function calculateCurrentSlide()
+    {
+        $currentMonth = Carbon::now()->month; // Ambil bulan saat ini (1-12)
+        $currentYear = Carbon::now()->year; // Ambil tahun saat ini
+
+        // Kelompokkan data presensi berdasarkan bulan dan tahun
+        $groupedPresensi = $this->presensiData->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal)->format('F Y');
+        });
+
+        // Hitung index slide berdasarkan bulan saat ini
+        $this->currentSlide = 0;
+        foreach ($groupedPresensi as $month => $presensiGroup) {
+            $monthYear = Carbon::parse($presensiGroup->first()->tanggal);
+            if ($monthYear->month == $currentMonth && $monthYear->year == $currentYear) {
+                break;
+            }
+            $this->currentSlide++;
+        }
+
+        // Jika tidak ada data untuk bulan saat ini, arahkan ke slide terakhir
+        if ($this->currentSlide >= count($groupedPresensi)) {
+            $this->currentSlide = count($groupedPresensi) - 1;
         }
     }
 
@@ -78,6 +107,7 @@ class ShowAllPresensi extends Component
             'presensiData' => $this->presensiData,
             'selectedPresensi' => $this->selectedPresensi,
             'selectedDate' => $this->selectedDate,
+            'currentSlide' => $this->currentSlide, // Kirim currentSlide ke Blade
         ]);
     }
 }

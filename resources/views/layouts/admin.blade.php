@@ -152,7 +152,7 @@
                     <!-- -------------- -->
                     <!-- Layout Header -->
                     <!-- -------------- -->
-                    <div class="flex gap-[23px] sticky top-5 z-50">
+                    <div class="flex gap-[23px] z-50">
                         <div
                             class="bg-white dark:bg-[#14181b] lg:flex items-center justify-center px-5 rounded-lg card hidden transition duration-200">
                             <button id="toggle-sidebar" class="text-gray-700 dark:text-white hover:text-blue-600">
@@ -292,6 +292,10 @@
         </div>
     </div>
 
+    <button id="scrollToTop"
+        class="hidden fixed bottom-5 right-5 bg-blue-600 text-white w-10 h-10 flex items-center justify-center rounded-lg card hover:bg-blue-700 transition-all duration-300">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Add your scripts here -->
     @livewireScripts
@@ -324,6 +328,22 @@
             if (window.location.pathname === targetUrl) {
                 e.preventDefault();
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const scrollToTopBtn = document.getElementById("scrollToTop");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 30) {
+                    scrollToTopBtn.classList.remove("hidden");
+                } else {
+                    scrollToTopBtn.classList.add("hidden");
+                }
+            });
+
+            scrollToTopBtn.addEventListener("click", function () {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
         });
     </script>
 
