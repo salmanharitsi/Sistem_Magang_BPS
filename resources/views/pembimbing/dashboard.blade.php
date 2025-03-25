@@ -64,7 +64,7 @@
                     @foreach ($bimbinganActive as $index => $pesertaMagang)
                         <div class="carousel-item w-full flex-shrink-0" data-index="{{ $index }}">
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 px-[70px] py-0.5">
-                                <div class="card p-5 rounded-lg bg-white">
+                                <div class="card h-fit p-5 rounded-lg bg-white">
                                     <div class="flex justify-between items-start gap-4">
                                         @if (!empty($pesertaMagang->user->foto_profil))
                                             <img id="profile-image"
@@ -95,10 +95,8 @@
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Absensi</h4>
-                                    {{-- Implement your attendance chart here --}}
-                                    <div class="h-fit flex items-center justify-center bg-gray-100 rounded">
-                                        <span class="text-gray-500">Grafik Absensi akan ditampilkan di sini</span>
-                                    </div>
+                                        <!-- Line Chart -->
+                                        <div class="" id="pie-chart"></div>
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Logbook</h4>
@@ -220,5 +218,68 @@
                 alert('Preview dokumen tidak tersedia di tampilan mobile');
             }
         }
+
+    const getChartOptions = () => {
+        return {
+            series: [52.8, 26.8, 20.4],
+            colors: ["#1C64F2", "#16BDCA", "#9061F9"],
+            chart: {
+                height: 250,
+                width: "100%",
+                type: "pie",
+            },
+            stroke: {
+                colors: ["white"],
+                lineCap: "",
+            },
+            plotOptions: {
+                pie: {
+                    labels: {
+                        show: true,
+                    },
+                    size: "100%",
+                    dataLabels: {
+                        offset: -25
+                    }
+                },
+            },
+            labels: ["Direct", "Organic search", "Referrals"],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontFamily: "Inter, sans-serif",
+                },
+            },
+            legend: {
+                position: "bottom",
+                fontFamily: "Inter, sans-serif",
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (value) {
+                    return value + "%"
+                    },
+                },
+            },
+            xaxis: {
+                labels: {
+                    formatter: function (value) {
+                    return value  + "%"
+                    },
+                },
+                axisTicks: {
+                    show: false,
+                },
+                axisBorder: {
+                    show: false,
+                },
+            },
+        }
+    }
+
+    if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("pie-chart"), getChartOptions());
+        chart.render();
+    }
     </script>
 @endsection

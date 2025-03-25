@@ -435,6 +435,7 @@
                 }
                 // Tampilkan pesan error jika geolocation gagal
                 locationStatus.innerHTML = `
+                @if ($selectedPresensi)
                     <div class="mt-4 text-red-500 text-sm text-center">
                         Gagal mendapatkan lokasi. Pastikan izin lokasi pada browser diaktifkan.
                     </div>
@@ -446,6 +447,7 @@
                             </button>
                         </form>
                     </div>
+                @endif
                 `;
                 if (mapLoading) {
                     mapLoading.style.display = 'none';
