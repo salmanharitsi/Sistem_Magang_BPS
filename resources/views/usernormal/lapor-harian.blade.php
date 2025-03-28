@@ -3,6 +3,12 @@
 @section('title', 'User Lapor Harian')
 
 @section('content')
+
+    @php
+        use Carbon\Carbon;
+        Carbon::setLocale('id');
+    @endphp
+
     <!-- Peringatan jika diakses dari desktop -->
     <div id="desktop-warning" class="hidden lg:block text-center p-5 border border-red-600 bg-red-100 text-red-600 rounded-md">
         <div class="flex justify-center items-center space-x-2">
@@ -22,7 +28,7 @@
                     <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
                         Magang Hari ke - {{ $hariKe }}
                     </h4>
-                    <p class="text-md">{{ \Carbon\Carbon::parse($presensi->tanggal)->format('d F Y') }}</p>
+                    <p class="text-md">{{ Carbon::parse($presensi->tanggal)->translatedFormat('d F Y') }}</p>
                 </div>
                 <div class="mt-4 w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
                     <i class="ti ti-alert-circle text-lg"></i>

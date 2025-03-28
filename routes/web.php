@@ -54,4 +54,5 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
 Route::group(['middleware' => ['pembimbing', 'no-cache']], function () {
     Route::get('dashboard-pembimbing', [PembimbingController::class, 'get_dashboard_pembimbing'])->name('pembimbing.dashboard');
     Route::get('ubah-password-pembimbing', [HomeController::class, 'get_ubah_password'])->name('pembimbing.ubah-password');
+    Route::get('daftar-persetujuan', [PembimbingController::class, 'get_daftar_persetujuan'])->name('pembimbing.daftar-persetujuan');
 });
