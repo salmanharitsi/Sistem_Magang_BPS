@@ -47,6 +47,7 @@ class ShowPersetujuanPresensi extends Component
                 'foto_keluar' => $presensi->foto_keluar ? 'storage/' . $presensi->foto_keluar : null, // Path ke foto_keluar
                 'keterangan_izin' => $presensi->keterangan_izin,
                 'updated_at' => $presensi->updated_at,
+                'point' => $presensi->point
             ];
             $this->showModal = true;
         }
@@ -81,6 +82,7 @@ class ShowPersetujuanPresensi extends Component
                             $updateData['foto_masuk'] = null;
                             $updateData['foto_keluar'] = null;
                             $updateData['status'] = 'izin';
+                            $updateData['point'] = 75;
                         } elseif ($this->selectedData['status'] === 'tidak-hadir') {
                             // hadir -> tidak-hadir
                             $updateData['jam_masuk'] = null;
@@ -88,26 +90,31 @@ class ShowPersetujuanPresensi extends Component
                             $updateData['foto_masuk'] = null;
                             $updateData['foto_keluar'] = null;
                             $updateData['status'] = 'tidak-hadir';
+                            $updateData['point'] = 50;
                         }
                     } elseif ($this->originalStatus === 'izin') {
                         if ($this->selectedData['status'] === 'hadir') {
                             // izin -> hadir
-                            $updateData['jam_masuk'] = Carbon::parse($this->selectedData['updated_at'])->format('H:i:s'); 
+                            $updateData['jam_masuk'] = '07:00:00'; 
                             $updateData['jam_keluar'] = '16:00:00'; // Jam keluar tetap 16.00
                             $updateData['status'] = 'hadir';
+                            $updateData['point'] = 100;
                         } elseif ($this->selectedData['status'] === 'tidak-hadir') {
                             // izin -> tidak-hadir
                             $updateData['status'] = 'tidak-hadir';
+                            $updateData['point'] = 50;
                         }
                     } elseif ($this->originalStatus === 'tidak-hadir') {
                         if ($this->selectedData['status'] === 'hadir') {
                             // tidak-hadir -> hadir
-                            $updateData['jam_masuk'] = Carbon::parse($this->selectedData['updated_at'])->format('H:i:s'); 
+                            $updateData['jam_masuk'] = '07:00:00'; 
                             $updateData['jam_keluar'] = '16:00:00'; // Jam keluar tetap 16.00
                             $updateData['status'] = 'hadir';
+                            $updateData['point'] = 100;
                         } elseif ($this->selectedData['status'] === 'izin') {
                             // tidak-hadir -> izin
                             $updateData['status'] = 'izin';
+                            $updateData['point'] = 75;
                         }
                     }
                 }

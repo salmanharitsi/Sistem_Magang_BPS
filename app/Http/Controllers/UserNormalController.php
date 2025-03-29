@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengajuan;
 use App\Models\Presensi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -92,6 +93,10 @@ class UserNormalController
         } 
         
         if ($presensi->status === 'izin') {
+            return redirect('/presensi');
+        }
+
+        if ($presensi->tanggal < now()->toDateString()) {
             return redirect('/presensi');
         }
 
@@ -293,18 +298,74 @@ class UserNormalController
             $imageName = $request->type . '_' . uniqid() . '.png'; // Nama file dinamis
             Storage::disk('public')->put('laporan_presensi/' . $imageName, base64_decode($image));
 
+            // Variabel untuk menyimpan point
+            $point = 0;
+
             // Perbarui data berdasarkan tipe (kehadiran atau pulang)
             if ($request->type === 'kehadiran') {
+                // Konversi waktu masuk ke datetime
+                $jamMasuk = now();
+                $aturanJamMasuk = Carbon::today()->setTimeFromTimeString($presensi->aturan_jam_masuk);
+
+                // Hitung selisih waktu
+                $selisihMenit = $aturanJamMasuk->diffInMinutes($jamMasuk, false);
+
+                // Tentukan point berdasarkan selisih waktu
+                if ($selisihMenit <= 0) {
+                    // Tepat waktu
+                    $point = 100;
+                } elseif ($selisihMenit > 0 && $selisihMenit <= 30) {
+                    // Terlambat <= 30 menit
+                    $point = 90;
+                } elseif ($selisihMenit > 30 && $selisihMenit <= 60) {
+                    // Terlambat 31-60 menit
+                    $point = 80;
+                } elseif ($selisihMenit > 60) {
+                    // Terlambat > 60 menit
+                    $point = 75;
+                }
+
                 $presensi->update([
-                    'jam_masuk' => now()->format('H:i:s'),
+                    'jam_masuk' => $jamMasuk->format('H:i:s'),
                     'foto_masuk' => 'laporan_presensi/' . $imageName,
                     'status' => 'hadir',
+                    'point_masuk' => $point,
                     'updated_at' => now()
                 ]);
             } elseif ($request->type === 'pulang') {
+                // Konversi waktu pulang ke datetime
+                $jamPulang = now();
+                $aturanJamPulang = Carbon::today()->setTimeFromTimeString($presensi->aturan_jam_keluar);
+
+                // Hitung selisih waktu
+                $selisihMenit = $aturanJamPulang->diffInMinutes($jamPulang, false);
+
+                // Tentukan point berdasarkan selisih waktu
+                if ($selisihMenit >= 0) {
+                    // Tepat waktu
+                    $point = 100;
+                } elseif ($selisihMenit < 0 && $selisihMenit >= -30) {
+                    // Pulang cepat <= 30 menit
+                    $point = 90;
+                } elseif ($selisihMenit < -30 && $selisihMenit >= -60) {
+                    // Pulang cepat 31-60 menit
+                    $point = 80;
+                } elseif ($selisihMenit < -60) {
+                    // Pulang cepat > 60 menit
+                    $point = 75;
+                }
+
+                // Ambil poin       t_masuk yang sudah tersimpan
+                $pointMasuk = $presensi->point_masuk ?? 0;
+
+                // Hitung total point
+                $totalPoint = round(($pointMasuk + $point) / 2);
+
                 $presensi->update([
-                    'jam_keluar' => now()->format('H:i:s'),
+                    'jam_keluar' => $jamPulang->format('H:i:s'),
                     'foto_keluar' => 'laporan_presensi/' . $imageName,
+                    'point_keluar' => $point,
+                    'point' => $totalPoint,
                     'updated_at' => now()
                 ]);
             }
@@ -319,6 +380,7 @@ class UserNormalController
                 'redirect' => url('/presensi'),
                 'success' => true,
                 'message' => 'Data ' . ucfirst($request->type) . ' berhasil disimpan!',
+                'point' => $point
             ]);
             
         } catch (\Exception $e) {

@@ -5,6 +5,14 @@
 @section('content')
     @php
         use Carbon\Carbon;
+
+        $chartData = $bimbinganActive->map(function($magang) {
+            return [
+                'hadir' => $magang->attendance_stats['hadir'],
+                'izin' => $magang->attendance_stats['izin'],
+                'tidak_hadir' => $magang->attendance_stats['tidak_hadir']
+            ];
+        })->toJson();
     @endphp
 
     <div class="w-full h-44 rounded-lg bg-blue-500 relative overflow-hidden">
@@ -94,9 +102,15 @@
                                     </div>
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
-                                    <h4 class="text-lg font-semibold mb-4">Grafik Absensi</h4>
+                                    <h4 class="text-lg font-semibold mb-4">Grafik Presensi</h4>
                                         <!-- Line Chart -->
-                                        <div class="" id="pie-chart"></div>
+                                        <div class="pie-chart-container relative" id="pie-chart-{{ $index }}">
+                                            @if($pesertaMagang->attendance_stats['total'] === 0)
+                                                <div class="absolute inset-0 flex items-center justify-center text-gray-500">
+                                                    Belum ada data presensi yang valid
+                                                </div>
+                                            @endif
+                                        </div>
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Logbook</h4>
@@ -125,7 +139,7 @@
     @else
         <div class="mt-6 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <div
-                class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                class="w-full h-fit flex gap-3 items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
                 <i class="ti ti-alert-circle text-lg"></i>
                 <p class="text-sm">Tidak ada bimbingan yang aktif</p>
             </div>
@@ -149,29 +163,29 @@
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const indicators = document.querySelectorAll('.carousel-indicator');
-
+    
             let currentIndex = 0;
             const totalItems = items.length;
-
-            // Initialize carousel
-            updateCarousel();
-
+    
+            // Initialize charts for all slides
+            initializeAllCharts();
+    
             // Set first indicator as active
             if (indicators.length > 0) {
                 indicators[0].classList.add('bg-blue-500');
             }
-
+    
             // Event listeners for buttons
             prevBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex - 1 + totalItems) % totalItems;
                 updateCarousel();
             });
-
+    
             nextBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex + 1) % totalItems;
                 updateCarousel();
             });
-
+    
             // Event listeners for indicators
             indicators.forEach(indicator => {
                 indicator.addEventListener('click', () => {
@@ -179,11 +193,11 @@
                     updateCarousel();
                 });
             });
-
+    
             function updateCarousel() {
                 // Update transform to show current item
                 carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
-
+    
                 // Update indicators
                 indicators.forEach((indicator, index) => {
                     if (index === currentIndex) {
@@ -195,91 +209,119 @@
                     }
                 });
             }
-        });
-
-        function openPreview(url) {
-            const screenWidth = window.screen.width;
-            const screenHeight = window.screen.height;
-            const width = screenWidth / 2;
-            const height = screenHeight / 2;
-            const left = (screenWidth - width) / 2;
-            const top = (screenHeight - height) / 2;
-
-            const newWindow = window.open(
-                '',
-                '',
-                `width=${width},height=${height},top=${top},left=${left}`
-            );
-
-            if (newWindow) {
-                newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
-                newWindow.document.title = "Image Preview";
-            } else {
-                alert('Preview dokumen tidak tersedia di tampilan mobile');
-            }
-        }
-
-    const getChartOptions = () => {
-        return {
-            series: [52.8, 26.8, 20.4],
-            colors: ["#1C64F2", "#16BDCA", "#9061F9"],
-            chart: {
-                height: 250,
-                width: "100%",
-                type: "pie",
-            },
-            stroke: {
-                colors: ["white"],
-                lineCap: "",
-            },
-            plotOptions: {
-                pie: {
-                    labels: {
-                        show: true,
-                    },
-                    size: "100%",
-                    dataLabels: {
-                        offset: -25
+    
+            function initializeAllCharts() {
+                items.forEach((item, index) => {
+                    const chartContainer = item.querySelector('.pie-chart-container');
+                    if (chartContainer && typeof ApexCharts !== 'undefined') {
+                        const chartId = `pie-chart-${index}`;
+                        chartContainer.id = chartId;
+                        
+                        const magangData = @json($bimbinganActive);
+                        const currentMagang = magangData[index];
+                        
+                        const chart = new ApexCharts(document.getElementById(chartId), 
+                            getChartOptions(
+                                currentMagang.attendance_stats.hadir,
+                                currentMagang.attendance_stats.izin,
+                                currentMagang.attendance_stats.tidak_hadir
+                            )
+                        );
+                        chart.render();
+                        chartContainer._chart = chart;
                     }
-                },
-            },
-            labels: ["Direct", "Organic search", "Referrals"],
-            dataLabels: {
-                enabled: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                },
-            },
-            legend: {
-                position: "bottom",
-                fontFamily: "Inter, sans-serif",
-            },
-            yaxis: {
-                labels: {
-                    formatter: function (value) {
-                    return value + "%"
-                    },
-                },
-            },
-            xaxis: {
-                labels: {
-                    formatter: function (value) {
-                    return value  + "%"
-                    },
-                },
-                axisTicks: {
-                    show: false,
-                },
-                axisBorder: {
-                    show: false,
-                },
-            },
-        }
-    }
+                });
+            }
+    
+            function getChartOptions(hadir = 0, izin = 0, tidakHadir = 0) {
+                // Calculate percentages only for non-waiting statuses
+                const total = hadir + izin + tidakHadir;
+                let series, labels;
+                
+                if (total > 0) {
+                    series = [
+                        (hadir / total) * 100,
+                        (izin / total) * 100,
+                        (tidakHadir / total) * 100
+                    ];
+                    labels = ["Hadir", "Izin", "Tidak Hadir"];
+                } else {
+                    series = [100]; // Show 100% "No Data" if no records
+                    labels = ["Belum Ada Data"];
+                }
 
-    if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
-        const chart = new ApexCharts(document.getElementById("pie-chart"), getChartOptions());
-        chart.render();
-    }
+                return {
+                    series: series,
+                    colors: ["#0e9f6e", "#f59e0b", "#f05252"], 
+                    chart: {
+                        height: 250,
+                        width: "100%",
+                        type: "pie",
+                    },
+                    stroke: {
+                        colors: ["white"],
+                        lineCap: "",
+                    },
+                    plotOptions: {
+                        pie: {
+                            labels: {
+                                show: true,
+                            },
+                            size: "100%",
+                            dataLabels: {
+                                offset: -25
+                            }
+                        },
+                    },
+                    labels: labels,
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function(val, opts) {
+                            if (total === 0) return "No Data";
+                            return Math.round(val) + "%";
+                        },
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                        },
+                    },
+                    legend: {
+                        position: "bottom",
+                        fontFamily: "Inter, sans-serif",
+                    },
+                    tooltip: {
+                        enabled: true,
+                        y: {
+                            formatter: function(value, { seriesIndex }) {
+                                if (total === 0) return "No Data";
+                                const count = [hadir, izin, tidakHadir][seriesIndex];
+                                return `${labels[seriesIndex]}: ${count} (${Math.round(value)}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+    
+            function openPreview(url) {
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+                const width = screenWidth / 2;
+                const height = screenHeight / 2;
+                const left = (screenWidth - width) / 2;
+                const top = (screenHeight - height) / 2;
+    
+                const newWindow = window.open(
+                    '',
+                    '',
+                    `width=${width},height=${height},top=${top},left=${left}`
+                );
+    
+                if (newWindow) {
+                    newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
+                    newWindow.document.title = "Image Preview";
+                } else {
+                    alert('Preview dokumen tidak tersedia di tampilan mobile');
+                }
+            }
+        });
     </script>
 @endsection
