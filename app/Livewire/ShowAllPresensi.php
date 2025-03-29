@@ -75,6 +75,14 @@ class ShowAllPresensi extends Component
     public function selectPresensi($tanggal)
     {
         $today = Carbon::today()->toDateString();
+        $tanggalCarbon = Carbon::parse($tanggal);
+
+        // Jika hari Sabtu atau Minggu, set selectedPresensi ke null
+        if ($tanggalCarbon->isWeekend()) {
+            $this->selectedPresensi = null;
+            $this->selectedDate = $tanggal;
+            return;
+        }
 
         $this->selectedDate = $tanggal;
         $this->selectedPresensi = $this->presensiData->where('tanggal', $tanggal)->first();

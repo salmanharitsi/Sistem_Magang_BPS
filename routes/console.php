@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\UpdatePresensiJamKeluarJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -14,4 +15,4 @@ Artisan::command('inspire', function () {
 Schedule::job(new UpdatePresensiStatusJob())->dailyAt('17:00');
 
 // Jadwalkan job UpdatePresensiJamKeluarJob setiap hari pada jam 19:00
-Schedule::job(new UpdatePresensiStatusJob())->dailyAt('19:00');
+Schedule::job(new UpdatePresensiJamKeluarJob())->dailyAt('19:00');

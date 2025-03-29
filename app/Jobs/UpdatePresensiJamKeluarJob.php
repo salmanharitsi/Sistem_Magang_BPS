@@ -39,9 +39,16 @@ class UpdatePresensiJamKeluarJob implements ShouldQueue
  
                 foreach ($presensis as $presensi) {
 
+                    $pointKeluar = 75;
+
+                    $pointAkhir = $presensi->point_masuk 
+                    ? ($presensi->point_masuk + $pointKeluar) / 2 
+                    : $pointKeluar;
+
                     // Kondisi 2: Jika jam_masuk !== null dan jam_keluar == null hingga jam 7 malam
                     if ($presensi->jam_masuk !== null && $presensi->jam_keluar === null && $now->gt(Carbon::parse($today . ' 19:00:00'))) {
-                        $presensi->jam_keluar = Carbon::parse($today . ' 19:00:00');
+                        $presensi->point_keluar = $pointKeluar;
+                        $presensi->point = $pointAkhir;
                         $presensi->save();
                     }
                 }

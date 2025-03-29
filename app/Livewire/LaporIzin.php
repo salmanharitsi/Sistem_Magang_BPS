@@ -60,6 +60,7 @@ class LaporIzin extends Component
         // Update data presensi menjadi izin
         $this->presensi->update([
             'status' => 'izin',
+            'point' => 75,
             'keterangan_izin' => $this->keterangan_izin,
             'lampiran' => $this->presensi->lampiran ?? null,
             'original_filename_lampiran' => $originalFilename ?? null

@@ -22,7 +22,18 @@ class PembimbingController
             ->where('status_magang', 'active')
             ->where('tanggal_mulai', '<=', now())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($magang) {
+                $presensi = $magang->presensi;
+                $magang->attendance_stats = [
+                    'hadir' => $presensi->where('status', 'hadir')->count(),
+                    'izin' => $presensi->where('status', 'izin')->count(),
+                    'tidak_hadir' => $presensi->where('status', 'tidak-hadir')->count(),
+                    // Exclude waiting status
+                    'total' => $presensi->whereIn('status', ['hadir', 'izin', 'tidak-hadir'])->count()
+                ];
+                return $magang;
+            });
 
         $allBimbinganCount = Magang::where(function (Builder $builder) {
             $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())

@@ -144,7 +144,7 @@
                         </tr>
                         <tr>
                             <td class="py-1 pr-4 font-semibold">Status</td>
-                            <td class="py-1 flex gap-[7px] items-center">
+                            <td class="py-1 flex gap-[5px] items-center">
                                 <p>: </p>
                                 <select wire:model="selectedData.status" class="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-1">
                                     <option value="hadir" {{ $selectedData['status'] === 'hadir' ? 'selected' : '' }}>Hadir</option>
@@ -180,7 +180,7 @@
                                 <p class="font-semibold">keluar : {{ $selectedData['jam_keluar'] ?? '' }}</p>
                             </div>
                         </div>
-                        <div class="flex gap-5">
+                        <div class="flex justify-center gap-5">
                             <div class="mt-5">                            
                                 @if($selectedData['foto_masuk'])
                                     <img src="{{ asset($selectedData['foto_masuk']) }}" alt="Foto Masuk" class="w-full h-auto rounded-lg">
