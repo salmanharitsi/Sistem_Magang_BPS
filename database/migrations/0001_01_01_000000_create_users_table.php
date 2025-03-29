@@ -142,7 +142,7 @@ return new class extends Migration
             $table->foreign('pembimbing_id')->references('id')->on('pegawai')->onDelete('cascade');
             $table->date('tanggal');
             $table->text('deskripsi')->nullable();
-            $table->enum('status', ['waiting', 'approved', 'rejected'])->default('waiting');
+            $table->enum('status', ['waiting', 'mengisi', 'tidak-mengisi'])->default('waiting');
             $table->string('lampiran')->nullable();
             $table->string('komentar')->nullable();
             $table->timestamps();
