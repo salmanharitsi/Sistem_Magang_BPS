@@ -34,9 +34,7 @@ class UpdateLogbookStatusJob implements ShouldQueue
         })
         ->where(function ($query) {
             $query->whereNull('status')
-                ->orWhere('status', '')
-                ->orWhere('status', 'waiting')
-                ->orWhere('status', 'mengisi');
+                ->orWhere('status', 'waiting');
         })
         ->update([
             'status' => 'tidak-mengisi',

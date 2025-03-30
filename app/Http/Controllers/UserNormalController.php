@@ -83,9 +83,17 @@ class UserNormalController
             abort(404);
         }
 
-        $hariKe = $presensiList->pluck('id')->search($presensi->id);
-        if ($hariKe === false) {
-            abort(404);
+        // Calculate working days (excluding weekends)
+        $hariKe = 0;
+        $startDate = Carbon::parse($magang->tanggal_mulai);
+        $currentDate = Carbon::parse($presensi->tanggal);
+        
+        while ($startDate <= $currentDate) {
+            // Skip weekends
+            if (!$startDate->isWeekend()) {
+                $hariKe++;
+            }
+            $startDate->addDay();
         }
 
         if ($presensi->jam_masuk && $presensi->jam_keluar) {
@@ -121,11 +129,11 @@ class UserNormalController
                 // $officeLat = 0.51001435;
                 // $officeLng = 101.45457153;
                 // Koordinat rumah
-                // $officeLat = 0.444011;
-                // $officeLng = 101.459271;
+                $officeLat = 0.444011;
+                $officeLng = 101.459271;
                 // //kos
-                $officeLat = 0.4786217843669414;
-                $officeLng = 101.37318152023657;
+                // $officeLat = 0.4786217843669414;
+                // $officeLng = 101.37318152023657;
                 // Koordinat nyasar
                 // $officeLat = 0.445742;
                 // $officeLng = 101.466078;
@@ -158,7 +166,7 @@ class UserNormalController
 
         return view($view, [
             'presensi' => $presensi,
-            'hariKe' => $hariKe + 1, // Karena index dimulai dari 0, tambahkan 1
+            'hariKe' => $hariKe, // Now using the calculated working day count
         ]);
     }
 

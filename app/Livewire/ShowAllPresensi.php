@@ -13,6 +13,7 @@ class ShowAllPresensi extends Component
     public $selectedPresensi;
     public $selectedDate;
     public $currentSlide = 0;
+    public $hariKe = null;
 
     protected $listeners = [
         'updateCurrentSlide' => 'setCurrentSlide',
@@ -40,6 +41,15 @@ class ShowAllPresensi extends Component
             $today = Carbon::today()->toDateString();
             $this->selectedPresensi = $this->presensiData->where('tanggal', $today)->first();
             $this->selectedDate = $this->selectedPresensi ? $today : null;
+
+            // Hitung hari ke- untuk tanggal yang dipilih
+            // Di dalam method mount()
+            if ($this->selectedDate) {
+                $selectedDate = Carbon::parse($this->selectedDate);
+                if (!$selectedDate->isWeekend()) {
+                    $this->calculateHariKe($selectedDate);
+                }
+            }
 
             // Hitung index slide berdasarkan bulan saat ini
             $this->calculateCurrentSlide();
@@ -81,11 +91,15 @@ class ShowAllPresensi extends Component
         if ($tanggalCarbon->isWeekend()) {
             $this->selectedPresensi = null;
             $this->selectedDate = $tanggal;
+            $this->hariKe = null;
             return;
         }
 
         $this->selectedDate = $tanggal;
         $this->selectedPresensi = $this->presensiData->where('tanggal', $tanggal)->first();
+
+        // Hitung hari kerja
+        $this->calculateHariKe($tanggalCarbon);
 
         // Jika tanggal yang dipilih adalah hari ini, refresh halaman
         if ($tanggal == Carbon::today()->toDateString()) {
@@ -109,6 +123,31 @@ class ShowAllPresensi extends Component
         }
     }
 
+    protected function calculateHariKe(Carbon $tanggal)
+    {
+        $user = Auth::user();
+        $magang = $user->magang()->latest()->first();
+        
+        if (!$magang) {
+            $this->hariKe = null;
+            return;
+        }
+
+        $tanggalMulai = Carbon::parse($magang->tanggal_mulai);
+        $hariKe = 0;
+        
+        // Iterasi dari tanggal mulai sampai tanggal yang dipilih
+        while ($tanggalMulai <= $tanggal) {
+            // Hanya hitung jika bukan weekend
+            if (!$tanggalMulai->isWeekend()) {
+                $hariKe++;
+            }
+            $tanggalMulai->addDay();
+        }
+        
+        $this->hariKe = $hariKe;
+    }
+
     public function render()
     {
         return view('livewire.show-all-presensi', [
@@ -116,6 +155,7 @@ class ShowAllPresensi extends Component
             'selectedPresensi' => $this->selectedPresensi,
             'selectedDate' => $this->selectedDate,
             'currentSlide' => $this->currentSlide, // Kirim currentSlide ke Blade
+            'hariKe' => $this->hariKe,
         ]);
     }
 }
