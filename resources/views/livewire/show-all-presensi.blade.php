@@ -51,7 +51,8 @@
                                                 @elseif ($presensi->status === 'tidak-hadir') 
                                                     bg-red-500 text-white
                                                 @else
-                                                    bg-gray-200 @endif
+                                                    bg-gray-200 
+                                                @endif
                                                 {{ $isFutureDate ? 'cursor-not-allowed opacity-50' : 'cursor-pointer' }}">
                                             {{ $tanggal->format('d') }} <!-- Tampilkan tanggal (contoh: 17) -->
                                         </div>
@@ -113,7 +114,10 @@
                         (!$selectedPresensi->point_masuk || !$selectedPresensi->point_keluar))
                         <!-- Tampilan presensi hari ini yang belum lengkap -->
                         <div class="bg-white p-5 rounded-lg shadow-md">
-                            <h2 class="text-xl font-semibold mb-4">Pengecekan Lokasi</h2>
+                            <div class="mb-4">
+                                <h2 class="text-xl font-semibold ">Pengecekan Lokasi</h2>
+                                <p class="text-sm text-gray-600">Magang Hari ke - {{ $hariKe }}</p>
+                            </div>
                             <div id="map" class="w-full h-56 rounded-lg relative">
                                 <!-- Elemen loading -->
                                 <div id="map-loading"
@@ -131,7 +135,10 @@
                             <!-- Header Section with Status Badge -->
                             <div class="bg-gray-50 p-5 border-b">
                                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                                    <h2 class="text-xl font-semibold text-gray-800">Detail Presensi</h2>
+                                    <div>
+                                        <h2 class="text-xl font-semibold text-gray-800">Detail Presensi</h2>
+                                        <p class="text-sm text-gray-600">Magang Hari ke - {{ $hariKe }}</p>
+                                    </div>
                                     @if ($selectedPresensi->pembimbing_id)
                                         <div
                                             class="px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
