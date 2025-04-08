@@ -118,6 +118,24 @@
                                 <h2 class="text-xl font-semibold ">Pengecekan Lokasi</h2>
                                 <p class="text-sm text-gray-600">Magang Hari ke - {{ $hariKe }}</p>
                             </div>
+                            @if ($selectedPresensi->jam_masuk && !$selectedPresensi->jam_keluar)
+                                <div class="flex items-center p-3 border border-gray-500 mb-5 rounded-lg">
+                                    <div class="w-2/5 text-gray-600 font-medium">Jam Masuk</div>
+                                    <div class="w-3/5 text-gray-900">
+                                        <div class="flex gap-1 items-center">
+                                            <i class="ti ti-login text-2xl text-blue-500"></i>
+                                            <div class="w-full flex flex-col md:flex-row justify-between items-center">
+                                                {{ $selectedPresensi->jam_masuk }}
+                                                @if ($selectedPresensi->point_masuk > 90 && $selectedPresensi->point_masuk <= 100)
+                                                    <div class="font-medium text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Tepat Waktu</div>
+                                                @elseif ($selectedPresensi->point_masuk <= 90)
+                                                    <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Telat Masuk</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                             <div id="map" class="w-full h-56 rounded-lg relative">
                                 <!-- Elemen loading -->
                                 <div id="map-loading"
@@ -241,6 +259,21 @@
         
                                 <!-- Keterangan Izin (if applicable) -->
                                 @if ($selectedPresensi->status === 'izin')
+                                    <div class="flex items-center py-3 border-b border-gray-100">
+                                        <div class="w-2/5 text-gray-600 font-medium">Lampiran</div>
+                                        <div class="w-3/5 text-sm">
+                                            @if ($selectedPresensi->lampiran)
+                                                <a href="{{ $selectedPresensi->lampiran }}" target="_blank" class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                                                    <i class="ti ti-brand-google-drive mr-2"></i>Lihat Lampiran
+                                                </a>
+                                            @else
+                                                <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-500 rounded-md">
+                                                    Tidak ada lampiran
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="flex items-start py-3">
                                         <div class="w-2/5 text-gray-600 font-medium">Keterangan Izin</div>
                                         <div
@@ -324,8 +357,8 @@
         // var officeLongitude = 101.45457153; 
         var officeLatitude = 0.444011; // Koordinat Rumah
         var officeLongitude = 101.459271;
-        // var officeLatitude = 0.445742; // Koordinat nyasar
-        // var officeLongitude = 101.466078;
+        var officeLatitude = 0.445742; // Koordinat nyasar
+        var officeLongitude = 101.466078;
         var officeRadius = 50; // Radius dalam meter
         var locationStatus = document.getElementById('location-status'); // Elemen untuk menampilkan status
         var mapLoading = document.getElementById('map-loading'); // Elemen loading

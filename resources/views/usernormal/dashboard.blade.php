@@ -88,7 +88,6 @@
         @endif
     </div>
     
-
     <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6 {{($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar') ? 'mt-6' : 'mt-0'}}">
         @if (($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar'))
         <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -311,11 +310,34 @@
         </div>
         @endif
         @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isFuture())
+        <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                <i class="ti ti-calendar-time text-lg"></i>
+                <p class="text-sm">Magang kamu akan dimulai pada <span class="font-bold">{{ Carbon::parse($latestMagang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+            </div>
+        </div>
+        @endif
+        @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast())
             <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                    <i class="ti ti-calendar-time text-lg"></i>
-                    <p class="text-sm">Magang kamu akan dimulai pada <span class="font-bold">{{ Carbon::parse($latestMagang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-browser text-lg"></i>
+                        <p class="text-sm">Kamu terdaftar magang <span class="font-semibold">{{ $latestMagang->jenis_magang }}</span></p>
+                    </div>
                 </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 col-span-3 md:mt-6">
+                <div class="col-span-1">
+                    @livewire('show-grafik-presensi')
+                </div>
+                <div class="col-span-1">
+                   <p>Grafik logbook seharusnya disini</p>
+                </div>
+            </div>
+            <div class="col-span-3 mt-6 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+                <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
+                    Presensi</div>
+                @livewire('show-daftar-presensi')
             </div>
         @endif
     </div>

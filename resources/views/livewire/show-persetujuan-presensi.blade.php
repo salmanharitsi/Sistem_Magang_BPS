@@ -4,7 +4,7 @@
 @endphp
 <div>
     <div class="p-4 border-b border-gray-300">
-        <h1 class="font-semibold text-lg text-gray-800">Presetujuan Presensi</h1>
+        <h1 class="font-semibold text-lg text-gray-800">Persetujuan Presensi</h1>
     </div>
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
         <div class="w-full md:w-1/5">
@@ -167,28 +167,43 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="py-1 pr-4 font-semibold align-top">Lampiran</td>
+                                <td class="py-1 flex gap-1 text-sm">
+                                    <p>: </p>
+                                    @if ($selectedData['lampiran'])
+                                        <a href="{{ $selectedData['lampiran'] }}" target="_blank" class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                                            <i class="ti ti-brand-google-drive mr-2"></i>Lihat Lampiran
+                                        </a>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-500 rounded-md">
+                                            Tidak ada lampiran
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
                         @endif
                     </table>
 
                     <!-- Tampilkan foto_masuk dan foto_keluar jika status adalah hadir -->
                     @if(isset($selectedData['status']) && $selectedData['status'] === 'hadir')
                         <div class="flex w-full gap-5 mt-4">
-                            <div class="flex justify-center py-1.5 w-1/2 rounded-lg border-2 border-green-600 bg-green-50 text-green-600">
+                            <div class="flex justify-center py-1.5 w-1/2 rounded-lg bg-green-100 text-green-800">
                                 <p class="font-semibold">masuk : {{ $selectedData['jam_masuk'] ?? '' }}</p>
                             </div>
-                            <div class="flex justify-center py-1.5 w-1/2 rounded-lg border-2 border-red-600 bg-red-50 text-red-600">
+                            <div class="flex justify-center py-1.5 w-1/2 rounded-lg bg-red-100 text-red-800">
                                 <p class="font-semibold">keluar : {{ $selectedData['jam_keluar'] ?? '' }}</p>
                             </div>
                         </div>
-                        <div class="flex justify-center gap-5">
-                            <div class="mt-5">                            
+                        <div class="flex justify-center gap-5 w-full">
+                            <div class="mt-5 w-1/2">                            
                                 @if($selectedData['foto_masuk'])
                                     <img src="{{ asset($selectedData['foto_masuk']) }}" alt="Foto Masuk" class="w-full h-auto rounded-lg">
                                 @else
                                     <p class="text-gray-500">Foto masuk tidak tersedia.</p>
                                 @endif
                             </div>
-                            <div class="mt-5">
+                            <div class="mt-5 w-1/2">
                                 @if($selectedData['foto_keluar'])
                                     <img src="{{ asset($selectedData['foto_keluar']) }}" alt="Foto Keluar" class="w-full h-auto rounded-lg">
                                 @else

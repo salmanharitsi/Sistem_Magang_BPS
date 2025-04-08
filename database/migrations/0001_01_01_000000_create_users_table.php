@@ -130,7 +130,6 @@ return new class extends Migration
             $table->string('foto_keluar')->nullable();
             $table->text('keterangan_izin')->nullable();
             $table->string('lampiran')->nullable();
-            $table->string('original_filename_lampiran')->nullable();
             $table->timestamps();
         });
 

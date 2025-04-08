@@ -47,7 +47,8 @@ class ShowPersetujuanPresensi extends Component
                 'foto_keluar' => $presensi->foto_keluar ? 'storage/' . $presensi->foto_keluar : null, // Path ke foto_keluar
                 'keterangan_izin' => $presensi->keterangan_izin,
                 'updated_at' => $presensi->updated_at,
-                'point' => $presensi->point
+                'point' => $presensi->point,
+                'lampiran' => $presensi->lampiran
             ];
             $this->showModal = true;
         }
