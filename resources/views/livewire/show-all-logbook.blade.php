@@ -104,14 +104,11 @@
                     @php
                         $today = Carbon::today()->toDateString();
                         $selectedDate = Carbon::parse($selectedLogbook->tanggal)->toDateString();
-                        $isWeekend = Carbon::parse($selectedLogbook->tanggal)->isWeekend();
-                        $hasContent = $selectedLogbook->status === 'mengisi' && !empty($selectedLogbook->deskripsi);
+                        $hasContent = $selectedLogbook->status === 'mengisi' && !is_null($selectedLogbook->deskripsi);
                         $isPastCutoff = Carbon::now()->gte(Carbon::today()->setHour(17));
                     @endphp
-            
-                    @if ($isWeekend)
                         
-                    @elseif ($selectedDate == $today && !$hasContent && !$isPastCutoff)
+                    @if ($selectedDate == $today && $selectedLogbook->status === 'waiting' && !$isPastCutoff)
                         <!-- Form Input Logbook -->
                         <div class="bg-white p-5 rounded-lg shadow-md">
                             <h2 class="text-xl font-semibold">Pengisian Logbook</h2>
@@ -121,14 +118,14 @@
                                     <label class="block mb-2 text-[15px] font-medium text-gray-700">
                                         Kegiatan<span class="text-red-500 ml-1">*</span>
                                     </label>
-                                    <textarea wire:model.live="deskripsi" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" rows="6" placeholder="Masukkan kegiatan"></textarea>
+                                    <textarea wire:model.live="deskripsi" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" rows="6" placeholder="Masukkan kegiatan"></textarea>
                                     @error('deskripsi')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
                                 </div>
                                 <div class="mt-5">
                                     <label class="block mb-2 text-[15px] font-medium text-gray-700">
                                         Lampiran <span class="text-[10px]">(Link Google Drive)</span><span class="text-red-500 ml-1">*</span>
                                     </label>
-                                    <input type="text" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Masukkan link Google Drive" />
+                                    <input type="text" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan link Google Drive" />
                                     @error('lampiran')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
                                 </div>
                                 <button type="submit" class="w-full text-white mt-5 bg-blue-600 hover:bg-blue-700 transition duration-300 ease-in-out focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-blue-400 disabled:cursor-not-allowed">

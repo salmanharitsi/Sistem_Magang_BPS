@@ -58,14 +58,6 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
-                                href="/">
-                                <i class="ti ti-home ps-2 text-xl"></i>
-                                <span>Beranda</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
                                 href="/dashboard-pembimbing">
                                 <i class="ti ti-layout-dashboard ps-2 text-xl"></i>
                                 <span>Dashboard</span>

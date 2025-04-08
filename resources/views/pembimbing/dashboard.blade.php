@@ -104,13 +104,7 @@
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Presensi</h4>
                                         <!-- Line Chart -->
-                                        <div class="pie-chart-container relative" id="pie-chart-{{ $index }}">
-                                            @if($pesertaMagang->attendance_stats['total'] === 0)
-                                                <div class="absolute inset-0 flex items-center justify-center text-gray-500">
-                                                    Belum ada data presensi yang valid
-                                                </div>
-                                            @endif
-                                        </div>
+                                        <div class="pie-chart-container relative" id="pie-chart-{{ $index }}"></div>
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Logbook</h4>

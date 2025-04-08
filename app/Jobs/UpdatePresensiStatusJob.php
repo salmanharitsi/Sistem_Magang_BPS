@@ -28,6 +28,11 @@ class UpdatePresensiStatusJob implements ShouldQueue
                 $now = Carbon::now();
                 $today = $now->toDateString();
 
+                // Skip if today is Saturday or Sunday
+                if ($now->isWeekend()) {
+                    return;
+                }
+
                 // Ambil semua presensi yang tanggalnya hari ini
                 $presensis = Presensi::where('tanggal', $today)->get();
  

@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use Log;
 use Carbon\Carbon;
 use App\Models\Logbook;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class UpdateLogbookStatusJob implements ShouldQueue
 {
@@ -17,32 +17,35 @@ class UpdateLogbookStatusJob implements ShouldQueue
 
     public function handle()
     {
-        $today = Carbon::today()->toDateString();
-        $cutoffTime = Carbon::today()->setHour(17)->setMinute(0)->setSecond(0);
+        try {
+            DB::transaction(function () {
+                $now = Carbon::now();
+                $today = $now->toDateString();
 
-        Log::info('UpdateLogbookStatusJob started', [
-            'today' => $today,
-            'cutoff_time' => $cutoffTime
-        ]);
+                // Skip if today is Saturday or Sunday
+                if ($now->isWeekend()) {
+                    return;
+                }
 
-        $updatedCount = Logbook::where(function ($query) use ($today, $cutoffTime) {
-            $query->where('tanggal', '<', $today)
-                ->orWhere(function ($q) use ($today, $cutoffTime) {
-                    $q->where('tanggal', $today)
-                        ->where('created_at', '<', $cutoffTime);
-                });
-        })
-        ->where(function ($query) {
-            $query->whereNull('status')
-                ->orWhere('status', 'waiting');
-        })
-        ->update([
-            'status' => 'tidak-mengisi',
-            'updated_at' => now()
-        ]);
+                // Ambil hanya logbook untuk hari ini dengan status waiting/null
+                $logbooks = Logbook::where('tanggal', $today)
+                    ->where(function ($query) {
+                        $query->whereNull('status')
+                              ->orWhere('status', 'waiting');
+                    })
+                    ->get();
 
-        Log::info('UpdateLogbookStatusJob completed', [
-            'updated_records' => $updatedCount
-        ]);
+                // Jika sudah lewat jam 5 sore
+                if ($now->gt(Carbon::parse($today . ' 17:00:00'))) {
+                    foreach ($logbooks as $logbook) {
+                        $logbook->status = 'tidak-mengisi';
+                        $logbook->updated_at = now();
+                        $logbook->save();
+                    }
+                }
+            });
+        } catch (\Exception $e) {
+            $this->fail($e);
+        }
     }
 }

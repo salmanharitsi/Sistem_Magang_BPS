@@ -31,6 +31,7 @@ class Presensi extends Model
         'foto_masuk',
         'foto_keluar',
         'keterangan_izin',
+        'lampiran'
     ];
 
     public function user(): BelongsTo
