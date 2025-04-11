@@ -78,6 +78,22 @@
                         </li>
 
                         <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
+                                href="#">
+                                <i class="ti ti-progress-check ps-2 text-xl"></i>
+                                <span>Daftar Persetujuan</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
+                                href="#">
+                                <i class="ti ti-users-group ps-2 text-xl"></i>
+                                <span>Daftar Bimbingan</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
                             <a class="menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
                                 href="/logout">
                                 <i class="ti ti-logout ps-2 text-xl"></i>

@@ -68,7 +68,7 @@ class AdminController
             ];
         }
 
-        $reviewPengajuan = Pengajuan::where('status_pengajuan', 'waiting')->count();
+        $reviewPengajuan = Pengajuan::where('status_pengajuan', 'waiting')->orWhere('status_pengajuan', 'accept-first')->count();
 
         // Hitung total pengajuan
         $totalPengajuan = Pengajuan::count();
@@ -98,6 +98,14 @@ class AdminController
             'magangBulanIni',
             'magangActive'
         ));
+    }
+
+    public function get_daftar_pegawai()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('admin.daftar-pegawai');
     }
 
     public function get_daftar_pengajuan()

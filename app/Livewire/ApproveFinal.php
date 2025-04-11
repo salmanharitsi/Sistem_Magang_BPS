@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\GeneratePresensiJob;
 use App\Models\Magang;
 use App\Models\Pengajuan;
 use App\Models\User;
@@ -51,7 +52,6 @@ class ApproveFinal extends Component
     // Tambahkan method untuk menangani persetujuan
     public function terimaPengajuan()
     {
-        // $this->showTerimaModal = false;
         $validateData = $this->validate();
 
         $pengajuan = Pengajuan::find($this->pengajuan->id);
@@ -66,7 +66,10 @@ class ApproveFinal extends Component
         $magang->bidang_tujuan = $pengajuan->bidang_tujuan;
         $magang->pembimbing_pertama = $this->pembimbing1;
         $magang->pembimbing_kedua = $this->pembimbing2 ?: null;
-        $magang->save();
+        $magang->save(); // Simpan data magang ke database
+
+        GeneratePresensiJob::dispatch($magang)
+            ->delay(now()->diffInSeconds($magang->tanggal_mulai)); 
 
         $pengajuan->status_pengajuan = 'accept-final';
         $pengajuan->tenggat = null;

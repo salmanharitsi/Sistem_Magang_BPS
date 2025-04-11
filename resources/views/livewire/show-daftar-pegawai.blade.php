@@ -12,7 +12,7 @@
                     </div>
                     <input wire:model.live="search" type="text" id="simple-search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="cari magang..." required="">
+                        placeholder="cari pegawai..." required="">
                 </div>
             </form>
         </div>
@@ -28,19 +28,10 @@
                         Nama
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-left">
-                        Jenis Magang
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
-                        Bidang Tujuan
+                        Fungsi Bagian
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
-                        Periode Magang
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
-                        Pembimbing
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-center">
-                        Status
+                        Role
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
                         Aksi
@@ -48,42 +39,22 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($magang as $index => $data)
+                @forelse ($pegawai as $index => $data)
                     <tr class="bg-white border-b hover:bg-gray-50">
-                        <td class="py-4 px-6 w-[30px]">{{ $magang->firstItem() + $index }}</td>
+                        <td class="py-4 px-6 w-[30px]">{{ $pegawai->firstItem() + $index }}</td>
                         <td class="py-4 px-6 text-left">
-                            {{$data->user->name}}
-                        </td>
-                        <td class="py-4 px-6 text-left">
-                            {{$data->jenis_magang}}
-                        </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
-                        </td>
-                        <td class="py-4 px-6 text-left flex flex-col items-center gap-3">
-                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_mulai)->format('j-F-Y') }}</div>
-                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}</div>
+                            {{$data->name}}
                         </td>
                         <td class="py-4 px-6 text-left">
-                            <div class="flex items-center justify-center gap-1 whitespace-nowrap">
-                                <i class="ti ti-user-circle text-lg"></i>
-                                {{ $data->pembimbingPertama->name }}
-                            </div>
-                            @if($data->pembimbingKedua)
-                            <div class="flex items-center justify-center gap-1 whitespace-nowrap">
-                                <i class="ti ti-user-circle text-lg"></i>
-                                {{ $data->pembimbingKedua->name }}
-                            </div>
-                            @endif
+                            {{$data->fungsi_bagian}}
                         </td>
                         <td class="py-4 px-6 text-center">
                             <div
                                 class="text-[13px] mx-auto items-center w-fit">
-                                @if ($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isFuture())
-                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Segera dimulai</p>
-                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isPast() && Carbon::parse($data->tanggal_selesai)->isFuture())
-                                    <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Berlangsung</p>
-                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_selesai)->isPast())
-                                    <p class="text-gray-700 border-gray-600 bg-gray-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Selesai</p>
+                                @if ($data->role_temp == 'regular')
+                                    <p class="text-green-700 border-green-600 bg bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pembimbing</p>
+                                @elseif($data->role_temp == 'admin')
+                                    <p class="text-blue-700 border-blue-600 bg-blue-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Admin</p>
                                 @endif
                             </div>
                         </td>
@@ -98,13 +69,13 @@
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="8" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Data magang tidak ditemukan</p>
+                            <p class="font-semibold text-md">Data Pegawai tidak ditemukan</p>
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
         <!-- Custom Pagination -->
-        {{ $magang->links('vendor.pagination.custom-pagination') }}
+        {{ $pegawai->links('vendor.pagination.custom-pagination') }}
     </div>
 </div>

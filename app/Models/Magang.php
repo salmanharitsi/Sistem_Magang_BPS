@@ -49,4 +49,9 @@ class Magang extends Model
     {
         return $this->belongsTo(Pegawai::class, 'pembimbing_kedua', 'id');
     }
+
+    public function presensi(): HasMany
+    {
+        return $this->hasMany(Presensi::class);
+    }
 }

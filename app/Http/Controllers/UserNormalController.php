@@ -30,6 +30,13 @@ class UserNormalController
         return view('usernormal.magang');
     }
 
+    public function get_presensi(){
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('usernormal.presensi');
+    }
+
     public function get_logbook()
     {
         if (request()->pjax()) {

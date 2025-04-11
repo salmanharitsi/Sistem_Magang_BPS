@@ -48,6 +48,46 @@ class PegawaiSeeder extends Seeder
                 "nomor_induk" => "147107822341124",
                 "role_temp" => "regular"
             ],
+            [
+                "name" => "Gonzales",
+                "fungsi_bagian" => "Bagian Umum",
+                "email" => "pembimbingumum@gmail.com",
+                "password" => "regular123",
+                "nomor_induk" => "147107822341125",
+                "role_temp" => "regular"
+            ],
+            [
+                "name" => "Harry Kane",
+                "fungsi_bagian" => "Fungsi Nerwilis",
+                "email" => "pembimbingnerwilis@gmail.com",
+                "password" => "regular123",
+                "nomor_induk" => "147107822341126",
+                "role_temp" => "regular"
+            ],
+            [
+                "name" => "Paul Pogba",
+                "fungsi_bagian" => "Fungsi Statistik Distribusi",
+                "email" => "pembimbingdistribusi@gmail.com",
+                "password" => "regular123",
+                "nomor_induk" => "147107822341127",
+                "role_temp" => "regular"
+            ],
+            [
+                "name" => "Neymar Jr",
+                "fungsi_bagian" => "Fungsi Statistik Produksi",
+                "email" => "pembimbingproduksi@gmail.com",
+                "password" => "regular123",
+                "nomor_induk" => "147107822341128",
+                "role_temp" => "regular"
+            ],
+            [
+                "name" => "Mohamed Salah",
+                "fungsi_bagian" => "Fungsi Statistik Sosial",
+                "email" => "pembimbingsosial@gmail.com",
+                "password" => "regular123",
+                "nomor_induk" => "147107822341129",
+                "role_temp" => "regular"
+            ],
         ];
 
         foreach ($pegawai as $data) {

@@ -111,6 +111,21 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('presensi', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('magang_id');
+            $table->foreign('magang_id')->references('id')->on('magang')->onDelete('cascade');
+            $table->uuid('pembimbing_id')->nullable();
+            $table->foreign('pembimbing_id')->references('id')->on('pegawai')->onDelete('cascade');
+            $table->date('tanggal');
+            $table->time('jam_masuk')->nullable();
+            $table->time('jam_keluar')->nullable();
+            $table->enum('status', ['waiting', 'hadir', 'tidak-hadir', 'izin'])->default('waiting');
+            $table->string('foto_selfie')->nullable();
+            $table->text('keterangan_izin')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->uuid('user_id')->nullable()->index(); 
@@ -131,6 +146,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('presensi');
         Schema::dropIfExists('magang');
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');

@@ -116,7 +116,7 @@
                             @if ($latestMagang->status_magang == 'active')
                                 <li class="sidebar-item">
                                     <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                        href="/logbook">
+                                        href="/add-logbook">
                                         <i class="ti ti-notebook ps-2 text-xl"></i>
                                         <span class="whitespace-nowrap">Logbook</span>
                                     </a>

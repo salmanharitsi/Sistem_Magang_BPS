@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Magang::class);
     }
+
+    public function presensi(): HasMany
+    {
+        return $this->hasMany(Presensi::class);
+    }
 }

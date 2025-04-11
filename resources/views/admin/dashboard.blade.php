@@ -44,7 +44,7 @@
     </div>
 
     <div class="grid grid-cols-1 mt-6 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-        <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 !pb-0">
+        <div class="w-full bg-white rounded-lg card dark:bg-gray-800 p-4 !pb-0">
             <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
                 <div>
                     <h5 class="leading-none text-xl font-semibold text-gray-900 dark:text-white pb-1">Rekapitulasi Peserta
@@ -70,7 +70,7 @@
 
                     <!-- Dropdown Year Menu -->
                     <div id="yearDropdownRekap"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg card w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownYearButton">
                             <li><a href="#" class="block px-4 py-2" onclick="updateData(event, 2025)">2025</a>
                             </li>
@@ -84,7 +84,7 @@
             <div class="flex gap-4 overflow-x-auto p-4 custom-scrollbar">
                 @foreach ($monthlyStats as $stat)
                     <div class="flex-shrink-0">
-                        <div class="bg-white rounded-lg shadow-md p-4 w-32">
+                        <div class="bg-white rounded-lg card p-4 w-32">
                             <div class="flex items-center justify-center mb-3">
                                 <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -133,7 +133,7 @@
     </div>
 
     <div class="grid grid-cols-1 mt-6 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+        <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
             <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
                 <i class="ti ti-file-search text-2xl"></i>
             </div>
@@ -143,7 +143,7 @@
                 <p class="text-sm font-normal text-blue-600">+{{ $pengajuanBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
-        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+        <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
             <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
                 <i class="ti ti-text-caption text-2xl"></i>
             </div>
@@ -153,7 +153,7 @@
                 <p class="text-sm font-normal text-blue-600">+{{ $pengajuanBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
-        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+        <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
             <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
                 <i class="ti ti-users text-2xl"></i>
             </div>
@@ -166,7 +166,7 @@
     </div>
 
     <div class="grid grid-cols-1 mt-6 lg:grid-cols-2 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+        <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
             <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
                 <i class="ti ti-users text-2xl"></i>
             </div>
@@ -176,7 +176,7 @@
                 <p class="text-sm font-normal text-blue-600">+10 perbulan ini</p>
             </div>
         </div>
-        <div class="w-full flex bg-white rounded-lg shadow gap-3 p-3">
+        <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
             <div class="w-9 h-9 bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center">
                 <i class="ti ti-users text-2xl"></i>
             </div>
@@ -189,7 +189,7 @@
     </div>
 
     <div class="grid grid-cols-1 mt-6 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-        <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 !pb-0">
+        <div class="w-full bg-white rounded-lg card dark:bg-gray-800 p-4 !pb-0">
             <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
                 <div>
                     <h5 class="leading-none text-xl font-semibold text-gray-900 dark:text-white pb-1">Grafik Peserta Magang
@@ -218,7 +218,7 @@
 
                     <!-- Dropdown Year Menu -->
                     <div id="yearDropdown"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg card w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownYearButton">
                             <li><a href="#" class="block px-4 py-2" onclick="updateChartYear(event, 2025)">2025</a>
                             </li>
@@ -233,11 +233,13 @@
         </div>
     </div>
 
-    <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden mt-6">
-        <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
-            Pengajuan</div>
-        @livewire('show-daftar-pengajuan')
-    </div>
+    @if ($reviewPengajuan)
+        <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden mt-6">
+            <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
+                Pengajuan</div>
+            @livewire('show-daftar-pengajuan')
+        </div>
+    @endif
 
     <script>
         let chartData = @json($chartData);

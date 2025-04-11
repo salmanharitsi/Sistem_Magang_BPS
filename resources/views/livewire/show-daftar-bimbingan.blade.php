@@ -12,7 +12,7 @@
                     </div>
                     <input wire:model.live="search" type="text" id="simple-search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="cari magang..." required="">
+                        placeholder="cari bimbingan..." required="">
                 </div>
             </form>
         </div>
@@ -25,46 +25,28 @@
                         No
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-left">
+                        Nama
+                    </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-left">
                         Jenis Magang
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
-                        Bidang Tujuan
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
-                        Periode Magang
-                    </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
-                        Pembimbing
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
                         Status
                     </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
+                        Aksi
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($magang as $index => $data)
+                @forelse ($bimbingan as $index => $data)
                     <tr class="bg-white border-b hover:bg-gray-50">
-                        <td class="py-4 px-6 w-[30px]">{{ $magang->firstItem() + $index }}</td>
+                        <td class="py-4 px-6 w-[30px]">{{ $bimbingan->firstItem() + $index }}</td>
+                        <td class="py-4 px-6 text-left">
+                            {{$data->user->name}}
+                        </td>
                         <td class="py-4 px-6 text-left">
                             {{$data->jenis_magang}}
-                        </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
-                        </td>
-                        <td class="py-4 px-6 text-left flex flex-col items-center gap-3">
-                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs">{{ Carbon::parse($data->tanggal_mulai)->format('j-F-Y') }}</div>
-                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}</div>
-                        </td>
-                        <td class="py-4 px-6 text-left">
-                            <div class="flex items-center justify-center gap-1">
-                                <i class="ti ti-user-circle text-lg"></i>
-                                {{ $data->pembimbingPertama->name }}
-                            </div>
-                            @if($data->pembimbingKedua)
-                            <div class="flex items-center justify-center gap-1">
-                                <i class="ti ti-user-circle text-lg"></i>
-                                {{ $data->pembimbingKedua->name }}
-                            </div>
-                            @endif
                         </td>
                         <td class="py-4 px-6 text-center">
                             <div
@@ -78,18 +60,24 @@
                                 @endif
                             </div>
                         </td>
+                        <td class="py-4 px-6">
+                            <a href=""
+                                class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                        </td>
                     </tr>
                 @empty
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="8" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Data magang tidak ditemukan</p>
+                            <p class="font-semibold text-md">Data bimbingan tidak ditemukan</p>
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
         <!-- Custom Pagination -->
-        {{ $magang->links('vendor.pagination.custom-pagination') }}
+        {{ $bimbingan->links('vendor.pagination.custom-pagination') }}
     </div>
 </div>
