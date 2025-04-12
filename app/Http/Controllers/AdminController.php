@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Magang;
 use App\Models\Pengajuan;
+use App\Models\FungsiBagian;
+use Illuminate\Http\Request;
+use App\Mail\NotifSeleksiPertama;
+use App\Models\FungsiBagianJurusan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Jobs\UpdatePengajuanStatusJob;
 
 class AdminController
@@ -123,7 +128,7 @@ class AdminController
         }
         return view('admin.daftar-magang');
     }
-    
+
     public function get_review_logbook()
     {
         if (request()->pjax()) {
@@ -160,17 +165,21 @@ class AdminController
         }
 
         $pengajuan->status_pengajuan = "accept-first";
-        
+
         // Calculate tenggat based on tanggal_mulai
         $tanggalMulai = Carbon::parse($pengajuan->tanggal_mulai);
         $tenggatDefault = now()->addDays(7);
-        
+
         // Set tenggat to either 7 days from now or tanggal_mulai, whichever comes first
         $pengajuan->tenggat = $tanggalMulai->lt($tenggatDefault) ? $tanggalMulai->copy()->subDay() : $tenggatDefault;
         $pengajuan->save();
 
         // Dispatch job untuk memperbarui status setelah tenggat
         UpdatePengajuanStatusJob::dispatch($pengajuan)->delay($pengajuan->tenggat);
+
+        Mail::to($pengajuan->email)->send(
+            new NotifSeleksiPertama('accepted', $pengajuan->name)
+        );
 
         return redirect(url('/daftar-pengajuan'))->with([
             'success' => [
@@ -196,10 +205,77 @@ class AdminController
         $pengajuan->komentar = $komentar;
         $pengajuan->save();
 
+        Mail::to($pengajuan->email)->send(
+            new NotifSeleksiPertama('rejected', $pengajuan->name, $komentar)
+        );
+
         return redirect(url('/daftar-pengajuan'))->with([
             'success' => [
                 "title" => "Berhasil menolak pengajuan",
             ]
         ]);
+    }
+
+    public function get_fungsi_bagian()
+    {
+        $fungsiBagian = FungsiBagian::all();
+        return view('admin.edit-home', compact('fungsiBagian'));
+    }
+
+    public function create_fungsi_bagian()
+    {
+        return view('admin.edit-home.create');
+    }
+
+    public function store_fungsi_bagian(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'jurusan' => 'required|array',
+        ]);
+
+        FungsiBagian::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'jurusan' => json_encode($request->jurusan),
+        ]);
+
+        return redirect()->route('admin.fungsi_bagian')->with('success', 'Fungsi Bagian berhasil ditambahkan');
+    }
+
+    public function edit_fungsi_bagian(FungsiBagian $fungsiBagian)
+    {
+        return view('admin.edit-home.edit', compact('fungsiBagian'));
+    }
+
+    public function update_fungsi_bagian(Request $request, $id)
+    {
+        $fungsiBagian = FungsiBagian::find($id);
+
+        if (!$fungsiBagian) {
+            return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'jurusan' => 'required|array',
+        ]);
+
+        $fungsiBagian->update([
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+
+
+    public function delete_fungsi_bagian(FungsiBagian $fungsiBagian)
+    {
+        $fungsiBagian->delete();
+        return redirect()->route('admin.edit-home')->with('success', 'Fungsi Bagian berhasil dihapus');
     }
 }

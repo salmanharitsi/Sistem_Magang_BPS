@@ -40,7 +40,8 @@ class UpdatePengajuanStatusJob implements ShouldQueue
         }
 
         // Cek apakah tenggat waktu telah berlalu
-        if (!isNull($this->pengajuan->tenggat) && $this->pengajuan->tenggat <= Carbon::now()) {
+        if (!is_null($this->pengajuan->tenggat) && $this->pengajuan->tenggat <= Carbon::now()) 
+            {
             $this->pengajuan->status_pengajuan = 'reject-time';
             $this->pengajuan->komentar = 'Kamu melewati tenggat waktu upload surat pengantar!';
             $this->pengajuan->tenggat = null;
