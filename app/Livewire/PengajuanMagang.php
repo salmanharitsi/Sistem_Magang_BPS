@@ -2,62 +2,61 @@
 
 namespace App\Livewire;
 
-use App\Jobs\UpdatePengajuanOverLimit;
-use App\Models\Pengajuan;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
+use App\Models\Pengajuan;
+use App\Mail\UserNormalMail;
+use App\Models\FungsiBagian;
+use App\Mail\NotifPengajuanAdmin;
+use Livewire\Attributes\Validate;
+use App\Mail\NotifPengajuanPeserta;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\UpdatePengajuanOverLimit;
 
 class PengajuanMagang extends Component
 {
-    #[Validate]
-
+    // Properti validasi dan input lainnya…
     public $jenis_magang,
-    $bidang_tujuan,
-    $tanggal_mulai,
-    $tanggal_selesai;
+           $bidang_tujuan,
+           $tanggal_mulai,
+           $tanggal_selesai;
+
+    // Tambahkan properti untuk menyimpan data fungsi bagian
+    public $listFungsiBagian = [];
 
     public function mount()
     {
         $this->jenis_magang = '';
         $this->bidang_tujuan = '';
+        // Ambil semua data fungsi bagian dari database (misal diurutkan berdasarkan title)
+        $this->listFungsiBagian = FungsiBagian::orderBy('title')->get();
     }
 
     public function rules()
     {
         return [
-            'jenis_magang' => 'required',
-            'bidang_tujuan' => 'required',
-            'tanggal_mulai' => 'required',
-            'tanggal_selesai' => 'required|after:tanggal_mulai'
+            'jenis_magang'   => 'required',
+            'bidang_tujuan'  => 'required',
+            'tanggal_mulai'  => 'required',
+            'tanggal_selesai'=> 'required|after:tanggal_mulai'
         ];
     }
 
     public function messages()
     {
         return [
-            'jenis_magang' => [
-                "required" => 'Jenis magang tidak boleh kosong',
-            ],
-            'bidang_tujuan' => [
-                "required" => 'Bidang tujuan tidak boleh kosong',
-            ],
-            'tanggal_mulai' => [
-                "required" => 'Tanggal mulai magang tidak boleh kosong',
-            ],
-            'tanggal_selesai' => [
-                "required" => 'Tanggal selesai magang tidak boleh kosong',
-                "after" => 'Tanggal selesai magang harus setelah tanggal mulai'
-            ],
+            'jenis_magang.required'   => 'Jenis magang tidak boleh kosong',
+            'bidang_tujuan.required'  => 'Bidang tujuan tidak boleh kosong',
+            'tanggal_mulai.required'  => 'Tanggal mulai magang tidak boleh kosong',
+            'tanggal_selesai.required'=> 'Tanggal selesai magang tidak boleh kosong',
+            'tanggal_selesai.after'   => 'Tanggal selesai magang harus setelah tanggal mulai',
         ];
     }
 
     public function create_pengajuan()
     {
-        // Validasi data input
         $validatedData = $this->validate();
 
-        // Mengambil data user yang sedang login
         $user = Auth::user();
 
         $pengajuan = new Pengajuan();
@@ -67,12 +66,12 @@ class PengajuanMagang extends Component
         $pengajuan->tanggal_mulai = $validatedData['tanggal_mulai'];
         $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
 
-        //data akademik
+        // Data akademik
         $pengajuan->institusi = $user->institusi;
         $pengajuan->jurusan = $user->jurusan;
         $pengajuan->nomor_induk = $user->nomor_induk;
 
-        //data pribadi
+        // Data pribadi
         $pengajuan->foto_profil = $user->foto_profil;
         $pengajuan->name = $user->name;
         $pengajuan->email = $user->email;
@@ -93,6 +92,8 @@ class PengajuanMagang extends Component
         $user->status_magang = 'masa-daftar';
         $user->save();
 
+        Mail::to($user->email)->queue(new NotifPengajuanPeserta($pengajuan, $user));
+        Mail::to('luxurialev@gmail.com')->queue(new NotifPengajuanAdmin($pengajuan, $user));
         UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
 
         return redirect('/dashboard')->with([
@@ -103,4 +104,8 @@ class PengajuanMagang extends Component
         ]);
     }
 
+    public function render()
+    {
+        return view('livewire.pengajuan-magang');
+    }
 }
