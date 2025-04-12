@@ -17,6 +17,9 @@
     <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
         @livewire('show-persetujuan-presensi')
     </div>
+    <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+        @livewire('show-persetujuan-logbook')
+    </div>
 
 </div>
 

@@ -59,8 +59,9 @@ class ShowAllLogbook extends Component
         $magang = $user->magang()->latest()->first();
 
         if ($magang) {
-            // Ambil data presensi berdasarkan magang_id
-            $this->logbookData = Logbook::where('magang_id', $magang->id)
+            // Tambahkan with('pembimbing') untuk meload relasi pembimbing
+            $this->logbookData = Logbook::with(['magang', 'pembimbing'])
+                ->where('magang_id', $magang->id)
                 ->orderBy('tanggal', 'asc')
                 ->get();
 
