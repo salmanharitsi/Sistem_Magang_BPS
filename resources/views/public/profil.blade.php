@@ -7,6 +7,7 @@
     @php
         $firstLetter = strtoupper(substr(Auth::user()->name, 0, 1));
         use Carbon\Carbon;
+        Carbon::setLocale('id');
     @endphp
 
     <div class="w-full h-24 md:h-44 rounded-lg bg-blue-500 relative overflow-hidden">
@@ -99,7 +100,7 @@
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         @if (!empty(Auth::user()->tanggal_lahir))
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse(Auth::user()->tanggal_lahir)->format('j-F-Y') }}
+                                {{ Carbon::parse(Auth::user()->tanggal_lahir)->translatedFormat('j-F-Y') }}
                             </p>
                         @else
                             <div class="flex gap-1 items-center text-red-600">

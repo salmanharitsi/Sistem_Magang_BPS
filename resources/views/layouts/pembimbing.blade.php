@@ -58,14 +58,6 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
-                                href="/">
-                                <i class="ti ti-home ps-2 text-xl"></i>
-                                <span>Beranda</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
                                 href="/dashboard-pembimbing">
                                 <i class="ti ti-layout-dashboard ps-2 text-xl"></i>
                                 <span>Dashboard</span>
@@ -79,7 +71,7 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
-                                href="#">
+                                href="/daftar-persetujuan">
                                 <i class="ti ti-progress-check ps-2 text-xl"></i>
                                 <span>Daftar Persetujuan</span>
                             </a>
@@ -207,6 +199,7 @@
                                                             @else
                                                                 <p class="text-[12px] text-gray-600">Pembimbing</p>
                                                             @endif
+                                                            <p class="text-[12px] text-gray-900">{{ Auth::guard('pegawai')->user()->fungsi_bagian }}</p>
                                                         </div>
                                                     </div>
 

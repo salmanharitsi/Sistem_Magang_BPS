@@ -56,7 +56,7 @@
                 class="text-red-500 ml-1">*</span></label>
         <textarea maxlength="250" name="tentang_saya" id="tentang_saya" wire:model.live="tentang_saya"
             class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
-            placeholder="Masukkan deskripsi diri kamu"></textarea>
+            placeholder="Masukkan deskripsi peminatan kamu"></textarea>
         @error('tentang_saya')
             <span class="text-red-500 text-[11px]">{{ $message }}</span>
         @enderror
@@ -104,7 +104,7 @@
                     class="text-red-500 ml-1">*</span></label>
             <input type="date" name="tanggal_lahir" id="tanggal_lahir" wire:model.live="tanggal_lahir"
                 class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
-                placeholder="Pilih tanggal lahir" max="{{ date('Y-m-d', strtotime('-1 day')) }}" />
+                placeholder="Pilih tanggal lahir" max="{{ date('Y-m-d', strtotime('-15 years')) }}" />
             @error('tanggal_lahir')
                 <span class="text-red-500 text-[11px]">{{ $message }}</span>
             @enderror

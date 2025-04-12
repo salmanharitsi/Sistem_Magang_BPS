@@ -49,16 +49,14 @@ class GenerateLogbookJob implements ShouldQueue
 
                 $data = [];
                 while ($tanggalMulai->lte($tanggalSelesai)) {
-                    if ($tanggalMulai->isWeekday()) {
-                        $data[] = [
-                            'id' => Str::uuid(),
-                            'magang_id' => $magang->id,
-                            'tanggal' => $tanggalMulai->toDateString(),
-                            'status' => 'waiting',
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ];
-                    }
+                    $data[] = [
+                        'id' => Str::uuid(),
+                        'magang_id' => $magang->id,
+                        'tanggal' => $tanggalMulai->toDateString(),
+                        'status' => 'waiting',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
                     $tanggalMulai->addDay();
                 }
 

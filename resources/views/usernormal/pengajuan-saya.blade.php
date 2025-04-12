@@ -6,6 +6,7 @@
     @php
         $firstLetter = strtoupper(substr($pengajuan->name, 0, 1));
         use Carbon\Carbon;
+        Carbon::setLocale('id');
     @endphp
 
     <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
@@ -25,7 +26,7 @@
                     <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                         <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                             <i class="ti ti-alert-circle text-lg"></i>
-                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ \Carbon\Carbon::parse($pengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
+                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ Carbon::parse($pengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
                         </div>
                     </div>
                 </div>
@@ -77,13 +78,13 @@
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Mulai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_mulai)->format('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}
                             </p>
                         </div>
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal selesai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_selesai)->format('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}
                             </p>
                         </div>
                     </div>
@@ -151,7 +152,7 @@
                     <div>
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         <p class="text-gray-600 text-sm">
-                            {{ Carbon::parse($pengajuan->tanggal_lahir)->format('j-F-Y') }}
+                            {{ Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('j-F-Y') }}
                         </p>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengajuan;
 use App\Models\Presensi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -82,9 +83,17 @@ class UserNormalController
             abort(404);
         }
 
-        $hariKe = $presensiList->pluck('id')->search($presensi->id);
-        if ($hariKe === false) {
-            abort(404);
+        // Calculate working days (excluding weekends)
+        $hariKe = 0;
+        $startDate = Carbon::parse($magang->tanggal_mulai);
+        $currentDate = Carbon::parse($presensi->tanggal);
+        
+        while ($startDate <= $currentDate) {
+            // Skip weekends
+            if (!$startDate->isWeekend()) {
+                $hariKe++;
+            }
+            $startDate->addDay();
         }
 
         if ($presensi->jam_masuk && $presensi->jam_keluar) {
@@ -92,6 +101,10 @@ class UserNormalController
         } 
         
         if ($presensi->status === 'izin') {
+            return redirect('/presensi');
+        }
+
+        if ($presensi->tanggal < now()->toDateString()) {
             return redirect('/presensi');
         }
 
@@ -118,6 +131,14 @@ class UserNormalController
                 // Koordinat rumah
                 $officeLat = 0.444011;
                 $officeLng = 101.459271;
+                // //kos
+                // $officeLat = 0.4786217843669414;
+                // $officeLng = 101.37318152023657;
+                //rumah 2
+                $officeLat = 1.287660;
+                $officeLng = 101.175784;
+                // $officeLat = 0.4786217843669414;
+                // $officeLng = 101.37318152023657;
                 // Koordinat nyasar
                 // $officeLat = 0.445742;
                 // $officeLng = 101.466078;
@@ -150,7 +171,7 @@ class UserNormalController
 
         return view($view, [
             'presensi' => $presensi,
-            'hariKe' => $hariKe + 1, // Karena index dimulai dari 0, tambahkan 1
+            'hariKe' => $hariKe, // Now using the calculated working day count
         ]);
     }
 
@@ -290,18 +311,74 @@ class UserNormalController
             $imageName = $request->type . '_' . uniqid() . '.png'; // Nama file dinamis
             Storage::disk('public')->put('laporan_presensi/' . $imageName, base64_decode($image));
 
+            // Variabel untuk menyimpan point
+            $point = 0;
+
             // Perbarui data berdasarkan tipe (kehadiran atau pulang)
             if ($request->type === 'kehadiran') {
+                // Konversi waktu masuk ke datetime
+                $jamMasuk = now();
+                $aturanJamMasuk = Carbon::today()->setTimeFromTimeString($presensi->aturan_jam_masuk);
+
+                // Hitung selisih waktu
+                $selisihMenit = $aturanJamMasuk->diffInMinutes($jamMasuk, false);
+
+                // Tentukan point berdasarkan selisih waktu
+                if ($selisihMenit <= 0) {
+                    // Tepat waktu
+                    $point = 100;
+                } elseif ($selisihMenit > 0 && $selisihMenit <= 30) {
+                    // Terlambat <= 30 menit
+                    $point = 90;
+                } elseif ($selisihMenit > 30 && $selisihMenit <= 60) {
+                    // Terlambat 31-60 menit
+                    $point = 80;
+                } elseif ($selisihMenit > 60) {
+                    // Terlambat > 60 menit
+                    $point = 75;
+                }
+
                 $presensi->update([
-                    'jam_masuk' => now()->format('H:i:s'),
+                    'jam_masuk' => $jamMasuk->format('H:i:s'),
                     'foto_masuk' => 'laporan_presensi/' . $imageName,
                     'status' => 'hadir',
+                    'point_masuk' => $point,
                     'updated_at' => now()
                 ]);
             } elseif ($request->type === 'pulang') {
+                // Konversi waktu pulang ke datetime
+                $jamPulang = now();
+                $aturanJamPulang = Carbon::today()->setTimeFromTimeString($presensi->aturan_jam_keluar);
+
+                // Hitung selisih waktu
+                $selisihMenit = $aturanJamPulang->diffInMinutes($jamPulang, false);
+
+                // Tentukan point berdasarkan selisih waktu
+                if ($selisihMenit >= 0) {
+                    // Tepat waktu
+                    $point = 100;
+                } elseif ($selisihMenit < 0 && $selisihMenit >= -30) {
+                    // Pulang cepat <= 30 menit
+                    $point = 90;
+                } elseif ($selisihMenit < -30 && $selisihMenit >= -60) {
+                    // Pulang cepat 31-60 menit
+                    $point = 80;
+                } elseif ($selisihMenit < -60) {
+                    // Pulang cepat > 60 menit
+                    $point = 75;
+                }
+
+                // Ambil poin       t_masuk yang sudah tersimpan
+                $pointMasuk = $presensi->point_masuk ?? 0;
+
+                // Hitung total point
+                $totalPoint = round(($pointMasuk + $point) / 2);
+
                 $presensi->update([
-                    'jam_keluar' => now()->format('H:i:s'),
+                    'jam_keluar' => $jamPulang->format('H:i:s'),
                     'foto_keluar' => 'laporan_presensi/' . $imageName,
+                    'point_keluar' => $point,
+                    'point' => $totalPoint,
                     'updated_at' => now()
                 ]);
             }
@@ -316,6 +393,7 @@ class UserNormalController
                 'redirect' => url('/presensi'),
                 'success' => true,
                 'message' => 'Data ' . ucfirst($request->type) . ' berhasil disimpan!',
+                'point' => $point
             ]);
             
         } catch (\Exception $e) {

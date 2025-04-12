@@ -40,15 +40,19 @@
                                         <!-- Div Bulat Tanggal -->
                                         <div @unless ($isFutureDate) wire:click="selectPresensi('{{ $presensi->tanggal }}')" @endunless
                                             class="flex items-center justify-center w-12 h-12 rounded-full 
-                                                @if ($presensi->status === 'hadir' && $presensi->jam_keluar && !$isSelected) bg-green-500 text-white
-                                                @elseif ($isSelected) 
+                                                @if ($isSelected) 
                                                     bg-blue-500 text-white
+                                                @elseif ($tanggal->isWeekend())
+                                                    bg-red-500 text-white
+                                                @elseif ($presensi->status === 'hadir') 
+                                                    bg-green-500 text-white
                                                 @elseif ($presensi->status === 'izin') 
                                                     bg-amber-500 text-white
                                                 @elseif ($presensi->status === 'tidak-hadir') 
                                                     bg-red-500 text-white
                                                 @else
-                                                    bg-gray-200 @endif
+                                                    bg-gray-200 
+                                                @endif
                                                 {{ $isFutureDate ? 'cursor-not-allowed opacity-50' : 'cursor-pointer' }}">
                                             {{ $tanggal->format('d') }} <!-- Tampilkan tanggal (contoh: 17) -->
                                         </div>
@@ -69,7 +73,7 @@
                     <i class="ti ti-chevron-right text-xl"></i>
                 </button>
             </div>
-            <div class="bg-white p-5 rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-lg card grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="flex items-center justify-start lg:justify-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-blue-500"></div>
                     <p class="text-sm">Hari Ini</p>
@@ -91,138 +95,205 @@
 
         <!-- Bagian Kanan: Detail Presensi -->
         <div class="w-full md:w-1/2 h-fit card dark:bg-gray-800 sm:rounded-lg overflow-hidden relative">
-            @if ($selectedPresensi)
-                @if (
-                    $selectedPresensi->tanggal == Carbon::today()->toDateString() &&
-                        $selectedPresensi->status !== 'izin' &&
-                        $selectedPresensi->status !== 'tidak-hadir' &&
-                        (!$selectedPresensi->jam_masuk || !$selectedPresensi->jam_keluar))
-                    <div class="bg-white p-5 rounded-lg shadow-md">
-                        <h2 class="text-xl font-semibold mb-4">Pengecekan Lokasi</h2>
-                        <div id="map" class="w-full h-56 rounded-lg relative">
-                            <!-- Elemen loading -->
-                            <div id="map-loading"
-                                class="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-75">
-                                <span class="text-gray-700 animate-pulse">Memuat map...</span>
+            @if ($selectedDate)
+                @if (Carbon::parse($selectedDate)->isWeekend())
+                    <!-- Tampilan untuk hari weekend -->
+                    <div class="p-5">
+                        <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                            <div class="flex gap-3 items-start lg:items-center">
+                                <i class="ti ti-sparkles text-lg"></i>
+                                <p class="text-sm">Presensi tidak tersedia pada akhir pekan!</p>
                             </div>
-                        </div>
-                        <div id="location-status" class="mt-4">
-                            <!-- Pesan dan tombol akan ditampilkan di sini berdasarkan kondisi -->
                         </div>
                     </div>
-                @else
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <!-- Header Section with Status Badge -->
-                        <div class="bg-gray-50 p-5 border-b">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                                <h2 class="text-xl font-semibold text-gray-800">Detail Presensi</h2>
-                                @if ($selectedPresensi->pembimbing_id)
-                                    <div
-                                        class="px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
-                                        <i class="ti ti-check"></i>
-                                        <p class="text-xs">Disetujui</p>
-                                    </div>
-                                @else
-                                    <div
-                                        class="px-3 py-1 border border-amber-800 bg-amber-100 text-amber-800 rounded-full font-medium text-sm flex items-center gap-1">
-                                        <i class="ti ti-clock"></i>
-                                        <p class="text-xs">Menunggu Persetujuan</p>
-                                    </div>
-                                @endif
+                @elseif ($selectedPresensi)
+                    @if (
+                        $selectedPresensi->tanggal == Carbon::today()->toDateString() &&
+                        $selectedPresensi->status !== 'izin' &&
+                        $selectedPresensi->status !== 'tidak-hadir' &&
+                        (!$selectedPresensi->point_masuk || !$selectedPresensi->point_keluar))
+                        <!-- Tampilan presensi hari ini yang belum lengkap -->
+                        <div class="bg-white p-5 rounded-lg shadow-md">
+                            <div class="mb-4">
+                                <h2 class="text-xl font-semibold ">Pengecekan Lokasi</h2>
+                                <p class="text-sm text-gray-600">Magang Hari ke - {{ $hariKe }}</p>
                             </div>
-                        </div>
-
-                        <!-- Details Section -->
-                        <div class="p-5">
-                            <!-- Date Row -->
-                            <div class="flex items-center py-3 border-b border-gray-100">
-                                <div class="w-2/5 text-gray-600 font-medium">Tanggal</div>
-                                <div class="w-3/5 text-gray-900 font-semibold">
-                                    {{ Carbon::parse($selectedPresensi->tanggal)->translatedFormat('d F Y') }}</div>
-                            </div>
-
-                            <!-- Status Row -->
-                            <div class="flex items-center py-3 border-b border-gray-100">
-                                <div class="w-2/5 text-gray-600 font-medium">Status</div>
-                                <div class="w-3/5">
-                                    @if ($selectedPresensi->status === 'hadir')
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
-                                            Hadir
-                                        </span>
-                                    @elseif ($selectedPresensi->status === 'izin')
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-amber-100 text-amber-800">
-                                            Izin
-                                        </span>
-                                    @elseif ($selectedPresensi->status === 'tidak-hadir')
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">
-                                            Tidak Hadir
-                                        </span>
-                                    @else
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800">
-                                            {{ $selectedPresensi->status }}
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Time In and Out (if available) -->
-                            @if ($selectedPresensi->jam_masuk && $selectedPresensi->jam_keluar)
-                                <div class="flex items-center py-3 border-b border-gray-100">
+                            @if ($selectedPresensi->jam_masuk && !$selectedPresensi->jam_keluar)
+                                <div class="flex items-center p-3 border border-gray-500 mb-5 rounded-lg">
                                     <div class="w-2/5 text-gray-600 font-medium">Jam Masuk</div>
                                     <div class="w-3/5 text-gray-900">
                                         <div class="flex gap-1 items-center">
                                             <i class="ti ti-login text-2xl text-blue-500"></i>
-                                            {{ $selectedPresensi->jam_masuk }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center py-3 border-b border-gray-100">
-                                    <div class="w-2/5 text-gray-600 font-medium">Jam Keluar</div>
-                                    <div class="w-3/5 text-gray-900">
-                                        <div class="flex gap-1 items-center">
-                                            <i class="ti ti-logout text-2xl text-blue-500"></i>
-                                            {{ $selectedPresensi->jam_keluar }}
+                                            <div class="w-full flex flex-col md:flex-row justify-between items-center">
+                                                {{ $selectedPresensi->jam_masuk }}
+                                                @if ($selectedPresensi->point_masuk > 90 && $selectedPresensi->point_masuk <= 100)
+                                                    <div class="font-medium text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Tepat Waktu</div>
+                                                @elseif ($selectedPresensi->point_masuk <= 90)
+                                                    <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Telat Masuk</div>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             @endif
-
-                            <!-- Keterangan Izin (if applicable) -->
-                            @if ($selectedPresensi->status === 'izin')
-                                <div class="flex items-start py-3">
-                                    <div class="w-2/5 text-gray-600 font-medium">Keterangan Izin</div>
-                                    <div
-                                        class="w-3/5 text-gray-900 bg-gray-100 p-3 rounded-md border border-gray-500 text-sm">
-                                        {{ $selectedPresensi->keterangan_izin ?? 'Tidak ada keterangan' }}
-                                    </div>
+                            <div id="map" class="w-full h-56 rounded-lg relative">
+                                <!-- Elemen loading -->
+                                <div id="map-loading"
+                                    class="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-75">
+                                    <span class="text-gray-700 animate-pulse">Memuat map...</span>
                                 </div>
-                            @endif
-                        </div>
-
-                        <!-- Footer with timestamp if needed -->
-                        @if ($selectedPresensi->created_at)
-                            <div class="bg-gray-50 px-5 py-3 text-xs text-gray-500 text-right">
-                                Terakhir diperbarui:
-                                {{ Carbon::parse($selectedPresensi->updated_at)->format('d M Y H:i') }}
                             </div>
-                        @endif
-                    </div>
-                @endif
-            @else
-                <div class="p-5">
-                    <div
-                        class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <i class="ti ti-sparkles text-lg"></i>
-                            <p class="text-sm">Presensi tidak tersedia pada akhir pekan, selamat menikmati akhir pekan!
-                            </p>
+                            <div id="location-status" class="mt-4">
+                                <!-- Pesan dan tombol akan ditampilkan di sini berdasarkan kondisi -->
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    @else
+                        <!-- Tampilan detail presensi biasa -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <!-- Header Section with Status Badge -->
+                            <div class="bg-gray-50 p-5 border-b">
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                                    <div>
+                                        <h2 class="text-xl font-semibold text-gray-800">Detail Presensi</h2>
+                                        <p class="text-sm text-gray-600">Magang Hari ke - {{ $hariKe }}</p>
+                                    </div>
+                                    @if ($selectedPresensi->pembimbing_id)
+                                        <div
+                                            class="px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
+                                            <i class="ti ti-check"></i>
+                                            <p class="text-xs">Disetujui</p>
+                                        </div>
+                                    @else
+                                        <div
+                                            class="px-3 py-1 border border-amber-800 bg-amber-100 text-amber-800 rounded-full font-medium text-sm flex items-center gap-1">
+                                            <i class="ti ti-clock"></i>
+                                            <p class="text-xs">Menunggu Persetujuan</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+        
+                            <!-- Details Section -->
+                            <div class="p-5">
+                                <!-- Date Row -->
+                                <div class="flex items-center py-3 border-b border-gray-100">
+                                    <div class="w-2/5 text-gray-600 font-medium">Tanggal</div>
+                                    <div class="w-3/5 text-gray-900 font-semibold">
+                                        {{ Carbon::parse($selectedPresensi->tanggal)->translatedFormat('l, d F Y') }}
+                                    </div>
+                                </div>
+        
+                                <!-- Status Row -->
+                                <div class="flex items-center py-3 border-b border-gray-100">
+                                    <div class="w-2/5 text-gray-600 font-medium">Status</div>
+                                    <div class="w-3/5">
+                                        @if ($selectedPresensi->status === 'hadir')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+                                                Hadir
+                                            </span>
+                                        @elseif ($selectedPresensi->status === 'izin')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-amber-100 text-amber-800">
+                                                Izin
+                                            </span>
+                                        @elseif ($selectedPresensi->status === 'tidak-hadir')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">
+                                                Tidak Hadir
+                                            </span>
+                                        @else
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800">
+                                                {{ $selectedPresensi->status }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+        
+                                <!-- Time In and Out (if available) -->
+                                @if ($selectedPresensi->status === 'hadir')
+                                    <div class="flex items-center py-3 border-b border-gray-100">
+                                        <div class="w-2/5 text-gray-600 font-medium">Jam Masuk</div>
+                                        <div class="w-3/5 text-gray-900">
+                                            <div class="flex gap-1 items-center">
+                                                <i class="ti ti-login text-2xl text-blue-500"></i>
+                                                <div class="w-full flex flex-col md:flex-row justify-between items-center">
+                                                    {{ $selectedPresensi->jam_masuk }}
+                                                    @if ($selectedPresensi->point_masuk > 90 && $selectedPresensi->point_masuk <= 100)
+                                                        <div class="font-medium text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Tepat Waktu</div>
+                                                    @elseif ($selectedPresensi->point_masuk <= 90)
+                                                        <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Telat Masuk</div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center py-3 border-b border-gray-100">
+                                        <div class="w-2/5 text-gray-600 font-medium">Jam Keluar</div>
+                                        <div class="w-3/5">
+                                            @if ($selectedPresensi->jam_keluar === null)
+                                                <div class="flex gap-1 items-center text-gray-900">
+                                                    <i class="ti ti-logout text-2xl text-blue-500"></i>
+                                                    <div class="w-full flex justify-between items-center">
+                                                        <span>--:--:--</span>
+                                                        <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">tidak lapor pulang</div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="flex gap-1 items-center text-gray-900">
+                                                    <i class="ti ti-logout text-2xl text-blue-500"></i>
+                                                    <div class="w-full flex justify-between items-center">
+                                                        {{ $selectedPresensi->jam_keluar }}
+                                                        @if ($selectedPresensi->point_keluar > 90 && $selectedPresensi->point_keluar <= 100)
+                                                            <div class="font-medium text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Tepat Waktu</div>
+                                                        @elseif ($selectedPresensi->point_keluar <= 90)
+                                                            <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Cepat Pulang</div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+        
+                                <!-- Keterangan Izin (if applicable) -->
+                                @if ($selectedPresensi->status === 'izin')
+                                    <div class="flex items-center py-3 border-b border-gray-100">
+                                        <div class="w-2/5 text-gray-600 font-medium">Lampiran</div>
+                                        <div class="w-3/5 text-sm">
+                                            @if ($selectedPresensi->lampiran)
+                                                <a href="{{ $selectedPresensi->lampiran }}" target="_blank" class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                                                    <i class="ti ti-brand-google-drive mr-2"></i>Lihat Lampiran
+                                                </a>
+                                            @else
+                                                <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-500 rounded-md">
+                                                    Tidak ada lampiran
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start py-3">
+                                        <div class="w-2/5 text-gray-600 font-medium">Keterangan Izin</div>
+                                        <div
+                                            class="w-3/5 text-gray-900 bg-gray-100 p-3 rounded-md border border-gray-500 text-sm">
+                                            {{ $selectedPresensi->keterangan_izin ?? 'Tidak ada keterangan' }}
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+        
+                            <!-- Footer with timestamp if needed -->
+                            @if ($selectedPresensi->created_at)
+                                <div class="bg-gray-50 px-5 py-3 text-xs text-gray-500 text-right">
+                                    Terakhir diperbarui:
+                                    {{ Carbon::parse($selectedPresensi->updated_at)->translatedFormat('d M Y H:i') }}
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+                @endif
             @endif
         </div>
     </div>
@@ -286,8 +357,8 @@
         // var officeLongitude = 101.45457153; 
         var officeLatitude = 0.444011; // Koordinat Rumah
         var officeLongitude = 101.459271;
-        // var officeLatitude = 0.445742; // Koordinat nyasar
-        // var officeLongitude = 101.466078;
+        var officeLatitude = 0.445742; // Koordinat nyasar
+        var officeLongitude = 101.466078;
         var officeRadius = 50; // Radius dalam meter
         var locationStatus = document.getElementById('location-status'); // Elemen untuk menampilkan status
         var mapLoading = document.getElementById('map-loading'); // Elemen loading
@@ -377,6 +448,12 @@
                     // Jika dalam radius, tampilkan tombol "Lapor Kehadiran"
                     locationStatus.innerHTML = `
                     @if ($selectedPresensi)
+                        @php
+                            $aturanJamMasuk = Carbon::parse($selectedPresensi->aturan_jam_masuk);
+                            $batasPresensi = $aturanJamMasuk->copy()->subHours(2);
+                            $waktuSekarang = now();
+                        @endphp
+
                         @if ($selectedPresensi->jam_masuk)
                             <div class="mt-5 flex flex-col gap-5">
                                 <form action="{{ route('usernormal.lapor-harian', $selectedPresensi->id) }}" method="get" class="w-full">
@@ -387,14 +464,21 @@
                                 </form>
                             </div>
                         @else
-                            <div class="mt-5 flex">
-                                <form action="{{ route('usernormal.lapor-harian', $selectedPresensi->id) }}" method="get" class="w-full">
-                                    <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
-                                    <button type="submit" class="w-full bg-blue-600 px-4 border-2 border-transparent text-white py-1.5 rounded-lg whitespace-nowrap hover:bg-white hover:text-blue-600 hover:border-blue-600 transition-all duration-200 text-center cursor-pointer">
-                                        Laporkan Kehadiran
-                                    </button>
-                                </form>
-                            </div>
+                            @if ($waktuSekarang >= $batasPresensi)
+                                <div class="mt-5 flex">
+                                    <form action="{{ route('usernormal.lapor-harian', $selectedPresensi->id) }}" method="get" class="w-full">
+                                        <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
+                                        <button type="submit" class="w-full bg-blue-600 px-4 border-2 border-transparent text-white py-1.5 rounded-lg whitespace-nowrap hover:bg-white hover:text-blue-600 hover:border-blue-600 transition-all duration-200 text-center cursor-pointer">
+                                            Laporkan Kehadiran
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                                <div class="w-full h-fit flex gap-3 items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                                    <i class="ti ti-alert-circle text-lg"></i>
+                                    <p class="text-sm">Presensi tersedia mulai pukul <span class="font-bold">{{ $batasPresensi->format('H:i') }}</span></p>
+                                </div>
+                            @endif
                         @endif
                     @endif
                     `;
@@ -435,6 +519,7 @@
                 }
                 // Tampilkan pesan error jika geolocation gagal
                 locationStatus.innerHTML = `
+                @if ($selectedPresensi)
                     <div class="mt-4 text-red-500 text-sm text-center">
                         Gagal mendapatkan lokasi. Pastikan izin lokasi pada browser diaktifkan.
                     </div>
@@ -446,6 +531,7 @@
                             </button>
                         </form>
                     </div>
+                @endif
                 `;
                 if (mapLoading) {
                     mapLoading.style.display = 'none';

@@ -118,6 +118,11 @@ return new class extends Migration
             $table->uuid('pembimbing_id')->nullable();
             $table->foreign('pembimbing_id')->references('id')->on('pegawai')->onDelete('cascade');
             $table->date('tanggal');
+            $table->integer('point_masuk')->default(0);
+            $table->integer('point_keluar')->default(0);
+            $table->integer('point')->default(0);
+            $table->time('aturan_jam_masuk')->nullable();
+            $table->time('aturan_jam_keluar')->nullable();
             $table->time('jam_masuk')->nullable();
             $table->time('jam_keluar')->nullable();
             $table->enum('status', ['waiting', 'hadir', 'tidak-hadir', 'izin'])->default('waiting');
@@ -125,7 +130,6 @@ return new class extends Migration
             $table->string('foto_keluar')->nullable();
             $table->text('keterangan_izin')->nullable();
             $table->string('lampiran')->nullable();
-            $table->string('original_filename_lampiran')->nullable();
             $table->timestamps();
         });
 
@@ -137,7 +141,7 @@ return new class extends Migration
             $table->foreign('pembimbing_id')->references('id')->on('pegawai')->onDelete('cascade');
             $table->date('tanggal');
             $table->text('deskripsi')->nullable();
-            $table->enum('status', ['waiting', 'approved', 'rejected'])->default('waiting');
+            $table->enum('status', ['waiting', 'mengisi', 'tidak-mengisi'])->default('waiting');
             $table->string('lampiran')->nullable();
             $table->string('komentar')->nullable();
             $table->timestamps();

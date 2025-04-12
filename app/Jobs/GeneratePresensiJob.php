@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Alkoumi\LaravelHijriDate\Hijri;
 
 class GeneratePresensiJob implements ShouldQueue
 {
@@ -48,16 +49,19 @@ class GeneratePresensiJob implements ShouldQueue
 
                 $data = [];
                 while ($tanggalMulai->lte($tanggalSelesai)) {
-                    if ($tanggalMulai->isWeekday()) {
-                        $data[] = [
-                            'id' => Str::uuid(),
-                            'magang_id' => $magang->id,
-                            'tanggal' => $tanggalMulai->toDateString(),
-                            'status' => 'waiting',
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ];
-                    }
+                    // Cek apakah tanggal tersebut berada di bulan Ramadhan
+                    $isRamadhan = $this->isRamadhan($tanggalMulai);
+                    
+                    $data[] = [
+                        'id' => Str::uuid(),
+                        'magang_id' => $magang->id,
+                        'tanggal' => $tanggalMulai->toDateString(),
+                        'aturan_jam_masuk' => $isRamadhan ? '08:00:00' : '07:00:00',
+                        'aturan_jam_keluar' => $isRamadhan ? '15:00:00' : '16:00:00',
+                        'status' => 'waiting',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
                     $tanggalMulai->addDay();
                 }
 
@@ -71,5 +75,19 @@ class GeneratePresensiJob implements ShouldQueue
             \Log::error('GeneratePresensiJob failed: ' . $e->getMessage());
             $this->fail($e);
         }
+    }
+
+    /**
+     * Cek apakah tanggal tertentu berada di bulan Ramadhan
+     */
+    protected function isRamadhan(Carbon $date): bool
+    {
+        // Konversi ke tanggal Hijriyah
+        $hijriDate = Hijri::Date('Y-m-d', $date->format('Y-m-d'));
+        
+        // Ekstrak bulan dari tanggal Hijriyah (bulan 9 adalah Ramadhan)
+        $hijriMonth = (int) substr($hijriDate, 5, 2);
+        
+        return $hijriMonth === 9;
     }
 }

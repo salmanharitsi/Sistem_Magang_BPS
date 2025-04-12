@@ -1,0 +1,133 @@
+<?php
+
+namespace App\Livewire;
+
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\Magang;
+use App\Models\Presensi;
+use Illuminate\Support\Str;
+
+class ShowDaftarPresensi extends Component
+{
+    use WithPagination;
+
+    public $search;
+    public $showModal = false;
+    public $selectedData = [];
+
+    public function updating($key): void
+    {
+        if ($key === 'search') {
+            $this->resetPage();
+        }
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->selectedData = [];
+    }
+
+    public function showDetail($id)
+    {
+        $presensi = Presensi::with('magang.user')->find($id);
+
+        if ($presensi) {
+            $this->originalStatus = $presensi->status;
+            $this->selectedData = [
+                'id' => $presensi->id,
+                'name' => $presensi->magang->user->name,
+                'tanggal' => $presensi->tanggal,
+                'jenis_magang' => $presensi->magang->jenis_magang,
+                'status' => $presensi->status,
+                'jam_masuk' => $presensi->jam_masuk,
+                'jam_keluar' => $presensi->jam_keluar,
+                'foto_masuk' => $presensi->foto_masuk ? 'storage/' . $presensi->foto_masuk : null, // Path ke foto_masuk
+                'foto_keluar' => $presensi->foto_keluar ? 'storage/' . $presensi->foto_keluar : null, // Path ke foto_keluar
+                'keterangan_izin' => $presensi->keterangan_izin,
+                'updated_at' => $presensi->updated_at,
+                'point' => $presensi->point,
+                'lampiran' => $presensi->lampiran
+            ];
+            $this->showModal = true;
+        }
+    }
+
+    public function render()
+    {
+        $user = Auth::user();
+
+        // Get the user's latest active magang
+        $magang = Magang::where('user_id', $user->id)
+                        ->where('status_magang', 'active')
+                        ->latest()
+                        ->first();
+
+        $query = Presensi::query();
+
+        if ($magang) {
+            $query->where('magang_id', $magang->id)
+                  ->where('status', '!=', 'waiting')
+                  ->orderBy('tanggal', 'desc');
+        } else {
+            // If no active magang found, return empty results
+            $query->whereNull('magang_id');
+        }
+
+        if ($this->search) {
+            $search = strtolower($this->search);
+
+            // Mapping hari dan bulan dalam bahasa Indonesia ke bahasa Inggris
+            $indo_days = [
+                'minggu' => 'Sunday',
+                'senin' => 'Monday',
+                'selasa' => 'Tuesday',
+                'rabu' => 'Wednesday',
+                'kamis' => 'Thursday',
+                'jumat' => 'Friday',
+                'sabtu' => 'Saturday',
+            ];
+
+            $indo_months = [
+                'januari' => 'January',
+                'februari' => 'February',
+                'maret' => 'March',
+                'april' => 'April',
+                'mei' => 'May',
+                'juni' => 'June',
+                'juli' => 'July',
+                'agustus' => 'August',
+                'september' => 'September',
+                'oktober' => 'October',
+                'november' => 'November',
+                'desember' => 'December',
+            ];
+
+            $english_day = $indo_days[$search] ?? null;
+            $english_month = $indo_months[$search] ?? null;
+
+            $query->where(function ($q) use ($search, $english_day, $english_month) {
+                $q->where('status', 'like', '%' . $search . '%')
+                  ->orWhereRaw("DAY(tanggal) LIKE ?", ["%$search%"])
+                  ->orWhereRaw("YEAR(tanggal) LIKE ?", ["%$search%"]);
+
+                if ($english_day) {
+                    $q->orWhereRaw("DAYNAME(tanggal) = ?", [$english_day]);
+                }
+
+                if ($english_month) {
+                    $q->orWhereRaw("MONTHNAME(tanggal) = ?", [$english_month]);
+                }
+            });
+        }
+
+        $presensi = $query->latest()->paginate(5);
+
+        return view('livewire.show-daftar-presensi', [
+            'presensi' => $presensi,
+            'magang' => $magang
+        ]);
+    }
+}
