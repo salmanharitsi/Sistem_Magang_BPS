@@ -6,13 +6,15 @@
     @php
         use Carbon\Carbon;
 
-        $chartData = $bimbinganActive->map(function($magang) {
-            return [
-                'hadir' => $magang->attendance_stats['hadir'],
-                'izin' => $magang->attendance_stats['izin'],
-                'tidak_hadir' => $magang->attendance_stats['tidak_hadir']
-            ];
-        })->toJson();
+        $chartData = $bimbinganActive
+            ->map(function ($magang) {
+                return [
+                    'hadir' => $magang->attendance_stats['hadir'],
+                    'izin' => $magang->attendance_stats['izin'],
+                    'tidak_hadir' => $magang->attendance_stats['tidak_hadir'],
+                ];
+            })
+            ->toJson();
     @endphp
 
     <div class="w-full h-44 rounded-lg bg-blue-500 relative overflow-hidden">
@@ -96,21 +98,25 @@
                                     <div class="flex flex-col mt-4">
                                         <h1 class="text-lg font-semibold">{{ $pesertaMagang->user->name }}</h1>
                                         <h4 class="text-gray-500 text-sm">{{ $pesertaMagang->user->institusi }}</h4>
-                                        <div class="text-xs w-fit mt-3 px-2 py-1 rounded-md bg-blue-100 text-blue-600 border border-blue-600">
+                                        <div
+                                            class="text-xs w-fit mt-3 px-2 py-1 rounded-md bg-blue-100 text-blue-600 border border-blue-600">
                                             <p>{{ $pesertaMagang->jenis_magang }}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Presensi</h4>
-                                        <!-- Line Chart -->
-                                        <div class="pie-chart-container relative" id="pie-chart-{{ $index }}"></div>
+                                    <!-- Line Chart -->
+                                    <div class="pie-chart-container relative" id="pie-chart-{{ $index }}"></div>
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Logbook</h4>
-                                    {{-- Implement your logbook chart here --}}
-                                    <div class="h-fit flex items-center justify-center bg-gray-100 rounded">
-                                        <span class="text-gray-500">Grafik Logbook akan ditampilkan di sini</span>
+                                    <div class="logbook-chart-container relative" id="logbook-chart-{{ $index }}">
+                                        @if ($pesertaMagang->logbook_stats['total_hari_kerja'] === 0)
+                                            <div class="absolute inset-0 flex items-center justify-center text-gray-500">
+                                                Belum ada hari kerja yang tersedia
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -157,29 +163,29 @@
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const indicators = document.querySelectorAll('.carousel-indicator');
-    
+
             let currentIndex = 0;
             const totalItems = items.length;
-    
+
             // Initialize charts for all slides
             initializeAllCharts();
-    
+
             // Set first indicator as active
             if (indicators.length > 0) {
                 indicators[0].classList.add('bg-blue-500');
             }
-    
+
             // Event listeners for buttons
             prevBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex - 1 + totalItems) % totalItems;
                 updateCarousel();
             });
-    
+
             nextBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex + 1) % totalItems;
                 updateCarousel();
             });
-    
+
             // Event listeners for indicators
             indicators.forEach(indicator => {
                 indicator.addEventListener('click', () => {
@@ -187,11 +193,11 @@
                     updateCarousel();
                 });
             });
-    
+
             function updateCarousel() {
                 // Update transform to show current item
                 carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
-    
+
                 // Update indicators
                 indicators.forEach((indicator, index) => {
                     if (index === currentIndex) {
@@ -203,18 +209,18 @@
                     }
                 });
             }
-    
+
             function initializeAllCharts() {
                 items.forEach((item, index) => {
                     const chartContainer = item.querySelector('.pie-chart-container');
                     if (chartContainer && typeof ApexCharts !== 'undefined') {
                         const chartId = `pie-chart-${index}`;
                         chartContainer.id = chartId;
-                        
+
                         const magangData = @json($bimbinganActive);
                         const currentMagang = magangData[index];
-                        
-                        const chart = new ApexCharts(document.getElementById(chartId), 
+
+                        const chart = new ApexCharts(document.getElementById(chartId),
                             getChartOptions(
                                 currentMagang.attendance_stats.hadir,
                                 currentMagang.attendance_stats.izin,
@@ -224,14 +230,31 @@
                         chart.render();
                         chartContainer._chart = chart;
                     }
+                    const logbookContainer = item.querySelector('.logbook-chart-container');
+                    if (logbookContainer && typeof ApexCharts !== 'undefined') {
+                        const chartId = `logbook-chart-${index}`;
+                        const magangData = @json($bimbinganActive);
+                        const currentMagang = magangData[index];
+
+                        const logbookChart = new ApexCharts(
+                            document.getElementById(chartId),
+                            getLogbookChartOptions(
+                                currentMagang.logbook_stats.mengisi,
+                                currentMagang.logbook_stats.tidak_mengisi,
+                                currentMagang.logbook_stats.total_hari_kerja
+                            )
+                        );
+                        logbookChart.render();
+                    }
+
                 });
             }
-    
+
             function getChartOptions(hadir = 0, izin = 0, tidakHadir = 0) {
                 // Calculate percentages only for non-waiting statuses
                 const total = hadir + izin + tidakHadir;
                 let series, labels;
-                
+
                 if (total > 0) {
                     series = [
                         (hadir / total) * 100,
@@ -246,7 +269,7 @@
 
                 return {
                     series: series,
-                    colors: ["#0e9f6e", "#f59e0b", "#f05252"], 
+                    colors: ["#0e9f6e", "#f59e0b", "#f05252"],
                     chart: {
                         height: 250,
                         width: "100%",
@@ -285,13 +308,104 @@
                     tooltip: {
                         enabled: true,
                         y: {
-                            formatter: function(value, { seriesIndex }) {
+                            formatter: function(value, {
+                                seriesIndex
+                            }) {
                                 if (total === 0) return "No Data";
                                 const count = [hadir, izin, tidakHadir][seriesIndex];
                                 return `${labels[seriesIndex]}: ${count} (${Math.round(value)}%)`;
                             }
                         }
                     }
+                }
+            }
+
+            function getLogbookChartOptions(mengisi = 0, tidak_mengisi = 0, total_hari_kerja = 0) {
+                let series, labels;
+                const total = mengisi + tidak_mengisi;
+
+                if (total_hari_kerja > 0) {
+                    const totalDiisi = mengisi + tidak_mengisi;
+                    if (totalDiisi === 0) {
+                        series = [100];
+                        labels = ["Belum Ada Aktivitas"];
+                    } else {
+                        series = [
+                            Math.round((mengisi / totalDiisi) * 100),
+                            Math.round((tidak_mengisi / totalDiisi) * 100)
+                        ];
+                        labels = ["Mengisi", "Tidak Mengisi"];
+                    }
+                } else {
+                    series = [100];
+                    labels = ["Belum Ada Data"];
+                }
+
+                return {
+                    series: series,
+                    colors: ['#1A56DB', '#f05252'],
+                    chart: {
+                        height: 250,
+                        width: "100%",
+                        type: "donut",
+                        fontFamily: 'Inter, sans-serif',
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '70%'
+                            }
+                        }
+                    },
+                    labels: labels,
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function(val, opts) {
+                            return Math.round(val) + '%'
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        fontFamily: 'Inter, sans-serif',
+                    },
+                    tooltip: {
+                        fillSeriesColor: false,
+                        y: {
+                            formatter: function(value, {
+                                seriesIndex
+                            }) {
+                                if (total === 0) return "Belum Ada Data";
+                                const counts = [mengisi, tidak_mengisi];
+                                return `${labels[seriesIndex]}: ${counts[seriesIndex]} (${Math.round(value)}%)`;
+                            }
+                        },
+                        style: {
+                            fontSize: '14px',
+                            fontFamily: 'Inter, sans-serif'
+                        }
+                    }
+                }
+            }
+
+            function openPreview(url) {
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+                const width = screenWidth / 2;
+                const height = screenHeight / 2;
+                const left = (screenWidth - width) / 2;
+                const top = (screenHeight - height) / 2;
+
+                const newWindow = window.open(
+                    '',
+                    '',
+                    `width=${width},height=${height},top=${top},left=${left}`
+                );
+
+                if (newWindow) {
+                    newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
+                    newWindow.document.title = "Image Preview";
+                } else {
+                    alert('Preview dokumen tidak tersedia di tampilan mobile');
                 }
             }
         });

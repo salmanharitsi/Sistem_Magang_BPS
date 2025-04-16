@@ -22,7 +22,7 @@
             // Get the latest magang record for the user
             $latestMagang = Auth::user()->magang()->latest('created_at')->first();
         @endphp
-    
+
         @if (!is_null($latestPengajuan) && Auth::user()->status_magang === 'masa-daftar')
             {{-- Check if status is 'accept-first' and surat_pengantar is null --}}
             @if ($latestPengajuan->status_pengajuan === 'accept-first')
@@ -87,7 +87,7 @@
             </div>
         @endif
     </div>
-    
+
     <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6 {{($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar') ? 'mt-6' : 'mt-0'}}">
         @if (($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar'))
         <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -331,13 +331,18 @@
                     @livewire('show-grafik-presensi')
                 </div>
                 <div class="col-span-1">
-                   <p>Grafik logbook seharusnya disini</p>
+                   @livewire('show-grafik-logbook')
                 </div>
             </div>
             <div class="col-span-3 mt-6 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
                 <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
                     Presensi</div>
                 @livewire('show-daftar-presensi')
+            </div>
+            <div class="col-span-3 mt-6 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+                <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
+                    Logbook</div>
+                @livewire('show-daftar-logbook')
             </div>
         @endif
     </div>

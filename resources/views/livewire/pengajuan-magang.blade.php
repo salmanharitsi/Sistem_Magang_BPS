@@ -18,22 +18,21 @@
         </div>
 
         <div>
-            <label for="bidang_tujuan" class="block mb-1 text-md font-medium text-gray-700">Bidang Tujuan<span
-                    class="text-red-500 ml-1">*</span></label>
+            <label for="bidang_tujuan" class="block mb-1 text-md font-medium text-gray-700">
+                Bidang Tujuan<span class="text-red-500 ml-1">*</span>
+            </label>
             <select name="bidang_tujuan" id="bidang_tujuan" wire:model.live="bidang_tujuan"
                 class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5">
                 <option value="" disabled selected hidden>Pilih bidang yang dituju</option>
-                <option value="Fungsi Statistik Sosial">Fungsi Statistik Sosial</option>
-                <option value="Fungsi Statistik Produksi">Fungsi Statistik Produksi</option>
-                <option value="Fungsi Statistik Distribusi">Fungsi Statistik Distribusi</option>
-                <option value="Fungsi Nerwilis">Fungsi Nerwilis</option>
-                <option value="Fungsi IPDS">Fungsi IPDS</option>
-                <option value="Bagian Umum">Bagian Umum</option>
+                @foreach ($listFungsiBagian as $fungsi)
+                    <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                @endforeach
             </select>
             @error('bidang_tujuan')
                 <span class="text-red-500 text-[11px]">{{ $message }}</span>
             @enderror
         </div>
+        
 
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 

@@ -1,7 +1,7 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div>
+<div class="pegawai-container"> 
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
         <div class="w-full md:w-1/5">
             <form class="flex items-center">
@@ -16,8 +16,55 @@
                 </div>
             </form>
         </div>
+        <!-- Filter Button and Dropdown -->
+        <div class="relative inline-block text-left">
+            <button id="filterButton" type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <i class="ti ti-filter mr-2"></i>
+                Filter
+            </button>
+            <div id="filterDropdown" class="hidden origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
+                <div class="py-2 px-4">
+                    <h3 class="text-gray-700 font-medium mb-2">Filter berdasarkan</h3>
+                    
+                    <!-- Fungsi Bagian Filter -->
+                    <div class="mb-4">
+                        <label for="fungsi-bagian-filter" class="block text-sm font-medium text-gray-700 mb-1">Fungsi Bagian</label>
+                        <select wire:model.live="filterFungsiBagian" id="fungsi-bagian-filter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                            <option value="">Semua</option>
+                            <option value="Fungsi Statistik Sosial">Fungsi Statistik Sosial</option>
+                            <option value="Fungsi Statistik Produksi">Fungsi Statistik Produksi</option>
+                            <option value="Fungsi Nerwilis">Fungsi Nerwilis</option>
+                            <option value="Fungsi Statistik Distribusi">Fungsi Statistik Distribusi</option>
+                            <option value="Fungsi IPDS">Fungsi IPSD</option>
+                            <option value="Bagian Umum">Bagian Umum</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Role Filter -->
+                    <div class="mb-4">
+                        <label for="role-filter" class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                        <select wire:model.live="filterRole" id="role-filter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                            <option value="">Semua</option>
+                            <option value="regular">Pembimbing</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Apply and Reset Buttons -->
+                    <div class="flex justify-end pt-2">
+                        <button wire:click="resetFilters" type="button" class="mr-2 px-3 py-1 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                            Reset
+                        </button>
+                        <button wire:click="applyFilters" type="button" class="px-3 py-1 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                            Terapkan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="overflow-x-auto">
+    <!-- Minimum height container untuk tabel -->
+    <div class="overflow-x-auto min-h-screen-half">
         <table id="dataIkuTable" class="w-full text-sm text-left rtl:text-left">
             <thead class="text-md text-gray-700 uppercase bg-gray-100 h-full">
                 <tr class="h-full">
@@ -75,7 +122,33 @@
                 @endforelse
             </tbody>
         </table>
-        <!-- Custom Pagination -->
         {{ $pegawai->links('vendor.pagination.custom-pagination') }}
     </div>
+
+    <style>
+        .min-h-screen-half {
+            min-height: 50vh;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButton = document.getElementById('filterButton');
+            const filterDropdown = document.getElementById('filterDropdown');
+            
+            filterButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                filterDropdown.classList.toggle('hidden');
+                
+                const buttonRect = filterButton.getBoundingClientRect();
+                filterDropdown.style.top = (buttonRect.height + 5) + 'px';
+            });
+            
+            document.addEventListener('click', function(event) {
+                if (!filterButton.contains(event.target) && !filterDropdown.contains(event.target)) {
+                    filterDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </div>

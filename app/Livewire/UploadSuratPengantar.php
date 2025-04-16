@@ -2,11 +2,13 @@
 
 namespace App\Livewire;
 
-use App\Models\Pengajuan;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
+use App\Mail\NotifSuratPengantar;
 use Livewire\Component;
+use App\Models\Pengajuan;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UploadSuratPengantar extends Component
 {
@@ -50,11 +52,17 @@ class UploadSuratPengantar extends Component
         $pengajuan->tenggat = null;
         $pengajuan->save();
 
+        Mail::to('luxurialev@gmail.com')->queue(
+            new NotifSuratPengantar($pengajuan, $user)
+       );
+
         return redirect(to: '/dashboard')->with([
             'success' => [
                 "title" => "Surat pengantar berhasil diupload"
             ]
         ]);
+
+        
     }
 
     public function render()

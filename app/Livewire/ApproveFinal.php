@@ -7,9 +7,12 @@ use App\Models\Magang;
 use App\Models\Pegawai;
 use Livewire\Component;
 use App\Models\Pengajuan;
+use App\Mail\PengajuanApproved;
+use App\Mail\PengajuanRejected;
 use App\Jobs\GenerateLogbookJob;
 use App\Jobs\GeneratePresensiJob;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Mail;
 
 class ApproveFinal extends Component
 {
@@ -34,6 +37,7 @@ class ApproveFinal extends Component
             'pembimbing1' => 'required',
         ];
     }
+
 
     public function messages()
     {
@@ -83,6 +87,8 @@ class ApproveFinal extends Component
         $user->status_magang = 'aktif';
         $user->save();
 
+        Mail::to($user->email)->queue(new PengajuanApproved($pengajuan, $magang));
+
         $this->reset(['showTerimaModal', 'pembimbing1', 'pembimbing2']);
 
         return redirect(url('/daftar-pengajuan'))->with([
@@ -99,6 +105,12 @@ class ApproveFinal extends Component
         $pengajuan->status_pengajuan = "reject-final";
         $pengajuan->komentar = "Terdapat kesalahan pada surat pengantar, silahkan ajukan kembali";
         $pengajuan->save();
+
+         // Dapatkan pengguna
+        $user = User::query()->where('id', $pengajuan->user_id)->first();
+        
+        // Kirim email pemberitahuan penolakan
+        Mail::to($user->email)->queue(new PengajuanRejected($pengajuan));
 
         return redirect(url('/daftar-pengajuan'))->with([
             'success' => [
