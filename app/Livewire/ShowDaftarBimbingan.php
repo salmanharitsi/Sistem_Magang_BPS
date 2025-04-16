@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Magang;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -13,16 +14,18 @@ class ShowDaftarBimbingan extends Component
     use WithPagination;
 
     public $search;
+    public $statusFilter = '';
 
     public function updating($key): void
     {
-        if ($key === 'search') {
+        if (in_array($key, ['search', 'statusFilter'])) {
             $this->resetPage();
         }
     }
 
     public function render()
     {
+        $now = Carbon::now();
         $query = Magang::where(function (Builder $builder) {
             $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())
                 ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
@@ -37,7 +40,23 @@ class ShowDaftarBimbingan extends Component
             });
         }
 
-        $bimbingan = $query->orderBy('created_at', 'desc')->paginate(3);
+        if ($this->statusFilter) {
+            $query->where(function (Builder $builder) use ($now) {
+                if ($this->statusFilter === 'soon') {
+                    $builder->where('status_magang', 'active')
+                           ->whereDate('tanggal_mulai', '>', $now);
+                } elseif ($this->statusFilter === 'ongoing') {
+                    $builder->where('status_magang', 'active')
+                           ->whereDate('tanggal_mulai', '<=', $now)
+                           ->whereDate('tanggal_selesai', '>=', $now);
+                } elseif ($this->statusFilter === 'ended') {
+                    $builder->where('status_magang', 'active')
+                           ->whereDate('tanggal_selesai', '<', $now);
+                }
+            });
+        }
+
+        $bimbingan = $query->orderBy('created_at', 'desc')->paginate(5);
 
         return view('livewire.show-daftar-bimbingan', [
             'bimbingan' => $bimbingan

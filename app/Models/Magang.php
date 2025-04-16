@@ -59,4 +59,9 @@ class Magang extends Model
     {
         return $this->hasMany(Logbook::class);
     }
+
+    public function pengajuan(): BelongsTo
+    {
+        return $this->belongsTo(Pengajuan::class, 'pengajuan_id');
+    }
 }

@@ -8,7 +8,7 @@
         <!-- Bagian Kiri: Carousel Tanggal -->
         <div class="flex flex-col gap-6 w-full md:w-1/2">
             <div
-                class="w-full h-fit py-4 px-[53px] card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+                class="w-full h-fit py-4 px-[53px] card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
                 <div id="presensi-carousel" class="overflow-hidden" wire:ignore>
                     <div class="carousel-inner flex transition-transform duration-300 ease-in-out">
                         @php
@@ -94,7 +94,7 @@
         </div>
 
         <!-- Bagian Kanan: Detail Presensi -->
-        <div class="w-full md:w-1/2 h-fit card dark:bg-gray-800 sm:rounded-lg overflow-hidden relative">
+        <div class="w-full md:w-1/2 h-fit card dark:bg-gray-800 rounded-lg overflow-hidden relative">
             @if ($selectedDate)
                 @if (Carbon::parse($selectedDate)->isWeekend())
                     <!-- Tampilan untuk hari weekend -->
@@ -119,7 +119,7 @@
                                 <p class="text-sm text-gray-600">Magang Hari ke - {{ $hariKe }}</p>
                             </div>
                             @if ($selectedPresensi->jam_masuk && !$selectedPresensi->jam_keluar)
-                                <div class="flex items-center p-3 border border-gray-500 mb-5 rounded-lg">
+                                <div class="flex items-center px-3 py-2 border border-gray-300 mb-5 rounded-lg">
                                     <div class="w-2/5 text-gray-600 font-medium">Jam Masuk</div>
                                     <div class="w-3/5 text-gray-900">
                                         <div class="flex gap-1 items-center">
@@ -357,8 +357,8 @@
         // var officeLongitude = 101.45457153; 
         var officeLatitude = 0.444011; // Koordinat Rumah
         var officeLongitude = 101.459271;
-        var officeLatitude = 0.445742; // Koordinat nyasar
-        var officeLongitude = 101.466078;
+        // var officeLatitude = 0.445742; // Koordinat nyasar
+        // var officeLongitude = 101.466078;
         var officeRadius = 50; // Radius dalam meter
         var locationStatus = document.getElementById('location-status'); // Elemen untuk menampilkan status
         var mapLoading = document.getElementById('map-loading'); // Elemen loading

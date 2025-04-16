@@ -1,6 +1,6 @@
 @extends('layouts.pembimbing')
 
-@section('title', 'Daftar Persetujuan')
+@section('title', 'Daftar Bimbingan')
 
 @section('content')
 
@@ -9,13 +9,13 @@
     <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
         <div class="">
             <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
-                Daftar Persetujuan
+                Daftar Bimbingan
             </h4>
         </div>
     </div>
     <!-- Start coding here -->
     <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
-        @livewire('show-persetujuan-presensi')
+        @livewire('show-daftar-bimbingan')
     </div>
 
 </div>

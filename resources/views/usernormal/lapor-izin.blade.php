@@ -20,7 +20,7 @@
             </div>
         </div>
         <!-- Start coding here -->
-        <div class="col-span-4 p-5 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+        <div class="col-span-4 p-5 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
             @livewire('lapor-izin', ['presensi' => $presensi])
         </div>
 

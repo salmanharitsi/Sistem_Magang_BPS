@@ -214,7 +214,7 @@ class UserNormalController
 
         if (!$pengajuan) {
             return redirect('/dashboard')->withErrors([
-                'error' => "Pengajuan not found or is not in 'accept-first' status."
+                'error' => "Pengajuan tidak ditemukan atau tidak belum diterima."
             ]);
         }
 

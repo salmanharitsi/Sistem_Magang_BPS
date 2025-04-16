@@ -234,7 +234,7 @@
     </div>
 
     @if ($reviewPengajuan)
-        <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden mt-6">
+        <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden mt-6">
             <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
                 Pengajuan</div>
             @livewire('show-daftar-pengajuan')

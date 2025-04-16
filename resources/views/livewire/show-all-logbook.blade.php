@@ -7,7 +7,7 @@
         <!-- Bagian Kiri: Carousel Tanggal -->
         <div class="flex flex-col gap-6 w-full md:w-1/2">
             <div
-                class="w-full h-fit py-4 px-[53px] card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+                class="w-full h-fit py-4 px-[53px] card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
                 <div id="logbook-carousel" class="overflow-hidden" wire:ignore>
                     <div class="carousel-inner flex transition-transform duration-300 ease-in-out">
                         @php
@@ -88,7 +88,7 @@
         </div>
 
         <!-- Bagian Kanan: Detail Logbook -->
-        <div class="w-full md:w-1/2 h-fit card dark:bg-gray-800 sm:rounded-lg overflow-hidden relative">
+        <div class="w-full md:w-1/2 h-fit card dark:bg-gray-800 rounded-lg overflow-hidden relative">
             @if ($selectedDate)
                 @if (Carbon::parse($selectedDate)->isWeekend())
                     <!-- Weekend Display -->

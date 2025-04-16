@@ -87,7 +87,7 @@
                                             </h1>
                                         @endif
                                         <div>
-                                            <a href=""
+                                            <a href="/daftar-bimbingan/{{ $pesertaMagang->id }}"
                                                 class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                                 <i class="ti ti-eye"></i>
                                             </a>
@@ -141,7 +141,7 @@
     @endif
 
     @if ($allBimbinganCount)
-        <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden mt-6">
+        <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden mt-6">
             <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-5 border-b border-gray-200">
                 Daftar Bimbingan</div>
             @livewire('show-daftar-bimbingan')
@@ -294,28 +294,28 @@
                     }
                 }
             }
-    
-            function openPreview(url) {
-                const screenWidth = window.screen.width;
-                const screenHeight = window.screen.height;
-                const width = screenWidth / 2;
-                const height = screenHeight / 2;
-                const left = (screenWidth - width) / 2;
-                const top = (screenHeight - height) / 2;
-    
-                const newWindow = window.open(
-                    '',
-                    '',
-                    `width=${width},height=${height},top=${top},left=${left}`
-                );
-    
-                if (newWindow) {
-                    newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
-                    newWindow.document.title = "Image Preview";
-                } else {
-                    alert('Preview dokumen tidak tersedia di tampilan mobile');
-                }
-            }
         });
+        
+        function openPreview(url) {
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+            const width = screenWidth / 2;
+            const height = screenHeight / 2;
+            const left = (screenWidth - width) / 2;
+            const top = (screenHeight - height) / 2;
+
+            const newWindow = window.open(
+                '',
+                '',
+                `width=${width},height=${height},top=${top},left=${left}`
+            );
+
+            if (newWindow) {
+                newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
+                newWindow.document.title = "Image Preview";
+            } else {
+                alert('Preview dokumen tidak tersedia di tampilan mobile');
+            }
+        }
     </script>
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminPembimbingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PembimbingController;
@@ -55,4 +56,10 @@ Route::group(['middleware' => ['pembimbing', 'no-cache']], function () {
     Route::get('dashboard-pembimbing', [PembimbingController::class, 'get_dashboard_pembimbing'])->name('pembimbing.dashboard');
     Route::get('ubah-password-pembimbing', [HomeController::class, 'get_ubah_password'])->name('pembimbing.ubah-password');
     Route::get('daftar-persetujuan', [PembimbingController::class, 'get_daftar_persetujuan'])->name('pembimbing.daftar-persetujuan');
+    Route::get('daftar-bimbingan', [PembimbingController::class, 'get_daftar_bimbingan'])->name('pembimbing.daftar-bimbingan');
+});
+
+// Route untuk admin dan pembimbing
+Route::group(['middleware' => ['admin-or-pembimbing', 'no-cache']], function () {
+    Route::get('daftar-bimbingan/{id}', [AdminPembimbingController::class, 'get_bimbingan'])->name('admin-or-pembimbing.bimbingan');
 });

@@ -16,6 +16,19 @@
                 </div>
             </form>
         </div>
+        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+            <div class="flex items-center gap-2">
+                <p class="font-semibold">Filter:</p>
+                <div class="relative">
+                    <select wire:model.live="statusFilter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
+                        <option value="">Semua Status</option>
+                        <option value="soon">Segera Dimulai</option>
+                        <option value="ongoing">Berlangsung</option>
+                        <option value="ended">Berakhir</option>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="overflow-x-auto">
         <table id="dataIkuTable" class="w-full text-sm text-left rtl:text-left">
@@ -29,6 +42,9 @@
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-left">
                         Jenis Magang
+                    </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
+                        Periode Magang
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
                         Status
@@ -48,6 +64,10 @@
                         <td class="py-4 px-6 text-left">
                             {{$data->jenis_magang}}
                         </td>
+                        <td class="py-4 px-6 text-left flex flex-col items-center gap-3">
+                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j-F-Y') }}</div>
+                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j-F-Y') }}</div>
+                        </td>
                         <td class="py-4 px-6 text-center">
                             <div
                                 class="text-[13px] mx-auto items-center w-fit">
@@ -61,7 +81,7 @@
                             </div>
                         </td>
                         <td class="py-4 px-6">
-                            <a href=""
+                            <a href="daftar-bimbingan/{{$data->id}}"
                                 class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-eye"></i>
                             </a>

@@ -161,6 +161,8 @@ class ShowPersetujuanPresensi extends Component
                         ->orWhere('pembimbing_kedua', $userId);
                 })
                 ->whereNull('pembimbing_id')
+                ->where('point', '!=', 0)  // Tambahkan filter ini
+                ->where('tanggal', '<=', Carbon::today()) // Tambahkan filter ini juga
                 ->where('status', '!=', 'waiting');
             
             // Apply search filter
@@ -263,8 +265,8 @@ class ShowPersetujuanPresensi extends Component
                     ->orWhere('pembimbing_kedua', $userId);
             })
             ->whereNull('pembimbing_id')
-            ->where('status', '!=', 'waiting')
-            ->where('tanggal', '<', Carbon::today())
+            ->where('point', '!=', 0)
+            ->where('tanggal', '<=', Carbon::today())
             ->orderBy('updated_at', 'desc');
 
         // Apply search filter if search term is provided
