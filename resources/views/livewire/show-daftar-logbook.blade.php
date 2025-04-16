@@ -47,20 +47,15 @@
                             {{Carbon::parse($data->tanggal)->translatedFormat('l, d F Y')}}
                         </td>
                         <td class="py-4 px-6 text-center">
-                            @if ($data->status === 'hadir')
+                            @if ($data->status === 'mengisi')
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
-                                    Hadir
+                                    Mengisi
                                 </span>
-                            @elseif ($data->status === 'izin')
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-amber-100 text-amber-800">
-                                    Izin
-                                </span>
-                            @elseif ($data->status === 'tidak-hadir')
+                            @elseif ($data->status === 'tidak-mengisi')
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">
-                                    Tidak Hadir
+                                    Tidak Mengisi
                                 </span>
                             @endif
                         </td>

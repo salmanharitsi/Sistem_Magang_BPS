@@ -209,7 +209,6 @@ class ShowPersetujuanLogbook extends Component
             })
             ->whereNull('pembimbing_id')
             ->where('status', '!=', 'waiting')
-            ->where('tanggal', '<', Carbon::today())
             ->orderBy('updated_at', 'desc');
 
         // Apply search filter if search term is provided
