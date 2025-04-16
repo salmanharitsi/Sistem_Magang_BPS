@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AdminOrPembimbingMiddleware;
 use App\Http\Middleware\NoCacheMiddleware;
 use App\Http\Middleware\PembimbingMiddleware;
 use App\Http\Middleware\UserNormalMiddleware;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'usernormal' => UserNormalMiddleware::class,
             'admin' => AdminMiddleware::class,
             'pembimbing' => PembimbingMiddleware::class,
+            'admin-or-pembimbing' => AdminOrPembimbingMiddleware::class,
             'no-cache' => NoCacheMiddleware::class
         ]);
     })

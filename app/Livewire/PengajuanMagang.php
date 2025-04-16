@@ -17,9 +17,14 @@ class PengajuanMagang extends Component
 {
     // Properti validasi dan input lainnya…
     public $jenis_magang,
-           $bidang_tujuan,
-           $tanggal_mulai,
-           $tanggal_selesai;
+
+    $bidang_tujuan,
+    $tanggal_mulai,
+    $tanggal_selesai,
+    $penanggung_jawab_name,
+    $penanggung_jawab_jabatan,
+    $penanggung_jawab_email,
+    $penanggung_jawab_nomor_hp;
 
     // Tambahkan properti untuk menyimpan data fungsi bagian
     public $listFungsiBagian = [];
@@ -35,21 +40,46 @@ class PengajuanMagang extends Component
     public function rules()
     {
         return [
-            'jenis_magang'   => 'required',
-            'bidang_tujuan'  => 'required',
-            'tanggal_mulai'  => 'required',
-            'tanggal_selesai'=> 'required|after:tanggal_mulai'
+            'jenis_magang' => 'required',
+            'bidang_tujuan' => 'required',
+            'tanggal_mulai' => 'required',
+            'tanggal_selesai' => 'required|after:tanggal_mulai',
+            'penanggung_jawab_name' => 'required',
+            'penanggung_jawab_jabatan' => 'required',
+            'penanggung_jawab_email' => 'required|email',
+            'penanggung_jawab_nomor_hp' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'jenis_magang.required'   => 'Jenis magang tidak boleh kosong',
-            'bidang_tujuan.required'  => 'Bidang tujuan tidak boleh kosong',
-            'tanggal_mulai.required'  => 'Tanggal mulai magang tidak boleh kosong',
-            'tanggal_selesai.required'=> 'Tanggal selesai magang tidak boleh kosong',
-            'tanggal_selesai.after'   => 'Tanggal selesai magang harus setelah tanggal mulai',
+            'jenis_magang' => [
+                "required" => 'Jenis magang tidak boleh kosong',
+            ],
+            'bidang_tujuan' => [
+                "required" => 'Bidang tujuan tidak boleh kosong',
+            ],
+            'tanggal_mulai' => [
+                "required" => 'Tanggal mulai magang tidak boleh kosong',
+            ],
+            'tanggal_selesai' => [
+                "required" => 'Tanggal selesai magang tidak boleh kosong',
+                "after" => 'Tanggal selesai magang harus setelah tanggal mulai'
+            ],
+            'penanggung_jawab_name' => [
+                "required" => 'Nama penanggung jawab tidak boleh kosong',
+            ],
+            'penanggung_jawab_jabatan' => [
+                "required" => 'Jabatan penanggung jawab tidak boleh kosong',
+            ],
+            'penanggung_jawab_email' => [
+                "required" => 'Email penanggung jawab tidak boleh kosong',
+                "email" => 'Email penanggung jawab tidak valid',
+            ],
+            'penanggung_jawab_nomor_hp' => [
+                "required" => 'Nomor HP penanggung jawab tidak boleh kosong',
+            ]
         ];
     }
 
@@ -65,6 +95,11 @@ class PengajuanMagang extends Component
         $pengajuan->bidang_tujuan = $validatedData['bidang_tujuan'];
         $pengajuan->tanggal_mulai = $validatedData['tanggal_mulai'];
         $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
+
+        $pengajuan->penanggung_jawab_name = $validatedData['penanggung_jawab_name'];
+        $pengajuan->penanggung_jawab_jabatan = $validatedData['penanggung_jawab_jabatan'];
+        $pengajuan->penanggung_jawab_email = $validatedData['penanggung_jawab_email'];
+        $pengajuan->penanggung_jawab_nomor_hp = $validatedData['penanggung_jawab_nomor_hp'];
 
         // Data akademik
         $pengajuan->institusi = $user->institusi;

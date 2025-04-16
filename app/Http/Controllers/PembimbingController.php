@@ -75,4 +75,13 @@ class PembimbingController
         
         return view('pembimbing.daftar-persetujuan');
     }
+
+    public function get_daftar_bimbingan()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        
+        return view('pembimbing.daftar-bimbingan');
+    }
 }

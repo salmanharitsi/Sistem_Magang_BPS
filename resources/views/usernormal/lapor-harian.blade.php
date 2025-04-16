@@ -36,7 +36,7 @@
                 </div>
             </div>
             <!-- Start coding here -->
-            <div class="col-span-4 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+            <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
                 <div class="p-5 bg-white card rounded-md">
                     <div class="webcam-capture"></div>
                     <div class="mt-5 flex flex-col gap-5">

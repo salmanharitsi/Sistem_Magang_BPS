@@ -64,20 +64,22 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="py-4 px-6 flex justify-center">
-                            @if ($data->pembimbing_id)
-                                <div
-                                    class="w-fit px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
-                                    <i class="ti ti-check"></i>
-                                    <p class="text-xs">Disetujui</p>
-                                </div>
-                            @else
-                                <div
-                                    class="w-fit px-3 py-1 border border-red-800 bg-red-100 text-red-800 rounded-full font-medium text-sm flex items-center gap-1">
-                                    <i class="ti ti-x"></i>
-                                    <p class="text-xs">Belum Disetujui</p>
-                                </div>
-                            @endif
+                        <td class="py-4 px-6">
+                            <div class="mx-auto w-fit flex items-center">
+                                @if ($data->pembimbing_id)
+                                    <div
+                                        class="w-fit px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
+                                        <i class="ti ti-check"></i>
+                                        <p class="text-xs">Disetujui</p>
+                                    </div>
+                                @else
+                                    <div
+                                        class="w-fit px-3 py-1 border border-red-800 bg-red-100 text-red-800 rounded-full font-medium text-sm flex items-center gap-1">
+                                        <i class="ti ti-x"></i>
+                                        <p class="text-xs">Belum Disetujui</p>
+                                    </div>
+                                @endif
+                            </div>
                         </td>
                         <td class="py-4 px-6">
                             <div wire:click.prevent="showDetail('{{ $data->id }}')"

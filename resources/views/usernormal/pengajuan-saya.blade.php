@@ -59,9 +59,9 @@
             </div>
         @endif
 
-        <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
+        <div class="col-span-4 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
 
-            <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="col-span-2 lg:col-span-1 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <div class="">
                     <h4 class="text-gray-800 text-[22px] pb-3 border-b border-gray-300 font-semibold dark:text-white">
                         Pengajuan Program
@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="col-span-2 lg:col-span-1 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <div class="">
                     <h4 class="text-gray-800 text-[22px] pb-3 border-b border-gray-300 font-semibold dark:text-white">
                         Informasi Akademik
@@ -108,6 +108,38 @@
                     <p class="text-gray-600 text-sm">
                         {{ $pengajuan->nomor_induk }}
                     </p>
+                </div>
+            </div>
+
+            <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <h4 class="text-gray-800 text-[22px] pb-3 border-b border-gray-300 font-semibold dark:text-white">
+                    Penanggung Jawab
+                </h4>
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nama</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_name }}
+                        </p>
+                    </div>
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Jabatan</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_jabatan }}
+                        </p>
+                    </div>
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Email</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_email }}
+                        </p>
+                    </div>
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nomor HP</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_nomor_hp }}
+                        </p>
+                    </div>
                 </div>
             </div>
 

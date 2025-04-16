@@ -63,6 +63,7 @@ class ApproveFinal extends Component
         $user = User::query()->where('id', $this->pengajuan->user_id)->first();
 
         $magang = new Magang();
+        $magang->pengajuan_id = $pengajuan->id;
         $magang->status_magang = 'active';
         $magang->user_id = $user->id;
         $magang->jenis_magang = $pengajuan->jenis_magang;

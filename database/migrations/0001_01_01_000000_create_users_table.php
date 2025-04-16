@@ -87,6 +87,12 @@ return new class extends Migration
             $table->string('original_filename_kartu');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            //data penanggung jawab
+            $table->string('penanggung_jawab_name');
+            $table->string('penanggung_jawab_jabatan');
+            $table->string('penanggung_jawab_email');
+            $table->string('penanggung_jawab_nomor_hp');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -97,6 +103,8 @@ return new class extends Migration
 
         Schema::create('magang', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('pengajuan_id')->unique();
+            $table->foreign('pengajuan_id')->references('id')->on('pengajuan')->onDelete('cascade');
             $table->enum('status_magang', ['active', 'non-active'])->default('non-active');
             $table->string('user_id');
             $table->string('jenis_magang');
