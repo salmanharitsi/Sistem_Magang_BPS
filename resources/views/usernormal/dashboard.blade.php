@@ -339,7 +339,7 @@
                     Presensi</div>
                 @livewire('show-daftar-presensi')
             </div>
-            <div class="col-span-3 mt-6 card bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+            <div class="col-span-3 mt-6 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
                 <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
                     Logbook</div>
                 @livewire('show-daftar-logbook')

@@ -111,13 +111,7 @@
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Logbook</h4>
-                                    <div class="logbook-chart-container relative" id="logbook-chart-{{ $index }}">
-                                        @if ($pesertaMagang->logbook_stats['total_hari_kerja'] === 0)
-                                            <div class="absolute inset-0 flex items-center justify-center text-gray-500">
-                                                Belum ada hari kerja yang tersedia
-                                            </div>
-                                        @endif
-                                    </div>
+                                    <div class="logbook-chart-container relative" id="logbook-chart-{{ $index }}"></div>
                                 </div>
                             </div>
                         </div>
