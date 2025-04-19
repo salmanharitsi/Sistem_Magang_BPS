@@ -3,24 +3,66 @@
 namespace App\Livewire;
 
 use App\Models\Faq;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class EditFaq extends Component
 {
+    use WithPagination;
 
-    public $search = '';
+    #[Validate]
+    
     public $faqId, $question, $answer;
+    public $search = '';
     public $showModal = false;
     public $isEdit = false;
+    public $showDeleteModal = false;
+    public $deleteId;
+    public $deleteQuestion;
+    
 
-    protected $rules = [
-        'question' => 'required|string|max:255',
-        'answer' => 'required|string',
-    ];
+    public function rules()
+    {
+        return [
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'question' => [
+                "required" => 'Pertanyaan tidak boleh kosong',
+                "max" => 'Pertanyaan maksimal 255 karakter'
+            ],
+            'answer' => [
+                "required" => 'Jawaban tidak boleh kosong',
+            ],
+        ];
+    }
+
+    public function updating($key): void
+    {
+        if ($key === 'search') {
+            $this->resetPage();
+        }
+    }
 
     public function render()
     {
-        $faqs = Faq::where('question', 'like', '%' . $this->search . '%')->get();
+        $query = Faq::orderBy('created_at', 'desc');
+
+        if ($this->search) {
+            $query->where(function (Builder $builder) {
+                $builder->where('question', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        $faqs = $query->paginate(5);
+
         return view('livewire.edit-faq', ['faqs' => $faqs]);
     }
 
@@ -41,9 +83,14 @@ class EditFaq extends Component
             'question' => $this->question,
             'answer' => $this->answer,
         ]);
-
-        session()->flash('message', 'FAQ berhasil ditambahkan.');
+ 
         $this->resetModal();
+
+        return redirect('/edit-home?selected=faq')->with([
+            'success' => [
+                "title" => "FAQ berhasil ditambahkan!",
+            ]
+        ]);
     }
 
     public function edit($id)
@@ -66,8 +113,13 @@ class EditFaq extends Component
             'answer' => $this->answer,
         ]);
 
-        session()->flash('message', 'FAQ berhasil diperbarui.');
         $this->resetModal();
+
+        return redirect('/edit-home?selected=faq')->with([
+            'success' => [
+                "title" => "FAQ berhasil diperbarui!",
+            ]
+        ]);
     }
 
     public function resetModal()
@@ -77,5 +129,31 @@ class EditFaq extends Component
         $this->answer = '';
         $this->showModal = false;
         $this->isEdit = false;
+
+        // Reset error bag
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
+    public function confirmDelete($id)
+    {
+        $faq = Faq::find($id);
+        $this->deleteId = $id;
+        $this->deleteQuestion = $faq->question;
+        $this->showDeleteModal = true;
+    }
+
+    public function delete()
+    {        
+        Faq::find($this->deleteId)->delete();
+        
+        $this->showDeleteModal = false;
+        $this->deleteId = null;
+
+        return redirect('/edit-home?selected=faq')->with([
+            'success' => [
+                "title" => "FAQ berhasil dihapus!",
+            ]
+        ]);
     }
 }

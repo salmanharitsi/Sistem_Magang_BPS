@@ -218,6 +218,10 @@ class AdminController
 
     public function get_fungsi_bagian()
     {
+        if (request()->pjax()) {
+            return false;
+        }
+        
         $fungsiBagian = FungsiBagian::all();
         return view('admin.edit-home', compact('fungsiBagian'));
     }

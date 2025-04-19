@@ -245,7 +245,7 @@
 
             function updateCarousel() {
                 // Update transform to show current item
-                carouselInner.style.transform = translateX(-${currentIndex * 100}%);
+                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
             }
 
             // Set current slide berdasarkan state Livewire

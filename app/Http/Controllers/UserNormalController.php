@@ -135,8 +135,8 @@ class UserNormalController
                 // $officeLat = 0.4786217843669414;
                 // $officeLng = 101.37318152023657;
                 //rumah 2
-                $officeLat = 1.287660;
-                $officeLng = 101.175784;
+                // $officeLat = 1.287660;
+                // $officeLng = 101.175784;
                 // $officeLat = 0.4786217843669414;
                 // $officeLng = 101.37318152023657;
                 // Koordinat nyasar

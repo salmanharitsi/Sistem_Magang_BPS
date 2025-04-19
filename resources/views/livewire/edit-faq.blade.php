@@ -3,6 +3,9 @@
 @endphp
 
 <div class="pegawai-container">
+    <div class="p-4 border-b border-gray-300">
+        <h1 class="font-semibold text-lg text-gray-800">Frequently asked questions (FAQ)</h1>
+    </div>
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
         <div class="w-full md:w-1/5">
             <form class="flex items-center">
@@ -18,7 +21,7 @@
             </form>
         </div>
         <div class="flex space-x-2">
-            <button wire:click="create" type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            <button wire:click="create" type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <i class="ti ti-plus mr-2"></i>
                 Tambah FAQ
             </button>            
@@ -26,60 +29,102 @@
     </div>
 
     <div class="overflow-x-auto min-h-screen-half">
-    <table class="w-full text-sm text-left rtl:text-left">
-        <thead class="text-md text-gray-700 uppercase bg-gray-100 h-full">
-            <tr class="h-full">
-                <th scope="col" class="px-6 py-3 border-l border-white text-left">Pertanyaan</th>
-                <th scope="col" class="px-6 py-3 border-l border-white text-left">Jawaban</th>
-                <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($faqs as $faq)
-                <tr class="bg-white border-b hover:bg-gray-50">
-                    <td class="py-4 px-6 text-left">{{ $faq->question }}</td>
-                    <td class="py-4 px-6 text-left">{{ $faq->answer }}</td>
-                    <td class="py-4 px-6">
-                        <button wire:click="edit({{ $faq->id }})" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
-                            <i class="ti ti-edit"></i>
-                        </button>
-                    </td>
+        <table class="w-full text-sm text-left rtl:text-left">
+            <thead class="text-md text-gray-700 uppercase bg-gray-100 h-full">
+                <tr class="h-full">
+                    <th scope="col" class="px-6 py-3 border-l border-white text-left">Pertanyaan</th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-left">Jawaban</th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">Aksi</th>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="3" class="text-center py-10 text-gray-400">
-                        <i class="ti ti-file-x text-4xl"></i>
-                        <p class="font-semibold">Data FAQ tidak ditemukan</p>
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @forelse ($faqs as $faq)
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="py-4 px-6 text-left">{{ $faq->question }}</td>
+                        <td class="py-4 px-6 text-left">{{ $faq->answer }}</td>
+                        <td class="py-4 px-6">
+                            <div class="flex gap-2 w-fit mx-auto items-center">
+                                <button wire:click="edit({{ $faq->id }})" class="mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                    <i class="ti ti-edit"></i>
+                                </button>
+                                <button wire:click="confirmDelete({{ $faq->id }})" class="mx-auto w-fit flex items-center gap-1 bg-red-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
+                                    <i class="ti ti-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center py-10 text-gray-400">
+                            <i class="ti ti-file-x text-4xl"></i>
+                            <p class="font-semibold">Data FAQ tidak ditemukan</p>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <!-- Custom Pagination -->
+        {{ $faqs->links('vendor.pagination.custom-pagination') }}
     </div>
 
     <!-- Modal Edit -->
     @if ($showModal)
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-            <div class="bg-white p-6 rounded-lg w-1/3">
-                <h2 class="text-lg font-semibold mb-4">{{ $isEdit ? 'Edit FAQ' : 'Tambah FAQ' }}</h2>
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
+            <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-5">
+                <div class="flex justify-between items-center border-b pb-4 mb-5">
+                    <h2 class="text-lg font-semibold">{{ $isEdit ? 'Edit FAQ' : 'Tambah FAQ' }}</h2>
+                    <button wire:click="resetModal" class="text-gray-500 hover:text-gray-700">
+                        <i class="ti ti-x"></i>
+                    </button>
+                </div>
                 <form wire:submit.prevent="{{ $isEdit ? 'update' : 'store' }}">
-                    <div class="mb-3">
-                        <label class="block text-sm font-medium">Pertanyaan</label>
-                        <input wire:model.defer="question" type="text" class="w-full border rounded-lg p-2">
-                        @error('question') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <div>
+                        <label class="block mb-2 text-[15px] font-medium text-gray-700">Pertanyaan<span class="text-red-500 ml-1">*</span></label>
+                        <input wire:model.defer="question" name="question" id="question" type="text" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan pertanyaan FAQ">
+                        @error('question') <span class="text-red-500 text-[11px]">{{ $message }}</span> @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label class="block text-sm font-medium">Jawaban</label>
-                        <textarea wire:model.defer="answer" class="w-full border rounded-lg p-2"></textarea>
-                        @error('answer') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <div class="mt-5">
+                        <label class="block mb-2 text-[15px] font-medium text-gray-700">Jawaban<span class="text-red-500 ml-1">*</span></label>
+                        <textarea wire:model.defer="answer" name="answer" id="answer" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan jawaban pertanyaan FAQ"></textarea>
+                        @if($errors->has('answer'))
+                            <span class="text-red-500 text-[11px]">{{ $errors->first('answer') }}</span>
+                        @endif
                     </div>
 
-                    <div class="flex justify-end space-x-2">
-                        <button type="button" wire:click="resetModal" class="bg-gray-400 px-4 py-2 text-white rounded-lg">Batal</button>
-                        <button type="submit" class="bg-blue-600 px-4 py-2 text-white rounded-lg">Simpan</button>
+                    <div class="mt-4 flex">
+                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200">
+                            {{ $isEdit ? 'Update FAQ' : 'Tambah FAQ' }}
+                        </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal Konfirmasi Delete -->
+    @if ($showDeleteModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
+            <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3 p-5">
+                <div class="flex justify-between items-center border-b pb-4 mb-5">
+                    <h2 class="text-lg font-semibold">Konfirmasi Hapus</h2>
+                    <button wire:click="$set('showDeleteModal', false)" class="text-gray-500 hover:text-gray-700">
+                        <i class="ti ti-x"></i>
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <p>Apakah Kamu yakin ingin menghapus FAQ: "<span class="font-semibold">{{ $deleteQuestion }}</span>"</p>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button wire:click="$set('showDeleteModal', false)" type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        Batal
+                    </button>
+                    <button wire:click="delete" type="button" class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Hapus
+                    </button>
+                </div>
             </div>
         </div>
     @endif

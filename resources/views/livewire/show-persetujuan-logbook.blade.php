@@ -121,11 +121,11 @@
 
     <!-- Modal -->
     @if($showModal)
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
         <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-5">
             <div class="flex justify-between items-center border-b pb-4">
                 <h2 class="text-xl font-semibold">Detail Logbook</h2>
-                <button class="text-gray-500 hover:text-gray-700">
+                <button wire:click="closeModal" class="text-gray-500 hover:text-gray-700">
                     <i class="ti ti-x"></i>
                 </button>
             </div>
@@ -139,40 +139,57 @@
                         <td class="py-1 pr-4 font-semibold">Tanggal</td>
                         <td class="py-1">: {{ Carbon::parse($selectedData['tanggal'])->translatedFormat('l, j F Y') ?? $selectedData['tanggal'] ?? '' }}</td>
                     </tr>
+                    <tr>
+                        <td class="py-1 pr-4 font-semibold">Status</td>
+                        <td class="py-1 flex gap-[5px] items-center">:
+                            @if ($selectedData['status'] === 'mengisi')
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+                                    Mengisi
+                                </span>
+                            @elseif ($selectedData['status'] === 'tidak-mengisi')
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">
+                                    Tidak Mengisi
+                                </span>
+                            @endif
+                        </td>
+                    </tr>
+                    @if ($selectedData['deskripsi'])
+                        <tr>
+                            <td class="py-1 pr-4 font-semibold align-top">Kegiatan</td>
+                            <td class="py-1 flex gap-1">
+                                <p>: </p>
+                                <div class="w-full text-gray-900 bg-gray-100 p-2.5 rounded-md border border-gray-500 text-sm">
+                                    {{ $selectedData['deskripsi'] ?? '' }}
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
+                    @if ($selectedData['lampiran'])
+                        <tr>
+                            <td class="py-1 pr-4 font-semibold align-top">Lampiran</td>
+                            <td class="py-1 flex gap-1 text-sm">
+                                <p>: </p>
+                                <a href="{{ $selectedData['lampiran'] }}" target="_blank" class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                                    <i class="ti ti-brand-google-drive mr-2"></i>Lihat Lampiran
+                                </a>        
+                            </td>
+                        </tr>
+                    @endif
                 </table>
-                <div>
-                    <div class="flex flex-col py-3 border-b border-gray-200">
-                        <div class="text-black font-semibold mb-2">Kegiatan</div>
-                        <div class="text-gray-900 bg-gray-50 p-3 rounded">
-                            {{ $selectedData['deskripsi'] ?? '' }}
-                        </div>
-                    </div>
-                    
-
-                    <!-- Lampiran Row (Google Drive Link) -->
-                    <div class="flex flex-col py-3 border-b border-gray-200">
-                        <div class="text-black font-semibold mb-2">Lampiran</div>
-                        <div class="p-3">
-                            <a href="{{ $selectedData['lampiran'] ?? '' }}" target="_blank"
-                                class="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors">
-                                <i class="ti ti-brand-google-drive mr-2"></i>
-                                Lihat Lampiran
-                            </a>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="mt-6">
-                    <div class="w-2/5 text-black font-semibold">Komentar Pembimbing</div>
+                    <div class="w-2/5 text-black font-semibold mb-2">Komentar Pembimbing</div>
                     <textarea
                         wire:model="selectedData.komentar"
-                        class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
                         rows="4" 
                         placeholder="Tambahkan komentar atau catatan untuk peserta magang..."></textarea>
                 </div>
 
             </div>
-            <div class="mt-5 flex">
+            <div class="mt-3.5 flex">
                 <button wire:click="approveLogbook" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
                     Setujui Dokumen
                 </button>
