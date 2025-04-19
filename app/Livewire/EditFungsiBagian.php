@@ -2,12 +2,18 @@
 
 namespace App\Livewire;
 
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use App\Models\FungsiBagian;
 use App\Models\FungsiBagianJurusan;
+use Livewire\WithPagination;
 
 class EditFungsiBagian extends Component
 {
+    use WithPagination;
+
+    #[Validate]
 
     public $search = '';
     public $fungsiId;
@@ -16,16 +22,55 @@ class EditFungsiBagian extends Component
     public $jurusanInput;
     public $showModal = false;
     public $isEdit = false;
+    public $showDeleteModal = false;
+    public $deleteId;
+    public $deleteTitle;
 
-    protected $rules = [
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'jurusanInput' => 'required|string',
-    ];
+    public function rules()
+    {
+        return [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'jurusanInput' => 'required|string',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title' => [
+                "required" => 'Fungsi bagian tidak boleh kosong',
+                "max" => 'Fungsi bagian maksimal 255 karakter'
+            ],
+            'description' => [
+                "required" => 'Deskripsi fungsi bagian tidak boleh kosong',
+            ],
+            'jurusanInput' => [
+                "required" => 'Jurusan tidak boleh kosong',
+            ],
+        
+        ];
+    }
+
+    public function updating($key): void
+    {
+        if ($key === 'search') {
+            $this->resetPage();
+        }
+    }
 
     public function render()
     {
-        $fungsiBagian = FungsiBagian::where('title', 'like', '%' . $this->search . '%')->get();
+        $query = FungsiBagian::orderBy('created_at', 'desc');
+
+        if ($this->search) {
+            $query->where(function (Builder $builder) {
+                $builder->where('title', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        $fungsiBagian = $query->paginate(5);
+
         return view('livewire.edit-fungsi-bagian', ['fungsiBagian' => $fungsiBagian]);
     }
 
@@ -41,22 +86,27 @@ class EditFungsiBagian extends Component
     {
         $this->validate();
 
-    $fungsiBagian = FungsiBagian::create([
-        'title' => $this->title,
-        'description' => $this->description,
-    ]);
-
-    $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
-
-    foreach ($jurusanArray as $jurusan) {
-        FungsiBagianJurusan::create([
-            'fungsi_bagian_id' => $fungsiBagian->id,
-            'jurusan' => $jurusan,
+        $fungsiBagian = FungsiBagian::create([
+            'title' => $this->title,
+            'description' => $this->description,
         ]);
-    }
 
-    session()->flash('message', 'Fungsi Bagian berhasil ditambahkan.');
-    $this->resetModal();
+        $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
+
+        foreach ($jurusanArray as $jurusan) {
+            FungsiBagianJurusan::create([
+                'fungsi_bagian_id' => $fungsiBagian->id,
+                'jurusan' => $jurusan,
+            ]);
+        }
+
+        $this->resetModal();
+
+        return redirect('/edit-home?selected=fungsi-bagian')->with([
+            'success' => [
+                "title" => "Fungsi Bagian berhasil ditambahkan!",
+            ]
+        ]);
     }
 
 
@@ -75,26 +125,31 @@ class EditFungsiBagian extends Component
     {
         $this->validate();
 
-    $fungsiBagian = FungsiBagian::findOrFail($this->fungsiId);
-    $fungsiBagian->update([
-        'title' => $this->title,
-        'description' => $this->description,
-    ]);
-
-    // Hapus jurusan lama
-    $fungsiBagian->jurusan()->delete();
-
-    // Tambah jurusan baru
-    $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
-    foreach ($jurusanArray as $jurusan) {
-        FungsiBagianJurusan::create([
-            'fungsi_bagian_id' => $fungsiBagian->id,
-            'jurusan' => $jurusan,
+        $fungsiBagian = FungsiBagian::findOrFail($this->fungsiId);
+        $fungsiBagian->update([
+            'title' => $this->title,
+            'description' => $this->description,
         ]);
-    }
 
-    session()->flash('message', 'Fungsi Bagian berhasil diperbarui.');
-    $this->resetModal();
+        // Hapus jurusan lama
+        $fungsiBagian->jurusan()->delete();
+
+        // Tambah jurusan baru
+        $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
+        foreach ($jurusanArray as $jurusan) {
+            FungsiBagianJurusan::create([
+                    'fungsi_bagian_id' => $fungsiBagian->id,
+                    'jurusan' => $jurusan,
+            ]);
+        }
+
+        $this->resetModal();
+
+        return redirect('/edit-home?selected=fungsi-bagian')->with([
+            'success' => [
+                "title" => "Fungsi Bagian berhasil diperbarui!",
+            ]
+        ]);
     }
 
     public function resetModal()
@@ -105,5 +160,33 @@ class EditFungsiBagian extends Component
         $this->jurusanInput = '';
         $this->showModal = false;
         $this->isEdit = false;
+
+        // Reset error bag
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
+    public function confirmDelete($id)
+    {
+        $fungsiBagian = FungsiBagian::find($id);
+        $this->deleteId = $id;
+        $this->deleteTitle = $fungsiBagian->title; // Simpan title
+        $this->showDeleteModal = true;
+    }
+
+    public function delete()
+    {
+        FungsiBagianJurusan::where('fungsi_bagian_id', $this->deleteId)->delete();
+        
+        FungsiBagian::find($this->deleteId)->delete();
+        
+        $this->showDeleteModal = false;
+        $this->deleteId = null;
+
+        return redirect('/edit-home?selected=fungsi-bagian')->with([
+            'success' => [
+                "title" => "Fungsi Bagian berhasil dihapus!",
+            ]
+        ]);
     }
 }

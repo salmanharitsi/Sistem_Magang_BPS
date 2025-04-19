@@ -6,12 +6,23 @@ document.addEventListener("DOMContentLoaded", function () {
 //fungsi memberikan highlight ke menu yg sedang dipilih
 function highlightActiveMenuItem() {
     const links = document.querySelectorAll("a.menu-item");
-    const currentPath = window.location.pathname;
+    const currentUrl = new URL(window.location.href);
+    const currentPath = currentUrl.pathname;
+    const currentParams = currentUrl.searchParams;
 
     links.forEach((link) => {
-        const linkPath = link.getAttribute("href");
+        const linkUrl = new URL(link.href, window.location.origin);
+        const linkPath = linkUrl.pathname;
+        const linkParams = linkUrl.searchParams;
 
-        if (currentPath.includes(linkPath) && linkPath !== "/") {
+        // Cek kesesuaian path utama
+        const isPathMatch = currentPath === linkPath;
+        
+        // Cek kesesuaian parameter 'selected' jika ada
+        const isSelectedMatch = !linkParams.has('selected') || 
+                              (currentParams.get('selected') === linkParams.get('selected'));
+
+        if (isPathMatch && isSelectedMatch) {
             link.classList.add(
                 "bg-blue-600",
                 "text-white",
@@ -21,12 +32,20 @@ function highlightActiveMenuItem() {
                 "dark:from-blue-400",
                 "dark:to-blue-700"
             );
-        } else {
             link.classList.remove("bg-blue-50", "text-blue-600");
+        } else {
+            link.classList.remove(
+                "bg-blue-600",
+                "text-white",
+                "hover:text-white",
+                "font-regular",
+                "dark:text-[#0f1214]",
+                "dark:from-blue-400",
+                "dark:to-blue-700"
+            );
         }
     });
 }
-
 
 function toggleSidebar() {
     const toggleSidebarButton = document.getElementById('toggle-sidebar');

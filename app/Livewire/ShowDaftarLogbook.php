@@ -46,6 +46,7 @@ class ShowDaftarLogbook extends Component
                 'status' => $logbook->status,
                 'komentar' => $logbook->komentar,
                 'updated_at' => $logbook->updated_at,
+                'pembimbing_id' => $logbook->pembimbing_id
             ];
             $this->showModal = true;
         }

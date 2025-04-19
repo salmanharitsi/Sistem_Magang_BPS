@@ -127,7 +127,37 @@
                                 @endif
                             </td>
                         </tr>
+                        @if ($selectedData['lampiran'])
+                            <tr>
+                                <td class="py-1 pr-4 font-semibold align-top">Lampiran</td>
+                                <td class="py-1 flex gap-1 text-sm">
+                                    <p>: </p>
+                                        <a href="{{ $selectedData['lampiran'] }}" target="_blank" class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                                            <i class="ti ti-brand-google-drive mr-2"></i>Lihat Lampiran
+                                        </a>
+                                </td>
+                            </tr>
+                        @endif
+                        @if ($selectedData['deskripsi'])
+                            <tr>
+                                <td class="py-1 pr-4 font-semibold align-top">Kegiatan</td>
+                                <td class="py-1 flex gap-1">
+                                    <p>: </p>
+                                    <div class="w-full text-gray-900 bg-gray-100 p-2.5 rounded-md border border-gray-500 text-sm">
+                                        {{ $selectedData['deskripsi'] ?? '' }}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
                     </table>
+                    @if ($selectedData['pembimbing_id'])
+                        <div class="mt-6">
+                            <div class="w-2/5 text-black font-semibold mb-2">Komentar Pembimbing</div>
+                            <div class="w-full text-gray-900 bg-gray-100 p-2.5 rounded-md border border-gray-500 text-sm">
+                                {{ $selectedData['komentar'] ?? 'Tidak ada komentar!' }}
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
