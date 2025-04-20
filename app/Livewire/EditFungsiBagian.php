@@ -87,16 +87,22 @@ class EditFungsiBagian extends Component
         $this->validate();
 
         $fungsiBagian = FungsiBagian::create([
-            'title' => $this->title,
-            'description' => $this->description,
+            'title' => ucwords(strtolower($this->title)),
+            'description' => ucfirst(strtolower($this->description)),
         ]);
 
+        // Memproses input jurusan
         $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
+        
+        // Filter array untuk menghapus elemen kosong
+        $jurusanArray = array_filter($jurusanArray, function($jurusan) {
+            return !empty($jurusan); 
+        });
 
         foreach ($jurusanArray as $jurusan) {
             FungsiBagianJurusan::create([
                 'fungsi_bagian_id' => $fungsiBagian->id,
-                'jurusan' => $jurusan,
+                'jurusan' => ucwords(strtolower($jurusan)),
             ]);
         }
 
@@ -108,7 +114,6 @@ class EditFungsiBagian extends Component
             ]
         ]);
     }
-
 
     public function edit($id)
     {
@@ -127,8 +132,8 @@ class EditFungsiBagian extends Component
 
         $fungsiBagian = FungsiBagian::findOrFail($this->fungsiId);
         $fungsiBagian->update([
-            'title' => $this->title,
-            'description' => $this->description,
+            'title' => ucwords(strtolower($this->title)),
+            'description' => ucfirst(strtolower($this->description)),
         ]);
 
         // Hapus jurusan lama
@@ -136,10 +141,16 @@ class EditFungsiBagian extends Component
 
         // Tambah jurusan baru
         $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
+        
+        // Filter array untuk menghapus elemen kosong
+        $jurusanArray = array_filter($jurusanArray, function($jurusan) {
+            return !empty($jurusan); // Hanya menyimpan yang tidak kosong
+        });
+
         foreach ($jurusanArray as $jurusan) {
             FungsiBagianJurusan::create([
-                    'fungsi_bagian_id' => $fungsiBagian->id,
-                    'jurusan' => $jurusan,
+                'fungsi_bagian_id' => $fungsiBagian->id,
+                'jurusan' => ucwords(strtolower($jurusan)),
             ]);
         }
 

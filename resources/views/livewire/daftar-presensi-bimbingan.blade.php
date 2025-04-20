@@ -3,8 +3,11 @@
     Carbon::setLocale('id');
 @endphp
 <div>
+    <div class="p-4 border-b border-gray-300">
+        <h1 class="font-semibold text-lg text-gray-800">Presensi</h1>
+    </div>
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-        <div class="w-full md:w-1/5">
+        <div class="w-full md:w-1/4">
             <form class="flex items-center">
                 <label for="simple-search" class="sr-only">Search</label>
                 <div class="relative w-full">
@@ -32,7 +35,7 @@
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
-                        Point
+                        Disetujui Oleh
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
                         Aksi
@@ -66,14 +69,10 @@
                         </td>
                         <td class="py-4 px-6">
                             <div class="mx-auto w-fit flex items-center">
-                                @if ($data->point)
-                                    <div @class([
-                                        'w-fit px-2.5 py-0.5 rounded-lg font-medium text-sm flex items-center gap-1',
-                                        'border-green-800 bg-green-100 text-green-800' => $data->point > 75,
-                                        'border-amber-800 bg-amber-100 text-amber-800' => $data->point <= 75 && $data->point >= 50,
-                                        'border-red-800 bg-red-100 text-red-800' => $data->point < 50
-                                    ])>
-                                        {{ $data->point }}
+                                @if ($data->pembimbing_id)
+                                    <div class="flex items-center justify-center gap-1 whitespace-nowrap">
+                                        <i class="ti ti-user-circle text-lg"></i>
+                                        {{ $data->pembimbing->name }}
                                     </div>
                                 @else
                                     <div

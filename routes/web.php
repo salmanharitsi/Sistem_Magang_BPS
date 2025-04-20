@@ -49,15 +49,7 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
     Route::get('detail-pengajuan/{id}', [AdminController::class, 'get_detail_pengajuan'])->name('admin.detail-pengajuan');
     Route::post('terima-pengajuan/{id}', [AdminController::class, 'terima_pengajuan'])->name('admin.terima-pengajuan');
     Route::post('tolak-pengajuan/{id}', [AdminController::class, 'tolak_pengajuan'])->name('admin.tolak-pengajuan');
-
-    // Manajemen Fungsi Bagian
     Route::get('edit-home', [AdminController::class, 'get_fungsi_bagian'])->name('admin.edit-home');
-    Route::get('edit-home/create', [AdminController::class, 'create_fungsi_bagian'])->name('admin.edit-home.create');
-    Route::post('edit-home', [AdminController::class, 'store_fungsi_bagian'])->name('admin.edit-home.store');
-    Route::delete('edit-home/{id}', [AdminController::class, 'delete_fungsi_bagian'])->name('admin.edit-home.delete');
-    Route::put('edit-home/{id}', [AdminController::class, 'update_fungsi_bagian']);
-
-
 });
 
 // Route untuk pembimbing

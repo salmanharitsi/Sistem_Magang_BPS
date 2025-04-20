@@ -138,7 +138,7 @@
 
     @if (Carbon::parse($magang->tanggal_mulai)->isPast())
         <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="card col-span-1 rounded-lg p-5">
+            <div class="card col-span-1 rounded-lg p-5 flex items-center justify-center">
                 @livewire('grafik-presensi-bimbingan', ['magang' => $magang->id])
             </div>
             <div class="card col-span-2 rounded-lg h-fit overflow-hidden">

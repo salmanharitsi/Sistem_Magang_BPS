@@ -80,8 +80,8 @@ class EditFaq extends Component
         $this->validate();
 
         Faq::create([
-            'question' => $this->question,
-            'answer' => $this->answer,
+            'question' => ucfirst(strtolower($this->question)),
+            'answer' => ucfirst(strtolower($this->answer)),
         ]);
  
         $this->resetModal();
@@ -109,8 +109,8 @@ class EditFaq extends Component
 
         $faq = Faq::find($this->faqId);
         $faq->update([
-            'question' => $this->question,
-            'answer' => $this->answer,
+            'question' => ucfirst(strtolower($this->question)), 
+            'answer' => ucfirst(strtolower($this->answer)), 
         ]);
 
         $this->resetModal();
