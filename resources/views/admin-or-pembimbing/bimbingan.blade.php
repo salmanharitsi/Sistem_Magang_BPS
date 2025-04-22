@@ -97,11 +97,11 @@
             <div class="flex gap-10">
                 <div>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Mulai</h6>
-                    <div class="px-3 py-1 mt-2 w-fit bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs">{{ Carbon::parse($magang->tanggal_mulai)->translatedFormat('j-F-Y') }}</div>
+                    <div class="px-3 py-1 mt-2 w-fit bg-green-50 border border-green-700 rounded-full text-green-700 text-xs">{{ Carbon::parse($magang->tanggal_mulai)->translatedFormat('j-F-Y') }}</div>
                 </div>
                 <div>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Selesai</h6>
-                    <div class="px-3 py-1 mt-2 w-fit bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs">{{ Carbon::parse($magang->tanggal_selesai)->translatedFormat('j-F-Y') }}</div>
+                    <div class="px-3 py-1 mt-2 w-fit bg-red-50 border border-red-700 rounded-full text-red-700 text-xs">{{ Carbon::parse($magang->tanggal_selesai)->translatedFormat('j-F-Y') }}</div>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row gap-0 md:gap-10">

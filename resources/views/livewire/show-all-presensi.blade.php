@@ -126,10 +126,10 @@
                                             <i class="ti ti-login text-2xl text-blue-500"></i>
                                             <div class="w-full flex flex-col md:flex-row justify-between items-center">
                                                 {{ $selectedPresensi->jam_masuk }}
-                                                @if ($selectedPresensi->point_masuk > 90 && $selectedPresensi->point_masuk <= 100)
-                                                    <div class="font-medium text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Tepat Waktu</div>
-                                                @elseif ($selectedPresensi->point_masuk <= 90)
-                                                    <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Telat Masuk</div>
+                                                @if($statusMasuk)
+                                                    <div class="font-medium text-xs text-{{ $statusMasuk['color'] }}-600 bg-{{ $statusMasuk['color'] }}-100 px-2 py-0.5 rounded-full">
+                                                        {{ $statusMasuk['label'] }}
+                                                    </div>
                                                 @endif
                                             </div>
                                         </div>
@@ -220,10 +220,10 @@
                                                 <i class="ti ti-login text-2xl text-blue-500"></i>
                                                 <div class="w-full flex flex-col md:flex-row justify-between items-center">
                                                     {{ $selectedPresensi->jam_masuk }}
-                                                    @if ($selectedPresensi->point_masuk > 90 && $selectedPresensi->point_masuk <= 100)
-                                                        <div class="font-medium text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Tepat Waktu</div>
-                                                    @elseif ($selectedPresensi->point_masuk <= 90)
-                                                        <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Telat Masuk</div>
+                                                    @if($statusMasuk)
+                                                        <div class="font-medium text-xs text-{{ $statusMasuk['color'] }}-600 bg-{{ $statusMasuk['color'] }}-100 px-2 py-0.5 rounded-full">
+                                                            {{ $statusMasuk['label'] }}
+                                                        </div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -245,10 +245,10 @@
                                                     <i class="ti ti-logout text-2xl text-blue-500"></i>
                                                     <div class="w-full flex justify-between items-center">
                                                         {{ $selectedPresensi->jam_keluar }}
-                                                        @if ($selectedPresensi->point_keluar > 90 && $selectedPresensi->point_keluar <= 100)
-                                                            <div class="font-medium text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Tepat Waktu</div>
-                                                        @elseif ($selectedPresensi->point_keluar <= 90)
-                                                            <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">Cepat Pulang</div>
+                                                        @if($statusKeluar)
+                                                            <div class="font-medium text-xs text-{{ $statusKeluar['color'] }}-600 bg-{{ $statusKeluar['color'] }}-100 px-2 py-0.5 rounded-full">
+                                                                {{ $statusKeluar['label'] }}
+                                                            </div>
                                                         @endif
                                                     </div>
                                                 </div>
