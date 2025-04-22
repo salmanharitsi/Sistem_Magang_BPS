@@ -76,7 +76,7 @@ class Registrasi extends Component
             ],
             'confirm_password' => [
                 "required_with" => 'Konfirmasi password tidak boleh kosong jika password diisi',
-                "same" => 'Password tidak sama'
+                "same" => 'Password tidak sesuai'
             ]
         ];
     }
