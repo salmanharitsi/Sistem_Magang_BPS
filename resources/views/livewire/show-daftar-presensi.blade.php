@@ -189,7 +189,7 @@
                                 @if($selectedData['foto_keluar'])
                                     <img src="{{ asset($selectedData['foto_keluar']) }}" alt="Foto Keluar" class="w-full h-auto rounded-lg">
                                 @else
-                                    <p class="text-gray-500">Kamu tidak melakukan lapor pulang!</p>
+                                    <p class="text-gray-500">Foto keluar tidak tersedia.</p>
                                 @endif
                             </div>
                         </div>

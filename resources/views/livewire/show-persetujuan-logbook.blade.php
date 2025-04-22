@@ -59,7 +59,7 @@
                         Nama
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-left">
-                        Tanggal
+                        Hari, Tanggal
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-left whitespace-nowrap">
                         Jenis Magang
@@ -87,7 +87,7 @@
                         <td class="py-4 px-6 text-left">
                             {{$data->magang->user->name}}
                         </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ Carbon::parse($data->tanggal)->translatedFormat('j-F-Y') }}</td>
+                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ Carbon::parse($data->tanggal)->translatedFormat('l, j-F-Y') }}</td>
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->magang->jenis_magang }}</td>
                         <td class="py-4 px-6 text-center">
                             <div class="text-[13px] mx-auto items-center w-fit">
