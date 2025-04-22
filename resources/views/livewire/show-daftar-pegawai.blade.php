@@ -1,7 +1,7 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div class="pegawai-container"> 
+<div class="pegawai-container">
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
         <div class="w-full md:w-1/5">
             <form class="flex items-center">
@@ -18,14 +18,20 @@
         </div>
         <!-- Filter Button and Dropdown -->
         <div class="relative inline-block text-left">
-            <button id="filterButton" type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <button wire:click="create"
+                class="text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 px-4 py-2 mr-2 inline-flex items-center">
+                <i class="ti ti-plus mr-2"></i>
+                Tambah Pegawai
+            </button>
+            <button id="filterButton" type="button"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <i class="ti ti-filter mr-2"></i>
                 Filter
             </button>
             <div id="filterDropdown" class="hidden origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
                 <div class="py-2 px-4">
                     <h3 class="text-gray-700 font-medium mb-2">Filter berdasarkan</h3>
-                    
+
                     <!-- Fungsi Bagian Filter -->
                     <div class="mb-4">
                         <label for="fungsi-bagian-filter" class="block text-sm font-medium text-gray-700 mb-1">Fungsi Bagian</label>
@@ -39,7 +45,7 @@
                             <option value="Bagian Umum">Bagian Umum</option>
                         </select>
                     </div>
-                    
+
                     <!-- Role Filter -->
                     <div class="mb-4">
                         <label for="role-filter" class="block text-sm font-medium text-gray-700 mb-1">Role</label>
@@ -49,7 +55,7 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    
+
                     <!-- Apply and Reset Buttons -->
                     <div class="flex justify-end pt-2">
                         <button wire:click="resetFilters" type="button" class="mr-2 px-3 py-1 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
@@ -123,6 +129,72 @@
             </tbody>
         </table>
         {{ $pegawai->links('vendor.pagination.custom-pagination') }}
+
+        @if ($showModal)
+    <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-6 space-y-4">
+            <h2 class="text-xl font-semibold mb-4">Tambah Pegawai</h2>
+            <form wire:submit.prevent="store">
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nama</label>
+                        <input wire:model.defer="nama" type="text"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        @error('nama') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input wire:model.defer="email" type="email"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        @error('email') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Password</label>
+                        <input wire:model.defer="password" type="password"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        @error('password') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nomor Induk</label>
+                        <input wire:model.defer="nomor_induk" type="text"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        @error('nomor_induk') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fungsi Bagian</label>
+                        <select wire:model.defer="fungsi_bagian"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            <option value="">-- Pilih Fungsi Bagian --</option>
+                            @foreach ($listFungsiBagian as $fungsi)
+                                <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                            @endforeach
+                        </select>
+                        @error('fungsi_bagian') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Role</label>
+                        <select wire:model.defer="role_temp"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            <option value="">-- Pilih Role --</option>
+                            <option value="regular">Pembimbing</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        @error('role_temp') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-6 space-x-2">
+                    <button type="button" wire:click="$set('showModal', false)"
+                        class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endif
+
     </div>
 
     <style>
@@ -135,15 +207,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             const filterButton = document.getElementById('filterButton');
             const filterDropdown = document.getElementById('filterDropdown');
-            
+
             filterButton.addEventListener('click', function(event) {
                 event.stopPropagation();
                 filterDropdown.classList.toggle('hidden');
-                
+
                 const buttonRect = filterButton.getBoundingClientRect();
                 filterDropdown.style.top = (buttonRect.height + 5) + 'px';
             });
-            
+
             document.addEventListener('click', function(event) {
                 if (!filterButton.contains(event.target) && !filterDropdown.contains(event.target)) {
                     filterDropdown.classList.add('hidden');
