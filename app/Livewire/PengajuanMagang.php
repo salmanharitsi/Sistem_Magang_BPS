@@ -2,29 +2,30 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use App\Models\Pengajuan;
+use App\Jobs\KirimNotifikasiEmailJob;
+use App\Jobs\UpdatePengajuanOverLimit;
+use App\Mail\NotifPengajuanAdmin;
+use App\Mail\NotifPengajuanPeserta;
 use App\Mail\UserNormalMail;
 use App\Models\FungsiBagian;
-use App\Mail\NotifPengajuanAdmin;
-use Livewire\Attributes\Validate;
-use App\Mail\NotifPengajuanPeserta;
+use App\Models\Pengajuan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Jobs\UpdatePengajuanOverLimit;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class PengajuanMagang extends Component
 {
     // Properti validasi dan input lainnya…
     public $jenis_magang,
 
-    $bidang_tujuan,
-    $tanggal_mulai,
-    $tanggal_selesai,
-    $penanggung_jawab_name,
-    $penanggung_jawab_jabatan,
-    $penanggung_jawab_email,
-    $penanggung_jawab_nomor_hp;
+        $bidang_tujuan,
+        $tanggal_mulai,
+        $tanggal_selesai,
+        $penanggung_jawab_name,
+        $penanggung_jawab_jabatan,
+        $penanggung_jawab_email,
+        $penanggung_jawab_nomor_hp;
 
     // Tambahkan properti untuk menyimpan data fungsi bagian
     public $listFungsiBagian = [];
@@ -85,58 +86,77 @@ class PengajuanMagang extends Component
 
     public function create_pengajuan()
     {
-        $validatedData = $this->validate();
+        try {
+            $validatedData = $this->validate();
+            $user = Auth::user();
 
-        $user = Auth::user();
+            $pengajuan = new Pengajuan();
+            $pengajuan->user_id = $user->id;
+            $pengajuan->jenis_magang = $validatedData['jenis_magang'];
+            $pengajuan->bidang_tujuan = $validatedData['bidang_tujuan'];
+            $pengajuan->tanggal_mulai = $validatedData['tanggal_mulai'];
+            $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
 
-        $pengajuan = new Pengajuan();
-        $pengajuan->user_id = $user->id;
-        $pengajuan->jenis_magang = $validatedData['jenis_magang'];
-        $pengajuan->bidang_tujuan = $validatedData['bidang_tujuan'];
-        $pengajuan->tanggal_mulai = $validatedData['tanggal_mulai'];
-        $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
+            $pengajuan->penanggung_jawab_name = $validatedData['penanggung_jawab_name'];
+            $pengajuan->penanggung_jawab_jabatan = $validatedData['penanggung_jawab_jabatan'];
+            $pengajuan->penanggung_jawab_email = $validatedData['penanggung_jawab_email'];
+            $pengajuan->penanggung_jawab_nomor_hp = $validatedData['penanggung_jawab_nomor_hp'];
 
-        $pengajuan->penanggung_jawab_name = $validatedData['penanggung_jawab_name'];
-        $pengajuan->penanggung_jawab_jabatan = $validatedData['penanggung_jawab_jabatan'];
-        $pengajuan->penanggung_jawab_email = $validatedData['penanggung_jawab_email'];
-        $pengajuan->penanggung_jawab_nomor_hp = $validatedData['penanggung_jawab_nomor_hp'];
+            // Data akademik
+            $pengajuan->institusi = $user->institusi;
+            $pengajuan->jurusan = $user->jurusan;
+            $pengajuan->nomor_induk = $user->nomor_induk;
 
-        // Data akademik
-        $pengajuan->institusi = $user->institusi;
-        $pengajuan->jurusan = $user->jurusan;
-        $pengajuan->nomor_induk = $user->nomor_induk;
+            // Data pribadi
+            $pengajuan->foto_profil = $user->foto_profil;
+            $pengajuan->name = $user->name;
+            $pengajuan->email = $user->email;
+            $pengajuan->nomor_hp = $user->nomor_hp;
+            $pengajuan->tentang_saya = $user->tentang_saya;
+            $pengajuan->jenis_kelamin = $user->jenis_kelamin;
+            $pengajuan->tempat_lahir = $user->tempat_lahir;
+            $pengajuan->tanggal_lahir = $user->tanggal_lahir;
+            $pengajuan->alamat = $user->alamat;
 
-        // Data pribadi
-        $pengajuan->foto_profil = $user->foto_profil;
-        $pengajuan->name = $user->name;
-        $pengajuan->email = $user->email;
-        $pengajuan->nomor_hp = $user->nomor_hp;
-        $pengajuan->tentang_saya = $user->tentang_saya;
-        $pengajuan->jenis_kelamin = $user->jenis_kelamin;
-        $pengajuan->tempat_lahir = $user->tempat_lahir;
-        $pengajuan->tanggal_lahir = $user->tanggal_lahir;
-        $pengajuan->alamat = $user->alamat;
+            $pengajuan->kartu_penduduk = $user->kartu_penduduk;
+            $pengajuan->original_filename_ktp = $user->original_filename_ktp;
+            $pengajuan->kartu_tanda = $user->kartu_tanda;
+            $pengajuan->original_filename_kartu = $user->original_filename_kartu;
 
-        $pengajuan->kartu_penduduk = $user->kartu_penduduk;
-        $pengajuan->original_filename_ktp = $user->original_filename_ktp;
-        $pengajuan->kartu_tanda = $user->kartu_tanda;
-        $pengajuan->original_filename_kartu = $user->original_filename_kartu;
+            $pengajuan->save();
 
-        $pengajuan->save();
+            $user->status_magang = 'masa-daftar';
+            $user->save();
 
-        $user->status_magang = 'masa-daftar';
-        $user->save();
+            // Kirim email langsung tanpa queue
+            \Log::info('Mengirim email ke peserta: ' . $user->email);
+            $emailPeserta = new NotifPengajuanPeserta($pengajuan, $user);
+            Mail::to($user->email)
+                ->send($emailPeserta);
 
-        Mail::to($user->email)->queue(new NotifPengajuanPeserta($pengajuan, $user));
-        Mail::to('luxurialev@gmail.com')->queue(new NotifPengajuanAdmin($pengajuan, $user));
-        UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
+            \Log::info('Email berhasil dikirim ke: ' . $user->email);
 
-        return redirect('/dashboard')->with([
-            'success' => [
-                "title" => "Berhasil mengajukan magang",
-                "message" => "Akun berhasil diperbarui"
-            ]
-        ]);
+            \Log::info('Mengirim email ke admin');
+            Mail::to('luxurialev@gmail.com')->send(new NotifPengajuanAdmin($pengajuan, $user));
+
+            UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
+
+            return redirect('/dashboard')->with([+
+                'success' => [
+                    "title" => "Berhasil mengajukan magang",
+                    "message" => "Pengajuan berhasil dan email notifikasi telah dikirim"
+                ]
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengirim email: ' . $e->getMessage());
+            \Log::error('Error dalam pengajuan: ' . $e->getMessage());
+            return redirect('/dashboard')->with([
+                'error' => [
+                    "title" => "Terjadi kesalahan",
+                    "message" => "Error: " . $e->getMessage()
+                ]
+            ]);
+        }
     }
 
     public function render()
