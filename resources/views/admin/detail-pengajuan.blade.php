@@ -6,6 +6,7 @@
     @php
         $firstLetter = strtoupper(substr($pengajuan->name, 0, 1));
         use Carbon\Carbon;
+        Carbon::setLocale('id');
     @endphp
 
     <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
@@ -57,13 +58,13 @@
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Mulai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_mulai)->format('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}
                             </p>
                         </div>
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal selesai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_selesai)->format('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}
                             </p>
                         </div>
                     </div>
@@ -131,7 +132,7 @@
                     <div>
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         <p class="text-gray-600 text-sm">
-                            {{ Carbon::parse($pengajuan->tanggal_lahir)->format('j-F-Y') }}
+                            {{ Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('j-F-Y') }}
                         </p>
                     </div>
                 </div>

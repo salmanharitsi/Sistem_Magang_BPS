@@ -69,7 +69,7 @@
                     <i class="ti ti-chevron-right text-xl"></i>
                 </button>
             </div>
-            <div class="bg-white p-5 rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-lg card grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="flex items-center justify-start lg:justify-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-blue-500"></div>
                     <p class="text-sm">Hari Ini</p>
@@ -138,7 +138,7 @@
                             <div class="flex items-center py-3 border-b border-gray-100">
                                 <div class="w-2/5 text-gray-600 font-medium">Tanggal</div>
                                 <div class="w-3/5 text-gray-900 font-semibold">
-                                    {{ Carbon::parse($selectedPresensi->tanggal)->translatedFormat('d F Y') }}</div>
+                                    {{ Carbon::parse($selectedPresensi->tanggal)->translatedFormat('l, d F Y') }}</div>
                             </div>
 
                             <!-- Status Row -->
@@ -207,7 +207,7 @@
                         @if ($selectedPresensi->created_at)
                             <div class="bg-gray-50 px-5 py-3 text-xs text-gray-500 text-right">
                                 Terakhir diperbarui:
-                                {{ Carbon::parse($selectedPresensi->updated_at)->format('d M Y H:i') }}
+                                {{ Carbon::parse($selectedPresensi->updated_at)->translatedFormat('d M Y H:i') }}
                             </div>
                         @endif
                     </div>

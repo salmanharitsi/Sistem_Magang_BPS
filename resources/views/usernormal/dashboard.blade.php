@@ -5,6 +5,7 @@
 @section('content')
     @php
         use Carbon\Carbon;
+        Carbon::setLocale('id');
     @endphp
 
     <div class="w-full h-44 rounded-lg bg-blue-500 relative overflow-hidden">
@@ -29,7 +30,7 @@
                     <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                         <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
                             <i class="ti ti-alert-circle text-lg"></i>
-                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ \Carbon\Carbon::parse($latestPengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
+                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ Carbon::parse($latestPengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
                         </div>
                     </div>
                     <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -188,9 +189,9 @@
                         sudah berhasil terkirim
                     </p>
                     <p class="text-sm">Untuk periode:
-                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                     </p>
                     <a href="/pengajuan"
                         class="pjax-link bg-green-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
@@ -215,9 +216,9 @@
                             </p>
                             <p class="text-sm text-white">
                                 Untuk periode:
-                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                                 sampai dengan
-                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                             </p>
                             <div class="w-full flex items-center justify-center mt-5">
                                 <a href="/dashboard/surat-pengantar"
@@ -248,9 +249,9 @@
                         ditolak
                     </p>
                     <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                     </p>
                     <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
                         @csrf
@@ -271,9 +272,9 @@
                         </span>
                     </p>
                     <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                     </p>
                     <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
                         @csrf
@@ -294,9 +295,9 @@
                         </span>
                     </p>
                     <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                     </p>
                     <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
                         @csrf

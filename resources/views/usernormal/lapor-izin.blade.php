@@ -4,6 +4,11 @@
 
 @section('content')
 
+    @php
+        use Carbon\Carbon;
+        Carbon::setLocale('id');
+    @endphp
+
     <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
 
         <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -11,7 +16,7 @@
                 <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
                     Magang Hari ke - {{ $hariKe }}
                 </h4>
-                <p class="text-md">{{ \Carbon\Carbon::parse($presensi->tanggal)->format('d F Y') }}</p>
+                <p class="text-md">{{ Carbon::parse($presensi->tanggal)->translatedFormat('d F Y') }}</p>
             </div>
         </div>
         <!-- Start coding here -->

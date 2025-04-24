@@ -1,5 +1,6 @@
 @php
     use Carbon\Carbon;
+    Carbon::setLocale('id');
 @endphp
 
 <div class="flex flex-col md:flex-row gap-6">
@@ -62,7 +63,7 @@
         @if ($selectedLogbook)
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-bold mb-4">Detail Logbook</h2>
-                <p><strong>Tanggal:</strong> {{ Carbon::parse($selectedLogbook->tanggal)->format('d M Y') }}</p>
+                <p><strong>Tanggal:</strong> {{ Carbon::parse($selectedLogbook->tanggal)->translatedFormat('d M Y') }}</p>
                 <p><strong>Status:</strong> {{ $selectedLogbook->status }}</p>
                 <p><strong>Deskripsi:</strong> {{ $selectedLogbook->deskripsi ?? 'Belum ada data' }}</p>
                 <p><strong>Lampiran:</strong> {{ $selectedLogbook->lampiran ?? 'Belum ada data' }}</p>

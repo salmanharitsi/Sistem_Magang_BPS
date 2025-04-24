@@ -1,5 +1,6 @@
 @php
     use Carbon\Carbon;
+    Carbon::setLocale('id');
 @endphp
 <div>
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -56,11 +57,11 @@
                         </td>
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
                         </td>
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->format('j-F-Y') }}
+                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j-F-Y') }}
                         </td>
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}
+                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j-F-Y') }}
                         </td>
-                        <td class="py-4 px-6 text-left">{{ $data->created_at->format('j-F-Y') }}</td>
+                        <td class="py-4 px-6 text-left">{{ $data->created_at->translatedFormat('j-F-Y') }}</td>
                         <td class="py-4 px-6 text-center">
                             <div
                                 class="text-[13px] mx-auto items-center w-fit">
