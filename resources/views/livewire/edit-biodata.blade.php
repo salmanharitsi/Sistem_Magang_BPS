@@ -54,7 +54,7 @@
     <div>
         <label for="tentang_saya" class="block mb-1 text-md font-medium text-gray-700">Tentang Saya<span
                 class="text-red-500 ml-1">*</span></label>
-        <textarea maxlength="250" name="tentang_saya" id="tentang_saya" wire:model.live="tentang_saya"
+        <textarea name="tentang_saya" id="tentang_saya" wire:model.live="tentang_saya"
             class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
             placeholder="Masukkan deskripsi peminatan kamu"></textarea>
         @error('tentang_saya')

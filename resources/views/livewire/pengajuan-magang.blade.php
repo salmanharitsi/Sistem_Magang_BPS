@@ -59,7 +59,7 @@
             @enderror
         </div>
 
-        <span class ="border-b border-gray-500 col-span-2"></span>
+        <span class ="border-b border-gray-300 col-span-2"></span>
 
         <div class="col-span-2 text-lg font-medium text-gray-900">Data Penanggung Jawab</div>
 

@@ -41,7 +41,7 @@ class EditBiodata extends Component
         return [
             'name' => 'required|min:5',
             'foto_profil' => 'max:2048',
-            'tentang_saya' => 'required|max:250',
+            'tentang_saya' => 'required|max:500',
             'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
@@ -62,7 +62,7 @@ class EditBiodata extends Component
             ],
             'tentang_saya' => [
                 "required" => 'Tentang saya tidak boleh kosong',
-                "max" => 'Maksimal 250 karakter'
+                "max" => 'Maksimal 500 karakter'
             ],
             'jenis_kelamin' => [
                 "required" => 'Jenis Kelamin tidak boleh kosong',
