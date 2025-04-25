@@ -8,7 +8,7 @@
         <!-- Bagian Kiri: Carousel Tanggal -->
         <div class="flex flex-col gap-6 w-full md:w-1/2">
             <div
-                class="w-full h-fit py-4 px-[53px] card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
+                class="w-full h-fit py-5 px-[53px] card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
                 <div id="presensi-carousel" class="overflow-hidden" wire:ignore>
                     <div class="carousel-inner flex transition-transform duration-300 ease-in-out">
                         @php
@@ -19,45 +19,87 @@
 
                         @foreach ($groupedPresensi as $month => $presensiGroup)
                             <div class="carousel-item w-full flex-shrink-0" data-index="{{ $loop->index }}">
-                                <div class="grid grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4 place-items-center">
-                                    @php $lastMonth = null; @endphp
+                                @php $lastMonth = null; @endphp
+                                
+                                @foreach ($presensiGroup as $index => $presensi)
+                                    @php
+                                        $tanggal = Carbon::parse($presensi->tanggal);
+                                        
+                                        if ($lastMonth !== $tanggal->month) {
+                                            // Reset dan tampilkan header bulan baru
+                                            if ($lastMonth !== null) {
+                                                // Tutup minggu sebelumnya jika ada
+                                                echo '</div>';
+                                            }
+                                            
+                                            // Tampilkan header bulan
+                                            echo '<div class="w-full text-start font-semibold text-xl mb-3">' . 
+                                                  $tanggal->translatedFormat('F Y') . 
+                                                 '</div>';
+                                            
+                                            // Header hari dalam seminggu
+                                            echo '<div class="grid grid-cols-7 gap-3 mb-2 text-center font-medium text-sm text-gray-600">';
+                                            echo '<div>Sen</div>';
+                                            echo '<div>Sel</div>';
+                                            echo '<div>Rab</div>';
+                                            echo '<div>Kam</div>';
+                                            echo '<div>Jum</div>';
+                                            echo '<div>Sab</div>';
+                                            echo '<div>Min</div>';
+                                            echo '</div>';
+                                            
+                                            // Mulai minggu pertama
+                                            echo '<div class="grid grid-cols-7 gap-3 place-items-center mb-3">';
+                                            
+                                            // Tambahkan kolom kosong sesuai dengan hari pertama dalam bulan
+                                            $firstDayOfMonth = Carbon::parse($tanggal->format('Y-m-01'));
+                                            $dayOfWeek = $firstDayOfMonth->dayOfWeekIso; // 1 (Senin) hingga 7 (Minggu)
+                                            
+                                            // Koreksi untuk tanggal pertama
+                                            if ($tanggal->format('d') == '01') {
+                                                for ($i = 1; $i < $dayOfWeek; $i++) {
+                                                    echo '<div></div>'; // Tambahkan div kosong
+                                                }
+                                            }
+                                            
+                                            $lastMonth = $tanggal->month;
+                                        }
+                                        
+                                        // Periksa apakah perlu pindah ke baris minggu baru
+                                        $dayOfWeek = $tanggal->dayOfWeekIso;
+                                        if ($index > 0 && $dayOfWeek == 1) {
+                                            echo '</div><div class="grid grid-cols-7 gap-3 place-items-center mb-3">';
+                                        }
+                                        
+                                        $isSelected = $selectedDate === $presensi->tanggal;
+                                        $isFutureDate = $tanggal->greaterThan(Carbon::today());
+                                    @endphp
 
-                                    @foreach ($presensiGroup as $index => $presensi)
-                                        @php
-                                            $tanggal = Carbon::parse($presensi->tanggal);
-                                            $isSelected = $selectedDate === $presensi->tanggal;
-                                            $isFutureDate = $tanggal->greaterThan(Carbon::today()); // Cek apakah tanggal belum berlalu
-                                        @endphp
-
-                                        @if ($lastMonth !== $tanggal->month)
-                                            <div
-                                                class="w-full col-span-4 lg:col-span-7 text-start font-semibold mt-2 text-xl mb-3">
-                                                {{ $tanggal->translatedFormat('F Y') }} <!-- Contoh: Januari 2024 -->
-                                            </div>
-                                            @php $lastMonth = $tanggal->month; @endphp
-                                        @endif
-
-                                        <!-- Div Bulat Tanggal -->
-                                        <div @unless ($isFutureDate) wire:click="selectPresensi('{{ $presensi->tanggal }}')" @endunless
-                                            class="flex items-center justify-center w-12 h-12 rounded-full 
-                                                @if ($isSelected) 
-                                                    bg-blue-500 text-white
-                                                @elseif ($tanggal->isWeekend())
-                                                    bg-red-500 text-white
-                                                @elseif ($presensi->status === 'hadir') 
-                                                    bg-green-500 text-white
-                                                @elseif ($presensi->status === 'izin') 
-                                                    bg-amber-500 text-white
-                                                @elseif ($presensi->status === 'tidak-hadir') 
-                                                    bg-red-500 text-white
-                                                @else
-                                                    bg-gray-200 
-                                                @endif
-                                                {{ $isFutureDate ? 'cursor-not-allowed opacity-50' : 'cursor-pointer' }}">
-                                            {{ $tanggal->format('d') }} <!-- Tampilkan tanggal (contoh: 17) -->
-                                        </div>
-                                    @endforeach
-                                </div>
+                                    <!-- Div Bulat Tanggal -->
+                                    <div @unless ($isFutureDate) wire:click="selectPresensi('{{ $presensi->tanggal }}')" @endunless
+                                        class="flex items-center justify-center w-6 h-6 md:w-10 md:h-10 rounded-full text-sm 
+                                            @if ($isSelected) 
+                                                bg-blue-500 text-white
+                                            @elseif ($tanggal->isWeekend())
+                                                text-red-600
+                                            @elseif ($presensi->status === 'hadir') 
+                                                bg-green-500 text-white
+                                            @elseif ($presensi->status === 'izin') 
+                                                bg-amber-500 text-white
+                                            @elseif ($presensi->status === 'tidak-hadir') 
+                                                bg-red-500 text-white
+                                            @else
+                                                bg-gray-200 
+                                            @endif
+                                            {{ $isFutureDate ? 'cursor-not-allowed opacity-50 bg-transparent' : 'cursor-pointer' }}">
+                                        {{ $tanggal->format('d') }}
+                                    </div>
+                                @endforeach
+                                
+                                @php
+                                    // Tutup div minggu terakhir jika ada
+                                    echo '</div>';
+                                @endphp
                             </div>
                         @endforeach
                     </div>
