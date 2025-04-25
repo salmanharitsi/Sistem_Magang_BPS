@@ -58,13 +58,13 @@
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Mulai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_mulai)->translatedFormat('j F Y') }}
                             </p>
                         </div>
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal selesai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_selesai)->translatedFormat('j F Y') }}
                             </p>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                     <div>
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         <p class="text-gray-600 text-sm">
-                            {{ Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('j-F-Y') }}
+                            {{ Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
                         </p>
                     </div>
                 </div>

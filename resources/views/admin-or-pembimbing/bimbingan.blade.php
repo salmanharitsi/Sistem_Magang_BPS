@@ -7,7 +7,7 @@
         use Carbon\Carbon;
     @endphp
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="col-span-1 card rounded-lg bg-white p-5 ">
             <div class="flex gap-4">
                 @if (!empty($magang->pengajuan->foto_profil))
@@ -47,25 +47,48 @@
                     {{ $magang->pengajuan->alamat }}
                 </p>
             </div>
+            <div class="flex gap-10">
+                <div>
+                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nomor HP</h6>
+                    <p class="text-gray-600 text-sm">
+                        {{ $magang->pengajuan->nomor_hp }}
+                    </p>
+                </div>
+                <div>
+                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tempat/Tanggal Lahir</h6>
+                    <p class="text-gray-600 text-sm">
+                        {{ $magang->pengajuan->tempat_lahir }} / {{ Carbon::parse($magang->pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-span-1 card rounded-lg bg-white p-5">
+            <div class="text-gray-800 pb-3 border-b border-gray-300">
+                <h4 class="text-xl font-semibold">Penanggung Jawab</h4>
+            </div>
+            <div>
+                <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nama</h6>
+                <p class="text-gray-600 text-sm">
+                    {{ $magang->pengajuan->penanggung_jawab_name }}
+                </p>
+            </div>
+            <div>
+                <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Jabatan</h6>
+                <p class="text-gray-600 text-sm">
+                    {{ $magang->pengajuan->penanggung_jawab_jabatan }}
+                </p>
+            </div>
+            <div>
+                <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Email</h6>
+                <p class="text-gray-600 text-sm">
+                    {{ $magang->pengajuan->penanggung_jawab_email }}
+                </p>
+            </div>
             <div>
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nomor HP</h6>
                 <p class="text-gray-600 text-sm">
-                    {{ $magang->pengajuan->nomor_hp }}
+                    {{ $magang->pengajuan->penanggung_jawab_nomor_hp }}
                 </p>
-            </div>
-            <div class="flex gap-10">
-                <div>
-                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tempat Lahir</h6>
-                    <p class="text-gray-600 text-sm">
-                        {{ $magang->pengajuan->tempat_lahir }}
-                    </p>
-                </div>
-                <div>
-                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
-                    <p class="text-gray-600 text-sm">
-                        {{ $magang->pengajuan->tanggal_lahir }}
-                    </p>
-                </div>
             </div>
         </div>
         <div class="col-span-1 card rounded-lg bg-white p-5">
@@ -97,11 +120,11 @@
             <div class="flex gap-10">
                 <div>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Mulai</h6>
-                    <div class="px-3 py-1 mt-2 w-fit bg-green-50 border border-green-700 rounded-full text-green-700 text-xs">{{ Carbon::parse($magang->tanggal_mulai)->translatedFormat('j-F-Y') }}</div>
+                    <div class="px-3 py-1 mt-2 w-fit bg-green-50 border border-green-700 rounded-full text-green-700 text-xs">{{ Carbon::parse($magang->tanggal_mulai)->translatedFormat('j F Y') }}</div>
                 </div>
                 <div>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Selesai</h6>
-                    <div class="px-3 py-1 mt-2 w-fit bg-red-50 border border-red-700 rounded-full text-red-700 text-xs">{{ Carbon::parse($magang->tanggal_selesai)->translatedFormat('j-F-Y') }}</div>
+                    <div class="px-3 py-1 mt-2 w-fit bg-red-50 border border-red-700 rounded-full text-red-700 text-xs">{{ Carbon::parse($magang->tanggal_selesai)->translatedFormat('j F Y') }}</div>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row gap-0 md:gap-10">
@@ -143,6 +166,15 @@
             </div>
             <div class="card col-span-2 rounded-lg h-fit overflow-hidden">
                 @livewire('daftar-presensi-bimbingan', ['magang' => $magang->id])
+            </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="card col-span-1 rounded-lg p-5 flex items-center justify-center">
+                @livewire('grafik-logbook-bimbingan', ['magang' => $magang->id])
+            </div>
+            <div class="card col-span-2 rounded-lg h-fit overflow-hidden">
+                @livewire('daftar-logbook-bimbingan', ['magang' => $magang->id])
             </div>
         </div>
     @endif

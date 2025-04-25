@@ -88,7 +88,7 @@
                         <td class="py-4 px-6 text-left">
                             {{$data->magang->user->name}}
                         </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ Carbon::parse($data->tanggal)->translatedFormat('l, j-F-Y') }}</td>
+                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ Carbon::parse($data->tanggal)->translatedFormat('l, j F Y') }}</td>
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->magang->jenis_magang }}</td>
                         <td class="py-4 px-6 text-center">
                             <div class="text-[13px] mx-auto items-center w-fit">

@@ -157,21 +157,23 @@
                     @foreach ($fungsi_bagian as $item)
                         <li class="px-2 py-2 md:py-5 md:px-5">
                             <div
-                                class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col h-full relative overflow-hidden">
-                                <div class="w-[20%]">
-                                    <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
-                                        alt="">
-                                </div>
+                                class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col justify-between h-full relative overflow-hidden">
                                 <div>
-                                    <h2
-                                        class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end whitespace-nowrap">
-                                        {{ $item['title'] }}</h2>
-                                    <div class="w-full flex justify-end mt-[-5px]">
-                                        <img class="w-[50%]"
-                                            src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
+                                    <div class="w-[20%]">
+                                        <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
                                             alt="">
                                     </div>
-                                    <p class="mt-5 text-[15px] text-gray-500">{{ $item['description'] }}</p>
+                                    <div>
+                                        <h2
+                                            class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end whitespace-nowrap">
+                                            {{ $item['title'] }}</h2>
+                                        <div class="w-full flex justify-end mt-[-5px]">
+                                            <img class="w-[50%]"
+                                                src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
+                                                alt="">
+                                        </div>
+                                        <p class="mt-5 text-[15px] text-gray-500">{{ $item['description'] }}</p>
+                                    </div>
                                 </div>
                                 <div class="flex justify-end">
                                     <div class="mt-3 w-fit text-end text-white relative z-10 icon-container">
@@ -190,7 +192,7 @@
                                             </div>
                                             <div class="mt-3 text-[14px] text-gray-800 font-normal flex">
                                                 <p>
-                                                    @foreach ($item['jurusan'] as $jurusan)
+                                                    @foreach ($item['jurusan']->pluck('jurusan') as $jurusan)
                                                         {{ $jurusan }},
                                                     @endforeach
                                                 </p>

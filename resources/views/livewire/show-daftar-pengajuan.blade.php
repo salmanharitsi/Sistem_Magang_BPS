@@ -78,7 +78,7 @@
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="7" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Tidak ada data pengajuan</p>
+                            <p class="font-semibold text-md">Data pengajuan tidak ditemukan</p>
                         </td>
                     </tr>
                 @endforelse

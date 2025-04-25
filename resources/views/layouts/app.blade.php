@@ -94,13 +94,6 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a class="menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/logout">
-                                <i class="ti ti-logout ps-2 text-xl"></i>
-                                <span>Keluar</span>
-                            </a>
-                        </li>
                         @if ($latestMagang)
                             <li class="text-xs font-bold pb-[5px] mt-6">
                                 <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
