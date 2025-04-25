@@ -57,11 +57,11 @@
                         </td>
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
                         </td>
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j-F-Y') }}
+                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j F Y') }}
                         </td>
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j-F-Y') }}
+                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j F Y') }}
                         </td>
-                        <td class="py-4 px-6 text-left">{{ $data->created_at->translatedFormat('j-F-Y') }}</td>
+                        <td class="py-4 px-6 text-left">{{ $data->created_at->translatedFormat('j F Y') }}</td>
                         <td class="py-4 px-6 text-center">
                             <div
                                 class="text-[13px] mx-auto items-center w-fit">
@@ -85,7 +85,7 @@
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="8" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Belum ada data pengajuan</p>
+                            <p class="font-semibold text-md">data pengajuan tidak ditemukan</p>
                             <a href="/dashboard"
                                 class="pjax-link flex items-center justify-center mx-[45%] mt-3 gap-1 bg-blue-600 border border-transparent px-2 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-files"></i>

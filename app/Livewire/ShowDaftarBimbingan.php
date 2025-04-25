@@ -34,8 +34,9 @@ class ShowDaftarBimbingan extends Component
         if ($this->search) {
             $query->where(function (Builder $builder) {
                 $builder->where('jenis_magang', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('user', function (Builder $query) {
-                        $query->where('name', 'like', '%' . $this->search . '%');
+                    ->orWhereHas('pengajuan', function (Builder $query) {
+                        $query->where('name', 'like', '%' . $this->search . '%')
+                            ->orWhere('institusi', 'like', '%' . $this->search . '%');
                     });
             });
         }

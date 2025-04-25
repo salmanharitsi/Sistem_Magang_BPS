@@ -16,10 +16,11 @@ class ShowDaftarPresensi extends Component
     public $search;
     public $showModal = false;
     public $selectedData = [];
+    public $statusFilter = '';
 
     public function updating($key): void
     {
-        if ($key === 'search') {
+        if (in_array($key, ['search', 'statusFilter'])) {
             $this->resetPage();
         }
     }
@@ -49,7 +50,8 @@ class ShowDaftarPresensi extends Component
                 'keterangan_izin' => $presensi->keterangan_izin,
                 'updated_at' => $presensi->updated_at,
                 'point' => $presensi->point,
-                'lampiran' => $presensi->lampiran
+                'lampiran' => $presensi->lampiran,
+                'pembimbing_id' => $presensi->pembimbing->name ?? null
             ];
             $this->showModal = true;
         }
@@ -121,6 +123,11 @@ class ShowDaftarPresensi extends Component
                     $q->orWhereRaw("MONTHNAME(tanggal) = ?", [$english_month]);
                 }
             });
+        }
+
+        // Apply status filter if selected
+        if ($this->statusFilter) {
+            $query->where('status', $this->statusFilter);
         }
 
         $presensi = $query->latest()->paginate(5);

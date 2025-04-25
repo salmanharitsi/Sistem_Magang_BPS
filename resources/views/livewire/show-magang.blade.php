@@ -52,8 +52,8 @@
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
                         </td>
                         <td class="py-4 px-6 text-left flex flex-col items-center gap-3">
-                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j-F-Y') }}</div>
-                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j-F-Y') }}</div>
+                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j F Y') }}</div>
+                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j F Y') }}</div>
                         </td>
                         <td class="py-4 px-6 text-left">
                             <div class="flex items-center justify-center gap-1">

@@ -100,7 +100,7 @@
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         @if (!empty(Auth::user()->tanggal_lahir))
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse(Auth::user()->tanggal_lahir)->translatedFormat('j-F-Y') }}
+                                {{ Carbon::parse(Auth::user()->tanggal_lahir)->translatedFormat('j F Y') }}
                             </p>
                         @else
                             <div class="flex gap-1 items-center text-red-600">
