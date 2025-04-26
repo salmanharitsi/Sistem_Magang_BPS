@@ -72,8 +72,7 @@ class EditDokumen extends Component
         if (!$isDataChanged) {
             return redirect('/profil-edit?selected=dokumen')->with([
                 'warning' => [
-                    "title" => "Tidak ada perubahan dokumen",
-                    "message" => "Akun berhasil diperbarui"
+                    "title" => "Tidak ada perubahan dokumen"
                 ]
             ]);
         }
@@ -87,8 +86,7 @@ class EditDokumen extends Component
 
         return redirect('/profil')->with([
             'success' => [
-                "title" => "Dokumen Berhasil diperbarui",
-                "message" => "Akun berhasil diperbarui"
+                "title" => "Dokumen Berhasil diperbarui"
             ]
         ]);
     }

@@ -144,7 +144,8 @@
                     </div>
                 </li>
             </ol>
-            @if (Auth::user()->tentang_saya == null ||
+            @if (Auth::user()->foto_profil == null ||
+                    Auth::user()->tentang_saya == null ||
                     Auth::user()->jenis_kelamin == null ||
                     Auth::user()->tempat_lahir == null ||
                     Auth::user()->tanggal_lahir == null ||
@@ -163,7 +164,8 @@
                     </a>
                 </div>
             @endif
-            @if (Auth::user()->tentang_saya != null &&
+            @if (Auth::user()->foto_profil != null &&
+                    Auth::user()->tentang_saya != null &&
                     Auth::user()->jenis_kelamin != null &&
                     Auth::user()->tempat_lahir != null &&
                     Auth::user()->tanggal_lahir != null &&

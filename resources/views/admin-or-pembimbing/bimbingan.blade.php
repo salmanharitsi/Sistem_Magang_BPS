@@ -154,7 +154,7 @@
         <div class="mt-6 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                 <i class="ti ti-calendar-time text-lg"></i>
-                <p class="text-sm">Magang bimbingan ini akan dimulai pada <span class="font-bold">{{ Carbon::parse($magang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+                <p class="text-sm">Peserta magang ini akan memulai magangnya pada <span class="font-bold">{{ Carbon::parse($magang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
             </div>
         </div>
     @endif
