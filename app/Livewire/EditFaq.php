@@ -108,9 +108,26 @@ class EditFaq extends Component
         $this->validate();
 
         $faq = Faq::find($this->faqId);
+        
+        // Persiapkan data baru
+        $newQuestion = ucfirst(strtolower($this->question));
+        $newAnswer = ucfirst(strtolower($this->answer));
+        
+        // Cek apakah ada perubahan
+        if ($faq->question === $newQuestion && 
+            $faq->answer === $newAnswer) {
+            
+            return redirect('/edit-home?selected=faq')->with([
+                'warning' => [
+                    "title" => "Tidak ada perubahan!",
+                ]
+            ]);
+        }
+        
+        // Lakukan update jika ada perubahan
         $faq->update([
-            'question' => ucfirst(strtolower($this->question)), 
-            'answer' => ucfirst(strtolower($this->answer)), 
+            'question' => $newQuestion,
+            'answer' => $newAnswer,
         ]);
 
         $this->resetModal();

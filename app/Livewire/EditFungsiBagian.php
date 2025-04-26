@@ -131,26 +131,50 @@ class EditFungsiBagian extends Component
         $this->validate();
 
         $fungsiBagian = FungsiBagian::findOrFail($this->fungsiId);
+        
+        // Persiapkan data baru
+        $newTitle = ucwords(strtolower($this->title));
+        $newDescription = ucfirst(strtolower($this->description));
+        
+        // Persiapkan jurusan baru
+        $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
+        $jurusanArray = array_filter($jurusanArray, function($jurusan) {
+            return !empty($jurusan);
+        });
+        $newJurusan = array_map(function($jurusan) {
+            return ucwords(strtolower($jurusan));
+        }, $jurusanArray);
+        
+        // Ambil jurusan lama
+        $oldJurusan = $fungsiBagian->jurusan->pluck('jurusan')->toArray();
+        
+        // Cek apakah ada perubahan
+        if ($fungsiBagian->title === $newTitle &&
+            $fungsiBagian->description === $newDescription &&
+            empty(array_diff($newJurusan, $oldJurusan)) &&
+            empty(array_diff($oldJurusan, $newJurusan))) {
+            
+            return redirect('/edit-home?selected=fungsi-bagian')->with([
+                'warning' => [
+                    "title" => "Tidak ada perubahan!",
+                ]
+            ]);
+        }
+        
+        // Lakukan update jika ada perubahan
         $fungsiBagian->update([
-            'title' => ucwords(strtolower($this->title)),
-            'description' => ucfirst(strtolower($this->description)),
+            'title' => $newTitle,
+            'description' => $newDescription,
         ]);
 
         // Hapus jurusan lama
         $fungsiBagian->jurusan()->delete();
 
         // Tambah jurusan baru
-        $jurusanArray = array_map('trim', explode(',', $this->jurusanInput));
-        
-        // Filter array untuk menghapus elemen kosong
-        $jurusanArray = array_filter($jurusanArray, function($jurusan) {
-            return !empty($jurusan); // Hanya menyimpan yang tidak kosong
-        });
-
-        foreach ($jurusanArray as $jurusan) {
+        foreach ($newJurusan as $jurusan) {
             FungsiBagianJurusan::create([
                 'fungsi_bagian_id' => $fungsiBagian->id,
-                'jurusan' => ucwords(strtolower($jurusan)),
+                'jurusan' => $jurusan,
             ]);
         }
 
