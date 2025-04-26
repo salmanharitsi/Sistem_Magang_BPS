@@ -111,8 +111,7 @@ class Registrasi extends Component
         // Mengarahkan pengguna kembali ke halaman registrasi dengan pesan sukses
         return redirect('/login')->with([
             'success' => [
-                "title" => "Registrasi Berhasil!",
-                "message" => "Akun berhasil didaftarkan, silahkan masuk"
+                "title" => "Registrasi Berhasil!"
             ]
         ]);
     }

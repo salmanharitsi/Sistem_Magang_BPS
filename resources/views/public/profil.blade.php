@@ -23,14 +23,19 @@
                     class="w-14 h-14 object-cover rounded-lg outline outline-blue-600 cursor-pointer"
                     onclick="openPreview('{{ Storage::url(Auth::user()->foto_profil) }}')">
             @else
-                <h1 class="flex w-14 h-14 items-center justify-center text-xl text-white bg-blue-600 rounded-lg">
+                <a href="/profil-edit?selected=biodata" class="pjax-link flex w-14 h-14 items-center justify-center text-xl text-white bg-blue-600 rounded-lg">
                     {{ $firstLetter }}
-                </h1>
+                </a>
             @endif
             <div>
-                <p class="text-lg text-gray-800 font-medium">
-                    {{ Auth::user()->name }}</p>
+                <p class="text-lg text-gray-800 font-medium">{{ Auth::user()->name }}</p>
                 <p class="text-[12px] text-gray-600">Siswa/Mahasiswa</p>
+                @if (is_null(Auth::user()->foto_profil))
+                    <div class="flex gap-1 items-center text-red-600">
+                        <i class="ti ti-exclamation-circle text-xs"></i>
+                        <p class="text-xs">pasang foto profil</p>
+                    </div>
+                @endif
             </div>
         </div>
         {{-- <div class="card w-fit h-fit flex items-start lg:items-center px-3 py-2 bg-red-100 rounded-lg border text-red-700 border-red-700">

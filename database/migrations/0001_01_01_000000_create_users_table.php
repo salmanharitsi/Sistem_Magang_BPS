@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nomor_hp');
-            $table->string('tentang_saya')->nullable();
+            $table->string('tentang_saya')->nullable()->length(500);
             $table->string('jenis_kelamin')->nullable();
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();
@@ -75,7 +75,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('nomor_hp');
-            $table->string('tentang_saya');
+            $table->string('tentang_saya')->length(500);
             $table->string('jenis_kelamin');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
