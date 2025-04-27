@@ -4,7 +4,8 @@
 
 <form class="flex flex-col gap-5" wire:submit="update_data">
     <div class="">
-        <label for="" class="block mb-1 text-md font-medium text-gray-700">Foto Profil</label>
+        <label for="" class="block mb-1 text-md font-medium text-gray-700">Foto Profil<span
+            class="text-red-500 ml-1">*</span></label>
         @if ($foto_profil)
             @if (is_string($foto_profil))
                 <div class="relative w-28 h-28 mt-3 rounded-full overflow-hidden cursor-pointer bg-gray-200 border-2 group"

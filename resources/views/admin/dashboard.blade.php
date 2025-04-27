@@ -50,7 +50,7 @@
                     <h5 class="leading-none text-xl font-semibold text-gray-900 dark:text-white pb-1">Rekapitulasi Peserta
                         Magang
                     </h5>
-                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Data bulanan per tahun</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Data peserta masuk dan keluar setiap bulan</p>
                 </div>
                 <div class="flex items-center gap-4"> <!-- Added flex container for buttons -->
                     <!-- Download Button -->

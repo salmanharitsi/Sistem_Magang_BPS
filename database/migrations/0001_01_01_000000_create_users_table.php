@@ -116,6 +116,14 @@ return new class extends Migration
             $table->foreign('pembimbing_pertama')->references('id')->on('pegawai')->onDelete('cascade');
             $table->uuid('pembimbing_kedua')->nullable();
             $table->foreign('pembimbing_kedua')->references('id')->on('pegawai')->onDelete('cascade');
+
+            //selesai magang
+            $table->string('laporan_magang')->nullable();
+            $table->string('projek_magang')->nullable();
+
+            //nilai magang
+            $table->integer('nilai_magang')->default(0);
+
             $table->timestamps();
         });
 
@@ -152,6 +160,35 @@ return new class extends Migration
             $table->enum('status', ['waiting', 'mengisi', 'tidak-mengisi'])->default('waiting');
             $table->string('lampiran')->nullable();
             $table->string('komentar')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('feedback', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('magang_id')->unique();
+            $table->foreign('magang_id')->references('id')->on('magang')->onDelete('cascade');
+            
+            // Kelompok Aplikasi
+            $table->tinyInteger('aplikasi_daya_tarik')->unsigned(); // Attractiveness (1-5)
+            $table->tinyInteger('aplikasi_kemudahan')->unsigned(); // Perspicuity (1-5)
+            $table->tinyInteger('aplikasi_efisiensi')->unsigned(); // Efficiency (1-5)
+            $table->tinyInteger('aplikasi_keandalan')->unsigned(); // Dependability (1-5)
+            $table->tinyInteger('aplikasi_stimulasi')->unsigned(); // Stimulation (1-5)
+            $table->tinyInteger('aplikasi_originalitas')->unsigned(); // Novelty (1-5)
+            
+            // Kelompok Magang 
+            $table->tinyInteger('magang_fasilitas')->unsigned();
+            $table->tinyInteger('magang_metode')->unsigned();
+            $table->tinyInteger('magang_materi')->unsigned();
+            $table->tinyInteger('magang_pembimbing')->unsigned();
+            $table->tinyInteger('magang_relevansi')->unsigned();
+            $table->tinyInteger('magang_kepuasan')->unsigned(); // Overall satisfaction
+            
+            // Kritik & Saran
+            $table->text('testimoni');
+            $table->text('kritik');
+            $table->text('saran');
+            
             $table->timestamps();
         });
 

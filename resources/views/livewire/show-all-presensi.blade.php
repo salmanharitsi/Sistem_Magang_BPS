@@ -133,6 +133,61 @@
                     <p class="text-sm">Tidak Hadir</p>
                 </div>
             </div>
+            <div class="bg-white p-5 rounded-lg card">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Kolom Keterlambatan -->
+                    <div class="space-y-3">
+                        <h4 class="font-medium text-sm text-gray-600 mb-2">KETERLAMBATAN</h4>
+                        <div class="flex items-center gap-3 p-2 hover:bg-yellow-50 rounded transition">
+                        <div class="w-4 h-4 rounded-full border-2 border-yellow-600 bg-yellow-100"></div>
+                        <div>
+                            <p class="text-sm font-medium">Telat Masuk Kategori 1</p>
+                            <p class="text-xs text-gray-500">&lt; 30 menit</p>
+                        </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-2 hover:bg-orange-50 rounded transition">
+                        <div class="w-4 h-4 rounded-full border-2 border-orange-600 bg-orange-100"></div>
+                        <div>
+                            <p class="text-sm font-medium">Telat Masuk Kategori 2</p>
+                            <p class="text-xs text-gray-500">30 - 60 menit</p>
+                        </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-2 hover:bg-red-50 rounded transition">
+                        <div class="w-4 h-4 rounded-full border-2 border-red-600 bg-red-100"></div>
+                        <div>
+                            <p class="text-sm font-medium">Telat Masuk Kategori 3</p>
+                            <p class="text-xs text-gray-500">&gt; 60 menit</p>
+                        </div>
+                        </div>
+                    </div>
+                
+                    <!-- Kolom Kepulangan Awal -->
+                    <div class="space-y-3">
+                        <h4 class="font-medium text-sm text-gray-600 mb-2">KEPULANGAN AWAL</h4>
+                        <div class="flex items-center gap-3 p-2 hover:bg-yellow-50 rounded transition">
+                        <div class="w-4 h-4 rounded-full border-2 border-yellow-600 bg-yellow-100"></div>
+                        <div>
+                            <p class="text-sm font-medium">Pulang Cepat Kategori 1</p>
+                            <p class="text-xs text-gray-500">&lt; 30 menit</p>
+                        </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-2 hover:bg-orange-50 rounded transition">
+                        <div class="w-4 h-4 rounded-full border-2 border-orange-600 bg-orange-100"></div>
+                        <div>
+                            <p class="text-sm font-medium">Pulang Cepat Kategori 2</p>
+                            <p class="text-xs text-gray-500">30 - 60 menit</p>
+                        </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-2 hover:bg-red-50 rounded transition">
+                        <div class="w-4 h-4 rounded-full border-2 border-red-600 bg-red-100"></div>
+                        <div>
+                            <p class="text-sm font-medium">Pulang Cepat Kategori 3</p>
+                            <p class="text-xs text-gray-500">&gt; 60 menit</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Bagian Kanan: Detail Presensi -->
