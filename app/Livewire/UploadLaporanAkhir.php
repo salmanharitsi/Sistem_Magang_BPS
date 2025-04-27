@@ -22,7 +22,7 @@ class UploadLaporanAkhir extends Component
     {
         return [
             'laporan_magang' => 'required|url',
-            'projek_magang' => 'url',
+            'projek_magang' => 'nullable|url',
         ];
     }
 
