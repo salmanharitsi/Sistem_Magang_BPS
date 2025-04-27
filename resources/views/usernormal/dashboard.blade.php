@@ -336,7 +336,7 @@
                             <i class="ti ti-briefcase text-2xl text-gray-500"></i>
                         </span>
                         <div id="tooltip-project" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                            Pengumpulan Laporan Akhir
+                            Mengumpulkan Laporan Akhir
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     </li>
@@ -345,7 +345,7 @@
                             <i class="ti ti-calendar-stats text-2xl text-gray-500"></i>
                         </span>
                         <div id="tooltip-feedback" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                            Pengisian Feedback
+                            Mengisi Feedback
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     </li>
@@ -354,7 +354,7 @@
                             <i class="ti ti-certificate text-2xl text-gray-500"></i>
                         </span>
                         <div id="tooltip-sertifikat" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                            Sertifikat
+                            Menerima Sertifikat
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     </li>

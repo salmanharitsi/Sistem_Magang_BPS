@@ -62,7 +62,6 @@ return new class extends Migration
             $table->date('tenggat')->nullable();
             $table->enum('status_pengajuan', ['waiting', 'reject-time', 'reject-days', 'reject-admin', 'reject-final', 'accept-first', 'accept-final'])->default('waiting');
             $table->string('surat_pengantar')->nullable();
-            $table->string('original_filename_surat_pengantar')->nullable();
             $table->timestamps();
 
             //data akademik peserta

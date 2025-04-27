@@ -1,20 +1,20 @@
 <form class="flex flex-col gap-5" wire:submit.prevent="upload_laporan_akhir">
     <div>
         <label class="block mb-2 text-[15px] font-medium text-gray-700">
-            Laporan Magang <span class="text-[10px]">(Link Google Drive)</span><span class="text-red-500 ml-1">*</span>
+            Laporan Magang<span class="text-red-500 ml-1">*</span><span class="text-[10px]">(Link dokumen)</span>
         </label>
         <input type="text" wire:model.live="laporan_magang"
             class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
-            placeholder="Masukkan link Google Drive" />
+            placeholder="Masukkan link dokumen" />
         @error('laporan_magang')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
     </div>
     <div>
         <label class="block mb-2 text-[15px] font-medium text-gray-700">
-            Projek Magang <span class="text-[10px]">(Link Google Drive)</span>
+            Projek Magang <span class="text-[10px]">(Link dokumen)</span>
         </label>
         <input type="text" wire:model.live="projek_magang"
             class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
-            placeholder="Masukkan link Google Drive" />
+            placeholder="Masukkan link dokumen" />
         @error('projek_magang')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
     </div>
     <button type="submit"
