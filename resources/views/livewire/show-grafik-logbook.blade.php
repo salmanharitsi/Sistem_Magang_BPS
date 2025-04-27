@@ -9,7 +9,7 @@
             </div>
             <a href="/logbook"
                 class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
-                <p class="text-sm whitespace-nowrap">Lapor</p>
+                <p class="text-sm whitespace-nowrap">isi logbook</p>
             </a>
         </div>
     @endif

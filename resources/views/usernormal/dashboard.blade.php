@@ -311,7 +311,7 @@
             @endif
         </div>
         @endif
-        @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isFuture())
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isFuture())
         <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                 <i class="ti ti-calendar-time text-lg"></i>
@@ -319,7 +319,7 @@
             </div>
         </div>
         @endif
-        @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast())
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isFuture())
             <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <ol class="flex items-center w-full px-[5%] md:px-[15%]">
                     <li class="intern-step1 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
@@ -391,6 +391,49 @@
             @if (!is_null($latestMagang) && $latestMagang->status_magang == 'waiting-report')
             <div>Selesai</div>
             @endif
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && !$latestMagang->feedback)
+            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-browser text-lg"></i>
+                        <p class="text-sm">Kamu telah selesai magang <span class="font-semibold">{{ $latestMagang->jenis_magang }}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-3 lg:mt-6 relative rounded-lg overflow-hidden">
+                <div class="card rounded-lg bg-white p-5 transition-all duration-200 mb-6">
+                    <div class="">
+                        <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
+                            Form Feedback Pengalaman Magang
+                        </h4>
+                    </div>
+                </div>
+                @livewire('feedback-form', ['magangId' => $latestMagang->id])
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && !$latestMagang->laporan_magang)
+            <div class="col-span-3 card rounded-lg bg-white p-5">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-sparkles text-lg"></i>
+                        <p class="text-sm">Upload projek magang jika kamu memiliki projek yang dikerjakan selama magang</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-3 card rounded-lg mt-0 lg:mt-6 bg-white p-5 h-fit dark:bg-[#14181b] transition-all duration-200">
+                @livewire('upload-laporan-akhir', ['magangId' => $latestMagang->id])
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->laporan_magang)
+            <div class="col-span-3 card rounded-lg bg-white p-5">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-sparkles text-lg"></i>
+                        <p class="text-sm">Tunggu pembimbing memberikan nilai magang dan nantikan sertifikat magang kamu</p>
+                    </div>
+                </div>
+            </div>
         @endif
     </div>
 

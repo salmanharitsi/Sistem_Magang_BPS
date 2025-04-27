@@ -98,9 +98,9 @@
                     class="text-[13px] w-fit">
                     @if ($magang->status_magang == 'active' && Carbon::parse($magang->tanggal_mulai)->isFuture())
                         <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Segera dimulai</p>
-                    @elseif($magang->status_magang == 'active' && Carbon::parse($magang->tanggal_mulai)->isPast() && Carbon::parse($magang->tanggal_selesai)->isFuture())
+                    @elseif($magang->status_magang == 'active' && Carbon::parse($magang->tanggal_mulai)->isPast() && Carbon::parse($magang->tanggal_selesai)->addDays(1)->isFuture())
                         <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Berlangsung</p>
-                    @elseif($magang->status_magang == 'active' && Carbon::parse($magang->tanggal_selesai)->isPast())
+                    @elseif($magang->status_magang == 'active' && Carbon::parse($magang->tanggal_selesai)->addDays(1)->isPast())
                         <p class="text-gray-700 border-gray-600 bg-gray-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Selesai</p>
                     @endif
                 </div>

@@ -17,8 +17,9 @@ use Livewire\Component;
 class PengajuanMagang extends Component
 {
     // Properti validasi dan input lainnya…
-    public $jenis_magang,
 
+    #[Validate]
+    public $jenis_magang,
         $bidang_tujuan,
         $tanggal_mulai,
         $tanggal_selesai,
