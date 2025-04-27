@@ -8,7 +8,7 @@
             </div>
             <a href="/presensi"
                 class="pjax-link bg-green-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
-                <p class="text-sm whitespace-nowrap">laporkan kehadiran</p>
+                <p class="text-sm whitespace-nowrap">lapor kehadiran</p>
             </a>
         </div>
     @endif
@@ -20,7 +20,7 @@
             </div>
             <a href="/presensi"
                 class="pjax-link bg-green-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
-                <p class="text-sm whitespace-nowrap">Laporkan pulang</p>
+                <p class="text-sm whitespace-nowrap">Lapor pulang</p>
             </a>
         </div>
     @endif

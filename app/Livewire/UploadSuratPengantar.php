@@ -20,7 +20,7 @@ class UploadSuratPengantar extends Component
     public function rules()
     {
         return [
-            'surat_pengantar' => 'required|max:2048'
+            'surat_pengantar' => 'required|url'
         ];
     }
 
@@ -29,7 +29,7 @@ class UploadSuratPengantar extends Component
         return [
             'surat_pengantar' => [
                 "required" => 'Surat pengantar tidak boleh kosong',
-                "max" => 'File tidak boleh lebih dari 2mb'
+                "url" => 'Surat pengantar harus berupa URL'
             ]
         ];
     }
@@ -38,17 +38,11 @@ class UploadSuratPengantar extends Component
     {
         $this->validate();
 
-        $originalFileName = $this->surat_pengantar->getClientOriginalName();
-        $imagePath = $this->surat_pengantar->store('surat-pengantar', 'public');
-
-        // $pengajuan = Auth::user()->pengajuan()->where('status_pengajuan', 'accept-first')->first();
-
         $user = Auth::user();
         $pengajuan = Pengajuan::where('user_id', $user->id)
                                 ->where('status_pengajuan', 'accept-first')
                                 ->first();
-        $pengajuan->surat_pengantar = $imagePath;
-        $pengajuan->original_filename_surat_pengantar = $originalFileName;
+        $pengajuan->surat_pengantar = $this->surat_pengantar;
         $pengajuan->tenggat = null;
         $pengajuan->save();
 

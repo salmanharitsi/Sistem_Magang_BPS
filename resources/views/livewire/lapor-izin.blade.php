@@ -9,8 +9,8 @@
         @enderror
     </div>
     <div>
-        <h4 class="font-semibold mb-2">Lampiran <span class="text-[10px] font-normal">(Link Google Drive)</span></h4>
-        <input type="text" name="lampiran" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan link Google Drive" />
+        <h4 class="font-semibold mb-2">Lampiran <span class="text-[10px] font-normal">(Link dokumen)</span></h4>
+        <input type="text" name="lampiran" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan link dokumen" />
         @error('lampiran')
             <span class="text-red-500 text-[11px]">{{$message}}</span>
         @enderror

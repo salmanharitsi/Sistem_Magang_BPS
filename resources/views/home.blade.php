@@ -194,25 +194,22 @@
             <!-- Modal -->
             <div id="detailFungsiBagianModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000] hidden">
                 <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-5">
-                    <div class="flex justify-between items-center border-b pb-4 mb-0">
-                        <h2 id="modalTitle" class="text-lg font-semibold">Detail Fungsi Bagian</h2>
+                    <div class="flex justify-between items-center border-b pb-4">
+                        <h3 class="text-2xl font-semibold text-blue-600" id="fungsiTitle"></h3>
                         <button onclick="closeDetailModal()" class="text-gray-500 hover:text-gray-700">
                             <i class="fas fa-x"></i>
                         </button>
                     </div>
                     <div class="mt-4">
-                        <div class="mb-4">
-                            <h3 class="text-xl font-semibold text-blue-600 mb-2" id="fungsiTitle"></h3>
+                        <div class="">
+                            <h4 class="text-lg font-bold text-gray-900">Deskripsi</h4>
+                            <p id="fungsiDescription" class="text-gray-600 text-justify max-h-[290px] overflow-y-auto"></p>
                         </div>
-                        <div class="mb-4 max-h-[300px] overflow-y-auto">
-                            <h4 class="text-md font-medium text-gray-700 mb-2">Deskripsi</h4>
-                            <p id="fungsiDescription" class="text-gray-600 text-justify"></p>
-                        </div>
-                        <div class="mb-4">
-                            <h4 class="text-md font-medium text-gray-700 mb-2">Jurusan yang Direkomendasikan</h4>
+                        <div class="mt-4">
+                            <h4 class="text-lg font-bold text-gray-900">Jurusan yang Direkomendasikan</h4>
                             <div 
                               id="jurusanList"
-                              class="grid grid-cols-3 gap-2 text-gray-600 max-h-[100px] overflow-y-auto pr-2">
+                              class="grid grid-cols-2 md:grid-cols-3 gap-1 text-gray-600 max-h-[80px] overflow-y-auto pr-2">
                             </div>  
                         </div>                          
                     </div>
