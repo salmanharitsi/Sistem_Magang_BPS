@@ -9,7 +9,7 @@ Surat Pengantar baru telah diupload oleh seorang pengguna.
 ## Detail Dokumen
 - **Nama Pengguna:** {{ $userName }}
 - **ID Pengajuan:** {{ $pengajuanId }}
-- **Nama File:** {{ $originalFilename }}
+- **Link File:** {{ $suratPengantar }}
 - **Waktu Upload:** {{ $uploadedAt }}
 @endcomponent
 

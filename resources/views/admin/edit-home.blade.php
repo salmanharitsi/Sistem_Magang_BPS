@@ -8,7 +8,7 @@
     <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
         <div class="">
             <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
-                Edit Home
+                Edit Konten
             </h4>
         </div>
     </div>

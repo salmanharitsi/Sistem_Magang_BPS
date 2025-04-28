@@ -17,8 +17,9 @@ use Livewire\Component;
 class PengajuanMagang extends Component
 {
     // Properti validasi dan input lainnya…
-    public $jenis_magang,
 
+    #[Validate]
+    public $jenis_magang,
         $bidang_tujuan,
         $tanggal_mulai,
         $tanggal_selesai,
@@ -143,8 +144,7 @@ class PengajuanMagang extends Component
 
             return redirect('/dashboard')->with([
                 'success' => [
-                    "title" => "Berhasil mengajukan magang",
-                    "message" => "Pengajuan berhasil dan email notifikasi telah dikirim"
+                    "title" => "Berhasil mengajukan magang"
                 ]
             ]);
         } catch (\Exception $e) {
@@ -152,8 +152,7 @@ class PengajuanMagang extends Component
             \Log::error('Error dalam pengajuan: ' . $e->getMessage());
             return redirect('/dashboard')->with([
                 'error' => [
-                    "title" => "Terjadi kesalahan",
-                    "message" => "Error: " . $e->getMessage()
+                    "title" => "Terjadi kesalahan"
                 ]
             ]);
         }

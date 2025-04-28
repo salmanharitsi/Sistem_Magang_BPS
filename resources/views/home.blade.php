@@ -157,52 +157,65 @@
                     @foreach ($fungsi_bagian as $item)
                         <li class="px-2 py-2 md:py-5 md:px-5">
                             <div
-                                class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col h-full relative overflow-hidden">
-                                <div class="w-[20%]">
-                                    <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
-                                        alt="">
-                                </div>
+                                class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col justify-between h-full relative overflow-hidden">
                                 <div>
-                                    <h2
-                                        class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end whitespace-nowrap">
-                                        {{ $item['title'] }}</h2>
-                                    <div class="w-full flex justify-end mt-[-5px]">
-                                        <img class="w-[50%]"
-                                            src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
+                                    <div class="w-[20%]">
+                                        <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
                                             alt="">
                                     </div>
-                                    <p class="mt-5 text-[15px] text-gray-500">{{ $item['description'] }}</p>
+                                    <div>
+                                        <h2
+                                            class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end whitespace-nowrap">
+                                            {{ $item['title'] }}</h2>
+                                        <div class="w-full flex justify-end mt-[-5px]">
+                                            <img class="w-[50%]"
+                                                src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
+                                                alt="">
+                                        </div>
+                                        <p class="mt-5 text-[15px] text-gray-500 line-clamp-5 text-justify">{{ $item['description'] }}</p>
+                                    </div>
                                 </div>
                                 <div class="flex justify-end">
-                                    <div class="mt-3 w-fit text-end text-white relative z-10 icon-container">
-                                        <i
-                                            class="icon-info fa-solid fa-arrow-left p-3 bg-gradient-to-r from-blue-400 to-blue-700 rounded-full cursor-pointer rotate-45"></i>
-                                    </div>
-                                    <div
-                                        class="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center text-white text-center p-5 opacity-0 pointer-events-none transition-opacity duration-500 bg-gradient-to-r from-blue-100 to-blue-200 border border-blue-700">
-                                        <div class="p-5">
-                                            <h2 class="text-[22px] font-semibold text-blue-700">Rekomendasi Jurusan
-                                            </h2>
-                                            <div class="w-full flex justify-end mt-[-5px]">
-                                                <img class="w-[70%]"
-                                                    src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
-                                                    alt="">
-                                            </div>
-                                            <div class="mt-3 text-[14px] text-gray-800 font-normal flex">
-                                                <p>
-                                                    @foreach ($item['jurusan'] as $jurusan)
-                                                        {{ $jurusan }},
-                                                    @endforeach
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button onclick="openDetailModal(
+                                        '{{ $item['title'] }}',
+                                        '{{ $item['description'] }}',
+                                        @json($item['jurusan']->pluck('jurusan'))
+                                    )" 
+                                class="mt-3 w-fit text-end text-white relative z-10 icon-container">
+                                    <i class="icon-info fa-solid fa-arrow-left p-3 bg-gradient-to-r from-blue-400 to-blue-700 rounded-full cursor-pointer rotate-45"></i>
+                                </button>
                                 </div>
                             </div>
                         </li>
                     @endforeach
                 </ul>
             </div>
+            
+            <!-- Modal -->
+            <div id="detailFungsiBagianModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000] hidden">
+                <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-5">
+                    <div class="flex justify-between items-center border-b pb-4">
+                        <h3 class="text-2xl font-semibold text-blue-600" id="fungsiTitle"></h3>
+                        <button onclick="closeDetailModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-x"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <div class="">
+                            <h4 class="text-lg font-bold text-gray-900">Deskripsi</h4>
+                            <p id="fungsiDescription" class="text-gray-600 text-justify max-h-[290px] overflow-y-auto"></p>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="text-lg font-bold text-gray-900">Jurusan yang Direkomendasikan</h4>
+                            <div 
+                              id="jurusanList"
+                              class="grid grid-cols-2 md:grid-cols-3 gap-1 text-gray-600 max-h-[80px] overflow-y-auto pr-2">
+                            </div>  
+                        </div>                          
+                    </div>
+                </div>
+            </div>
+
             <div class="flex items-center">
                 <div class="w-full flex justify-start">
                     <button class="prev-slider p-3 rounded-lg bg-white border border-[#767676] shadow-lg ml-3 flex">
@@ -311,6 +324,65 @@
     </footer>
 
     <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach event listeners to all icon containers
+            const iconContainers = document.querySelectorAll('.icon-container');
+            const fungsiItem = @json($fungsi_bagian); // Pindahkan ke atas, biar nggak diulang-ulang dalam foreach
+    
+            iconContainers.forEach(function(container, index) {
+                container.addEventListener('click', function() {
+                    if (fungsiItem && fungsiItem[index]) {
+                        openDetailModal(fungsiItem[index]);
+                    }
+                });
+            });
+        });
+    
+        // Function to open modal with fungsi bagian details
+        function openDetailModal(fungsiData) {
+        document.getElementById('fungsiTitle').textContent = fungsiData.title;
+        document.getElementById('fungsiDescription').textContent = fungsiData.description;
+
+        const jurusanList = document.getElementById('jurusanList');
+        jurusanList.innerHTML = ''; // bersihin dulu
+
+        if (fungsiData.jurusan?.length) {
+            fungsiData.jurusan.forEach(j => {
+            const d = document.createElement('div');
+            d.className = 'flex items-start';
+            d.innerHTML = `
+                <span class="mr-2 text-blue-600">•</span>
+                <span>${j.jurusan}</span>
+            `;
+            jurusanList.appendChild(d);
+            });
+        } else {
+            jurusanList.innerHTML =
+            '<div class="text-gray-400 col-span-3">Tidak ada jurusan tersedia.</div>';
+        }
+
+        document
+            .getElementById('detailFungsiBagianModal')
+            .classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        }
+    
+        // Function to close the modal
+        function closeDetailModal() {
+            document.getElementById('detailFungsiBagianModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        }
+    
+        // Close modal when clicking outside
+        document.getElementById('detailFungsiBagianModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeDetailModal();
+            }
+        });
+    </script>
+    
 </body>
 
 </html>

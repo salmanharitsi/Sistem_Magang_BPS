@@ -81,7 +81,7 @@ class Registrasi extends Component
             ],
             'confirm_password' => [
                 "required_with" => 'Konfirmasi password tidak boleh kosong jika password diisi',
-                "same" => 'Password tidak sama'
+                "same" => 'Password tidak sesuai'
             ]
         ];
     }
@@ -116,8 +116,7 @@ class Registrasi extends Component
 
         return redirect()->route('verify.otp', ['id' => $otpRecord->id])->with([
             'success' => [
-                "title" => "Registrasi Berhasil!",
-                "message" => "Silahkan masukkan kode OTP yang telah dikirim ke email Anda"
+                "title" => "Registrasi Berhasil!"
             ]
         ]);
     }

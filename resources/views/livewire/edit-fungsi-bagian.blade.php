@@ -52,7 +52,7 @@
                             {{$fb->title}}
                         </td>
                         <td class="py-4 px-6 text-left">
-                            {{$fb->description}}
+                            <p class="line-clamp-5">{{$fb->description}}</p>
                         </td>
                         <td class="py-4 px-6 text-center">
                             {{ implode(', ', $fb->jurusan->pluck('jurusan')->toArray()) }}

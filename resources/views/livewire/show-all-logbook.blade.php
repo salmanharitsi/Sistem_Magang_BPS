@@ -7,7 +7,7 @@
         <!-- Bagian Kiri: Carousel Tanggal -->
         <div class="flex flex-col gap-6 w-full md:w-1/2">
             <div
-                class="w-full h-fit py-4 px-[53px] card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
+                class="w-full h-fit py-5 px-[53px] card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
                 <div id="logbook-carousel" class="overflow-hidden" wire:ignore>
                     <div class="carousel-inner flex transition-transform duration-300 ease-in-out">
                         @php
@@ -18,48 +18,89 @@
 
                         @foreach ($groupedLogbook as $month => $logbookGroup)
                             <div class="carousel-item w-full flex-shrink-0" data-index="{{ $loop->index }}">
-                                <div class="grid grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4 place-items-center">
-                                    @php $lastMonth = null; @endphp
+                                @php $lastMonth = null; @endphp
 
-                                    @foreach ($logbookGroup as $index => $logbook)
-                                        @php
-                                            $tanggal = Carbon::parse($logbook->tanggal);
-                                            $isSelected = $selectedDate === $logbook->tanggal;
-                                            $isFutureDate = $tanggal->greaterThan(Carbon::today()); // Cek apakah tanggal belum berlalu
-                                        @endphp
+                                @foreach ($logbookGroup as $index => $logbook)
+                                    @php
+                                        $tanggal = Carbon::parse($logbook->tanggal);
 
-                                        @if ($lastMonth !== $tanggal->month)
-                                            <div
-                                                class="w-full col-span-4 lg:col-span-7 text-start font-semibold mt-2 text-xl mb-3">
-                                                {{ $tanggal->translatedFormat('F Y') }} <!-- Contoh: Januari 2024 -->
-                                            </div>
-                                            @php $lastMonth = $tanggal->month; @endphp
-                                        @endif
+                                        if ($lastMonth !== $tanggal->month) {
+                                            // Reset dan tampilkan header bulan baru
+                                            if ($lastMonth !== null) {
+                                                // Tutup minggu sebelumnya jika ada
+                                                echo '</div>';
+                                            }
+                                            
+                                            // Tampilkan header bulan
+                                            echo '<div class="w-full text-start font-semibold text-xl mb-3">' . 
+                                                  $tanggal->translatedFormat('F Y') . 
+                                                 '</div>';
+                                            
+                                            // Header hari dalam seminggu
+                                            echo '<div class="grid grid-cols-7 gap-3 mb-2 text-center font-medium text-sm text-gray-600">';
+                                            echo '<div>Sen</div>';
+                                            echo '<div>Sel</div>';
+                                            echo '<div>Rab</div>';
+                                            echo '<div>Kam</div>';
+                                            echo '<div>Jum</div>';
+                                            echo '<div>Sab</div>';
+                                            echo '<div>Min</div>';
+                                            echo '</div>';
+                                            
+                                            // Mulai minggu pertama
+                                            echo '<div class="grid grid-cols-7 gap-3 place-items-center mb-3">';
+                                            
+                                            // Tambahkan kolom kosong sesuai dengan hari pertama dalam bulan
+                                            $firstDayOfMonth = Carbon::parse($tanggal->format('Y-m-01'));
+                                            $dayOfWeek = $firstDayOfMonth->dayOfWeekIso; // 1 (Senin) hingga 7 (Minggu)
+                                            
+                                            // Koreksi untuk tanggal pertama
+                                            if ($tanggal->format('d') == '01') {
+                                                for ($i = 1; $i < $dayOfWeek; $i++) {
+                                                    echo '<div></div>'; // Tambahkan div kosong
+                                                }
+                                            }
+                                            
+                                            $lastMonth = $tanggal->month;
+                                        }
+                                        
+                                        // Periksa apakah perlu pindah ke baris minggu baru
+                                        $dayOfWeek = $tanggal->dayOfWeekIso;
+                                        if ($index > 0 && $dayOfWeek == 1) {
+                                            echo '</div><div class="grid grid-cols-7 gap-3 place-items-center mb-3">';
+                                        }
 
-                                        <!-- Div Bulat Tanggal -->
-                                        <div @unless ($isFutureDate) wire:click="selectLogbook('{{ $logbook->tanggal }}')" @endunless
-                                            class="flex items-center justify-center w-12 h-12 rounded-full
-                                                @if ($isSelected) 
-                                                    bg-blue-500 text-white
-                                                @elseif ($tanggal->isWeekend())
-                                                    bg-red-500 text-white
-                                                @elseif ($logbook->status === 'mengisi') 
-                                                    bg-green-500 text-white
-                                                @elseif ($logbook->status === 'tidak-mengisi') 
-                                                    bg-red-500 text-white
-                                                @else 
-                                                    bg-gray-200 
-                                                @endif
-                                                {{ $isFutureDate ? 'cursor-not-allowed opacity-50' : 'cursor-pointer' }}">
-                                            {{ $tanggal->format('d') }} <!-- Tampilkan tanggal (contoh: 17) -->
-                                        </div>
-                                    @endforeach
-                                </div>
+                                        $isSelected = $selectedDate === $logbook->tanggal;
+                                        $isFutureDate = $tanggal->greaterThan(Carbon::today()); // Cek apakah tanggal belum berlalu
+                                    @endphp
+
+                                    <!-- Div Bulat Tanggal -->
+                                    <div @unless ($isFutureDate) wire:click="selectLogbook('{{ $logbook->tanggal }}')" @endunless
+                                        class="flex items-center justify-center w-6 h-6 md:w-10 md:h-10 rounded-full text-sm
+                                            @if ($isSelected) 
+                                                bg-blue-500 text-white
+                                            @elseif ($tanggal->isWeekend())
+                                                text-red-600
+                                            @elseif ($logbook->status === 'mengisi') 
+                                                bg-green-500 text-white
+                                            @elseif ($logbook->status === 'tidak-mengisi') 
+                                                bg-red-500 text-white
+                                            @else 
+                                                bg-gray-200 
+                                            @endif
+                                            {{ $isFutureDate ? 'cursor-not-allowed opacity-50 bg-transparent' : 'cursor-pointer' }}">
+                                        {{ $tanggal->format('d') }} <!-- Tampilkan tanggal (contoh: 17) -->
+                                    </div>
+                                @endforeach
+
+                                @php
+                                        // Tutup div minggu terakhir jika ada
+                                    echo '</div>';
+                                @endphp
                             </div>
                         @endforeach
                     </div>
                 </div>
-
 
                 <!-- Carousel navigation buttons -->
                 <button id="prev-btn"
@@ -123,9 +164,9 @@
                                 </div>
                                 <div class="mt-5">
                                     <label class="block mb-2 text-[15px] font-medium text-gray-700">
-                                        Lampiran <span class="text-[10px]">(Link Google Drive)</span><span class="text-red-500 ml-1">*</span>
+                                        Lampiran<span class="text-red-500 ml-1">*</span><span class="text-[10px]">(Link dokumen)</span>
                                     </label>
-                                    <input type="text" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan link Google Drive" />
+                                    <input type="text" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan link dokumen" />
                                     @error('lampiran')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
                                 </div>
                                 <button type="submit" class="w-full text-white mt-5 bg-blue-600 hover:bg-blue-700 transition duration-300 ease-in-out focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-blue-400 disabled:cursor-not-allowed">

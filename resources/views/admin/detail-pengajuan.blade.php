@@ -20,6 +20,15 @@
             </a>
         </div>
 
+        @if ($pengajuan->status_pengajuan == 'accept-first' && is_null($pengajuan->surat_pengantar))
+            <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                    <i class="ti ti-alert-circle text-lg"></i>
+                    <p class="text-sm">Calon peserta magang belum mengirim surat pengantar</p>
+                </div>
+            </div>
+        @endif
+
         @if (!is_null($pengajuan->surat_pengantar))
             <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 border">
                 <h6 class="text-[17px] font-semibold text-gray-800">Surat Pengantar</h6>
@@ -27,13 +36,12 @@
                     class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
-                        <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_surat_pengantar }}</p>
+                        <p class="text-gray-600 text-sm">{{ $pengajuan->surat_pengantar }}</p>
                     </div>
-                    <button
-                        class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
-                        onclick="openPreview('{{ Storage::url($pengajuan->surat_pengantar) }}')">
+                    <a href="{{ $pengajuan->surat_pengantar}}" target="_blank"
+                        class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap">
                         Cek surat
-                    </button>
+                    </a>
                 </div>
             </div>
             @livewire('approve-final', ['pengajuan' => $pengajuan])
@@ -58,13 +66,13 @@
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Mulai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_mulai)->translatedFormat('j F Y') }}
                             </p>
                         </div>
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal selesai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_selesai)->translatedFormat('j F Y') }}
                             </p>
                         </div>
                     </div>
@@ -164,7 +172,7 @@
                     <div>
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         <p class="text-gray-600 text-sm">
-                            {{ Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('j-F-Y') }}
+                            {{ Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
                         </p>
                     </div>
                 </div>

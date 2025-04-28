@@ -14,6 +14,8 @@ class ShowAllPresensi extends Component
     public $selectedDate;
     public $currentSlide = 0;
     public $hariKe = null;
+    public $statusMasuk; 
+    public $statusKeluar;
 
     protected $listeners = [
         'updateCurrentSlide' => 'setCurrentSlide',
@@ -48,11 +50,57 @@ class ShowAllPresensi extends Component
                 $selectedDate = Carbon::parse($this->selectedDate);
                 if (!$selectedDate->isWeekend()) {
                     $this->calculateHariKe($selectedDate);
+                    $this->checkAttendanceStatus();
                 }
             }
 
             // Hitung index slide berdasarkan bulan saat ini
             $this->calculateCurrentSlide();
+        }
+    }
+
+    protected function checkAttendanceStatus()
+    {
+        if (!$this->selectedPresensi) {
+            return;
+        }
+
+        // Cek status masuk
+        if ($this->selectedPresensi->jam_masuk) {
+            $jamMasuk = Carbon::parse($this->selectedPresensi->jam_masuk);
+            $aturanJamMasuk = Carbon::today()->setTimeFromTimeString($this->selectedPresensi->aturan_jam_masuk);
+
+            $selisihMenit = $aturanJamMasuk->diffInMinutes($jamMasuk, false);
+
+
+            if ($selisihMenit <= 0) {
+                $this->statusMasuk = ['label' => 'Tepat Waktu', 'color' => 'green'];
+            } elseif ($selisihMenit > 0 && $selisihMenit <= 30) {
+                $this->statusMasuk = ['label' => 'Telat Masuk 1', 'color' => 'yellow'];
+            } elseif ($selisihMenit > 30 && $selisihMenit <= 60) {
+                $this->statusMasuk = ['label' => 'Telat Masuk 2', 'color' => 'orange'];
+            } elseif ($selisihMenit > 60) {
+                $this->statusMasuk = ['label' => 'Telat Masuk 3', 'color' => 'red'];
+            }
+        }
+
+        // Cek status keluar
+        if ($this->selectedPresensi->jam_keluar) {
+            $jamKeluar = Carbon::parse($this->selectedPresensi->jam_keluar);
+            $aturanJamKeluar = Carbon::today()->setTimeFromTimeString($this->selectedPresensi->aturan_jam_keluar);
+
+            $selisihMenit = $aturanJamKeluar->diffInMinutes($jamKeluar, false);
+
+
+            if ($selisihMenit >= 0) {
+                $this->statusKeluar = ['label' => 'Tepat Waktu', 'color' => 'green'];
+            } elseif ($selisihMenit < 0 && $selisihMenit >= -30) {
+                $this->statusKeluar = ['label' => 'Cepat Keluar 1', 'color' => 'yellow'];
+            } elseif ($selisihMenit < -30 && $selisihMenit >= -60) {
+                $this->statusKeluar = ['label' => 'Cepat Keluar 2', 'color' => 'orange'];
+            } elseif ($selisihMenit < -60) {
+                $this->statusKeluar = ['label' => 'Cepat Keluar 3', 'color' => 'red'];
+            }
         }
     }
 
@@ -100,6 +148,7 @@ class ShowAllPresensi extends Component
 
         // Hitung hari kerja
         $this->calculateHariKe($tanggalCarbon);
+        $this->checkAttendanceStatus();
 
         // Jika tanggal yang dipilih adalah hari ini, refresh halaman
         if ($tanggal == Carbon::today()->toDateString()) {
@@ -120,6 +169,8 @@ class ShowAllPresensi extends Component
             $this->selectedPresensi = Presensi::where('tanggal', $tanggal)
                 ->where('magang_id', $magang->id)
                 ->first();
+
+            $this->checkAttendanceStatus();
         }
     }
 
@@ -154,8 +205,10 @@ class ShowAllPresensi extends Component
             'presensiData' => $this->presensiData,
             'selectedPresensi' => $this->selectedPresensi,
             'selectedDate' => $this->selectedDate,
-            'currentSlide' => $this->currentSlide, // Kirim currentSlide ke Blade
+            'currentSlide' => $this->currentSlide, 
             'hariKe' => $this->hariKe,
+            'statusMasuk' => $this->statusMasuk, 
+            'statusKeluar' => $this->statusKeluar, 
         ]);
     }
 }

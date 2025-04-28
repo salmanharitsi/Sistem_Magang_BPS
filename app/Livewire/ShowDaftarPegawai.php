@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Pegawai;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use App\Models\FungsiBagian;
 use Livewire\WithPagination;
@@ -18,7 +20,8 @@ class ShowDaftarPegawai extends Component
     public $listFungsiBagian = [];
     public $showModal = false;
 
-    public $nama, $email, $password, $nomor_induk, $fungsi_bagian, $role_temp;
+    #[Validate]
+    public $name, $email, $password, $confirm_password, $nomor_induk, $fungsi_bagian, $role_temp;
 
     public function create()
     {
@@ -26,33 +29,81 @@ class ShowDaftarPegawai extends Component
         $this->showModal = true;
     }
 
+    public function rules()
+    {
+        return [
+            'name' => 'required|min:5',
+            'email' => 'required|email|unique:pegawai,email',
+            'password' => 'required|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
+            'confirm_password' => 'required_with:password|same:password',
+            'nomor_induk' => 'required|min:15|unique:pegawai,nomor_induk',
+            'fungsi_bagian' => 'required',
+            'role_temp' => 'required|in:regular,admin',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name' => [
+                "required" => 'Nama tidak boleh kosong',
+                "min" => 'Nama minimal 5 karakter',
+            ],
+            'email' => [
+                "required" => 'Email tidak boleh kosong',
+                "email" => 'Email tidak valid',
+                "unique" => 'Email sudah terdaftar',
+            ],
+            'password' => [
+                "required" => 'Password tidak boleh kosong',
+                "min" => 'Password minimal 8 karakter',
+                "regex" => 'Password harus mengandung huruf dan angka',
+            ],
+            'confirm_password' => [
+                "required_with" => 'Konfirmasi password tidak boleh kosong jika password diisi',
+                "same" => 'Password tidak sesuai',
+            ],
+            'nomor_induk' => [
+                "required" => 'Nomor induk tidak boleh kosong',
+                "min" => 'Nomor induk minimal 15 karakter',
+                "unique" => 'Nomor induk sudah terdaftar',
+            ],
+            'fungsi_bagian' => [
+                "required" => 'Fungsi bagian tidak boleh kosong',
+            ],
+            'role_temp' => [
+                "required" => 'Role tidak boleh kosong',
+                "in" => 'Role tidak valid',
+            ],
+        ];
+    }
+
     public function resetForm()
     {
-        $this->reset(['nama', 'email', 'password', 'nomor_induk', 'fungsi_bagian', 'role_temp']);
+        $this->reset(['name', 'email', 'password', 'nomor_induk', 'fungsi_bagian', 'role_temp']);
     }
 
     public function store()
     {
-        $this->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:pegawai,email',
-            'password' => 'required|string|min:6',
-            'nomor_induk' => 'required|string|max:50',
-            'fungsi_bagian' => 'required|string',
-            'role_temp' => 'required|in:regular,admin',
-        ]);
+        $validatedData = $this->validate();
 
         Pegawai::create([
-            'name' => $this->nama,
-            'email' => $this->email,
-            'password' => $this->password, 
-            'nomor_induk' => $this->nomor_induk,
-            'fungsi_bagian' => $this->fungsi_bagian,
-            'role_temp' => $this->role_temp,
+            'name' => ucwords(strtolower(trim($validatedData['name']))),
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+            'nomor_induk' => $validatedData['nomor_induk'],
+            'fungsi_bagian' => $validatedData['fungsi_bagian'],
+            'role_temp' => $validatedData['role_temp'],
+            'remember_token' => Str::random(50),
         ]);
 
-        session()->flash('message', 'Pegawai berhasil ditambahkan.');
         $this->showModal = false;
+
+        return redirect('/daftar-pegawai')->with([
+            'success' => [
+                "title" => "Berhasil menambahkan data pegawai!",
+            ]
+        ]);
     }
 
     public function mount()
@@ -78,10 +129,18 @@ class ShowDaftarPegawai extends Component
         $this->resetPage();
     }
 
-    public function resetFilters()
+    public function applyFilters()
     {
-        $this->reset(['filterFungsiBagian', 'filterRole']);
         $this->resetPage();
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+
+        // Reset error bag
+        $this->resetErrorBag();
+        $this->resetValidation();
     }
 
     public function render()

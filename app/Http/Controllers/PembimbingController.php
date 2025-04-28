@@ -66,22 +66,4 @@ class PembimbingController
             'allBimbinganCount' => $allBimbinganCount
         ]);
     }
-
-    public function get_daftar_persetujuan()
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-        
-        return view('pembimbing.daftar-persetujuan');
-    }
-
-    public function get_daftar_bimbingan()
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-        
-        return view('pembimbing.daftar-bimbingan');
-    }
 }

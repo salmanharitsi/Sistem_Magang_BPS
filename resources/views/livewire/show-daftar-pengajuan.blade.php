@@ -59,7 +59,7 @@
                                     <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Diperiksa</p>
                                 @elseif($data->status_pengajuan == 'accept-first')
                                     @if (is_null($data->surat_pengantar))
-                                        <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Surat Balasan</p>
+                                        <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Surat Pengantar</p>
                                     @else
                                         <p class="text-blue-700 border-blue-600 bg-blue-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu Persetujuan Final</p>
                                     @endif
@@ -78,7 +78,7 @@
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="7" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Tidak ada data pengajuan</p>
+                            <p class="font-semibold text-md">Data pengajuan tidak ditemukan</p>
                         </td>
                     </tr>
                 @endforelse

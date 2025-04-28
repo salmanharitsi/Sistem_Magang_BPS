@@ -1,4 +1,4 @@
-@extends('layouts.pembimbing')
+@extends($layout)
 
 @section('title', 'Daftar Persetujuan')
 

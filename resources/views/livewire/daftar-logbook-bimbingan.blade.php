@@ -4,7 +4,7 @@
 @endphp
 <div>
     <div class="p-4 border-b border-gray-300">
-        <h1 class="font-semibold text-lg text-gray-800">Presensi</h1>
+        <h1 class="font-semibold text-lg text-gray-800">Logbook</h1>
     </div>
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
         <div class="w-full md:w-1/4">
@@ -16,7 +16,7 @@
                     </div>
                     <input wire:model.live="search" type="text" id="simple-search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="cari presensi..." required="">
+                        placeholder="cari logbook..." required="">
                 </div>
             </form>
         </div>
@@ -27,9 +27,8 @@
                     <select wire:model.live="statusFilter" id="status-filter" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
                         <option value="">Semua Status</option>
-                        <option value="hadir">Hadir</option>
-                        <option value="tidak-hadir">Tidak Hadir</option>
-                        <option value="izin">Izin</option>
+                        <option value="mengisi">Mengisi</option>
+                        <option value="tidak-mengisi">Tidak Mengisi</option>
                     </select>
                 </div>
             </div>
@@ -57,27 +56,22 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($presensi as $index => $data)
+                @forelse ($logbook as $index => $data)
                     <tr class="bg-white border-b hover:bg-gray-50">
-                        <td class="py-4 px-6 w-[30px]">{{ $presensi->firstItem() + $index }}</td>
+                        <td class="py-4 px-6 w-[30px]">{{ $logbook->firstItem() + $index }}</td>
                         <td class="py-4 px-6 text-left">
                             {{Carbon::parse($data->tanggal)->translatedFormat('l, d F Y')}}
                         </td>
                         <td class="py-4 px-6 text-center">
-                            @if ($data->status === 'hadir')
+                            @if ($data->status === 'mengisi')
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
-                                    Hadir
+                                    Mengisi
                                 </span>
-                            @elseif ($data->status === 'izin')
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-amber-100 text-amber-800">
-                                    Izin
-                                </span>
-                            @elseif ($data->status === 'tidak-hadir')
+                            @elseif ($data->status === 'tidak-mengisi')
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">
-                                    Tidak Hadir
+                                    Tidak Mengisi
                                 </span>
                             @endif
                         </td>
@@ -108,13 +102,13 @@
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="8" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Data presensi tidak ditemukan</p>
+                            <p class="font-semibold text-md">Data logbook tidak ditemukan</p>
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
         <!-- Custom Pagination -->
-        {{ $presensi->links('vendor.pagination.custom-pagination') }}
+        {{ $logbook->links('vendor.pagination.custom-pagination') }}
     </div>
 </div>

@@ -37,6 +37,7 @@
 @php
     $firstLetter = strtoupper(substr(Auth::user()->name, 0, 1));
     $latestMagang = Auth::user()->magang()->latest('created_at')->first();
+    use Carbon\Carbon;
 @endphp
 
 <body class="bg-[#f8f9fa] dark:bg-[#0f1214] transition-all duration-200">
@@ -94,13 +95,6 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a class="menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/logout">
-                                <i class="ti ti-logout ps-2 text-xl"></i>
-                                <span>Keluar</span>
-                            </a>
-                        </li>
                         @if ($latestMagang)
                             <li class="text-xs font-bold pb-[5px] mt-6">
                                 <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
@@ -115,7 +109,7 @@
                                 </a>
                             </li>
 
-                            @if ($latestMagang->status_magang == 'active')
+                            @if ($latestMagang->status_magang == 'active' && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isFuture())
                                 <li class="sidebar-item">
                                     <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
                                         href="/logbook">

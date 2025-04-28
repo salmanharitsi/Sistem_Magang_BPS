@@ -47,7 +47,7 @@ class NotifSuratPengantar extends Mailable implements ShouldQueue
             with: [
                 'userName' => $this->user->name,
                 'pengajuanId' => $this->pengajuan->id,
-                'originalFilename' => $this->pengajuan->original_filename_surat_pengantar,
+                'suratPengantar' => $this->pengajuan->surat_pengantar,
                 'uploadedAt' => now()->format('d M Y H:i:s'),
             ]
         );

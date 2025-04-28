@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Magang extends Model
@@ -23,7 +24,9 @@ class Magang extends Model
         'jenis_magang',
         'tanggal_mulai',
         'tanggal_selesai',
-        'bidang_tujuan'
+        'bidang_tujuan',
+        'laporan_magang',
+        'projek_magang',
     ];
 
     protected static function boot()
@@ -63,5 +66,10 @@ class Magang extends Model
     public function pengajuan(): BelongsTo
     {
         return $this->belongsTo(Pengajuan::class, 'pengajuan_id');
+    }
+    
+    public function feedback(): HasOne
+    {
+        return $this->hasOne(Feedback::class);
     }
 }

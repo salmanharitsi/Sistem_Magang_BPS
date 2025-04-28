@@ -52,8 +52,8 @@
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
                         </td>
                         <td class="py-4 px-6 text-left flex flex-col items-center gap-3">
-                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j-F-Y') }}</div>
-                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j-F-Y') }}</div>
+                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j F Y') }}</div>
+                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j F Y') }}</div>
                         </td>
                         <td class="py-4 px-6 text-left">
                             <div class="flex items-center justify-center gap-1">
@@ -72,9 +72,9 @@
                                 class="text-[13px] mx-auto items-center w-fit">
                                 @if ($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isFuture())
                                     <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Segera dimulai</p>
-                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isPast() && Carbon::parse($data->tanggal_selesai)->isFuture())
+                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isPast() && Carbon::parse($data->tanggal_selesai)->addDays(1)->isFuture())
                                     <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Berlangsung</p>
-                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_selesai)->isPast())
+                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_selesai)->addDays(1)->isPast())
                                     <p class="text-gray-700 border-gray-600 bg-gray-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Selesai</p>
                                 @endif
                             </div>

@@ -61,8 +61,7 @@ class EditAkademik extends Component
         if (!$isDataChanged) {
             return redirect('/profil-edit?selected=akademik')->with([
                 'warning' => [
-                    "title" => "Tidak ada perubahan data",
-                    "message" => "Akun berhasil diperbarui"
+                    "title" => "Tidak ada perubahan data"
                 ]
             ]);
         }
@@ -91,8 +90,7 @@ class EditAkademik extends Component
 
         return redirect('/profil')->with([
             'success' => [
-                "title" => "Data Berhasil diperbarui",
-                "message" => "Akun berhasil diperbarui"
+                "title" => "Data Berhasil diperbarui"
             ]
         ]);
     }

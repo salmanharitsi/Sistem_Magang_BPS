@@ -17,6 +17,20 @@
                 </div>
             </form>
         </div>
+        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+            <div class="flex items-center gap-2">
+                <p class="font-semibold">Filter:</p>
+                <div class="relative">
+                    <select wire:model.live="statusFilter" id="status-filter" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
+                        <option value="">Semua Status</option>
+                        <option value="segera-dimulai">Segera Dimulai</option>
+                        <option value="berlangsung">Berlangsung</option>
+                        <option value="selesai">Selesai</option>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="overflow-x-auto">
         <table id="dataIkuTable" class="w-full text-sm text-left rtl:text-left">
@@ -61,8 +75,8 @@
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
                         </td>
                         <td class="py-4 px-6 text-left flex flex-col items-center gap-3">
-                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j-F-Y') }}</div>
-                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j-F-Y') }}</div>
+                            <div class="px-3 py-1 bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j F Y') }}</div>
+                            <div class="px-3 py-1 bg-red-50 border-2 border-red-600 rounded-full text-red-700 text-xs whitespace-nowrap">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j F Y') }}</div>
                         </td>
                         <td class="py-4 px-6 text-left">
                             <div class="flex items-center justify-center gap-1 whitespace-nowrap">
@@ -81,15 +95,15 @@
                                 class="text-[13px] mx-auto items-center w-fit">
                                 @if ($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isFuture())
                                     <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Segera dimulai</p>
-                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isPast() && Carbon::parse($data->tanggal_selesai)->isFuture())
+                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_mulai)->isPast() && Carbon::parse($data->tanggal_selesai)->addDays(1)->isFuture())
                                     <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Berlangsung</p>
-                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_selesai)->isPast())
+                                @elseif($data->status_magang == 'active' && Carbon::parse($data->tanggal_selesai)->addDays(1)->isPast())
                                     <p class="text-gray-700 border-gray-600 bg-gray-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Selesai</p>
                                 @endif
                             </div>
                         </td>
                         <td class="py-4 px-6">
-                            <a href=""
+                            <a href="/daftar-bimbingan/{{ $data->id }}"
                                 class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-eye"></i>
                             </a>

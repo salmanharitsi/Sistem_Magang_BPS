@@ -70,11 +70,11 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
 Route::group(['middleware' => ['pembimbing', 'no-cache']], function () {
     Route::get('dashboard-pembimbing', [PembimbingController::class, 'get_dashboard_pembimbing'])->name('pembimbing.dashboard');
     Route::get('ubah-password-pembimbing', [HomeController::class, 'get_ubah_password'])->name('pembimbing.ubah-password');
-    Route::get('daftar-persetujuan', [PembimbingController::class, 'get_daftar_persetujuan'])->name('pembimbing.daftar-persetujuan');
-    Route::get('daftar-bimbingan', [PembimbingController::class, 'get_daftar_bimbingan'])->name('pembimbing.daftar-bimbingan');
 });
 
 // Route untuk admin dan pembimbing
 Route::group(['middleware' => ['admin-or-pembimbing', 'no-cache']], function () {
     Route::get('daftar-bimbingan/{id}', [AdminPembimbingController::class, 'get_bimbingan'])->name('admin-or-pembimbing.bimbingan');
+    Route::get('daftar-persetujuan', [AdminPembimbingController::class, 'get_daftar_persetujuan'])->name('admin-or-pembimbing.daftar-persetujuan');
+    Route::get('daftar-bimbingan', [AdminPembimbingController::class, 'get_daftar_bimbingan'])->name('admin-or-pembimbing.daftar-bimbingan');
 });

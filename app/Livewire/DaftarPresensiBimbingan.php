@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Magang;
 use App\Models\Presensi;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,6 +13,15 @@ class DaftarPresensiBimbingan extends Component
     use WithPagination; 
     
     public $magang; 
+    public $search;
+    public $statusFilter = '';
+
+    public function updating($key): void
+    {
+        if (in_array($key, ['search', 'statusFilter'])) {
+            $this->resetPage();
+        }
+    }
 
     public function mount($magang)
     {
@@ -21,10 +31,64 @@ class DaftarPresensiBimbingan extends Component
 
     public function render()
     {
-        $presensi = Presensi::where('magang_id', $this->magang)
+        $query = Presensi::where('magang_id', $this->magang)
             ->where('status', '!=', 'waiting')
-            ->orderBy('tanggal', 'desc')
-            ->paginate(5);
+            ->orderBy('tanggal', 'desc');
+
+        if ($this->search) {
+            $search = strtolower($this->search);
+
+            // Mapping hari dan bulan dalam bahasa Indonesia ke bahasa Inggris
+            $indo_days = [
+                'minggu' => 'Sunday',
+                'senin' => 'Monday',
+                'selasa' => 'Tuesday',
+                'rabu' => 'Wednesday',
+                'kamis' => 'Thursday',
+                'jumat' => 'Friday',
+                'sabtu' => 'Saturday',
+            ];
+
+            $indo_months = [
+                'januari' => 'January',
+                'februari' => 'February',
+                'maret' => 'March',
+                'april' => 'April',
+                'mei' => 'May',
+                'juni' => 'June',
+                'juli' => 'July',
+                'agustus' => 'August',
+                'september' => 'September',
+                'oktober' => 'October',
+                'november' => 'November',
+                'desember' => 'December',
+            ];
+
+            $english_day = $indo_days[$search] ?? null;
+            $english_month = $indo_months[$search] ?? null;
+
+            $query->where(function ($q) use ($search, $english_day, $english_month) {
+                $q->where('status', 'like', '%' . $search . '%')
+                  ->orWhereHas('pembimbing', function ($q) use ($search) { $q->where('name', 'like', '%' . $search . '%'); })
+                  ->orWhereRaw("DAY(tanggal) LIKE ?", ["%$search%"])
+                  ->orWhereRaw("YEAR(tanggal) LIKE ?", ["%$search%"]);
+
+                if ($english_day) {
+                    $q->orWhereRaw("DAYNAME(tanggal) = ?", [$english_day]);
+                }
+
+                if ($english_month) {
+                    $q->orWhereRaw("MONTHNAME(tanggal) = ?", [$english_month]);
+                }
+            });
+        }
+
+        // Apply status filter if selected
+        if ($this->statusFilter) {
+            $query->where('status', $this->statusFilter);
+        }
+
+        $presensi = $query->paginate(3);
         
         return view('livewire.daftar-presensi-bimbingan', [
             'presensi' => $presensi 

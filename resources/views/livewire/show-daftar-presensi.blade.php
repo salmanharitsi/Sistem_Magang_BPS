@@ -17,6 +17,20 @@
                 </div>
             </form>
         </div>
+        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+            <div class="flex items-center gap-2">
+                <p class="font-semibold">Filter:</p>
+                <div class="relative">
+                    <select wire:model.live="statusFilter" id="status-filter" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
+                        <option value="">Semua Status</option>
+                        <option value="hadir">Hadir</option>
+                        <option value="tidak-hadir">Tidak Hadir</option>
+                        <option value="izin">Izin</option>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="overflow-x-auto">
         <table id="dataIkuTable" class="w-full text-sm text-left rtl:text-left">
@@ -92,7 +106,7 @@
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="8" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Data magang tidak ditemukan</p>
+                            <p class="font-semibold text-md">Data presensi tidak ditemukan</p>
                         </td>
                     </tr>
                 @endforelse
@@ -139,6 +153,17 @@
                                 @endif
                             </td>
                         </tr>
+                        @if ($selectedData['pembimbing_id'])
+                            <tr>
+                                <td class="py-1 pr-4 font-semibold">Disetujui Oleh</td>
+                                <td class="py-1 flex gap-[5px] items-center">:
+                                    <div class="flex items-center justify-center gap-1 whitespace-nowrap">
+                                        <i class="ti ti-user-circle text-lg"></i>
+                                        {{ $selectedData['pembimbing_id'] }}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
                         @if(isset($selectedData['status']) && $selectedData['status'] === 'izin')
                             <tr>
                                 <td class="py-1 pr-4 font-semibold align-top">Lampiran</td>
@@ -189,7 +214,7 @@
                                 @if($selectedData['foto_keluar'])
                                     <img src="{{ asset($selectedData['foto_keluar']) }}" alt="Foto Keluar" class="w-full h-auto rounded-lg">
                                 @else
-                                    <p class="text-gray-500">Kamu tidak melakukan lapor pulang!</p>
+                                    <p class="text-gray-500">Foto keluar tidak tersedia.</p>
                                 @endif
                             </div>
                         </div>
