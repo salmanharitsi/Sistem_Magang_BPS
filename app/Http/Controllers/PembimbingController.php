@@ -16,10 +16,47 @@ class PembimbingController
             return false;
         }
 
-        $bimbinganActive = Magang::where(function (Builder $builder) {
+        // Get all bimbingan data
+        $allBimbingan = Magang::where(function (Builder $builder) {
             $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())
                 ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
-        })
+        });
+
+        // Total bimbingan count
+        $totalBimbingan = $allBimbingan->count();
+
+        // Bimbingan aktif count - using the provided condition
+        $bimbinganAktif = $allBimbingan->clone()
+            ->where('status_magang', 'active')
+            ->where('tanggal_mulai', '<=', now())
+            ->where('tanggal_selesai', '>=', Carbon::now()->subDay())
+            ->count();
+
+        // Bimbingan selesai count
+        $bimbinganSelesai = $allBimbingan->clone()
+            ->where('status_magang', 'active')
+            ->where('tanggal_selesai', '<', Carbon::now()->subDay())
+            ->count();
+
+        // Monthly increments
+        $bimbinganBaruBulanIni = $allBimbingan->clone()
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $bimbinganSelesaiBulanIni = $allBimbingan->clone()
+            ->where('status_magang', 'active')
+            ->where('tanggal_selesai', '<', Carbon::now()->subDay())
+            ->whereMonth('tanggal_selesai', Carbon::now()->month)
+            ->count();
+
+        $bimbinganAktifBulanIni = $allBimbingan->clone()
+            ->where('status_magang', 'active')
+            ->where('tanggal_mulai', '<=', now())
+            ->where('tanggal_selesai', '>=', Carbon::now()->subDay())
+            ->whereMonth('tanggal_mulai', Carbon::now()->month)
+            ->count();
+
+        $bimbinganActive = $allBimbingan->clone()
             ->where('status_magang', 'active')
             ->where('tanggal_mulai', '<=', now())
             ->orderBy('created_at', 'desc')
@@ -27,7 +64,7 @@ class PembimbingController
             ->map(function ($magang) {
                 $presensi = $magang->presensi;
                 $logbook = $magang->logbook;
-                
+
                 // Hitung total hari dari tanggal mulai sampai sekarang
                 $startDate = Carbon::parse($magang->tanggal_mulai);
                 $endDate = Carbon::now()->startOfDay();
@@ -44,7 +81,7 @@ class PembimbingController
                 // Logbook stats dengan perhitungan baru
                 $mengisi = $logbook->where('status', 'mengisi')->count();
                 $tidak_mengisi = $logbook->where('status', 'tidak-mengisi')->count();
-                
+
                 $magang->logbook_stats = [
                     'mengisi' => $mengisi,
                     'tidak_mengisi' => $tidak_mengisi,
@@ -54,16 +91,15 @@ class PembimbingController
                 return $magang;
             });
 
-        $allBimbinganCount = Magang::where(function (Builder $builder) {
-            $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())
-                ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
-        })
-            ->orderBy('created_at', 'desc')
-            ->count();
-
         return view('pembimbing.dashboard', [
             'bimbinganActive' => $bimbinganActive,
-            'allBimbinganCount' => $allBimbinganCount
+            'allBimbinganCount' => $totalBimbingan,
+            'totalBimbingan' => $totalBimbingan,
+            'bimbinganSelesai' => $bimbinganSelesai,
+            'bimbinganAktif' => $bimbinganAktif,
+            'bimbinganBaruBulanIni' => $bimbinganBaruBulanIni,
+            'bimbinganSelesaiBulanIni' => $bimbinganSelesaiBulanIni,
+            'bimbinganAktifBulanIni' => $bimbinganAktifBulanIni,
         ]);
     }
 }

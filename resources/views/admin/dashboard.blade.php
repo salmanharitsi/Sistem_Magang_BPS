@@ -50,7 +50,8 @@
                     <h5 class="leading-none text-xl font-semibold text-gray-900 dark:text-white pb-1">Rekapitulasi Peserta
                         Magang
                     </h5>
-                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Data peserta masuk dan keluar setiap bulan</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Data peserta masuk dan keluar setiap
+                        bulan</p>
                 </div>
                 <div class="flex items-center gap-4"> <!-- Added flex container for buttons -->
                     <!-- Download Button -->
@@ -159,7 +160,7 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Total Magang</h1>
-                <p class="text-2xl font-bold">{{ $totalMagang ??  0 }}</p>
+                <p class="text-2xl font-bold">{{ $totalMagang ?? 0 }}</p>
                 <p class="text-sm font-normal text-blue-600">+{{ $magangBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
@@ -173,7 +174,7 @@
             <div>
                 <h1 class="text-xl font-medium">Peserta Magang Aktif</h1>
                 <p class="text-2xl font-bold">{{ $magangActive ?? 0 }}</p>
-                <p class="text-sm font-normal text-blue-600">+10 perbulan ini</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $magangAktifBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
         <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
@@ -182,8 +183,8 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Peserta Magang Selesai</h1>
-                <p class="text-2xl font-bold">100</p>
-                <p class="text-sm font-normal text-blue-600">+10 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $magangSelesai ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $magangSelesaiBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
     </div>
