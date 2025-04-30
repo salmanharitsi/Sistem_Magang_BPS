@@ -19,6 +19,8 @@ class ShowDaftarPegawai extends Component
     public $filterRole = '';
     public $listFungsiBagian = [];
     public $showModal = false;
+    public $showEditModal = false;
+    public $editingPegawaiId;
 
     #[Validate]
     public $name, $email, $password, $confirm_password, $nomor_induk, $fungsi_bagian, $role_temp;
@@ -108,7 +110,7 @@ class ShowDaftarPegawai extends Component
 
     public function mount()
     {
-        
+
         $this->listFungsiBagian = FungsiBagian::orderBy('title')->get();
     }
 
@@ -139,6 +141,71 @@ class ShowDaftarPegawai extends Component
         $this->showModal = false;
 
         // Reset error bag
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
+    public function edit($id)
+    {
+        $this->editingPegawaiId = $id;
+        $pegawai = Pegawai::find($id);
+
+        $this->name = $pegawai->name;
+        $this->email = $pegawai->email;
+        $this->nomor_induk = $pegawai->nomor_induk;
+        $this->role_temp = $pegawai->role_temp;
+
+        $this->showEditModal = true;
+
+        // Add debugging
+        logger('Edit modal triggered for ID: ' . $id);
+        logger('showEditModal status: ' . $this->showEditModal);
+    }
+
+    public function update()
+    {
+        $rules = [
+            'name' => 'required|min:5',
+            'email' => 'required|email|unique:pegawai,email,' . $this->editingPegawaiId,
+            'nomor_induk' => 'required|min:15|unique:pegawai,nomor_induk,' . $this->editingPegawaiId,
+            'role_temp' => 'required|in:regular,admin',
+        ];
+
+        if ($this->password) {
+            $rules['password'] = 'min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/';
+            $rules['confirm_password'] = 'required_with:password|same:password';
+        }
+
+        $validatedData = $this->validate($rules);
+
+        $pegawai = Pegawai::find($this->editingPegawaiId);
+        $updateData = [
+            'name' => ucwords(strtolower(trim($validatedData['name']))),
+            'email' => $validatedData['email'],
+            'nomor_induk' => $validatedData['nomor_induk'],
+            'role_temp' => $validatedData['role_temp'],
+        ];
+
+        if ($this->password) {
+            $updateData['password'] = $validatedData['password'];
+        }
+
+        $pegawai->update($updateData);
+
+        $this->showEditModal = false;
+        $this->resetForm();
+
+        return redirect('/daftar-pegawai')->with([
+            'success' => [
+                "title" => "Berhasil mengubah data pegawai!",
+            ]
+        ]);
+    }
+
+    public function closeEditModal()
+    {
+        $this->showEditModal = false;
+        $this->resetForm();
         $this->resetErrorBag();
         $this->resetValidation();
     }
