@@ -30,7 +30,8 @@ class User extends Authenticatable
         'institusi',
         'kartu_tanda',
         'jurusan',
-        'nomor_hp'
+        'nomor_hp',
+        'email_verified_at',
     ];
 
     /**
@@ -54,6 +55,32 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the OTPs for the user
+     */
+    public function otps(): HasMany
+    {
+        return $this->hasMany(OTP::class);
+    }
+
+    /**
+     * Check if user has verified email
+     */
+    public function hasVerifiedEmail(): bool
+    {
+        return $this->email_verified_at !== null;
+    }
+
+    /**
+     * Mark email as verified
+     */
+    public function markEmailAsVerified(): bool
+    {
+        return $this->forceFill([
+            'email_verified_at' => now(),
+        ])->save();
     }
 
     /**

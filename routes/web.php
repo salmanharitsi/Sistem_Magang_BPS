@@ -11,13 +11,27 @@ use Illuminate\Support\Facades\Route;
 // Route home page
 Route::get('/', [HomeController::class, 'index']);
 
+// Add name to the root route
+Route::get('/', [HomeController::class, 'index'])->name('login');
+
 // Route auth page
 Route::get('/login', [AuthController::class, 'get_login_page']);
+Route::get('/autentikasi', [AuthController::class, 'get_autentikasi_page']);
 Route::get('/login-pegawai', [AuthController::class, 'get_login_pegawai_page']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/registrasi', [AuthController::class, 'get_registrasi_page']);
 Route::get('/forgot-password', [AuthController::class, 'get_forgot_password_page']);
 Route::get('/reset/{token}', [AuthController::class, 'get_reset_password_page']);
+
+// Route OTP verification (hanya untuk verifikasi pertama kali)
+Route::get('/verify-otp/{id}', [AuthController::class, 'showOTPVerification'])
+    ->name('verify.otp');
+
+Route::post('/verify-otp/{id}', [AuthController::class, 'verifyOTP'])
+    ->name('verify.otp.submit');
+
+Route::post('/resend-otp/{id}', [AuthController::class, 'resendOTP'])
+    ->name('resend.otp');
 
 // Route untuk user biasa
 Route::group(['middleware' => ['usernormal', 'no-cache']], function () {

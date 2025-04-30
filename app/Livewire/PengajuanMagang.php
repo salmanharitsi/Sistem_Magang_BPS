@@ -141,7 +141,7 @@ class PengajuanMagang extends Component
 
             UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
 
-            return redirect('/dashboard')->with([+
+            return redirect('/dashboard')->with([
                 'success' => [
                     "title" => "Berhasil mengajukan magang",
                     "message" => "Pengajuan berhasil dan email notifikasi telah dikirim"

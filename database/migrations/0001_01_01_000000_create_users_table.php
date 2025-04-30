@@ -167,6 +167,17 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
+        //autentikasi
+        Schema::create('otps', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('email'); 
+            $table->string('otp_code');
+            $table->boolean('verified')->default(false);
+            $table->timestamp('resend_time')->nullable();
+            $table->json('registration_data')->nullable(); // Tambah kolom untuk data registrasi
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -180,6 +191,7 @@ return new class extends Migration
         Schema::dropIfExists('magang');
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('otps');
         Schema::dropIfExists('pegawai');
         Schema::dropIfExists('password_reset_tokens');
     }

@@ -2,8 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Jobs\OTPJob;
+use App\Mail\OTPMail;
+use App\Models\OTP;
 use App\Models\User;
+use Illuminate\Container\Attributes\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -15,14 +20,14 @@ class Registrasi extends Component
 
     #[Validate]
     public $name,
-    $email,
-    $nomor_induk,
-    $institusi,
-    $jurusan,
-    $nomor_hp,
-    $kartu_tanda,
-    $password,
-    $confirm_password;
+        $email,
+        $nomor_induk,
+        $institusi,
+        $jurusan,
+        $nomor_hp,
+        $kartu_tanda,
+        $password,
+        $confirm_password;
 
     public function rules()
     {
@@ -83,36 +88,36 @@ class Registrasi extends Component
 
     public function create_user()
     {
-        // Validasi data input
         $validatedData = $this->validate();
 
-        // Mendapatkan nama asli file
+        $imagePath = $this->kartu_tanda->store('kartu_tanda', 'public');
         $originalFilename = $this->kartu_tanda->getClientOriginalName();
 
-        // Menyimpan gambar ke penyimpanan publik
-        $imagePath = $this->kartu_tanda->store('kartu_tanda', 'public', );
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        // Membuat instance user baru dan mengisi properti dengan data yang divalidasi
-        $user = new User();
-        $user->name = ucwords(strtolower(trim($validatedData['name'])));
-        $user->email = $validatedData['email'];
-        $user->nomor_induk = $validatedData['nomor_induk'];
-        $user->institusi = ucwords(strtolower(trim($validatedData['institusi'])));
-        $user->jurusan = ucwords(strtolower(trim($validatedData['jurusan'])));
-        $user->kartu_tanda = $imagePath;
-        $user->original_filename_kartu = $originalFilename;
-        $user->nomor_hp = $validatedData['nomor_hp'];
-        $user->password = Hash::make($validatedData['password']);
-        $user->remember_token = Str::uuid()->toString();
+        // Create OTP record and get the UUID
+        $otpRecord = OTP::create([
+            'email' => $validatedData['email'],
+            'otp_code' => $otp,
+            'verified' => false,
+            'registration_data' => [
+                'name' => ucwords(strtolower(trim($validatedData['name']))),
+                'nomor_induk' => $validatedData['nomor_induk'],
+                'institusi' => ucwords(strtolower(trim($validatedData['institusi']))),
+                'jurusan' => ucwords(strtolower(trim($validatedData['jurusan']))),
+                'kartu_tanda' => $imagePath,
+                'original_filename_kartu' => $originalFilename,
+                'nomor_hp' => $validatedData['nomor_hp'],
+                'password' => Hash::make($validatedData['password']),
+            ]
+        ]);
 
-        // Menyimpan user ke database
-        $user->save();
+        OTPJob::dispatch($validatedData['email'], $otp);
 
-        // Mengarahkan pengguna kembali ke halaman registrasi dengan pesan sukses
-        return redirect('/login')->with([
+        return redirect()->route('verify.otp', ['id' => $otpRecord->id])->with([
             'success' => [
                 "title" => "Registrasi Berhasil!",
-                "message" => "Akun berhasil didaftarkan, silahkan masuk"
+                "message" => "Silahkan masukkan kode OTP yang telah dikirim ke email Anda"
             ]
         ]);
     }
