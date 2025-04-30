@@ -104,6 +104,7 @@ class ShowPersetujuanLogbook extends Component
                         ->orWhere('pembimbing_kedua', $userId);
                 })
                 ->whereNull('pembimbing_id')
+                ->where('tanggal', '<=', Carbon::today())
                 ->where('status', '!=', 'waiting');
 
             // Apply search filter
@@ -209,6 +210,7 @@ class ShowPersetujuanLogbook extends Component
             })
             ->whereNull('pembimbing_id')
             ->where('status', '!=', 'waiting')
+            ->where('tanggal', '<=', Carbon::today())
             ->orderBy('updated_at', 'desc');
 
         // Apply search filter if search term is provided
