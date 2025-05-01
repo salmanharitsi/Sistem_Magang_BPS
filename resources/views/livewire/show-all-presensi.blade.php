@@ -52,14 +52,12 @@
                                             echo '<div class="grid grid-cols-7 gap-3 place-items-center mb-3">';
                                             
                                             // Tambahkan kolom kosong sesuai dengan hari pertama dalam bulan
-                                            $firstDayOfMonth = Carbon::parse($tanggal->format('Y-m-01'));
-                                            $dayOfWeek = $firstDayOfMonth->dayOfWeekIso; // 1 (Senin) hingga 7 (Minggu)
+                                            $currentDate = Carbon::parse($tanggal);
+                                            $dayOfWeek = $currentDate->dayOfWeekIso; // 1 (Senin) hingga 7 (Minggu)
                                             
                                             // Koreksi untuk tanggal pertama
-                                            if ($tanggal->format('d') == '01') {
-                                                for ($i = 1; $i < $dayOfWeek; $i++) {
-                                                    echo '<div></div>'; // Tambahkan div kosong
-                                                }
+                                            for ($i = 1; $i < $dayOfWeek; $i++) {
+                                                echo '<div></div>'; // Tambahkan div kosong
                                             }
                                             
                                             $lastMonth = $tanggal->month;
@@ -79,7 +77,7 @@
                                     <div @unless ($isFutureDate) wire:click="selectPresensi('{{ $presensi->tanggal }}')" @endunless
                                         class="flex items-center justify-center w-6 h-6 md:w-10 md:h-10 rounded-full text-sm 
                                             @if ($isSelected) 
-                                                bg-blue-500 text-white
+                                                bg-blue-600 text-white
                                             @elseif ($tanggal->isWeekend())
                                                 text-red-600
                                             @elseif ($presensi->status === 'hadir') 
@@ -87,7 +85,7 @@
                                             @elseif ($presensi->status === 'izin') 
                                                 bg-amber-500 text-white
                                             @elseif ($presensi->status === 'tidak-hadir') 
-                                                bg-red-500 text-white
+                                                bg-red-600 text-white
                                             @else
                                                 bg-gray-200 
                                             @endif
@@ -107,17 +105,17 @@
 
                 <!-- Carousel navigation buttons -->
                 <button id="prev-btn"
-                    class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full w-10 h-10 shadow-lg hover:bg-blue-600 focus:outline-none">
+                    class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-blue-600 text-white rounded-full w-10 h-10 shadow-lg hover:bg-blue-600 focus:outline-none">
                     <i class="ti ti-chevron-left text-xl"></i>
                 </button>
                 <button id="next-btn"
-                    class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full w-10 h-10 shadow-lg hover:bg-blue-600 focus:outline-none">
+                    class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-blue-600 text-white rounded-full w-10 h-10 shadow-lg hover:bg-blue-600 focus:outline-none">
                     <i class="ti ti-chevron-right text-xl"></i>
                 </button>
             </div>
             <div class="bg-white p-5 rounded-lg card grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="flex items-center justify-start lg:justify-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-blue-600"></div>
                     <p class="text-sm">Hari Ini</p>
                 </div>
                 <div class="flex items-center justify-start lg:justify-center gap-2">
@@ -129,7 +127,7 @@
                     <p class="text-sm">Izin</p>
                 </div>
                 <div class="flex items-center justify-start lg:justify-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-red-600"></div>
                     <p class="text-sm">Tidak Hadir</p>
                 </div>
             </div>
@@ -254,11 +252,17 @@
                                         <h2 class="text-xl font-semibold text-gray-800">Detail Presensi</h2>
                                         <p class="text-sm text-gray-600">Magang Hari ke - {{ $hariKe }}</p>
                                     </div>
-                                    @if ($selectedPresensi->pembimbing_id)
+                                    @if ($selectedPresensi->pembimbing_id && $selectedPresensi->status_review === 'diterima')
                                         <div
                                             class="px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
                                             <i class="ti ti-check"></i>
                                             <p class="text-xs">Disetujui</p>
+                                        </div>
+                                    @elseif ($selectedPresensi->pembimbing_id && $selectedPresensi->status_review === 'ditolak')
+                                        <div
+                                            class="px-3 py-1 border border-red-800 bg-red-100 text-red-800 rounded-full font-medium text-sm flex items-center gap-1">
+                                            <i class="ti ti-x"></i>
+                                            <p class="text-xs">Ditolak</p>
                                         </div>
                                     @else
                                         <div

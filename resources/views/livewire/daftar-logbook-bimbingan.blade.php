@@ -48,7 +48,7 @@
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
-                        Disetujui Oleh
+                        Diperiksa Oleh
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
                         Aksi
@@ -77,10 +77,16 @@
                         </td>
                         <td class="py-4 px-6">
                             <div class="mx-auto w-fit flex items-center">
-                                @if ($data->pembimbing_id)
+                                @if ($data->pembimbing_id && $data->status_review === 'diterima')
                                     <div class="flex items-center justify-center gap-1 whitespace-nowrap">
                                         <i class="ti ti-user-circle text-lg"></i>
                                         {{ $data->pembimbing->name }}
+                                    </div>
+                                @elseif ($data->pembimbing_id && $data->status_review === 'ditolak')
+                                    <div
+                                        class="w-fit px-3 py-1 border border-red-800 bg-red-100 text-red-800 rounded-full font-medium text-sm flex items-center gap-1">
+                                        <i class="ti ti-x"></i>
+                                        <p class="text-xs">Ditolak</p>
                                     </div>
                                 @else
                                     <div

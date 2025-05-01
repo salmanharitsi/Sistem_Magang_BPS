@@ -55,9 +55,9 @@
                     </p>
                 </div>
                 <div>
-                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tempat/Tanggal Lahir</h6>
+                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tempat, Tanggal Lahir</h6>
                     <p class="text-gray-600 text-sm">
-                        {{ $magang->pengajuan->tempat_lahir }} / {{ Carbon::parse($magang->pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
+                        {{ $magang->pengajuan->tempat_lahir }}, {{ Carbon::parse($magang->pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
                     </p>
                 </div>
             </div>
@@ -155,6 +155,77 @@
             <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                 <i class="ti ti-calendar-time text-lg"></i>
                 <p class="text-sm">Peserta magang ini akan memulai magangnya pada <span class="font-bold">{{ Carbon::parse($magang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+            </div>
+        </div>
+    @endif
+
+    @if (Carbon::parse($magang->tanggal_selesai)->addDays(1)->isPast() && !$magang->nilai_magang)
+        <div class="col-span-3 mt-6 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                <div class="flex gap-3 items-start lg:items-center">
+                    <i class="ti ti-alert-circle text-lg"></i>
+                    @if ($isPembimbing)
+                        <p class="text-sm">Peserta magang belum dinilai</p>
+                    @else
+                        <p class="text-sm">Peserta magang belum dinilai oleh pembimbingnya</p>
+                    @endif
+                </div>
+                @if ($isPembimbing)
+                    <a href="/penilaian/{{ $magang->id }}"
+                        class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
+                        <p class="text-sm whitespace-nowrap">Berikan Penilaian</p>
+                    </a>
+                @endif
+            </div>
+        </div>
+    @endif
+
+    @if ($magang->nilai_magang)
+        <div class="relative w-full mt-6 h-fit flex gap-3 items-center justify-between p-5 bg-green-100 rounded-lg text-green-700 overflow-hidden hover:shadow-md transition-all duration-300">
+            <div class="flex flex-col gap-3 items-start">
+                <p class="text-2xl font-medium italic">Nilai Peserta Magang</p>
+                <a href="/detail-nilai/{{ $magang->id }}"
+                    class="pjax-link bg-green-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
+                    <p class="text-xs whitespace-nowrap">Lihat Detail Nilai</p>
+                </a>
+            </div>
+            <div class="px-4 z-20">
+                <p class="text-4xl font-bold">{{ $magang->nilai_magang }}</p>
+            </div>
+            <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-green-300 z-10"></i>
+        </div>
+    @endif
+
+    @if ($magang->laporan_magang)
+        <div class="mt-6 card grid grid-cols-1 md:grid-cols-2 gap-5 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div>
+                <h4 class="text-gray-900 mb-2 font-semibold text-md dark:text-white">
+                    Laporan Akhir Magang
+                </h4>
+                <a href="{{ $magang->laporan_magang }}" target="_blank">
+                    <div class="w-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center p-2 rounded-lg text-white duration-200 transition-all">
+                        <i class="ti ti-file-text mr-2"></i>
+                        Laporan Akhir
+                    </div>
+                </a>
+            </div>
+            <div>
+                <h4 class="text-gray-900 mb-2 font-semibold text-md dark:text-white">
+                    Projek Magang
+                </h4>
+                @if ($magang->projek_magang)
+                    <a href="{{ $magang->projek_magang }}" target="_blank">
+                        <div class="w-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center p-2 rounded-lg text-white duration-200 transition-all">
+                            <i class="ti ti-briefcase mr-2"></i>
+                            Projek Magang
+                        </div>
+                    </a>
+                @else
+                    <div class="w-full bg-gray-300 flex items-center justify-center p-2 rounded-lg text-white duration-200 transition-all">
+                        <i class="ti ti-briefcase-off mr-2"></i>
+                        Tidak ada Projek Magang
+                    </div>
+                @endif
             </div>
         </div>
     @endif

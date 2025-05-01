@@ -57,6 +57,45 @@
         </div>
     </div>
 
+    @if (count($perluDinilai) > 0)
+        <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 mt-6">
+            <h4 class="text-gray-900 font-semibold text-xl dark:text-white">
+                Perlu Dinilai
+            </h4>
+        </div>
+
+        <div class="max-h-[290px] md:max-h-[200px] p-0.5 overflow-y-auto mt-6 grid grid-cols-1 gap-4">
+            @foreach ($perluDinilai as $magang)
+                <div class="card h-fit rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            @if (!empty($magang->user->foto_profil))
+                                <img id="profile-image"
+                                    src="{{ Storage::url($magang->user->foto_profil) }}"
+                                    alt="Preview Foto Profil"
+                                    class="w-[50px] h-[50px] object-cover rounded-full outline outline-blue-600 cursor-pointer"
+                                    onclick="openPreview('{{ Storage::url($magang->user->foto_profil) }}')">
+                            @else
+                                <h1
+                                    class="flex w-[71px] h-[71px] items-center justify-center text-xl text-white bg-blue-600 rounded-full">
+                                    {{ strtoupper(substr($magang->user->name, 0, 1)) }}
+                                </h1>
+                            @endif
+                            <div>
+                                <div>
+                                    <h5 class="font-semibold">{{ $magang->user->name }}</h5>
+                                </div>
+                                <p class="text-xs text-gray-500">{{ $magang->jenis_magang }}</p>
+                            </div>
+                        </div>
+                        <a href="/penilaian/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-sm">
+                            Berikan Penilaian
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
     @if (count($bimbinganActive) > 0)
         <div class="mt-6 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -379,28 +418,6 @@
                             fontFamily: 'Inter, sans-serif'
                         }
                     }
-                }
-            }
-
-            function openPreview(url) {
-                const screenWidth = window.screen.width;
-                const screenHeight = window.screen.height;
-                const width = screenWidth / 2;
-                const height = screenHeight / 2;
-                const left = (screenWidth - width) / 2;
-                const top = (screenHeight - height) / 2;
-
-                const newWindow = window.open(
-                    '',
-                    '',
-                    `width=${width},height=${height},top=${top},left=${left}`
-                );
-
-                if (newWindow) {
-                    newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
-                    newWindow.document.title = "Image Preview";
-                } else {
-                    alert('Preview dokumen tidak tersedia di tampilan mobile');
                 }
             }
         });
