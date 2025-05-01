@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Magang;
 use App\Models\Pengajuan;
 use App\Models\FungsiBagian;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Mail\NotifSeleksiPertama;
 use App\Models\FungsiBagianJurusan;
@@ -90,6 +91,16 @@ class AdminController
         // Data bulanan
         $magangBulanIni = Magang::whereMonth('created_at', Carbon::now()->month)->count();
 
+        // Fetch magang yang perlu dinilai
+        $perluDinilai = Magang::where(function (Builder $builder) {
+            $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())
+                ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
+        })
+            ->whereDate('tanggal_selesai', '<', Carbon::now())
+            ->where('nilai_magang', 0)
+            ->with('user')
+            ->orderBy('tanggal_selesai', 'desc')
+            ->get();
 
         return view('admin.dashboard', compact(
             'monthlyStats',
@@ -101,7 +112,8 @@ class AdminController
             'pengajuanBulanIni',
             'totalMagang',
             'magangBulanIni',
-            'magangActive'
+            'magangActive',
+            'perluDinilai'
         ));
     }
 

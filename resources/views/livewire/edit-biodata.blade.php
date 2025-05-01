@@ -57,7 +57,7 @@
                 class="text-red-500 ml-1">*</span></label>
         <textarea name="tentang_saya" id="tentang_saya" wire:model.live="tentang_saya"
             class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
-            placeholder="Masukkan deskripsi peminatan kamu"></textarea>
+            placeholder="Deskripsikan keahlian kamu pada peminatan yang kamu pilih"></textarea>
         @error('tentang_saya')
             <span class="text-red-500 text-[11px]">{{ $message }}</span>
         @enderror

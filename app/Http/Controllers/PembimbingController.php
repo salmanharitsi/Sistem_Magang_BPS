@@ -22,6 +22,7 @@ class PembimbingController
         })
             ->where('status_magang', 'active')
             ->where('tanggal_mulai', '<=', now())
+            ->where('tanggal_selesai', '>', Carbon::now()->subDay())
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($magang) {
@@ -54,6 +55,17 @@ class PembimbingController
                 return $magang;
             });
 
+        // Fetch magang yang perlu dinilai
+        $perluDinilai = Magang::where(function (Builder $builder) {
+            $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())
+                ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
+        })
+            ->whereDate('tanggal_selesai', '<', Carbon::now())
+            ->where('nilai_magang', 0)
+            ->with('user')
+            ->orderBy('tanggal_selesai', 'desc')
+            ->get();
+
         $allBimbinganCount = Magang::where(function (Builder $builder) {
             $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())
                 ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
@@ -63,6 +75,7 @@ class PembimbingController
 
         return view('pembimbing.dashboard', [
             'bimbinganActive' => $bimbinganActive,
+            'perluDinilai' => $perluDinilai,
             'allBimbinganCount' => $allBimbinganCount
         ]);
     }

@@ -120,8 +120,15 @@ return new class extends Migration
             $table->string('laporan_magang')->nullable();
             $table->string('projek_magang')->nullable();
 
-            //nilai magang
-            $table->integer('nilai_magang')->default(0);
+            // Nilai komponen
+            $table->integer('nilai_presensi')->default(0); 
+            $table->integer('nilai_logbook')->default(0);  
+            
+            // Untuk nilai custom 
+            $table->json('nilai_lainnya')->nullable(); 
+            
+            // Total nilai (bisa dihitung otomatis)
+            $table->integer('nilai_magang')->default(0); 
 
             $table->timestamps();
         });
@@ -141,6 +148,7 @@ return new class extends Migration
             $table->time('jam_masuk')->nullable();
             $table->time('jam_keluar')->nullable();
             $table->enum('status', ['waiting', 'hadir', 'tidak-hadir', 'izin'])->default('waiting');
+            $table->enum('status_review', ['waiting', 'diterima', 'ditolak'])->default('waiting');
             $table->string('foto_masuk')->nullable();
             $table->string('foto_keluar')->nullable();
             $table->text('keterangan_izin')->nullable();
@@ -157,6 +165,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->text('deskripsi')->nullable();
             $table->enum('status', ['waiting', 'mengisi', 'tidak-mengisi'])->default('waiting');
+            $table->enum('status_review', ['waiting', 'diterima', 'ditolak'])->default('waiting');
             $table->string('lampiran')->nullable();
             $table->string('komentar')->nullable();
             $table->timestamps();

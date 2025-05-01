@@ -196,7 +196,7 @@
                     </p>
                     <a href="/pengajuan"
                         class="pjax-link bg-green-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
-                        <p class="text-sm whitespace-nowrap">Cek pengajuan</p>
+                        <p class="text-sm whitespace-nowrap">Cek Pengajuan</p>
                     </a>
                 </div>
                 <div class="w-full h-fit p-3 mt-5 flex gap-3 flex-row items-start lg:items-center bg-green-100 rounded-lg text-green-600">
@@ -258,7 +258,7 @@
                         @csrf
                         <button type="submit"
                             class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan kembali</p>
+                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
                         </button>
                     </form>
                 </div>
@@ -281,7 +281,7 @@
                         @csrf
                         <button type="submit"
                             class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan kembali</p>
+                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
                         </button>
                     </form>
                 </div>
@@ -304,7 +304,7 @@
                         @csrf
                         <button type="submit"
                             class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan kembali</p>
+                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
                         </button>
                     </form>
                 </div>
@@ -416,14 +416,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-span-3 relative rounded-lg overflow-hidden">
-                    <div class="card rounded-lg bg-white p-5 transition-all duration-200 mb-6">
-                        <div class="">
+                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex flex-col md:flex-row items-start gap-3 md:items-center justify-between rounded-lg">
+                        <div class="flex gap-3 items-start lg:items-center">
                             <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
                                 Form Feedback Pengalaman Magang
                             </h4>
                         </div>
                     </div>
+                </div>
+                <div class="col-span-3 relative rounded-lg overflow-hidden">
                     @livewire('feedback-form', ['magangId' => $latestMagang->id])
                 </div>
             </div>
