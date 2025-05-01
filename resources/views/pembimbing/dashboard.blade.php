@@ -31,8 +31,8 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Total Bimbingan</h1>
-                <p class="text-2xl font-bold">10</p>
-                <p class="text-sm font-normal text-blue-600">+2 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $totalBimbingan ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $bimbinganBaruBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
         <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
@@ -41,8 +41,8 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Bimbingan Selesai</h1>
-                <p class="text-2xl font-bold">8</p>
-                <p class="text-sm font-normal text-blue-600">+5 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $bimbinganSelesai ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $bimbinganSelesaiBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
         <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
@@ -51,8 +51,8 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Bimbingan Aktif</h1>
-                <p class="text-2xl font-bold">2</p>
-                <p class="text-sm font-normal text-blue-600">+2 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $bimbinganAktif ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $bimbinganAktifBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
     </div>
@@ -150,7 +150,8 @@
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Logbook</h4>
-                                    <div class="logbook-chart-container relative" id="logbook-chart-{{ $index }}"></div>
+                                    <div class="logbook-chart-container relative" id="logbook-chart-{{ $index }}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -420,7 +421,7 @@
                 }
             }
         });
-        
+
         function openPreview(url) {
             const screenWidth = window.screen.width;
             const screenHeight = window.screen.height;

@@ -82,8 +82,18 @@ class AdminController
         // Data bulanan
         $pengajuanBulanIni = Pengajuan::whereMonth('created_at', Carbon::now()->month)->count();
 
-        // // Hitung Total Magang
-        $magangActive = Magang::where('status_magang', 'active')->count();
+        // // Hitung Total Magang Aktif
+        $magangActive = Magang::where('status_magang', 'active')
+            ->where('tanggal_mulai', '<=', Carbon::now())
+            ->where('tanggal_selesai', '>=', Carbon::now()->subDay())
+            ->count();
+
+        // Data bulanan magang aktif
+        $magangAktifBulanIni = Magang::where('status_magang', 'active')
+            ->where('tanggal_mulai', '<=', Carbon::now())
+            ->where('tanggal_selesai', '>=', Carbon::now()->subDay())
+            ->whereMonth('tanggal_mulai', Carbon::now()->month)
+            ->count();
 
         // Hitung total pengajuan
         $totalMagang = Magang::count();
@@ -101,6 +111,17 @@ class AdminController
             ->with('user')
             ->orderBy('tanggal_selesai', 'desc')
             ->get();
+      
+        // Calculate magangSelesai with the specified condition
+        $magangSelesai = Magang::where('status_magang', 'active')
+            ->where('tanggal_selesai', '<', Carbon::now()->subDay())
+            ->count();
+
+        // Calculate magangSelesaiBulanIni
+        $magangSelesaiBulanIni = Magang::where('status_magang', 'active')
+            ->where('tanggal_selesai', '<', Carbon::now()->subDay())
+            ->whereMonth('tanggal_selesai', Carbon::now()->month)
+            ->count();
 
         return view('admin.dashboard', compact(
             'monthlyStats',
@@ -114,6 +135,9 @@ class AdminController
             'magangBulanIni',
             'magangActive',
             'perluDinilai'
+            'magangAktifBulanIni',
+            'magangSelesai',
+            'magangSelesaiBulanIni'
         ));
     }
 
@@ -233,7 +257,7 @@ class AdminController
         if (request()->pjax()) {
             return false;
         }
-        
+
         $fungsiBagian = FungsiBagian::all();
         return view('admin.edit-home', compact('fungsiBagian'));
     }
