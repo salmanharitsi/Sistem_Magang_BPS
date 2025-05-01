@@ -1,6 +1,6 @@
-@extends('layouts.admin')
+@extends('layouts.pimpinan')
 
-@section('title', 'Admin dashboard')
+@section('title', 'Pimpinan dashboard')
 
 
 @section('content')
@@ -304,14 +304,6 @@
         </div>
     </div>
 
-    @if ($reviewPengajuan)
-        <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden mt-6">
-            <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Daftar
-                Pengajuan</div>
-            @livewire('show-daftar-pengajuan')
-        </div>
-    @endif
-
     <script>
         // hover modal positioning
         document.addEventListener('DOMContentLoaded', function() {
@@ -393,7 +385,6 @@
                 }
             ];
         }
-
 
         // Update the year dropdown options
         const yearDropdown = document.getElementById("yearDropdown").querySelector("ul");

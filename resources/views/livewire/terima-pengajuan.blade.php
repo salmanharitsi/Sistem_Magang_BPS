@@ -24,7 +24,7 @@
             <select name="bidang_tujuan" id="bidang_tujuan" wire:model.live="bidang_tujuan"
                 class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5">
                 <option value="" disabled selected hidden>Pilih bidang yang dituju</option>
-                @foreach ($listFungsiBagian as $fungsi)
+                @foreach ($listFungsiBagian->where('title', '!=', 'Pimpinan') as $fungsi)
                     <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
                 @endforeach
             </select>

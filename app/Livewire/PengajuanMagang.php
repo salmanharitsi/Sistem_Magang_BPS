@@ -13,11 +13,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Carbon\Carbon;
 
 class PengajuanMagang extends Component
 {
-    // Properti validasi dan input lainnya…
-
     #[Validate]
     public $jenis_magang,
         $bidang_tujuan,
@@ -28,15 +27,13 @@ class PengajuanMagang extends Component
         $penanggung_jawab_email,
         $penanggung_jawab_nomor_hp;
 
-    // Tambahkan properti untuk menyimpan data fungsi bagian
     public $listFungsiBagian = [];
 
     public function mount()
     {
         $this->jenis_magang = '';
         $this->bidang_tujuan = '';
-        // Ambil semua data fungsi bagian dari database (misal diurutkan berdasarkan title)
-        $this->listFungsiBagian = FungsiBagian::orderBy('title')->get();
+        $this->listFungsiBagian = FungsiBagian::where('title', '!=', 'Pimpinan')->orderBy('title')->get();
     }
 
     public function rules()
@@ -85,10 +82,47 @@ class PengajuanMagang extends Component
         ];
     }
 
+    public function updatedTanggalMulai($value)
+    {
+        if ($value) {
+            $tanggal = Carbon::parse($value);
+            if ($tanggal->isWeekend()) {
+                $this->addError('tanggal_mulai', 'Tanggal mulai tidak boleh di akhir pekan (Sabtu/Minggu).');
+            } else {
+                $this->resetErrorBag('tanggal_mulai');
+            }
+        }
+    }
+
+    public function updatedTanggalSelesai($value)
+    {
+        if ($value) {
+            $tanggal = Carbon::parse($value);
+            if ($tanggal->isWeekend()) {
+                $this->addError('tanggal_selesai', 'Tanggal selesai tidak boleh di akhir pekan (Sabtu/Minggu).');
+            } else {
+                $this->resetErrorBag('tanggal_selesai');
+            }
+        }
+    }
+
     public function create_pengajuan()
     {
         try {
             $validatedData = $this->validate();
+
+            // Validasi tanggal mulai
+            $tanggalMulai = Carbon::parse($validatedData['tanggal_mulai']);
+            if ($tanggalMulai->isWeekend()) {
+                return $this->addError('tanggal_mulai', 'Tanggal mulai tidak boleh di akhir pekan (Sabtu/Minggu).');
+            }
+
+            // Validasi tanggal selesai
+            $tanggalSelesai = Carbon::parse($validatedData['tanggal_selesai']);
+            if ($tanggalSelesai->isWeekend()) {
+                return $this->addError('tanggal_selesai', 'Tanggal selesai tidak boleh di akhir pekan (Sabtu/Minggu).');
+            }
+
             $user = Auth::user();
 
             $pengajuan = new Pengajuan();
@@ -129,14 +163,10 @@ class PengajuanMagang extends Component
             $user->status_magang = 'masa-daftar';
             $user->save();
 
-            // Kirim email langsung tanpa queue
             \Log::info('Mengirim email ke peserta: ' . $user->email);
-            $emailPeserta = new NotifPengajuanPeserta($pengajuan, $user);
-            Mail::to($user->email)
-                ->send($emailPeserta);
+            Mail::to($user->email)->send(new NotifPengajuanPeserta($pengajuan, $user));
 
             \Log::info('Email berhasil dikirim ke: ' . $user->email);
-
             \Log::info('Mengirim email ke admin');
             Mail::to('luxurialev@gmail.com')->send(new NotifPengajuanAdmin($pengajuan, $user));
 

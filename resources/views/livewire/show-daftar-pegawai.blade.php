@@ -47,6 +47,7 @@
                         <label for="role-filter" class="block text-[15px] font-medium text-gray-700 mb-1">Role</label>
                         <select wire:model.defer="filterRole" id="role-filter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
                             <option value="">Semua</option>
+                            <option value="pimpinan">Pimpinan</option>
                             <option value="regular">Pembimbing</option>
                             <option value="admin">Admin</option>
                         </select>
@@ -101,6 +102,8 @@
                                     <p class="text-green-700 border-green-600 bg bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pembimbing</p>
                                 @elseif($data->role_temp == 'admin')
                                     <p class="text-blue-700 border-blue-600 bg-blue-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Admin</p>
+                                @elseif($data->role_temp == 'pimpinan')
+                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pimpinan</p>
                                 @endif
                             </div>
                         </td>
@@ -196,7 +199,7 @@
                                 <select wire:model.live="fungsi_bagian" name="fungsi_bagian" id="fungsi_bagian"
                                     class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]">
                                     <option value="">-- Pilih Fungsi Bagian --</option>
-                                    @foreach ($listFungsiBagian as $fungsi)
+                                    @foreach ($listFungsiBagian->where('title', '!=', 'Pimpinan') as $fungsi)
                                         <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
                                     @endforeach
                                 </select>

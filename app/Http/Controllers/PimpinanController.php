@@ -5,22 +5,17 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Magang;
 use App\Models\Pengajuan;
-use App\Models\FungsiBagian;
 use Illuminate\Http\Request;
-use App\Mail\NotifSeleksiPertama;
-use App\Models\FungsiBagianJurusan;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use App\Jobs\UpdatePengajuanStatusJob;
 
-class AdminController
+class PimpinanController
 {
-    public function get_dashboard_admin()
+    public function get_dashboard_pimpinan()
     {
         if (request()->pjax()) {
             return false;
         }
 
+        
         // Get years for filter
         $years = Magang::selectRaw('DISTINCT YEAR(tanggal_mulai) as year')
             ->orderBy('year', 'desc')
@@ -124,7 +119,7 @@ class AdminController
         $magangBulanIni = Magang::whereMonth('created_at', Carbon::now()->month)->count();
 
 
-        return view('admin.dashboard', compact(
+        return view('pimpinan.dashboard', compact(
             'monthlyStats',
             'chartData',
             'years',
@@ -143,15 +138,7 @@ class AdminController
         if (request()->pjax()) {
             return false;
         }
-        return view('admin.daftar-pegawai');
-    }
-
-    public function get_daftar_pengajuan()
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-        return view('admin.daftar-pengajuan');
+        return view('pimpinan.daftar-pegawai');
     }
 
     public function get_daftar_magang()
@@ -159,103 +146,6 @@ class AdminController
         if (request()->pjax()) {
             return false;
         }
-        return view('admin.daftar-magang');
-    }
-
-    public function get_review_logbook()
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-        return view('admin.review-logbook');
-    }
-
-    public function get_detail_pengajuan($id)
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-
-        $pengajuan = Pengajuan::find($id);
-
-        if ($pengajuan == null) {
-            abort(404);
-        }
-
-        return view('admin.detail-pengajuan', compact('pengajuan'));
-    }
-
-    public function terima_pengajuan($id)
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-
-        $pengajuan = Pengajuan::find($id);
-
-        if ($pengajuan == null) {
-            abort(404);
-        }
-
-        $pengajuan->status_pengajuan = "accept-first";
-
-        // Calculate tenggat based on tanggal_mulai
-        $tanggalMulai = Carbon::parse($pengajuan->tanggal_mulai);
-        $tenggatDefault = now()->addDays(7);
-
-        // Set tenggat to either 7 days from now or tanggal_mulai, whichever comes first
-        $pengajuan->tenggat = $tanggalMulai->lt($tenggatDefault) ? $tanggalMulai->copy()->subDay() : $tenggatDefault;
-        $pengajuan->save();
-
-        // Dispatch job untuk memperbarui status setelah tenggat
-        UpdatePengajuanStatusJob::dispatch($pengajuan)->delay($pengajuan->tenggat);
-
-        Mail::to($pengajuan->email)->send(
-            new NotifSeleksiPertama('accepted', $pengajuan->name)
-        );
-
-        return redirect(url('/daftar-pengajuan'))->with([
-            'success' => [
-                "title" => "Berhasil menerima pengajuan",
-            ]
-        ]);
-    }
-
-    public function tolak_pengajuan($id)
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-
-        $pengajuan = Pengajuan::find($id);
-
-        if ($pengajuan == null) {
-            abort(404);
-        }
-
-        $pengajuan->status_pengajuan = "reject-admin";
-        $komentar = request('komentar');
-        $pengajuan->komentar = $komentar;
-        $pengajuan->save();
-
-        Mail::to($pengajuan->email)->send(
-            new NotifSeleksiPertama('rejected', $pengajuan->name, $komentar)
-        );
-
-        return redirect(url('/daftar-pengajuan'))->with([
-            'success' => [
-                "title" => "Berhasil menolak pengajuan",
-            ]
-        ]);
-    }
-
-    public function get_fungsi_bagian()
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-        
-        $fungsiBagian = FungsiBagian::all();
-        return view('admin.edit-home', compact('fungsiBagian'));
+        return view('pimpinan.daftar-magang');
     }
 }

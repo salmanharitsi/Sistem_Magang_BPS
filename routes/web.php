@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminPembimbingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PembimbingController;
+use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\UserNormalController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,4 +64,11 @@ Route::group(['middleware' => ['admin-or-pembimbing', 'no-cache']], function () 
     Route::get('daftar-bimbingan/{id}', [AdminPembimbingController::class, 'get_bimbingan'])->name('admin-or-pembimbing.bimbingan');
     Route::get('daftar-persetujuan', [AdminPembimbingController::class, 'get_daftar_persetujuan'])->name('admin-or-pembimbing.daftar-persetujuan');
     Route::get('daftar-bimbingan', [AdminPembimbingController::class, 'get_daftar_bimbingan'])->name('admin-or-pembimbing.daftar-bimbingan');
+});
+
+//Route untuk pimpinan
+Route::group(['middleware' => ['pimpinan', 'no-cache']], function () {
+    Route::get('dashboard-pimpinan', [PimpinanController::class, 'get_dashboard_pimpinan'])->name('pimpinan.dashboard');
+    Route::get('daftar-pegawai', [PimpinanController::class, 'get_daftar_pegawai'])->name('pimpinan.daftar-pegawai');
+    Route::get('daftar-magang', [PimpinanController::class, 'get_daftar_magang'])->name('pimpinan.daftar-magang');
 });

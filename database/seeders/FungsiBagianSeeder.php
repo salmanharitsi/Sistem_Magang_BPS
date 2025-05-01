@@ -41,6 +41,11 @@ class FungsiBagianSeeder extends Seeder
                 'title' => 'Bagian Umum',
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit iusto, itaque vitae, quas, ex ullam sint voluptate nemo omnis officia magnam sequi cupiditate illum perferendis nam rerum! Sunt, maiores.',
                 'jurusan' => ['Teknik Informatika', 'Teknik Elektro', 'Statistika']
+            ],
+            [
+                'title' => 'Pimpinan',
+                'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit iusto, itaque vitae, quas, ex ullam sint voluptate nemo omnis officia magnam sequi cupiditate illum perferendis nam rerum! Sunt, maiores.',
+                'jurusan' => ['Pimpinan']
             ]
         ];
 

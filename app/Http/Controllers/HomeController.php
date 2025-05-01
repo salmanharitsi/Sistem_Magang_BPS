@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class HomeController
 {
     public function index() {
-        $fungsi_bagian = FungsiBagian::all();
+        $fungsi_bagian = FungsiBagian::where('title', '!=', 'Pimpinan')->get();
 
         $faqs = Faq::all();
 
