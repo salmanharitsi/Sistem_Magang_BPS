@@ -24,7 +24,7 @@ class PegawaiSeeder extends Seeder
                 "name" => "Lionel Messi",
                 "fungsi_bagian" => "Bagian Umum",
                 "email" => "admin@gmail.com",
-                "password" => "admin123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341122",
                 "role_temp" => "admin"
             ],
@@ -36,7 +36,7 @@ class PegawaiSeeder extends Seeder
                 "name" => "Kylian Mbappe",
                 "fungsi_bagian" => "Fungsi IPDS",
                 "email" => "pembimbingipds1@gmail.com",
-                "password" => "regular123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341123",
                 "role_temp" => "regular"
             ],
@@ -44,7 +44,7 @@ class PegawaiSeeder extends Seeder
                 "name" => "Son Hyung Min",
                 "fungsi_bagian" => "Fungsi IPDS",
                 "email" => "pembimbingipds2@gmail.com",
-                "password" => "regular123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341124",
                 "role_temp" => "regular"
             ],
@@ -52,7 +52,7 @@ class PegawaiSeeder extends Seeder
                 "name" => "Gonzales",
                 "fungsi_bagian" => "Bagian Umum",
                 "email" => "pembimbingumum@gmail.com",
-                "password" => "regular123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341125",
                 "role_temp" => "regular"
             ],
@@ -60,7 +60,7 @@ class PegawaiSeeder extends Seeder
                 "name" => "Harry Kane",
                 "fungsi_bagian" => "Fungsi Nerwilis",
                 "email" => "pembimbingnerwilis@gmail.com",
-                "password" => "regular123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341126",
                 "role_temp" => "regular"
             ],
@@ -68,7 +68,7 @@ class PegawaiSeeder extends Seeder
                 "name" => "Paul Pogba",
                 "fungsi_bagian" => "Fungsi Statistik Distribusi",
                 "email" => "pembimbingdistribusi@gmail.com",
-                "password" => "regular123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341127",
                 "role_temp" => "regular"
             ],
@@ -76,7 +76,7 @@ class PegawaiSeeder extends Seeder
                 "name" => "Neymar Jr",
                 "fungsi_bagian" => "Fungsi Statistik Produksi",
                 "email" => "pembimbingproduksi@gmail.com",
-                "password" => "regular123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341128",
                 "role_temp" => "regular"
             ],
@@ -84,9 +84,17 @@ class PegawaiSeeder extends Seeder
                 "name" => "Mohamed Salah",
                 "fungsi_bagian" => "Fungsi Statistik Sosial",
                 "email" => "pembimbingsosial@gmail.com",
-                "password" => "regular123",
+                "password" => "bps2025",
                 "nomor_induk" => "147107822341129",
                 "role_temp" => "regular"
+            ],
+            [
+                "name" => "Gianlugi",
+                "fungsi_bagian" => 'Pimpinan',
+                "email" => "pimpinan@gmail.com",
+                "password" => "bps2025",
+                "nomor_induk" => "149107822341009",
+                "role_temp" => "pimpinan"
             ],
         ];
 

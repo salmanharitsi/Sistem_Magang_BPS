@@ -47,7 +47,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nomor_induk')->unique();
-            $table->enum('role_temp', ['regular', 'admin'])->default('regular')->nullable();
+            $table->enum('role_temp', ['regular', 'admin', 'pimpinan'])->default('regular')->nullable();
             $table->timestamps();
         });
 

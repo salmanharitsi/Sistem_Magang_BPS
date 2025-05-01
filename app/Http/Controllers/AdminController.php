@@ -61,16 +61,49 @@ class AdminController
         $monthlyStats = [];
         foreach ($months as $index => $month) {
             $monthNumber = $index + 1;
-            $starting = Magang::whereYear('tanggal_mulai', $selectedYear)
+            
+            // Get incoming interns stats
+            $incomingInterns = Magang::whereYear('tanggal_mulai', $selectedYear)
                 ->whereMonth('tanggal_mulai', $monthNumber)
-                ->count();
-            $ending = Magang::whereYear('tanggal_selesai', $selectedYear)
+                ->get();
+            
+            // Get outgoing interns stats
+            $outgoingInterns = Magang::whereYear('tanggal_selesai', $selectedYear)
                 ->whereMonth('tanggal_selesai', $monthNumber)
-                ->count();
+                ->get();
+            
+            // Count by department for incoming interns
+            $incomingByDept = [];
+            foreach ($incomingInterns as $intern) {
+                $dept = $intern->bidang_tujuan ?? 'Tidak ditentukan';
+                if (!isset($incomingByDept[$dept])) {
+                    $incomingByDept[$dept] = 0;
+                }
+                $incomingByDept[$dept]++;
+            }
+            
+            // Count by department for outgoing interns
+            $outgoingByDept = [];
+            foreach ($outgoingInterns as $intern) {
+                $dept = $intern->bidang_tujuan ?? 'Tidak ditentukan';
+                if (!isset($outgoingByDept[$dept])) {
+                    $outgoingByDept[$dept] = 0;
+                }
+                $outgoingByDept[$dept]++;
+            }
+            
+            // Sort departments by count (descending)
+            arsort($incomingByDept);
+            arsort($outgoingByDept);
+            
             $monthlyStats[] = [
                 'month' => $month,
-                'in' => $starting,
-                'out' => $ending
+                'in' => $incomingInterns->count(),
+                'out' => $outgoingInterns->count(),
+                'departmentStats' => [
+                    'in' => $incomingByDept,
+                    'out' => $outgoingByDept
+                ]
             ];
         }
 

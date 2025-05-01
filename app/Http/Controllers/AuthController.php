@@ -20,6 +20,9 @@ class AuthController
             else if($pegawai->role_temp == 'admin') {
                 return redirect('dashboard-admin');
             }
+            else if($pegawai->role_temp == 'pimpinan') {
+                return redirect('dashboard-pimpinan');
+            }
         }
         return view('auth.login');
     }
@@ -32,6 +35,9 @@ class AuthController
             }
             else if($pegawai->role_temp == 'admin') {
                 return redirect('dashboard-admin');
+            }
+            else if($pegawai->role_temp == 'pimpinan') {
+                return redirect('dashboard-pimpinan');
             }
         }
         if (!empty(Auth::check())) {

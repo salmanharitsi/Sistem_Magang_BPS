@@ -4,6 +4,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminOrPembimbingMiddleware;
 use App\Http\Middleware\NoCacheMiddleware;
 use App\Http\Middleware\PembimbingMiddleware;
+use App\Http\Middleware\PimpinanMiddleware;
 use App\Http\Middleware\UserNormalMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
             'pembimbing' => PembimbingMiddleware::class,
             'admin-or-pembimbing' => AdminOrPembimbingMiddleware::class,
+            'pimpinan' => PimpinanMiddleware::class,
             'no-cache' => NoCacheMiddleware::class
         ]);
     })
