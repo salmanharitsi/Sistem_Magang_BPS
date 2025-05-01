@@ -71,6 +71,4 @@ Route::group(['middleware' => ['admin-or-pembimbing', 'no-cache']], function () 
 //Route untuk pimpinan
 Route::group(['middleware' => ['pimpinan', 'no-cache']], function () {
     Route::get('dashboard-pimpinan', [PimpinanController::class, 'get_dashboard_pimpinan'])->name('pimpinan.dashboard');
-    Route::get('daftar-pegawai', [PimpinanController::class, 'get_daftar_pegawai'])->name('pimpinan.daftar-pegawai');
-    Route::get('daftar-magang', [PimpinanController::class, 'get_daftar_magang'])->name('pimpinan.daftar-magang');
 });

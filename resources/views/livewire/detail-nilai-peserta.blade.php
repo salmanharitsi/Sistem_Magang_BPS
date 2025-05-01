@@ -9,8 +9,8 @@
             </tr>
         </thead>
         <tbody class="text-gray-700 dark:text-gray-200">
-            <tr class="bg-gray-100 dark:bg-gray-700">
-                <td class="py-2 px-4 text-sm font-bold text-gray-700 dark:text-gray-300" colspan="3">Bobot Nilai: 70%</td>
+            <tr class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-indigo-900">
+                <td class="py-3 px-4 text-sm font-bold text-indigo-800 dark:text-indigo-300" colspan="3">Bobot Nilai: 70%</td>
             </tr>
             <tr class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
                 <td class="py-3 px-4 font-medium">Presensi</td>
@@ -18,8 +18,8 @@
                 <td class="py-3 px-4 font-semibold text-blue-600 dark:text-blue-400">{{ $magang->nilai_presensi }}</td>
             </tr>
 
-            <tr class="bg-gray-100 dark:bg-gray-700">
-                <td class="py-2 px-4 text-sm font-bold text-gray-700 dark:text-gray-300" colspan="3">Bobot Nilai: 20%</td>
+            <tr class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-indigo-900">
+                <td class="py-3 px-4 text-sm font-bold text-indigo-800 dark:text-indigo-300" colspan="3">Bobot Nilai: 20%</td>
             </tr>
             <tr class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
                 <td class="py-3 px-4 font-medium">Logbook</td>
@@ -33,8 +33,8 @@
                     : json_decode($magang->nilai_lainnya, true);
             @endphp
 
-            <tr class="bg-gray-100 dark:bg-gray-700">
-                <td class="py-2 px-4 text-sm font-bold text-gray-700 dark:text-gray-300" colspan="3">Bobot Nilai: 10%</td>
+            <tr class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-indigo-900">
+                <td class="py-3 px-4 text-sm font-bold text-indigo-800 dark:text-indigo-300" colspan="3">Bobot Nilai: 10%</td>
             </tr>
             @forelse($nilaiLainnya as $komponen => $detail)
                 <tr class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">

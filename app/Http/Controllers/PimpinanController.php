@@ -132,20 +132,4 @@ class PimpinanController
             'magangActive'
         ));
     }
-
-    public function get_daftar_pegawai()
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-        return view('pimpinan.daftar-pegawai');
-    }
-
-    public function get_daftar_magang()
-    {
-        if (request()->pjax()) {
-            return false;
-        }
-        return view('pimpinan.daftar-magang');
-    }
 }
