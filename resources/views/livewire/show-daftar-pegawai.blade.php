@@ -28,13 +28,16 @@
                 <i class="ti ti-filter mr-2"></i>
                 Filter
             </button>
-            <div id="filterDropdown" class="hidden origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
+            <div id="filterDropdown"
+                class="hidden origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
                 <div class="p-4">
 
                     <!-- Fungsi Bagian Filter -->
                     <div class="mb-4">
-                        <label for="fungsi-bagian-filter" class="block text-[15px] font-medium text-gray-700 mb-1">Fungsi Bagian</label>
-                        <select wire:model.defer="filterFungsiBagian" id="fungsi-bagian-filter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                        <label for="fungsi-bagian-filter"
+                            class="block text-[15px] font-medium text-gray-700 mb-1">Fungsi Bagian</label>
+                        <select wire:model.defer="filterFungsiBagian" id="fungsi-bagian-filter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
                             <option value="">Semua</option>
                             @foreach ($listFungsiBagian as $fungsi)
                                 <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
@@ -45,7 +48,8 @@
                     <!-- Role Filter -->
                     <div class="mb-4">
                         <label for="role-filter" class="block text-[15px] font-medium text-gray-700 mb-1">Role</label>
-                        <select wire:model.defer="filterRole" id="role-filter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                        <select wire:model.defer="filterRole" id="role-filter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
                             <option value="">Semua</option>
                             <option value="pimpinan">Pimpinan</option>
                             <option value="regular">Pembimbing</option>
@@ -55,7 +59,8 @@
 
                     <!-- Apply and Reset Buttons -->
                     <div class="flex">
-                        <button wire:click="applyFilters" type="button" class="px-3 py-2 w-full text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                        <button wire:click="applyFilters" type="button"
+                            class="px-3 py-2 w-full text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700">
                             Terapkan Filter
                         </button>
                     </div>
@@ -90,16 +95,17 @@
                     <tr class="bg-white border-b hover:bg-gray-50">
                         <td class="py-4 px-6 w-[30px]">{{ $pegawai->firstItem() + $index }}</td>
                         <td class="py-4 px-6 text-left">
-                            {{$data->name}}
+                            {{ $data->name }}
                         </td>
                         <td class="py-4 px-6 text-left">
-                            {{$data->fungsi_bagian}}
+                            {{ $data->fungsi_bagian }}
                         </td>
                         <td class="py-4 px-6 text-center">
-                            <div
-                                class="text-[13px] mx-auto items-center w-fit">
+                            <div class="text-[13px] mx-auto items-center w-fit">
                                 @if ($data->role_temp == 'regular')
-                                    <p class="text-green-700 border-green-600 bg bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pembimbing</p>
+                                    <p
+                                        class="text-green-700 border-green-600 bg bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">
+                                        Pembimbing</p>
                                 @elseif($data->role_temp == 'admin')
                                     <p class="text-blue-700 border-blue-600 bg-blue-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Admin</p>
                                 @elseif($data->role_temp == 'pimpinan')
@@ -108,10 +114,10 @@
                             </div>
                         </td>
                         <td class="py-4 px-6">
-                            <a href=""
-                                class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                            <button wire:click="edit('{{ $data->id }}')" wire:key="edit-{{ $data->id }}"
+                                class="mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-eye"></i>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 @empty
@@ -138,25 +144,28 @@
                     <form wire:submit.prevent="store">
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Nama<span class="text-red-500 ml-1">*</span></label>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Nama<span
+                                        class="text-red-500 ml-1">*</span></label>
                                 <input wire:model.live="name" name="name" id="name" type="text"
                                     class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
                                     placeholder="Masukkan nama pegawai">
-                                @if($errors->has('name'))
+                                @if ($errors->has('name'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('name') }}</span>
                                 @endif
                             </div>
                             <div>
-                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Email<span class="text-red-500 ml-1">*</span></label>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Email<span
+                                        class="text-red-500 ml-1">*</span></label>
                                 <input wire:model.live="email" name="email" id="email" type="email"
                                     class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
                                     placeholder="Masukkan email pegawai">
-                                @if($errors->has('email'))
+                                @if ($errors->has('email'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('email') }}</span>
                                 @endif
                             </div>
                             <div>
-                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Password<span class="text-red-500 ml-1">*</span></label>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Password<span
+                                        class="text-red-500 ml-1">*</span></label>
                                 <div class="relative group">
                                     <input wire:model.live="password" name="password" id="password" type="password"
                                         class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
@@ -166,14 +175,16 @@
                                         <i id="togglePasswordIcon_password" class="fas fa-eye"></i>
                                     </button>
                                 </div>
-                                @if($errors->has('password'))
+                                @if ($errors->has('password'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('password') }}</span>
                                 @endif
                             </div>
                             <div>
-                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Konfirmasi Password<span class="text-red-500 ml-1">*</span></label>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Konfirmasi
+                                    Password<span class="text-red-500 ml-1">*</span></label>
                                 <div class="relative group">
-                                    <input wire:model.live="confirm_password" name="confirm_password" id="confirm_password" type="password"
+                                    <input wire:model.live="confirm_password" name="confirm_password"
+                                        id="confirm_password" type="password"
                                         class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
                                         placeholder="Masukkan konfirmasi password">
                                     <button type="button" onclick="togglePasswordVisibility('confirm_password')"
@@ -181,21 +192,25 @@
                                         <i id="togglePasswordIcon_confirm_password" class="fas fa-eye"></i>
                                     </button>
                                 </div>
-                                @if($errors->has('confirm_password'))
-                                    <span class="text-red-500 text-[11px]">{{ $errors->first('confirm_password') }}</span>
+                                @if ($errors->has('confirm_password'))
+                                    <span
+                                        class="text-red-500 text-[11px]">{{ $errors->first('confirm_password') }}</span>
                                 @endif
                             </div>
                             <div class="md:col-span-2">
-                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Nomor Induk Pegawai<span class="text-red-500 ml-1">*</span></label>
-                                <input wire:model.live="nomor_induk" name="nomor_induk" id="nomor_induk" type="number"
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Nomor Induk
+                                    Pegawai<span class="text-red-500 ml-1">*</span></label>
+                                <input wire:model.live="nomor_induk" name="nomor_induk" id="nomor_induk"
+                                    type="number"
                                     class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
                                     placeholder="Masukkan nomor induk pegawai">
-                                @if($errors->has('nomor_induk'))
+                                @if ($errors->has('nomor_induk'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('nomor_induk') }}</span>
                                 @endif
                             </div>
                             <div>
-                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Fungsi Bagian<span class="text-red-500 ml-1">*</span></label>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Fungsi Bagian<span
+                                        class="text-red-500 ml-1">*</span></label>
                                 <select wire:model.live="fungsi_bagian" name="fungsi_bagian" id="fungsi_bagian"
                                     class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]">
                                     <option value="">-- Pilih Fungsi Bagian --</option>
@@ -203,20 +218,22 @@
                                         <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
                                     @endforeach
                                 </select>
-                                @if($errors->has('fungsi_bagian'))
-                                    <span class="text-red-500 text-[11px]">{{ $errors->first('fungsi_bagian') }}</span>
+                                @if ($errors->has('fungsi_bagian'))
+                                    <span
+                                        class="text-red-500 text-[11px]">{{ $errors->first('fungsi_bagian') }}</span>
                                 @endif
                             </div>
-                            
+
                             <div>
-                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Role<span class="text-red-500 ml-1">*</span></label>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Role<span
+                                        class="text-red-500 ml-1">*</span></label>
                                 <select wire:model.live="role_temp" name="role_temp" id="role_temp"
                                     class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]">
                                     <option value="">-- Pilih Role --</option>
                                     <option value="regular">Pembimbing</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                                @if($errors->has('role_temp'))
+                                @if ($errors->has('role_temp'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('role_temp') }}</span>
                                 @endif
                             </div>
@@ -224,7 +241,111 @@
 
                         <div class="mt-5 flex">
                             <button type="submit"
-                                class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200">Buat Akun Pegawai</button>
+                                class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200">Buat
+                                Akun Pegawai</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endif
+        @if ($showEditModal)
+            <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
+                <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-5">
+                    <div class="flex justify-between items-center border-b pb-4 mb-5">
+                        <h2 class="text-lg font-semibold">Edit Pegawai</h2>
+                        <button wire:click="closeEditModal" class="text-gray-500 hover:text-gray-700">
+                            <i class="ti ti-x"></i>
+                        </button>
+                    </div>
+                    <form wire:submit.prevent="update">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Nama<span
+                                        class="text-red-500 ml-1">*</span></label>
+                                <input wire:model.live="name" name="name" type="text"
+                                    class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
+                                    placeholder="Masukkan nama pegawai">
+                                @if ($errors->has('name'))
+                                    <span class="text-red-500 text-[11px]">{{ $errors->first('name') }}</span>
+                                @endif
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Email<span
+                                        class="text-red-500 ml-1">*</span></label>
+                                <input wire:model.live="email" name="email" type="email"
+                                    class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
+                                    placeholder="Masukkan email pegawai">
+                                @if ($errors->has('email'))
+                                    <span class="text-red-500 text-[11px]">{{ $errors->first('email') }}</span>
+                                @endif
+                            </div>
+
+                            <div>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Password</label>
+                                <div class="relative group">
+                                    <input wire:model.live="password" name="password" id="edit_password"
+                                        type="password"
+                                        class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
+                                        placeholder="Kosongkan jika tidak ingin mengubah password">
+                                    <button type="button" onclick="togglePasswordVisibility('edit_password')"
+                                        class="absolute w-fit justify-center p-3 h-full right-0 top-0 flex items-center pr-3 text-gray-500 group-focus-within:text-blue-500">
+                                        <i id="togglePasswordIcon_edit_password" class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                @if ($errors->has('password'))
+                                    <span class="text-red-500 text-[11px]">{{ $errors->first('password') }}</span>
+                                @endif
+                            </div>
+
+                            <div>
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Konfirmasi Password</label>
+                                <div class="relative group">
+                                    <input wire:model.live="confirm_password" name="confirm_password"
+                                        id="edit_confirm_password" type="password"
+                                        class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
+                                        placeholder="Kosongkan jika tidak ingin mengubah password">
+                                    <button type="button" onclick="togglePasswordVisibility('edit_confirm_password')"
+                                        class="absolute w-fit justify-center p-3 h-full right-0 top-0 flex items-center pr-3 text-gray-500 group-focus-within:text-blue-500">
+                                        <i id="togglePasswordIcon_edit_confirm_password" class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                @if ($errors->has('confirm_password'))
+                                    <span
+                                        class="text-red-500 text-[11px]">{{ $errors->first('confirm_password') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Nomor Induk
+                                    Pegawai<span class="text-red-500 ml-1">*</span></label>
+                                <input wire:model.live="nomor_induk" name="nomor_induk" type="number"
+                                    class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
+                                    placeholder="Masukkan nomor induk pegawai">
+                                @if ($errors->has('nomor_induk'))
+                                    <span class="text-red-500 text-[11px]">{{ $errors->first('nomor_induk') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block mb-2 text-[15px] font-medium text-gray-700">Role<span
+                                        class="text-red-500 ml-1">*</span></label>
+                                <select wire:model.live="role_temp" name="role_temp"
+                                    class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]">
+                                    <option value="">-- Pilih Role --</option>
+                                    <option value="regular">Pembimbing</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                                @if ($errors->has('role_temp'))
+                                    <span class="text-red-500 text-[11px]">{{ $errors->first('role_temp') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="mt-5 flex">
+                            <button type="submit"
+                                class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200">
+                                Simpan Perubahan
+                            </button>
                         </div>
                     </form>
                 </div>

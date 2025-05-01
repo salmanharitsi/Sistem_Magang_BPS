@@ -68,6 +68,7 @@ class ShowPersetujuanPresensi extends Component
                 // Data yang akan diupdate
                 $updateData = [
                     'pembimbing_id' => Auth::guard('pegawai')->user()->id,
+                    'status_review' => 'diterima',
                 ];
 
                 // Jika status berubah
@@ -129,6 +130,32 @@ class ShowPersetujuanPresensi extends Component
                 return redirect('/daftar-persetujuan')->with([
                     'success' => [
                         "title" => "Berhasil menyetujui dokumen!",
+                    ]
+                ]);
+            }
+        }
+    }
+
+    public function tolakPresensi()
+    {
+        if (isset($this->selectedData['id'])) {
+            $presensi = Presensi::find($this->selectedData['id']);
+            if ($presensi) {
+                // Data yang akan diupdate
+                $updateData = [
+                    'pembimbing_id' => Auth::guard('pegawai')->user()->id,
+                    'status_review' => 'ditolak',
+                ];
+
+                // Update data
+                $presensi->update($updateData);
+                
+                $this->closeModal();
+                $this->dispatch('refreshComponent');
+                
+                return redirect('/daftar-persetujuan')->with([
+                    'success' => [
+                        "title" => "Berhasil menolak dokumen!",
                     ]
                 ]);
             }
@@ -234,7 +261,8 @@ class ShowPersetujuanPresensi extends Component
             
             // Update multiple records at once
             Presensi::whereIn('id', $this->selectedItems)->update([
-                'pembimbing_id' => $userId
+                'pembimbing_id' => $userId,
+                'status_review' => 'diterima'
             ]);
             
             // Get the count before resetting

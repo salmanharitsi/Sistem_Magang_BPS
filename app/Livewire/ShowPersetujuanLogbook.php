@@ -63,6 +63,7 @@ class ShowPersetujuanLogbook extends Component
 
             Logbook::where('id', $this->selectedData['id'])->update([
                 'pembimbing_id' => Auth::guard('pegawai')->user()->id,
+                'status_review' => 'diterima',
                 'status' => $this->selectedData['status'],
                 'komentar' => $this->selectedData['komentar']
             ]);
@@ -73,6 +74,28 @@ class ShowPersetujuanLogbook extends Component
             return redirect('/daftar-persetujuan')->with([
                 'success' => [
                     "title" => "Berhasil menyetujui dokumen!",
+                ]
+            ]);
+        }
+    }
+
+    public function tolakLogbook()
+    {
+        if (isset($this->selectedData['id'])) {
+
+            Logbook::where('id', $this->selectedData['id'])->update([
+                'pembimbing_id' => Auth::guard('pegawai')->user()->id,
+                'status_review' => 'ditolak',
+                'status' => $this->selectedData['status'],
+                'komentar' => $this->selectedData['komentar']
+            ]);
+
+            $this->closeModal();
+            $this->dispatch('refreshComponent');
+
+            return redirect('/daftar-persetujuan')->with([
+                'success' => [
+                    "title" => "Berhasil menolak dokumen!",
                 ]
             ]);
         }
@@ -176,7 +199,8 @@ class ShowPersetujuanLogbook extends Component
 
             // Update multiple records at once
             Logbook::whereIn('id', $this->selectedItems)->update([
-                'pembimbing_id' => $userId
+                'pembimbing_id' => $userId,
+                'status_review' => 'diterima'
             ]);
 
             // Get the count before resetting

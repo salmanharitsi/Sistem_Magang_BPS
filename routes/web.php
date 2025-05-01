@@ -64,6 +64,8 @@ Route::group(['middleware' => ['admin-or-pembimbing', 'no-cache']], function () 
     Route::get('daftar-bimbingan/{id}', [AdminPembimbingController::class, 'get_bimbingan'])->name('admin-or-pembimbing.bimbingan');
     Route::get('daftar-persetujuan', [AdminPembimbingController::class, 'get_daftar_persetujuan'])->name('admin-or-pembimbing.daftar-persetujuan');
     Route::get('daftar-bimbingan', [AdminPembimbingController::class, 'get_daftar_bimbingan'])->name('admin-or-pembimbing.daftar-bimbingan');
+    Route::get('penilaian/{id}', [AdminPembimbingController::class, 'get_penilaian'])->name('admin-or-pembimbing.penilaian');
+    Route::get('detail-nilai/{id}', [AdminPembimbingController::class, 'get_detail_nilai'])->name('admin-or-pembimbing.detail-nilai');
 });
 
 //Route untuk pimpinan

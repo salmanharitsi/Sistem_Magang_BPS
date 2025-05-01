@@ -27,6 +27,10 @@ class Magang extends Model
         'bidang_tujuan',
         'laporan_magang',
         'projek_magang',
+        'nilai_presensi',
+        'nilai_logbook',
+        'nilai_lainnya',
+        'nilai_magang',
     ];
 
     protected static function boot()

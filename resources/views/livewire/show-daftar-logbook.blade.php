@@ -73,11 +73,17 @@
                             @endif
                         </td>
                         <td class="py-4 px-6 flex justify-center">
-                            @if ($data->pembimbing_id)
+                            @if ($data->pembimbing_id && $data->status_review === 'diterima')
                                 <div
                                     class="w-fit px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
                                     <i class="ti ti-check"></i>
                                     <p class="text-xs">Disetujui</p>
+                                </div>
+                            @elseif ($data->pembimbing_id && $data->status_review === 'ditolak')
+                                <div
+                                    class="w-fit px-3 py-1 border border-red-800 bg-red-100 text-red-800 rounded-full font-medium text-sm flex items-center gap-1">
+                                    <i class="ti ti-x"></i>
+                                    <p class="text-xs">Ditolak</p>
                                 </div>
                             @else
                                 <div
@@ -142,7 +148,7 @@
                         </tr>
                         @if ($selectedData['pembimbing_id'])
                             <tr>
-                                <td class="py-1 pr-4 font-semibold">Disetujui Oleh</td>
+                                <td class="py-1 pr-4 font-semibold">Diperiksa Oleh</td>
                                 <td class="py-1 flex gap-[5px] items-center">:
                                     <div class="flex items-center justify-center gap-1 whitespace-nowrap">
                                         <i class="ti ti-user-circle text-lg"></i>

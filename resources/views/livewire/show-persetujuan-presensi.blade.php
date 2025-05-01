@@ -213,7 +213,10 @@
                         </div>
                     @endif
                 </div>
-                <div class="mt-5 flex">
+                <div class="mt-5 flex gap-5">
+                    <button wire:click="tolakPresensi" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-200">
+                        Tolak Dokumen
+                    </button>
                     <button wire:click="approvePresensi" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-all duration-200">
                         Setujui Dokumen
                     </button>

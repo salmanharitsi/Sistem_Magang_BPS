@@ -31,8 +31,8 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Total Bimbingan</h1>
-                <p class="text-2xl font-bold">10</p>
-                <p class="text-sm font-normal text-blue-600">+2 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $totalBimbingan ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $bimbinganBaruBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
         <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
@@ -41,8 +41,8 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Bimbingan Selesai</h1>
-                <p class="text-2xl font-bold">8</p>
-                <p class="text-sm font-normal text-blue-600">+5 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $bimbinganSelesai ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $bimbinganSelesaiBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
         <div class="w-full flex bg-white rounded-lg card gap-3 p-3">
@@ -51,12 +51,51 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Bimbingan Aktif</h1>
-                <p class="text-2xl font-bold">2</p>
-                <p class="text-sm font-normal text-blue-600">+2 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $bimbinganAktif ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $bimbinganAktifBulanIni ?? 0 }} perbulan ini</p>
             </div>
         </div>
     </div>
 
+    @if (count($perluDinilai) > 0)
+        <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 mt-6">
+            <h4 class="text-gray-900 font-semibold text-xl dark:text-white">
+                Perlu Dinilai
+            </h4>
+        </div>
+
+        <div class="max-h-[290px] md:max-h-[200px] p-0.5 overflow-y-auto mt-6 grid grid-cols-1 gap-4">
+            @foreach ($perluDinilai as $magang)
+                <div class="card h-fit rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            @if (!empty($magang->user->foto_profil))
+                                <img id="profile-image"
+                                    src="{{ Storage::url($magang->user->foto_profil) }}"
+                                    alt="Preview Foto Profil"
+                                    class="w-[50px] h-[50px] object-cover rounded-full outline outline-blue-600 cursor-pointer"
+                                    onclick="openPreview('{{ Storage::url($magang->user->foto_profil) }}')">
+                            @else
+                                <h1
+                                    class="flex w-[71px] h-[71px] items-center justify-center text-xl text-white bg-blue-600 rounded-full">
+                                    {{ strtoupper(substr($magang->user->name, 0, 1)) }}
+                                </h1>
+                            @endif
+                            <div>
+                                <div>
+                                    <h5 class="font-semibold">{{ $magang->user->name }}</h5>
+                                </div>
+                                <p class="text-xs text-gray-500">{{ $magang->jenis_magang }}</p>
+                            </div>
+                        </div>
+                        <a href="/penilaian/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-sm">
+                            Berikan Penilaian
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
     @if (count($bimbinganActive) > 0)
         <div class="mt-6 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -111,7 +150,8 @@
                                 </div>
                                 <div class="card p-5 rounded-lg bg-white">
                                     <h4 class="text-lg font-semibold mb-4">Grafik Logbook</h4>
-                                    <div class="logbook-chart-container relative" id="logbook-chart-{{ $index }}"></div>
+                                    <div class="logbook-chart-container relative" id="logbook-chart-{{ $index }}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -380,30 +420,8 @@
                     }
                 }
             }
-
-            function openPreview(url) {
-                const screenWidth = window.screen.width;
-                const screenHeight = window.screen.height;
-                const width = screenWidth / 2;
-                const height = screenHeight / 2;
-                const left = (screenWidth - width) / 2;
-                const top = (screenHeight - height) / 2;
-
-                const newWindow = window.open(
-                    '',
-                    '',
-                    `width=${width},height=${height},top=${top},left=${left}`
-                );
-
-                if (newWindow) {
-                    newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
-                    newWindow.document.title = "Image Preview";
-                } else {
-                    alert('Preview dokumen tidak tersedia di tampilan mobile');
-                }
-            }
         });
-        
+
         function openPreview(url) {
             const screenWidth = window.screen.width;
             const screenHeight = window.screen.height;

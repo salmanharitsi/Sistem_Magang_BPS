@@ -18,6 +18,7 @@ class Logbook extends Model
 
     protected $fillable = [
         'pembimbing_id',
+        'status_review',
         'tanggal',
         'deskripsi',
         'lampiran',
