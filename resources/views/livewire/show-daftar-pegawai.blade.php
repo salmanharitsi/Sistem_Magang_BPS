@@ -286,7 +286,7 @@
                                     <input wire:model.live="password" name="password" id="edit_password"
                                         type="password"
                                         class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
-                                        placeholder="Kosongkan jika tidak ingin mengubah password">
+                                        placeholder="Kosongkan jika tidak ingin merubah password">
                                     <button type="button" onclick="togglePasswordVisibility('edit_password')"
                                         class="absolute w-fit justify-center p-3 h-full right-0 top-0 flex items-center pr-3 text-gray-500 group-focus-within:text-blue-500">
                                         <i id="togglePasswordIcon_edit_password" class="fas fa-eye"></i>
@@ -303,7 +303,7 @@
                                     <input wire:model.live="confirm_password" name="confirm_password"
                                         id="edit_confirm_password" type="password"
                                         class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]"
-                                        placeholder="Kosongkan jika tidak ingin mengubah password">
+                                        placeholder="Kosongkan jika tidak ingin merubah password">
                                     <button type="button" onclick="togglePasswordVisibility('edit_confirm_password')"
                                         class="absolute w-fit justify-center p-3 h-full right-0 top-0 flex items-center pr-3 text-gray-500 group-focus-within:text-blue-500">
                                         <i id="togglePasswordIcon_edit_confirm_password" class="fas fa-eye"></i>
