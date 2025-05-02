@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Magang;
 use App\Models\Pengajuan;
 use App\Models\Presensi;
 use Carbon\Carbon;
@@ -239,6 +240,21 @@ class UserNormalController
         }
 
         return view('usernormal.pengajuan-saya', compact('pengajuan'));
+    }
+
+    public function get_magang_saya($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $magang = Magang::find($id);
+
+        if ($magang == null) {
+            abort(404);
+        }
+
+        return view('usernormal.magang-saya', compact('magang'));
     }
 
     public function delete_pengajuan($id)

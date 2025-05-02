@@ -143,7 +143,7 @@
                     @php
                         $today = Carbon::today()->toDateString();
                         $selectedDate = Carbon::parse($selectedLogbook->tanggal)->toDateString();
-                        $hasContent = $selectedLogbook->status === 'mengisi' && !is_null($selectedLogbook->deskripsi);
+                        $hasContent = $selectedLogbook->status === 'mengisi';
                         $isPastCutoff = Carbon::now()->gte(Carbon::today()->setHour(17));
                     @endphp
                         
@@ -224,7 +224,7 @@
                                     <div class="flex items-start py-3 border-b border-gray-100">
                                         <div class="w-2/5 text-gray-600 font-medium">Kegiatan</div>
                                         <div class="w-3/5 text-gray-900 bg-gray-100 p-3 rounded-md border border-gray-500 text-sm">
-                                            {{ $selectedLogbook->deskripsi }}
+                                            {{ $selectedLogbook->deskripsi ?? 'Tidak ada deskripsi' }}
                                         </div>
                                     </div>
             

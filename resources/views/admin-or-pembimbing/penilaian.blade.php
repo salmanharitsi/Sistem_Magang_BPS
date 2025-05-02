@@ -59,7 +59,7 @@
                 <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-red-100 rounded-lg border text-red-700 border-red-700">
                     <div class="flex gap-3 items-start lg:items-center">
                         <i class="ti ti-alert-triangle text-lg"></i>
-                        <p class="text-sm">Data presensi dan logbook ada yang belum disetujui</p>
+                        <p class="text-sm">Data presensi dan logbook ada yang belum diperiksa</p>
                     </div>
                     <a href="/daftar-persetujuan"
                         class="pjax-link bg-red-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">

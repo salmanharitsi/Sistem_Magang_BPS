@@ -32,6 +32,7 @@ Route::group(['middleware' => ['usernormal', 'no-cache']], function () {
     Route::get('profil-edit', [HomeController::class, 'get_user_profil_edit'])->name('usernormal.profil-edit');
     Route::get('ubah-password', [HomeController::class, 'get_ubah_password'])->name('usernormal.ubah-password');
     Route::get('pengajuan-saya/{id}', [UserNormalController::class, 'get_pengajuan_saya'])->name('usernormal.pengajuan-saya');
+    Route::get('magang-saya/{id}', [UserNormalController::class, 'get_magang_saya'])->name('usernormal.magang-saya');
     Route::delete('delete-pengajuan/{id}', [UserNormalController::class, 'delete_pengajuan'])->name('usernormal.delete-pengajuan');
     Route::post('pengajuan-ulang/{id}', [UserNormalController::class, 'pengajuan_ulang'])->name('usernormal.pengajuan-ulang');
     Route::get('presensi/lapor-harian/{id}', [UserNormalController::class, 'get_lapor_harian'])->name('usernormal.lapor-harian');

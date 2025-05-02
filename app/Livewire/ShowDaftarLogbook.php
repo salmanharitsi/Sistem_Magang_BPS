@@ -126,7 +126,7 @@ class ShowDaftarLogbook extends Component
             $query->where('status', $this->statusFilter);
         }
 
-        $logbook = $query->latest()->paginate(5);
+        $logbook = $query->latest()->paginate(3);
 
         return view('livewire.show-daftar-logbook', [
             'logbook' => $logbook,
