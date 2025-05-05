@@ -122,7 +122,7 @@
             <div class="mt-5 flex flex-col gap-5">
                 <div class="w-full h-fit flex gap-3 items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                     <i class="ti ti-xbox-x text-lg"></i>
-                    <p class="text-sm">Masih ada bagian yang belum diisi! Silakan lengkapi semua bagian.</p>
+                    <p class="text-sm">Masih ada bagian yang kosong! Silahkan lengkapi semua bagian.</p>
                 </div>
             </div>
         @endif
@@ -130,7 +130,7 @@
         <!-- Submit Button -->
         <div class="flex justify-center">
             <button type="submit" 
-                    class="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all transform hover:scale-105 shadow-lg">
+                    class="px-8 py-3 hover-gradient-purple text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all transform shadow-lg">
                 <div class="flex items-center">
                     <i class="ti ti-send mr-3 text-lg"></i>
                     Kirim Feedback

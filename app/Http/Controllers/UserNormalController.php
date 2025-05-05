@@ -257,6 +257,25 @@ class UserNormalController
         return view('usernormal.magang-saya', compact('magang'));
     }
 
+    public function get_nilai_sertifikat($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $magang = Magang::find($id);
+
+        if ($magang == null) {
+            abort(404);
+        }
+
+        if (!$magang->nilai_magang || !$magang->sertifikat_magang) {
+            return redirect()->back();
+        }
+
+        return view('usernormal.nilai-sertifikat', compact('magang'));
+    }
+
     public function delete_pengajuan($id)
     {
         if (request()->pjax()) {

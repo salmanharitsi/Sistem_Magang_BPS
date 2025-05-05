@@ -171,6 +171,24 @@
         </div>
     @endif
 
+    @if ($magang->nilai_magang && $magang->sertifikat_magang)
+        <div class="relative col-span-3 w-full mt-6 h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
+            <div class="flex flex-col gap-3 items-start">
+                <p class="text-2xl font-medium italic">Nilai & Sertifikat Magang Kamu</p>
+                <a href="/nilai-sertifikat/{{ $magang->id }}"
+                    class="pjax-link bg-blue-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                    <p class="text-xs whitespace-nowrap">
+                        Lihat Nilai & Sertifikat
+                    </p>
+                </a>
+            </div>
+            <div class="px-4 z-20">
+                <p class="text-4xl font-bold">{{ $magang->nilai_magang }}</p>
+            </div>
+            <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
+        </div>
+    @endif
+
     @if ($magang->laporan_magang)
         <div class="mt-6 card grid grid-cols-1 md:grid-cols-2 gap-5 rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <div>

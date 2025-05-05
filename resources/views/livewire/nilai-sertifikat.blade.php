@@ -102,28 +102,26 @@
         </div>
     </div>
 
-    @if ($magang->sertifikat_magang)
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-            <div class="p-5 bg-gradient-to-r from-blue-600 to-indigo-700 flex flex-col md:flex-row justify-between items-center gap-4">
-                <h2 class="text-white text-xl font-semibold flex items-center">
-                    <i class="ti ti-certificate mr-2"></i>
-                    Sertifikat Magang
-                </h2>
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+        <div class="p-5 bg-gradient-to-r from-blue-600 to-indigo-700 flex flex-col md:flex-row justify-between items-center gap-4">
+            <h2 class="text-white text-xl font-semibold flex items-center">
+                <i class="ti ti-certificate mr-2"></i>
+                Sertifikat Magang
+            </h2>
 
-                <button wire:click="downloadSertifikat"
-                    class="pjax-link bg-white text-blue-700 border-2 border-white px-4 py-2 rounded-lg hover:bg-blue-50 hover:border-blue-100 transition-all duration-300 flex items-center shadow-lg transform hover:scale-105">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    <p class="text-sm font-medium whitespace-nowrap">Unduh Sertifikat</p>
-                </button>
-            </div>
+            <button wire:click="downloadSertifikat"
+                class="pjax-link bg-white text-blue-700 border-2 border-white px-4 py-2 rounded-lg hover:bg-blue-50 hover:border-blue-100 transition-all duration-300 flex items-center shadow-lg transform hover:scale-105">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <p class="text-sm font-medium whitespace-nowrap">Unduh Sertifikat</p>
+            </button>
+        </div>
             
-            <div class="p-2 bg-gray-100 dark:bg-gray-900">
-                <div class="pdf-viewer h-[80vh] w-full bg-white dark:bg-gray-800 shadow-inner rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 overflow-x-auto">
-                    <iframe src="{{ Storage::url($magang->sertifikat_magang) }}" class="w-full h-full" frameborder="0"></iframe>
-                </div>
+        <div class="p-2 bg-gray-100 dark:bg-gray-900">
+            <div class="pdf-viewer h-[80vh] w-full bg-white dark:bg-gray-800 shadow-inner rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 overflow-x-auto">
+                <iframe src="{{ Storage::url($magang->sertifikat_magang) }}" class="w-full h-full" frameborder="0"></iframe>
             </div>
         </div>
-    @endif
+    </div>
 </div>

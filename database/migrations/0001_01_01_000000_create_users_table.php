@@ -130,6 +130,9 @@ return new class extends Migration
             // Total nilai (bisa dihitung otomatis)
             $table->integer('nilai_magang')->default(0); 
 
+            $table->string('sertifikat_magang_temp')->nullable();
+            $table->string('sertifikat_magang')->nullable();
+
             $table->timestamps();
         });
 
