@@ -90,7 +90,7 @@
                                 <input type="text"
                                     wire:model.live="nilaiCustoms.{{ $index }}.indikator"
                                     class="mt-1 min-h-[53px] text-sm p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nilaiCustoms.' . $index . '.indikator') border-red-500 @enderror"
-                                    placeholder="Nama indikator">
+                                    placeholder="Nama indikator" maxlength="20">
                                 @error('nilaiCustoms.' . $index . '.indikator')
                                     <p class="text-red-500 text-xs mt-2.5">{{ $message }}</p>
                                 @enderror
@@ -102,7 +102,7 @@
                                 <textarea
                                     wire:model.live="nilaiCustoms.{{ $index }}.deskripsi"
                                     class="px-3 pt-4 max-h-[53px] mt-1 text-sm border border-gray-300 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nilaiCustoms.' . $index . '.deskripsi') border-red-500 @enderror"
-                                    placeholder="Deskripsi indikator"></textarea>
+                                    placeholder="Deskripsi indikator" maxlength="90"></textarea>
                                 @error('nilaiCustoms.' . $index . '.deskripsi')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
@@ -146,7 +146,7 @@
         
             <!-- Tombol Tambah Indikator -->
             <div class="mt-2">
-                @if(count($nilaiCustoms) < 10)
+                @if(count($nilaiCustoms) < 5)
                     <button type="button" wire:click="addIndicator"
                         class="text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-all duration-200">
                         <i class="ti ti-plus text-sm"></i>

@@ -31,6 +31,7 @@ class Magang extends Model
         'nilai_logbook',
         'nilai_lainnya',
         'nilai_magang',
+        'sertifikat_magang',
     ];
 
     protected static function boot()

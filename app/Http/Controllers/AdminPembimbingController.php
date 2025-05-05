@@ -111,12 +111,12 @@ class AdminPembimbingController
                         ($magang->pembimbing_kedua == $pegawaiId);
         
         $checkAccPresensi = $magang->presensi()
-            ->whereNull('pembimbing_id')
+            ->where('status_review', 'waiting')
             ->whereRaw('DAYOFWEEK(tanggal) NOT IN (1, 7)')
             ->exists();
         
         $checkAccLogbook = $magang->logbook()
-            ->whereNull('pembimbing_id')
+            ->where('status_review', 'waiting')
             ->whereRaw('DAYOFWEEK(tanggal) NOT IN (1, 7)')
             ->exists();
 

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class DetailNilaiPeserta extends Component
+class NilaiSertifikat extends Component
 {
     public $magang;
 
@@ -24,9 +24,9 @@ class DetailNilaiPeserta extends Component
             );
         }
     }
-
+    
     public function render()
     {
-        return view('livewire.detail-nilai-peserta');
+        return view('livewire.nilai-sertifikat');
     }
 }

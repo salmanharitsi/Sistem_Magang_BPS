@@ -126,7 +126,7 @@ class ShowPersetujuanLogbook extends Component
                     $query->where('pembimbing_pertama', $userId)
                         ->orWhere('pembimbing_kedua', $userId);
                 })
-                ->whereNull('pembimbing_id')
+                ->where('status_review', 'waiting')
                 ->where('tanggal', '<=', Carbon::today())
                 ->where('status', '!=', 'waiting');
 
@@ -166,7 +166,7 @@ class ShowPersetujuanLogbook extends Component
                 $query->where('pembimbing_pertama', $userId)
                     ->orWhere('pembimbing_kedua', $userId);
             })
-            ->whereNull('pembimbing_id')
+            ->where('status_review', 'waiting')
             ->where('status', '!=', 'waiting');
 
         // Apply search filter
@@ -232,7 +232,7 @@ class ShowPersetujuanLogbook extends Component
                 $query->where('pembimbing_pertama', $userId)
                     ->orWhere('pembimbing_kedua', $userId);
             })
-            ->whereNull('pembimbing_id')
+            ->where('status_review', 'waiting')
             ->where('status', '!=', 'waiting')
             ->where('tanggal', '<=', Carbon::today())
             ->orderBy('updated_at', 'desc');

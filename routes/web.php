@@ -33,6 +33,7 @@ Route::group(['middleware' => ['usernormal', 'no-cache']], function () {
     Route::get('ubah-password', [HomeController::class, 'get_ubah_password'])->name('usernormal.ubah-password');
     Route::get('pengajuan-saya/{id}', [UserNormalController::class, 'get_pengajuan_saya'])->name('usernormal.pengajuan-saya');
     Route::get('magang-saya/{id}', [UserNormalController::class, 'get_magang_saya'])->name('usernormal.magang-saya');
+    Route::get('nilai-sertifikat/{id}', [UserNormalController::class, 'get_nilai_sertifikat'])->name('usernormal.nilai-sertifikat');
     Route::delete('delete-pengajuan/{id}', [UserNormalController::class, 'delete_pengajuan'])->name('usernormal.delete-pengajuan');
     Route::post('pengajuan-ulang/{id}', [UserNormalController::class, 'pengajuan_ulang'])->name('usernormal.pengajuan-ulang');
     Route::get('presensi/lapor-harian/{id}', [UserNormalController::class, 'get_lapor_harian'])->name('usernormal.lapor-harian');
@@ -52,6 +53,7 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
     Route::post('terima-pengajuan/{id}', [AdminController::class, 'terima_pengajuan'])->name('admin.terima-pengajuan');
     Route::post('tolak-pengajuan/{id}', [AdminController::class, 'tolak_pengajuan'])->name('admin.tolak-pengajuan');
     Route::get('edit-home', [AdminController::class, 'get_fungsi_bagian'])->name('admin.edit-home');
+    Route::get('input-sertifikat/{id}', [AdminController::class, 'get_input_sertifikat'])->name('admin.input-sertifikat');
 });
 
 // Route untuk pembimbing

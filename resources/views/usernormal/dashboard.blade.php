@@ -430,7 +430,7 @@
                 </div>
             </div>
         @endif
-        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback)
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && (!$latestMagang->nilai_magang || !$latestMagang->sertifikat_magang))
             <div class="col-span-3 card rounded-lg bg-white p-5 lg:mt-6">
                 <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                     <div class="flex gap-3 items-start lg:items-center">
@@ -438,6 +438,32 @@
                         <p class="text-sm">Tunggu pembimbing memberikan nilai magang dan nantikan sertifikat magang kamu</p>
                     </div>
                 </div>
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && $latestMagang->nilai_magang && $latestMagang->sertifikat_magang)
+            <div class="col-span-3 card rounded-lg bg-white p-5 lg:mt-6">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-sparkles text-lg"></i>
+                        <p class="text-sm">Nilai dan sertifikat magang kamu sudah diberikan</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative col-span-3 w-full lg:mt-6 h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
+                <div class="flex flex-col gap-3 items-start">
+                    <p class="text-2xl font-medium italic">Nilai & Sertifikat Magang Kamu</p>
+                    <a href="/nilai-sertifikat/{{ $latestMagang->id }}"
+                        class="pjax-link bg-blue-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                        <p class="text-xs whitespace-nowrap">
+                            Lihat Nilai & Sertifikat
+                        </p>
+                    </a>
+                </div>
+                <div class="px-4 z-20">
+                    <p class="text-4xl font-bold">{{ $latestMagang->nilai_magang }}</p>
+                </div>
+                <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
             </div>
         @endif
     </div>
@@ -695,7 +721,7 @@
                     }
                 }
             @endif
-            @if(!is_null($latestPengajuan) && !is_null($latestPengajuan->surat_pengantar) && $latestPengajuan->status_pengajuan !== 'reject-days' && Auth::user()->status_magang == 'masa-daftar')
+            @if(!is_null($latestMagang) && $latestMagang->status_magang == 'active' && $latestMagang->laporan_magang && $latestMagang->feedback && $latestMagang->nilai_magang && $latestMagang->sertifikat_magang)
                 var step3 = document.querySelector('.intern-step3');
                 var step4 = document.querySelector('.intern-step4');
                 if (step3) {

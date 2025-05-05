@@ -20,3 +20,10 @@ yarn-error.log
 /.vscode
 sonar-project.properties
 .sonar_lock
+
+# Font cache files
+/public/fonts/*.ufm
+/public/fonts/*.json
+/public/fonts/*_*
+!/public/fonts/*.ttf
+!/public/fonts/*.otf

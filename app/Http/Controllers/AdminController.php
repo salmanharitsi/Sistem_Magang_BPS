@@ -144,6 +144,13 @@ class AdminController
             ->with('user')
             ->orderBy('tanggal_selesai', 'desc')
             ->get();
+        
+        $perluSertifikat = Magang::whereDate('tanggal_selesai', '<', Carbon::now())
+            ->whereNull('sertifikat_magang')
+            ->where('nilai_magang', '!=', 0)
+            ->with('user')
+            ->orderBy('tanggal_selesai', 'desc')
+            ->get();
       
         // Calculate magangSelesai with the specified condition
         $magangSelesai = Magang::where('status_magang', 'active')
@@ -168,6 +175,7 @@ class AdminController
             'magangBulanIni',
             'magangActive',
             'perluDinilai',
+            'perluSertifikat',
             'magangAktifBulanIni',
             'magangSelesai',
             'magangSelesaiBulanIni'
@@ -293,5 +301,24 @@ class AdminController
 
         $fungsiBagian = FungsiBagian::all();
         return view('admin.edit-home', compact('fungsiBagian'));
+    }
+
+    public function get_input_sertifikat($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $magang = Magang::find($id);
+
+        if ($magang == null) {
+            abort(404);
+        }
+
+        if ($magang->nilai_magang <= 0 && !$magang->sertifikat_magang) {
+            return redirect()->back();
+        }
+
+        return view('admin.input-sertifikat', compact('magang'));
     }
 }

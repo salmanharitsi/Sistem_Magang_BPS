@@ -284,7 +284,7 @@
     </div>
 
     <button id="scrollToTop"
-        class="hidden fixed bottom-5 right-5 bg-blue-600 text-white w-10 h-10 flex items-center justify-center rounded-lg card hover:bg-blue-700 transition-all duration-300">
+        class="hidden fixed bottom-5 right-5 bg-blue-600 text-white w-10 h-10 flex items-center justify-center rounded-lg card hover:bg-blue-700 transition-all duration-300 z-50">
         <i class="fas fa-arrow-up"></i>
     </button>
 

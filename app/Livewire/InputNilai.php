@@ -116,7 +116,7 @@ class InputNilai extends Component
     // Tambah indikator custom
     public function addIndicator()
     {
-        if (count($this->nilaiCustoms) < 10) {
+        if (count($this->nilaiCustoms) < 5) {
             $this->nilaiCustoms[] = ['indikator' => '', 'deskripsi' => '', 'nilai' => null];
         }
     }
@@ -166,11 +166,20 @@ class InputNilai extends Component
         // Validasi lagi untuk memastikan data valid saat submit
         $this->validate();
 
+        // Format indikator dan deskripsi sebelum disimpan
+        $formattedCustoms = array_map(function($item) {
+            return [
+                'indikator' => ucwords($item['indikator']),
+                'deskripsi' => ucfirst($item['deskripsi']),
+                'nilai' => $item['nilai']
+            ];
+        }, $this->nilaiCustoms);
+
         // Update data pada model magang
         $this->magang->update([
             'nilai_presensi' => $this->nilaiPresensi,
             'nilai_logbook' => $this->nilaiLogbook,
-            'nilai_lainnya' => json_encode($this->nilaiCustoms),
+            'nilai_lainnya' => json_encode($formattedCustoms),
             'nilai_magang' => $this->totalNilai,
         ]);
 
