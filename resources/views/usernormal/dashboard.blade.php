@@ -319,6 +319,47 @@
         @endif
         @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast())
             <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <ol class="flex items-center w-full px-[5%] md:px-[15%]">
+                    <li class="intern-step1 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-orientasi">
+                            <i class="ti ti-flag text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-orientasi" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Mulai Magang
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                    <li class="intern-step2 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-tengah">
+                            <i class="ti ti-calendar-stats text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-tengah" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Pengisian Feedback
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                    <li class="intern-step3 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-project">
+                            <i class="ti ti-briefcase text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-project" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Pengumpulan Laporan Akhir
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                    <li class="intern-step4 flex items-center w-fit">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-akhir">
+                            <i class="ti ti-certificate text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-akhir" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Sertifikat
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+            @if (!is_null($latestMagang) && $latestMagang->status_magang == 'active')
+            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 top-6">
                 <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                     <div class="flex gap-3 items-start lg:items-center">
                         <i class="ti ti-browser text-lg"></i>
@@ -326,7 +367,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 col-span-3 md:mt-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 col-span-3 md:mt-12">
                 <div class="col-span-1">
                     @livewire('show-grafik-presensi')
                 </div>
@@ -344,6 +385,10 @@
                     Logbook</div>
                 @livewire('show-daftar-logbook')
             </div>
+            @endif
+            @if (!is_null($latestMagang) && $latestMagang->status_magang == 'waiting-report')
+            <div>Selesai</div>
+            @endif
         @endif
     </div>
 
@@ -493,6 +538,67 @@
                         icon.classList.add('text-white');
                     }
                 }
+            @endif
+            @if (!is_null($latestMagang) && $latestMagang->status_magang == 'active'){
+                var step1 = document.querySelector('.intern-step1');
+                if (step1) {
+                    var span = step1.querySelector('span');
+                    var div = step1.querySelector('#tooltip-orientasi');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step1.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+            }
+            @endif
+            
+            @if (!is_null($latestMagang) && $latestMagang->status_magang == 'waiting-report'){
+                var step1 = document.querySelector('.intern-step1');
+                var step2 = document.querySelector('.intern-step2');
+                if (step1) {
+                    var span = step1.querySelector('span');
+                    var div = step1.querySelector('#tooltip-orientasi');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step1.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+                if (step2) {
+                    var span = step2.querySelector('span');
+                    var div = step2.querySelector('#tooltip-project');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step2.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+            }
             @endif
         });
     </script>
