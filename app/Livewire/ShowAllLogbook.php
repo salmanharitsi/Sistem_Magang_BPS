@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use App\Models\Logbook;
+use App\Models\Presensi; 
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -16,6 +17,7 @@ class ShowAllLogbook extends Component
     public $selectedDate;
     public $currentSlide = 0;
     public $hariKe = null;
+    public $hasAttendance = false; 
 
     #[Validate]
     public $deskripsi;
@@ -69,6 +71,11 @@ class ShowAllLogbook extends Component
             $today = Carbon::today()->toDateString();
             $this->selectedLogbook = $this->logbookData->where('tanggal', $today)->first();
             $this->selectedDate = $this->selectedLogbook ? $today : null;
+            
+            // Check if user has submitted attendance for today
+            if ($this->selectedDate == $today) {
+                $this->checkAttendanceStatus();
+            }
         }
 
         if ($this->selectedDate) {
@@ -80,6 +87,26 @@ class ShowAllLogbook extends Component
 
         // Hitung index slide berdasarkan bulan saat ini
         $this->calculateCurrentSlide();
+    }
+
+    // Check if user has submitted attendance for the selected date
+    protected function checkAttendanceStatus()
+    {
+        $user = Auth::user();
+        $magang = $user->magang()->latest()->first();
+        
+        if (!$magang || !$this->selectedDate) {
+            $this->hasAttendance = false;
+            return;
+        }
+        
+        // Check if presensi record exists with non-null jam_masuk for the selected date
+        $presensi = Presensi::where('magang_id', $magang->id)
+            ->where('tanggal', $this->selectedDate)
+            ->whereNotNull('jam_masuk')
+            ->first();
+            
+        $this->hasAttendance = !is_null($presensi);
     }
 
     protected function calculateCurrentSlide()
@@ -140,6 +167,8 @@ class ShowAllLogbook extends Component
                 ->where('magang_id', $magang->id)
                 ->first();
 
+            // Check attendance status for the selected date
+            $this->checkAttendanceStatus();
 
             if ($tanggal < $today || ($tanggal == $today && $now->greaterThan($cutoffTime))) {
                 $this->deskripsi = '';
@@ -221,6 +250,7 @@ class ShowAllLogbook extends Component
             'selectedDate' => $this->selectedDate,
             'currentSlide' => $this->currentSlide, 
             'hariKe' => $this->hariKe,
+            'hasAttendance' => $this->hasAttendance,
         ]);
     }
 }

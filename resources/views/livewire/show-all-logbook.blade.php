@@ -148,30 +148,45 @@
                     @endphp
                         
                     @if ($selectedDate == $today && $selectedLogbook->status === 'waiting' && !$isPastCutoff)
-                        <!-- Form Input Logbook -->
-                        <div class="bg-white p-5 rounded-lg shadow-md">
-                            <h2 class="text-xl font-semibold">Pengisian Logbook</h2>
-                            <p class="text-sm text-gray-600 mb-4">Magang Hari ke - {{ $hariKe }}</p>
-                            <form wire:submit.prevent="store">
-                                <div>
-                                    <label class="block mb-2 text-[15px] font-medium text-gray-700">
-                                        Kegiatan<span class="text-red-500 ml-1">*</span>
-                                    </label>
-                                    <textarea wire:model.live="deskripsi" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" rows="6" placeholder="Masukkan kegiatan"></textarea>
-                                    @error('deskripsi')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
+                        @if ($hasAttendance)
+                            <!-- Form Input Logbook -->
+                            <div class="bg-white p-5 rounded-lg shadow-md">
+                                <h2 class="text-xl font-semibold">Pengisian Logbook</h2>
+                                <p class="text-sm text-gray-600 mb-4">Magang Hari ke - {{ $hariKe }}</p>
+                                <form wire:submit.prevent="store">
+                                    <div>
+                                        <label class="block mb-2 text-[15px] font-medium text-gray-700">
+                                            Kegiatan<span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <textarea wire:model.live="deskripsi" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" rows="6" placeholder="Masukkan kegiatan"></textarea>
+                                        @error('deskripsi')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
+                                    </div>
+                                    <div class="mt-5">
+                                        <label class="block mb-2 text-[15px] font-medium text-gray-700">
+                                            Lampiran<span class="text-red-500 ml-1">*</span><span class="text-[10px]">(Link dokumen)</span>
+                                        </label>
+                                        <input type="text" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan link dokumen" />
+                                        @error('lampiran')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
+                                    </div>
+                                    <button type="submit" class="w-full text-white mt-5 bg-blue-600 hover:bg-blue-700 transition duration-300 ease-in-out focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-blue-400 disabled:cursor-not-allowed">
+                                        Kirim Logbook
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                                <div class="w-full h-fit p-3 flex flex-col gap-3 items-center bg-red-100 rounded-lg border text-red-700 border-red-700">
+                                    <div class="flex flex-col gap-1 items-center">
+                                        <i class="ti ti-alert-triangle text-2xl"></i>
+                                        <p class="text-sm text-center">Laporkan kehadiran terlebih dahulu sebelum mengisi logbook</p>
+                                    </div>
+                                    <a href="/presensi"
+                                        class="pjax-link bg-red-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
+                                        <p class="text-sm whitespace-nowrap">Lapor Kehadiran</p>
+                                    </a>
                                 </div>
-                                <div class="mt-5">
-                                    <label class="block mb-2 text-[15px] font-medium text-gray-700">
-                                        Lampiran<span class="text-red-500 ml-1">*</span><span class="text-[10px]">(Link dokumen)</span>
-                                    </label>
-                                    <input type="text" wire:model.live="lampiran" class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]" placeholder="Masukkan link dokumen" />
-                                    @error('lampiran')<span class="text-red-500 text-[11px]">{{$message}}</span>@enderror
-                                </div>
-                                <button type="submit" class="w-full text-white mt-5 bg-blue-600 hover:bg-blue-700 transition duration-300 ease-in-out focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-blue-400 disabled:cursor-not-allowed">
-                                    Kirim Logbook
-                                </button>
-                            </form>
-                        </div>
+                            </div>
+                        @endif
                     @else
                         <!-- Logbook Detail Display -->
                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -303,3 +318,4 @@
             Livewire.emit('setCurrentSlide', @json($currentSlide));
         });
     </script>
+</div>
