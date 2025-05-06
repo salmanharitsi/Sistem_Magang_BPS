@@ -54,6 +54,7 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
     Route::post('tolak-pengajuan/{id}', [AdminController::class, 'tolak_pengajuan'])->name('admin.tolak-pengajuan');
     Route::get('edit-home', [AdminController::class, 'get_fungsi_bagian'])->name('admin.edit-home');
     Route::get('input-sertifikat/{id}', [AdminController::class, 'get_input_sertifikat'])->name('admin.input-sertifikat');
+    Route::get('kelola-pembimbing', [AdminController::class, 'get_kelola_pembimbing'])->name('admin.kelola-pembimbing');
 });
 
 // Route untuk pembimbing

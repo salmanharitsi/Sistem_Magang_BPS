@@ -214,6 +214,14 @@ class AdminController
         return view('admin.review-logbook');
     }
 
+    public function get_kelola_pembimbing()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('admin.kelola-pembimbing');
+    }
+
     public function get_detail_pengajuan($id)
     {
         if (request()->pjax()) {

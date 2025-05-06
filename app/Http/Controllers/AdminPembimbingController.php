@@ -42,6 +42,10 @@ class AdminPembimbingController
         $isPembimbing = ($magang->pembimbing_pertama == $pegawaiId) || 
                         ($magang->pembimbing_kedua == $pegawaiId);
 
+        if (Auth::guard('pegawai')->user()->role_temp == 'regular' && !$isPembimbing) {
+            return redirect()->back();
+        }
+
         return view('admin-or-pembimbing.bimbingan', [
             'magang' => $magang,
             'layout' => $authData['layout'],
