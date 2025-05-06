@@ -25,6 +25,8 @@ class Magang extends Model
         'tanggal_mulai',
         'tanggal_selesai',
         'bidang_tujuan',
+        'pembimbing_pertama',
+        'pembimbing_kedua',
         'laporan_magang',
         'projek_magang',
         'nilai_presensi',

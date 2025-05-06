@@ -13,17 +13,17 @@ class FungsiBagianSeeder extends Seeder
     {
         $data = [
             [
-                'title' => 'Statistik Produksi',
+                'title' => 'Fungsi Statistik Produksi',
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit iusto, itaque vitae, quas, ex ullam sint voluptate nemo omnis officia magnam sequi cupiditate illum perferendis nam rerum! Sunt, maiores.',
                 'jurusan' => ['Teknik Informatika', 'Teknik Elektro', 'Statistika']
             ],
             [
-                'title' => 'Statistik Sosial',
+                'title' => 'Fungsi Statistik Sosial',
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit iusto, itaque vitae, quas, ex ullam sint voluptate nemo omnis officia magnam sequi cupiditate illum perferendis nam rerum! Sunt, maiores.',
                 'jurusan' => ['Teknik Informatika', 'Hukum', 'Teknik Elektro', 'Statistika', 'Teknik Informatika', 'Hukum', 'Teknik Elektro', 'Statistika']
             ],
             [
-                'title' => 'Statistik Distribusi',
+                'title' => 'Fungsi Statistik Distribusi',
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit iusto, itaque vitae, quas, ex ullam sint voluptate nemo omnis officia magnam sequi cupiditate illum perferendis nam rerum! Sunt, maiores.',
                 'jurusan' => ['Teknik Informatika', 'Teknik Elektro', 'Statistika']
             ],
