@@ -25,7 +25,9 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
                         <option value="">Semua Fungsi Bagian</option>
                         @foreach ($listFungsiBagian as $fungsi)
-                            <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                        @if ($fungsi->title != 'Pimpinan')
+                        <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                    @endif
                         @endforeach
                     </select>
                 </div>
@@ -125,7 +127,9 @@
                             class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
                             <option value="">Pilih Bidang Tujuan</option>
                             @foreach ($listFungsiBagian as $fungsi)
-                                <option value="{{ $fungsi->id }}">{{ $fungsi->title }}</option>
+                                @if ($fungsi->title != 'Pimpinan')
+                                    <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                                @endif
                             @endforeach
                         </select>
                         @error('selectedBidangTujuan') <span class="text-red-500 text-[11px]">{{ $message }}</span> @enderror
