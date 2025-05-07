@@ -31,17 +31,30 @@ class ShowDaftarPegawai extends Component
         $this->showModal = true;
     }
 
+    public function hasPimpinanUser()
+    {
+        return Pegawai::where('role_temp', 'pimpinan')->exists();
+    }
+
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|min:5',
             'email' => 'required|email|unique:pegawai,email',
             'password' => 'required|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
             'confirm_password' => 'required_with:password|same:password',
             'nomor_induk' => 'required|min:15|unique:pegawai,nomor_induk',
             'fungsi_bagian' => 'required',
-            'role_temp' => 'required|in:regular,admin',
         ];
+
+        if (!$this->hasPimpinanUser())
+        {
+            $rules['role_temp'] = 'required|in:regular,admin,pimpinan';
+        } else {
+            $rules['role_temp'] = 'required|in:regular,admin';
+        }
+
+        return $rules;
     }
 
     public function messages()
@@ -233,7 +246,8 @@ class ShowDaftarPegawai extends Component
         $pegawai = $query->paginate(5);
 
         return view('livewire.show-daftar-pegawai', [
-            'pegawai' => $pegawai
+            'pegawai' => $pegawai,
+            'hasPimpinanUser' => $this->hasPimpinanUser()
         ]);
     }
 }

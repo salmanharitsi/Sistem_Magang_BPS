@@ -214,8 +214,10 @@
                                 <select wire:model.live="fungsi_bagian" name="fungsi_bagian" id="fungsi_bagian"
                                     class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px]">
                                     <option value="">-- Pilih Fungsi Bagian --</option>
-                                    @foreach ($listFungsiBagian->where('title', '!=', 'Pimpinan') as $fungsi)
-                                        <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                                    @foreach ($listFungsiBagian as $fungsi)
+                                        @if ($fungsi->title != 'Pimpinan' || !$hasPimpinanUser)
+                                            <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 @if ($errors->has('fungsi_bagian'))
@@ -232,6 +234,9 @@
                                     <option value="">-- Pilih Role --</option>
                                     <option value="regular">Pembimbing</option>
                                     <option value="admin">Admin</option>
+                                    @if (!$hasPimpinanUser)
+                                        <option value="pimpinan">Pimpinan</option>
+                                    @endif
                                 </select>
                                 @if ($errors->has('role_temp'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('role_temp') }}</span>
