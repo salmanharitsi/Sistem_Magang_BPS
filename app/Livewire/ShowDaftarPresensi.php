@@ -9,6 +9,9 @@ use App\Models\Magang;
 use App\Models\Presensi;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\PDF;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class ShowDaftarPresensi extends Component
 {
@@ -19,6 +22,7 @@ class ShowDaftarPresensi extends Component
     public $selectedData = [];
     public $statusFilter = '';
     public $mangId; // Property to store the magang ID from URL
+    public $isDownloading = false;
 
     public function mount()
     {
@@ -68,6 +72,77 @@ class ShowDaftarPresensi extends Component
                 'pembimbing_id' => $presensi->pembimbing->name ?? null
             ];
             $this->showModal = true;
+        }
+    }
+
+    public function downloadPresensiPdf()
+    {
+        $this->isDownloading = true;
+        
+        try {
+            $user = Auth::user();
+            $query = Presensi::query();
+            
+            // Determine which magang to use
+            if ($this->mangId) {
+                $magang = Magang::where('id', $this->mangId)
+                                ->where('user_id', $user->id)
+                                ->first();
+            } else {
+                $magang = Magang::where('user_id', $user->id)
+                                ->where('status_magang', 'active')
+                                ->latest()
+                                ->first();
+            }
+            
+            if (!$magang) {
+                session()->flash('error', 'Data magang tidak ditemukan.');
+                $this->isDownloading = false;
+                return;
+            }
+            
+            // Get all presensi data for this magang (not just the paginated ones)
+            $presensiData = Presensi::where('magang_id', $magang->id)
+                                  ->where('status', '!=', 'waiting')
+                                  ->orderBy('tanggal', 'desc')
+                                  ->get();
+            
+            // Apply status filter if selected
+            if ($this->statusFilter) {
+                $presensiData = $presensiData->where('status', $this->statusFilter);
+            }
+            
+            // Get user and magang data
+            $userData = [
+                'nama' => $user->name,
+                'institusi' => $magang->pengajuan->institusi ?? '-',
+                'nomor_induk' => $user->nomor_induk ?? '-',
+                'jenis_magang' => $magang->jenis_magang,
+                'tanggal_mulai' => Carbon::parse($magang->tanggal_mulai)->format('d F Y'),
+                'tanggal_selesai' => Carbon::parse($magang->tanggal_selesai)->format('d F Y'),
+                'pembimbing' => $magang->pembimbingPertama->name ?? '-',
+            ];
+            
+            // Prepare data for the PDF
+            $data = [
+                'userData' => $userData,
+                'presensi' => $presensiData,
+                'tanggal_cetak' => Carbon::now()->locale('id')->translatedFormat('d F Y'),
+            ];
+            
+            // Generate PDF
+            $pdf = PDF::loadView('pdf.presensi-report', $data);
+            
+            $this->isDownloading = false;
+            
+            // Return the PDF for download
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, 'laporan-presensi-' . Str::slug($user->name) . '.pdf');
+            
+        } catch (\Exception $e) {
+            $this->isDownloading = false;
+            session()->flash('error', 'Gagal mengunduh laporan: ' . $e->getMessage());
         }
     }
 
