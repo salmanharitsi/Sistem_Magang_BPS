@@ -16,7 +16,6 @@ class PegawaiSeeder extends Seeder
     public function run(): void
     {
         $pegawai = [
-
             // ==============
             // Akun Admin
             // ==============
@@ -30,68 +29,104 @@ class PegawaiSeeder extends Seeder
             ],
 
             // ================
-            // Akun Pembimbing
+            // Akun Pembimbing 
             // ================
             [
-                "name" => "Kylian Mbappe",
-                "fungsi_bagian" => "Fungsi IPDS",
-                "email" => "pembimbingipds1@gmail.com",
+                "name" => "Afdi Rizal, S.ST., M.T.",
+                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
+                "email" => "afdi@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147107822341123",
                 "role_temp" => "regular"
             ],
             [
-                "name" => "Son Hyung Min",
-                "fungsi_bagian" => "Fungsi IPDS",
-                "email" => "pembimbingipds2@gmail.com",
+                "name" => "Dadang Sunandar, S.ST., M.T.",
+                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
+                "email" => "dadangsunandar@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147107822341124",
                 "role_temp" => "regular"
             ],
             [
-                "name" => "Gonzales",
-                "fungsi_bagian" => "Bagian Umum",
-                "email" => "pembimbingumum@gmail.com",
+                "name" => "Yoga Adinata, S.ST., M.T.",
+                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
+                "email" => "adinata@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147107822341125",
                 "role_temp" => "regular"
             ],
             [
-                "name" => "Harry Kane",
-                "fungsi_bagian" => "Fungsi Nerwilis",
-                "email" => "pembimbingnerwilis@gmail.com",
+                "name" => "Khaerul Anas, S.ST., M.T.",
+                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
+                "email" => "khaerulanas@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147107822341126",
                 "role_temp" => "regular"
             ],
             [
-                "name" => "Paul Pogba",
-                "fungsi_bagian" => "Fungsi Statistik Distribusi",
-                "email" => "pembimbingdistribusi@gmail.com",
+                "name" => "Agus Wardiman, S.E.",
+                "fungsi_bagian" => "Humas dan Unit Kerja Kepala",
+                "email" => "agus.wardiman@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147107822341127",
                 "role_temp" => "regular"
             ],
             [
-                "name" => "Neymar Jr",
-                "fungsi_bagian" => "Fungsi Statistik Produksi",
-                "email" => "pembimbingproduksi@gmail.com",
+                "name" => "Rahmat Wahid, S.Si.",
+                "fungsi_bagian" => "Humas dan Unit Kerja Kepala",
+                "email" => "rwahid@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147107822341128",
                 "role_temp" => "regular"
             ],
             [
-                "name" => "Mohamed Salah",
-                "fungsi_bagian" => "Fungsi Statistik Sosial",
-                "email" => "pembimbingsosial@gmail.com",
+                "name" => "Oldestia Vianny, S.ST., M.Si.",
+                "fungsi_bagian" => "Neraca Wilayah dan Analisis Statistik",
+                "email" => "oldestia@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147107822341129",
                 "role_temp" => "regular"
             ],
             [
-                "name" => "Gianlugi",
-                "fungsi_bagian" => 'Pimpinan',
-                "email" => "pimpinan@gmail.com",
+                "name" => "Amrizal, SST., M.M.",
+                "fungsi_bagian" => "Bagian Umum",
+                "email" => "amrizal@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "147107822341130",
+                "role_temp" => "admin"
+            ],
+            [
+                "name" => "Muji Basuki, S.ST., M.Si.",
+                "fungsi_bagian" => "Statistik Produksi",
+                "email" => "mudji@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "147107822341131",
+                "role_temp" => "regular"
+            ],
+            [
+                "name" => "Emilia Dharmayanthi, S.ST., M.Si.",
+                "fungsi_bagian" => "Pembinaan Statistik Sektoral",
+                "email" => "emiliad@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "147107822341132",
+                "role_temp" => "regular"
+            ],
+            [
+                "name" => "Rahmi Renzya, S.ST.",
+                "fungsi_bagian" => "Neraca Wilayah dan Analisis Statistik",
+                "email" => "renyza@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "147107822341133",
+                "role_temp" => "regular"
+            ],
+            
+            // ================
+            // Akun Pimpinan
+            // ================
+            [
+                "name" => "Dr. Gianluci, M.M.",
+                "fungsi_bagian" => "Pimpinan",
+                "email" => "pimpinan@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "149107822341009",
                 "role_temp" => "pimpinan"
@@ -108,8 +143,6 @@ class PegawaiSeeder extends Seeder
                 "role_temp" => $data['role_temp'],
                 "remember_token" => Str::random(50),
             ]);
-
-            // Pegawai::create($data);
         }
     }
 }
