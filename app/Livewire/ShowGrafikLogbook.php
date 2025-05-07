@@ -25,8 +25,9 @@ class ShowGrafikLogbook extends Component
 
         // Cari magang aktif user
         $magang = Magang::where('user_id', $user->id)
-            ->where('status_magang', 'active')
-            ->first();
+                ->where('status_magang', 'active')
+                ->orderBy('created_at', 'desc')
+                ->first();
 
         if ($magang) {
             // Hitung jumlah logbook berdasarkan status

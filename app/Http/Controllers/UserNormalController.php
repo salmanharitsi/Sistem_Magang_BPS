@@ -327,6 +327,24 @@ class UserNormalController
         ]);
     }
 
+    public function ajukan_magang_lagi()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $user = Auth::user();
+
+        $user->status_magang = 'tidak-aktif';
+        $user->save();
+
+        return redirect(url('/dashboard'))->with([
+            'success' => [
+                "title" => "Silahkan ajukan magang lagi",
+            ]
+        ]);
+    }
+
     public function submit_laporan(Request $request, $id)
     {
         try {

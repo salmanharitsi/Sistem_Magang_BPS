@@ -29,7 +29,7 @@
 
     {{-- Navbar section --}}
     <nav
-        class="sticky top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[100]">
+        class="fixed top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[100]">
         <div class="flex gap-3">
             <div class="flex items-center justify-start md:justify-center border-r md:border-white border-transparent">
                 <img class="w-[80%] mr-1" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
@@ -88,15 +88,19 @@
             </button>
         </div>
     </nav>
+
+    <!-- Add spacing to prevent content from hiding behind fixed navbar -->
+    <div class="h-[62px]"></div>
+
     <div id="mobile-menu"
-        class="hidden fixed lg:hidden rounded-b-lg py-3 w-[100vw] bg-gradient-to-r from-blue-900 to-blue-500 text-white text-sm flex items-center gap-5 justify-center flex-col z-30 overflow-hidden">
+        class="hidden fixed lg:hidden top-[62px] rounded-b-lg py-3 w-full bg-gradient-to-r from-blue-900 to-blue-500 text-white text-sm flex items-center gap-5 justify-center flex-col z-30 overflow-hidden">
         <div class="border-b border-white text-white w-full py-3 text-center flex flex-col gap-3">
             <h1 class="font-regular text-[21px]">Badan Pusat Statistik</h1>
             <p class="font-light text-[16px]">Provinsi Riau</p>
         </div>
-        <a href="#beranda" class="nav-link py-1">Beranda</a>
-        <a href="#fungsi-bagian" class="nav-link py-1">Informasi bidang</a>
-        <a href="#faqs" class="nav-link py-1">FAQs</a>
+        <a href="#beranda" class="nav-link py-3">Beranda</a>
+        <a href="#fungsi-bagian" class="nav-link py-3">Informasi bidang</a>
+        <a href="#faqs" class="nav-link py-3">FAQs</a>
         @if (Auth::check())
             <a href="{{ url('/login') }}"
                 class="px-2 py-2 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
@@ -127,12 +131,13 @@
                 Pusat Statistik Provinsi Riau. Kembangkan potensi diri <br> bersama statistisi berpengalaman.</p>
             <div
                 class="flex flex-col md:flex-row gap-5 items-center text-center w-full md:w-fit delay-[1000ms] duration-[600ms] taos:scale-[1.1] taos:opacity-0">
-                <a href=""
+                <a href="#alur-pendaftaran"
                     class="rounded-[10px] w-full md:px-9 py-3 bg-blue-600 text-white text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-blue-500">Alur
                     Pendaftaran</a>
-                <a href="{{ Auth::check() ? '/dashboard' : '/login' }}"
-                    class="rounded-[10px] w-full md:px-9 py-3 bg-white text-[#514E4E] text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-[#e2e2e2]">Telusuri
-                    Program</a>
+                <a href="{{ Auth::check() ? '/dashboard' : '/registrasi' }}"
+                    class="rounded-[10px] w-full md:px-9 py-3 bg-white text-[#514E4E] text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-[#e2e2e2]">
+                    Ikuti Program
+                </a>
             </div>
         </div>
     </section>
@@ -250,10 +255,178 @@
         </div>
     </section>
 
+    {{-- Alur Pendaftaran Section --}}
+    <section id="alur-pendaftaran" class="relative w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100 overflow-hidden">     
+        <div class="w-full flex flex-col items-start justify-start gap-1">
+            <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Alur Pendaftaran Magang BPS</h1>
+            <p class="text-gray-600 text-[16px]">Ikuti langkah-langkah berikut untuk mengikuti program magang di Badan Pusat Statistik Provinsi Riau</p>
+        </div>
+        
+        <div class="w-full flex flex-col items-center justify-center delay-[700ms] duration-[600ms] taos:scale-[0.8] taos:opacity-0" data-taos-offset="100">
+            <!-- Timeline untuk Desktop (md and up) -->
+            <div class="hidden lg:flex w-full relative">
+                <!-- Timeline line -->
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-700 transform -translate-y-1/2 rounded-full"></div>
+                
+                <!-- Step 1 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">1</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Registrasi Akun</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-user-plus text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Buat akun baru dengan mengisi formulir pendaftaran</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">2</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Lengkapi Profil</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-id-card text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Isi data diri, pendidikan, dan unggah berkas yang diperlukan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">3</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Ajukan Lamaran</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-file-signature text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Pilih bagian yang sesuai dengan jurusan dan minat Anda</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">4</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Proses Seleksi</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-list-check text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Tim BPS akan menyeleksi lamaran kamu secara bertahap</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">5</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Mulai Magang</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-briefcase text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Jika diterima, Anda akan mengikuti program magang sesuai jadwal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timeline untuk Mobile (sm and below) -->
+            <div class="lg:hidden w-full relative pb-8">
+                <!-- Timeline vertical line -->
+                <div class="absolute top-0 left-[25px] w-1 h-full bg-gradient-to-b from-blue-400 to-blue-700 rounded-full"></div>
+                
+                <!-- Step 1 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">1</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Registrasi Akun</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-user-plus text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Buat akun baru dengan mengisi formulir pendaftaran</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">2</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Lengkapi Profil</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-id-card text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Isi data diri, pendidikan, dan unggah berkas yang diperlukan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">3</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Ajukan Lamaran</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-file-signature text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Pilih bagian yang sesuai dengan jurusan dan minat Anda</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">4</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Proses Seleksi</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-list-check text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Tim BPS akan menyeleksi lamaran yang masuk</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="flex relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">5</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Mulai Magang</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-briefcase text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Jika diterima, Anda akan mengikuti program magang sesuai jadwal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex justify-center mt-8">
+            <a href="{{ Auth::check() ? '/dashboard' : '/registrasi' }}" class="rounded-[10px] px-9 py-3 bg-blue-600 text-white text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-blue-500 delay-[900ms] duration-[600ms] taos:translate-y-[50px] taos:opacity-0" data-taos-offset="100">
+                Mulai Pendaftaran
+            </a>
+        </div>
+    </section>
+
     {{-- FaQs Section --}}
     <section id="faqs"
         class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100 overflow-hidden">
-        <div class="w-[87%] flex flex-col items-start justify-center gap-1">
+        <div class="w-full flex flex-col items-start justify-start gap-1">
             <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Frequently asked questions</h1>
             <p class="text-gray-600 text-[16px]">Butuh bantuan? Coba cek terlebih dahulu pertanyaan yang sering
                 ditanyakan berikut</p>

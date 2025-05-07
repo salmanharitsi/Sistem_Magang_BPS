@@ -401,6 +401,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-span-3 card rounded-lg bg-white p-5">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-red-100 rounded-lg border text-red-700 border-red-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-alert-triangle text-lg"></i>
+                            <p class="text-sm">Pastikan link yang di submit dapat diakses</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-span-3 card rounded-lg mt-0 bg-white p-5 h-fit dark:bg-[#14181b] transition-all duration-200">
                     @livewire('upload-laporan-akhir', ['magangId' => $latestMagang->id])
                 </div>
@@ -441,29 +449,47 @@
             </div>
         @endif
         @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && $latestMagang->nilai_magang && $latestMagang->sertifikat_magang)
-            <div class="col-span-3 card rounded-lg bg-white p-5 lg:mt-6">
-                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                    <div class="flex gap-3 items-start lg:items-center">
-                        <i class="ti ti-sparkles text-lg"></i>
-                        <p class="text-sm">Nilai dan sertifikat magang kamu sudah diberikan</p>
+            <div class="col-span-3 grid grid-cols-1 gap-6 lg:mt-6">
+                <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-alert-circle text-lg"></i>
+                            <p class="text-sm">Ingin mengajukan program magang lagi?</p>
+                        </div>
+                        <form action="{{ route('usernormal.ajukan-magang') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
+                                <p class="text-sm whitespace-nowrap">Ajukan Program</p>
+                            </button>
+                        </form>
+                    </div>
+                </div>  
+    
+                <div class="card rounded-lg bg-white p-5">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-sparkles text-lg"></i>
+                            <p class="text-sm">Nilai dan sertifikat magang kamu sudah diberikan</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="relative col-span-3 w-full lg:mt-6 h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
-                <div class="flex flex-col gap-3 items-start">
-                    <p class="text-2xl font-medium italic">Nilai & Sertifikat Magang Kamu</p>
-                    <a href="/nilai-sertifikat/{{ $latestMagang->id }}"
-                        class="pjax-link bg-blue-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
-                        <p class="text-xs whitespace-nowrap">
-                            Lihat Nilai & Sertifikat
-                        </p>
-                    </a>
+    
+                <div class="relative w-full h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
+                    <div class="flex flex-col gap-3 items-start">
+                        <p class="text-2xl font-medium italic">Nilai & Sertifikat Magang Kamu</p>
+                        <a href="/nilai-sertifikat/{{ $latestMagang->id }}"
+                            class="pjax-link bg-blue-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                            <p class="text-xs whitespace-nowrap">
+                                Lihat Nilai & Sertifikat
+                            </p>
+                        </a>
+                    </div>
+                    <div class="px-4 z-20">
+                        <p class="text-4xl font-bold">{{ $latestMagang->nilai_magang }}</p>
+                    </div>
+                    <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
                 </div>
-                <div class="px-4 z-20">
-                    <p class="text-4xl font-bold">{{ $latestMagang->nilai_magang }}</p>
-                </div>
-                <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
             </div>
         @endif
     </div>
