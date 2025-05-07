@@ -134,7 +134,7 @@ class AdminController
             'totalMagang',
             'magangBulanIni',
             'magangActive',
-            'perluDinilai'
+            'perluDinilai',
             'magangAktifBulanIni',
             'magangSelesai',
             'magangSelesaiBulanIni'
