@@ -3,8 +3,11 @@
     Carbon::setLocale('id');
 @endphp
 <div>
+    <div class="p-4 border-b border-gray-300">
+        <h1 class="font-semibold text-lg text-gray-800">Presensi</h1>
+    </div>
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-        <div class="w-full md:w-1/5">
+        <div class="w-full md:w-1/4">
             <form class="flex items-center">
                 <label for="simple-search" class="sr-only">Search</label>
                 <div class="relative w-full">
@@ -46,7 +49,7 @@
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
-                        Keterangan
+                        Diperiksa Oleh
                     </th>
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
                         Aksi
@@ -81,10 +84,9 @@
                         <td class="py-4 px-6">
                             <div class="mx-auto w-fit flex items-center">
                                 @if ($data->pembimbing_id && $data->status_review === 'diterima')
-                                    <div
-                                        class="w-fit px-3 py-1 border border-green-800 bg-green-100 text-green-800 rounded-full font-medium text-sm flex items-center gap-1">
-                                        <i class="ti ti-check"></i>
-                                        <p class="text-xs">Disetujui</p>
+                                    <div class="flex items-center justify-center gap-1 whitespace-nowrap">
+                                        <i class="ti ti-user-circle text-lg"></i>
+                                        {{ $data->pembimbing->name }}
                                     </div>
                                 @elseif ($data->pembimbing_id && $data->status_review === 'ditolak')
                                     <div
