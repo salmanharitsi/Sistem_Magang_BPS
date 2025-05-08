@@ -210,7 +210,7 @@
                             class="w-full p-3 text-sm text-gray-900 bg-gray-50 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder:text-[12px] {{ session()->has('error') ? 'border-red-500' : '' }}"
                             rows="4" placeholder="Tambahkan komentar atau catatan untuk peserta magang..."></textarea>
                         @if (session()->has('error'))
-                            <p class="mt-1 text-sm text-red-500">
+                            <p class="text-red-500 text-[11px]">
                                 {{ session('error')['title'] }}
                             </p>
                         @endif
