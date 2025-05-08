@@ -98,7 +98,7 @@
                             </div>
                         </td>
                         <td class="py-4 px-6">
-                            <div
+                            <div wire:click.prevent="showDetail('{{ $data->id }}')"
                                 class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200 cursor-pointer">
                                 <i class="ti ti-eye"></i>
                             </div>
@@ -117,4 +117,82 @@
         <!-- Custom Pagination -->
         {{ $logbook->links('vendor.pagination.custom-pagination') }}
     </div>
+    <!-- Modal -->
+    @if($showModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
+            <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-5">
+                <div class="flex justify-between items-center border-b pb-4">
+                    <h2 class="text-xl font-semibold">Detail Logbook</h2>
+                    <button wire:click="closeModal" class="text-gray-500 hover:text-gray-700">
+                        <i class="ti ti-x"></i>
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <table class="w-full">
+                        <tr>
+                            <td class="py-1 pr-4 font-semibold">Tanggal</td>
+                            <td class="py-1">: {{ Carbon::parse($selectedData['tanggal'])->translatedFormat('l, j F Y') ?? $selectedData['tanggal'] ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-1 pr-4 font-semibold">Status</td>
+                            <td class="py-1 flex gap-[5px] items-center">:
+                                @if ($selectedData['status'] === 'mengisi')
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+                                        Mengisi
+                                    </span>
+                                @elseif ($selectedData['status'] === 'tidak-mengisi')
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">
+                                        Tidak Mengisi
+                                    </span>
+                                @endif
+                            </td>
+                        </tr>
+                        @if ($selectedData['pembimbing_id'])
+                            <tr>
+                                <td class="py-1 pr-4 font-semibold">Diperiksa Oleh</td>
+                                <td class="py-1 flex gap-[5px] items-center">:
+                                    <div class="flex items-center justify-center gap-1 whitespace-nowrap">
+                                        <i class="ti ti-user-circle text-lg"></i>
+                                        {{ $selectedData['pembimbing_id'] }}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+                        @if ($selectedData['lampiran'])
+                            <tr>
+                                <td class="py-1 pr-4 font-semibold align-top">Lampiran</td>
+                                <td class="py-1 flex gap-1 text-sm">
+                                    <p>: </p>
+                                        <a href="{{ $selectedData['lampiran'] }}" target="_blank" class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                                            <i class="ti ti-brand-google-drive mr-2"></i>Lihat Lampiran
+                                        </a>
+                                </td>
+                            </tr>
+                        @endif
+                        @if ($selectedData['deskripsi'])
+                            <tr>
+                                <td class="py-1 pr-4 font-semibold align-top">Kegiatan</td>
+                                <td class="py-1 flex gap-1">
+                                    <p>: </p>
+                                    <div class="w-full text-gray-900 bg-gray-100 p-2.5 rounded-md border border-gray-500 text-sm">
+                                        {{ $selectedData['deskripsi'] ?? '' }}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+                    </table>
+                    @if ($selectedData['pembimbing_id'])
+                        <div class="mt-6">
+                            <div class="w-2/5 text-black font-semibold mb-2">Komentar Pembimbing</div>
+                            <div class="w-full text-gray-900 bg-gray-100 p-2.5 rounded-md border border-gray-500 text-sm">
+                                {{ $selectedData['komentar'] ?? 'Tidak ada komentar!' }}
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
