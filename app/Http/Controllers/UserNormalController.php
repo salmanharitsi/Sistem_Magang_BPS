@@ -126,23 +126,9 @@ class UserNormalController
             if ($userLocation) {
                 list($userLat, $userLng) = explode(',', $userLocation);
                 
-                // // Koordinat kantor
-                // $officeLat = 0.51001435;
-                // $officeLng = 101.45457153;
-                // Koordinat rumah
-                $officeLat = 0.444011;
-                $officeLng = 101.459271;
-                // //kos
-                // $officeLat = 0.4786217843669414;
-                // $officeLng = 101.37318152023657;
-                //rumah 2
-                // $officeLat = 1.287660;
-                // $officeLng = 101.175784;
-                // $officeLat = 0.4786217843669414;
-                // $officeLng = 101.37318152023657;
-                // Koordinat nyasar
-                // $officeLat = 0.445742;
-                // $officeLng = 101.466078;
+                // Koordinat kantor
+                $officeLat = config('app.office.latitude');
+                $officeLng = config('app.office.longitude');
                 
                 $officeRadius = 50; // dalam meter
                 

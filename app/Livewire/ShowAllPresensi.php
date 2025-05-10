@@ -95,11 +95,11 @@ class ShowAllPresensi extends Component
             if ($selisihMenit >= 0) {
                 $this->statusKeluar = ['label' => 'Tepat Waktu', 'color' => 'green'];
             } elseif ($selisihMenit < 0 && $selisihMenit >= -30) {
-                $this->statusKeluar = ['label' => 'Cepat Keluar 1', 'color' => 'yellow'];
+                $this->statusKeluar = ['label' => 'Cepat Pulang 1', 'color' => 'yellow'];
             } elseif ($selisihMenit < -30 && $selisihMenit >= -60) {
-                $this->statusKeluar = ['label' => 'Cepat Keluar 2', 'color' => 'orange'];
+                $this->statusKeluar = ['label' => 'Cepat Pulang 2', 'color' => 'orange'];
             } elseif ($selisihMenit < -60) {
-                $this->statusKeluar = ['label' => 'Cepat Keluar 3', 'color' => 'red'];
+                $this->statusKeluar = ['label' => 'Cepat Pulang 3', 'color' => 'red'];
             }
         }
     }

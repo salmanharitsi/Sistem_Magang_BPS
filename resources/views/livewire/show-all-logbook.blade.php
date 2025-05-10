@@ -3,7 +3,7 @@
     Carbon::setLocale('id');
 @endphp
 <div>
-    <div class="flex flex-col md:flex-row gap-6">
+    <div class="flex flex-col-reverse md:flex-row gap-6">
         <!-- Bagian Kiri: Carousel Tanggal -->
         <div class="flex flex-col gap-6 w-full md:w-1/2">
             <div
