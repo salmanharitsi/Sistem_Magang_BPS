@@ -16,6 +16,15 @@
             <h1 style="letter-spacing: 5px; color: #2d3748;">{{ $otp }}</h1>
         </div>
 
+        <p>Atau klik tombol di bawah ini untuk membuka halaman verifikasi OTP:</p>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <a href="{{ route('verify.otp', ['id' => $user]) }}"
+                style="background: #1c64f2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Buka Halaman Verifikasi OTP
+            </a>
+        </div>
+
         <p>Kode OTP ini hanya bisa digunakan satu kali.</p>
 
         <p>Jika Anda tidak merasa mendaftar di Sistem Magang BPS, abaikan email ini.</p>
