@@ -17,18 +17,112 @@
                 </div>
             </form>
         </div>
-        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-            <div class="flex items-center gap-2">
-                <p class="font-semibold">Filter:</p>
-                <div class="relative">
-                    <select wire:model.live="statusFilter" id="status-filter" 
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
-                        <option value="">Semua Status</option>
-                        <option value="segera-dimulai">Segera Dimulai</option>
-                        <option value="berlangsung">Berlangsung</option>
-                        <option value="selesai">Selesai</option>
-                    </select>
+        
+        
+        <div class="relative inline-block text-left" id="filterContainer">
+
+            @if($isFiltered)
+            <div class="inline-flex items-center px-4 py-2 text-sm font-medium bg-green-50 border-2 border-green-600 rounded-full text-green-700 text-xs whitespace-nowrap rounded-lg mr-4">
+                <span class=" text-center font-medium text-white-600">{{ $totalMagangAktif }} Peserta Magang</span>
+            </div>
+            @endif
+            
+            <button id="filterButton" type="button"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <i class="ti ti-filter mr-2"></i>
+                Filter
+            </button>
+        </div>
+    </div>
+    
+    <!-- Filter dropdown placed outside the overflow context -->
+    <div id="filterDropdown"
+         class="hidden fixed rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
+         style="z-index: 9999;">
+        <div class="p-4">
+            <div class="mb-4">
+                <label for="status-filter"
+                    class="block text-[15px] font-medium text-gray-700 mb-1">Status</label>
+                    <select wire:model="statusFilter" id="status-filter" 
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
+                    <option value="">Semua Status</option>
+                    <option value="segera-dimulai">Segera Dimulai</option>
+                    <option value="berlangsung">Berlangsung</option>
+                    <option value="selesai">Selesai</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="fungsi-bagian-filter"
+                    class="block text-[15px] font-medium text-gray-700 mb-1">Bidang Tujuan</label>
+                <select wire:model.defer="filterFungsiBagian" id="fungsi-bagian-filter"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                    <option value="">Semua</option>
+                    @foreach ($listFungsiBagian as $fungsi)
+                            @if ($fungsi->title != 'Pimpinan')
+                                <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                            @endif
+                        @endforeach
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="asal-instansi-filter"
+                    class="block text-[15px] font-medium text-gray-700 mb-1">Asal Instansi</label>
+                <select wire:model.defer="filterAsalInstansi" id="asal-instansi-filter"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                    <option value="">Semua</option>
+                    @foreach ($listAsalInstansi as $instansi)
+                        <option value="{{ $instansi }}">{{ $instansi }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label for="pembimbing-filter" class="block text-[15px] font-medium text-gray-700 mb-1">Pembimbing</label>
+                <select wire:model.defer="filterPembimbing" id="pembimbing-filter"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                    <option value="">Semua</option>
+                    @foreach ($listPembimbing as $pembimbing)
+                        <option value="{{ $pembimbing->id }}">{{ $pembimbing->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-[15px] font-medium text-gray-700 mb-1">Periode Magang</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="filter-bulan-mulai" class="block text-xs text-gray-500 mb-1">Bulan Mulai</label>
+                        <select wire:model.defer="filterBulanMulai" id="filter-bulan-mulai"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                            <option value="">Pilih Bulan</option>
+                            @foreach ($listBulan as $key => $bulan)
+                                <option value="{{ $key }}">{{ $bulan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filter-bulan-selesai" class="block text-xs text-gray-500 mb-1">Bulan Selesai</label>
+                        <select wire:model.defer="filterBulanSelesai" id="filter-bulan-selesai"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
+                            <option value="">Pilih Bulan</option>
+                            @foreach ($listBulan as $key => $bulan)
+                                <option value="{{ $key }}">{{ $bulan }}</option>
+                            @endforeach
+                        </select>
+                        @error('filterBulanSelesai')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
+            </div>
+
+            <div class="flex">
+                <button wire:click="applyFilters" type="button"
+                    class="px-3 py-2 w-full text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    Terapkan Filter
+                </button>
             </div>
         </div>
     </div>
@@ -122,4 +216,43 @@
         <!-- Custom Pagination -->
         {{ $magang->links('vendor.pagination.custom-pagination') }}
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButton = document.getElementById('filterButton');
+            const filterDropdown = document.getElementById('filterDropdown');
+            const filterContainer = document.getElementById('filterContainer');
+
+            filterButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                filterDropdown.classList.toggle('hidden');
+                
+                // Position the dropdown based on the button's position
+                const buttonRect = filterButton.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Set the dropdown position
+                filterDropdown.style.top = (buttonRect.bottom + scrollTop) + 'px';
+                filterDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
+                filterDropdown.style.width = '320px'; // Fixed width for the dropdown
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!filterButton.contains(event.target) && !filterDropdown.contains(event.target)) {
+                    filterDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Add resize event listener to reposition dropdown when window is resized
+            window.addEventListener('resize', function() {
+                if (!filterDropdown.classList.contains('hidden')) {
+                    const buttonRect = filterButton.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    filterDropdown.style.top = (buttonRect.bottom + scrollTop) + 'px';
+                    filterDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
+                }
+            });
+        });
+    </script>
 </div>

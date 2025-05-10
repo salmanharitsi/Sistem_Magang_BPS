@@ -29,7 +29,8 @@
                 Filter
             </button>
             <div id="filterDropdown"
-                class="hidden origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
+                class="hidden fixed rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
+                style="z-index: 9999;">
                 <div class="p-4">
 
                     <!-- Fungsi Bagian Filter -->
@@ -69,7 +70,7 @@
         </div>
     </div>
     <!-- Minimum height container untuk tabel -->
-    <div class="overflow-x-auto min-h-screen-half">
+    <div class="overflow-x-auto">
         <table id="dataIkuTable" class="w-full text-sm text-left rtl:text-left">
             <thead class="text-md text-gray-700 uppercase bg-gray-100 h-full">
                 <tr class="h-full">
@@ -358,12 +359,6 @@
         @endif
     </div>
 
-    <style>
-        .min-h-screen-half {
-            min-height: 50vh;
-        }
-    </style>
-
     <script>
         function togglePasswordVisibility(fieldId) {
             const field = document.getElementById(fieldId);
@@ -382,18 +377,36 @@
         document.addEventListener('DOMContentLoaded', function() {
             const filterButton = document.getElementById('filterButton');
             const filterDropdown = document.getElementById('filterDropdown');
+            const filterContainer = document.getElementById('filterContainer');
 
             filterButton.addEventListener('click', function(event) {
                 event.stopPropagation();
                 filterDropdown.classList.toggle('hidden');
-
+                
+                // Position the dropdown based on the button's position
                 const buttonRect = filterButton.getBoundingClientRect();
-                filterDropdown.style.top = (buttonRect.height + 5) + 'px';
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Set the dropdown position
+                filterDropdown.style.top = (buttonRect.bottom + scrollTop) + 'px';
+                filterDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
+                filterDropdown.style.width = '320px'; // Fixed width for the dropdown
             });
 
             document.addEventListener('click', function(event) {
                 if (!filterButton.contains(event.target) && !filterDropdown.contains(event.target)) {
                     filterDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Add resize event listener to reposition dropdown when window is resized
+            window.addEventListener('resize', function() {
+                if (!filterDropdown.classList.contains('hidden')) {
+                    const buttonRect = filterButton.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    filterDropdown.style.top = (buttonRect.bottom + scrollTop) + 'px';
+                    filterDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
                 }
             });
         });
