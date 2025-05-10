@@ -46,7 +46,7 @@ class UpdatePresensiJamKeluarJob implements ShouldQueue
                     : $pointKeluar;
 
                     // Kondisi 2: Jika jam_masuk !== null dan jam_keluar == null hingga jam 7 malam
-                    if ($presensi->jam_masuk !== null && $presensi->jam_keluar === null && $now->gt(Carbon::parse($today . ' 19:00:00'))) {
+                    if ($presensi->jam_masuk !== null && $presensi->jam_keluar === null && $now->gt(Carbon::parse($today . ' 23:59:59'))) {
                         $presensi->point_keluar = $pointKeluar;
                         $presensi->point = $pointAkhir;
                         $presensi->save();

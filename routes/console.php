@@ -16,7 +16,7 @@ Artisan::command('inspire', function () {
 Schedule::job(new UpdatePresensiStatusJob())->dailyAt('17:00');
 
 // Jadwalkan job UpdatePresensiJamKeluarJob setiap hari pada jam 19:00
-Schedule::job(new UpdatePresensiJamKeluarJob())->dailyAt('19:00');
+Schedule::job(new UpdatePresensiJamKeluarJob())->dailyAt('23:59');
 
 // Jadwalkan job UpdateLogbookStatusJob untuk dijalankan setiap hari pada jam 17.00
 Schedule::job(new UpdateLogbookStatusJob())->dailyAt('17:00');
