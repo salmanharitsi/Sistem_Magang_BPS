@@ -52,7 +52,7 @@
                 <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                     <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                         <i class="ti ti-alert-triangle text-lg"></i>
-                        <p class="text-sm">Kamu melewati tenggat upload surat pengantar!</p>
+                        <p class="text-sm">Admin menolak pengajuan kamu karena melewati tenggat upload surat pengantar!</p>
                     </div>
                 </div>
             @elseif ($latestPengajuan->status_pengajuan === 'reject-days')
