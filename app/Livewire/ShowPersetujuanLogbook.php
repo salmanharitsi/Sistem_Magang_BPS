@@ -57,16 +57,43 @@ class ShowPersetujuanLogbook extends Component
         $this->selectedData = [];
     }
 
+    public function updatedSelectedDataStatus($value)
+    {
+        // Jika status diubah menjadi mengisi, set nilai default
+        if ($value === 'mengisi' && $this->selectedData['status'] !== $this->originalStatus) {
+            $this->selectedData['deskripsi'] = 'Terdapat kesalahan sistem pada logbook hari ini, dapat mengedit deskripsi dan lampiran logbook';
+            $this->selectedData['lampiran'] = 'https://drive.google.com/'; // Default link
+        }
+    }
+
     public function approveLogbook()
     {
-        if (isset($this->selectedData['id'])) {
-
-            Logbook::where('id', $this->selectedData['id'])->update([
-                'pembimbing_id' => Auth::guard('pegawai')->user()->id,
-                'status_review' => 'diterima',
-                'status' => $this->selectedData['status'],
-                'komentar' => $this->selectedData['komentar']
+        // Validasi komentar wajib diisi
+        if (!isset($this->selectedData['komentar']) || empty(trim($this->selectedData['komentar']))) {
+            session()->flash('error', [
+                'title' => 'Komentar wajib diisi!'
             ]);
+            return;
+        }
+
+        if (isset($this->selectedData['id'])) {
+            if ($this->selectedData['status'] === 'mengisi') {
+                Logbook::where('id', $this->selectedData['id'])->update([
+                    'pembimbing_id' => Auth::guard('pegawai')->user()->id,
+                    'status_review' => 'diterima',
+                    'status' => $this->selectedData['status'],
+                    'deskripsi' => $this->selectedData['deskripsi'],
+                    'lampiran' => $this->selectedData['lampiran'],
+                    'komentar' => $this->selectedData['komentar']
+                ]);
+            } else {
+                Logbook::where('id', $this->selectedData['id'])->update([
+                    'pembimbing_id' => Auth::guard('pegawai')->user()->id,
+                    'status_review' => 'diterima',
+                    'status' => $this->selectedData['status'],
+                    'komentar' => $this->selectedData['komentar']
+                ]);
+            }
 
             $this->closeModal();
             $this->dispatch('refreshComponent');
@@ -81,8 +108,15 @@ class ShowPersetujuanLogbook extends Component
 
     public function tolakLogbook()
     {
-        if (isset($this->selectedData['id'])) {
+        // Validasi komentar wajib diisi
+        if (!isset($this->selectedData['komentar']) || empty(trim($this->selectedData['komentar']))) {
+            session()->flash('error', [
+                'title' => 'Anda harus mengisi komentar!'
+            ]);
+            return;
+        }
 
+        if (isset($this->selectedData['id'])) {
             Logbook::where('id', $this->selectedData['id'])->update([
                 'pembimbing_id' => Auth::guard('pegawai')->user()->id,
                 'status_review' => 'ditolak',
@@ -136,9 +170,9 @@ class ShowPersetujuanLogbook extends Component
                     $builder->where('status', 'like', '%' . $this->search . '%')
                         ->orWhereHas('magang', function (Builder $query) {
                             $query->where('jenis_magang', 'like', '%' . $this->search . '%')
-                            ->orWhereHas('user', function (Builder $query) {
-                                $query->where('name', 'like', '%' . $this->search . '%');
-                            });
+                                ->orWhereHas('user', function (Builder $query) {
+                                    $query->where('name', 'like', '%' . $this->search . '%');
+                                });
                         });
                 });
             }
@@ -175,9 +209,9 @@ class ShowPersetujuanLogbook extends Component
                 $builder->where('status', 'like', '%' . $this->search . '%')
                     ->orWhereHas('magang', function (Builder $query) {
                         $query->where('jenis_magang', 'like', '%' . $this->search . '%')
-                        ->orWhereHas('user', function (Builder $query) {
-                            $query->where('name', 'like', '%' . $this->search . '%');
-                        });
+                            ->orWhereHas('user', function (Builder $query) {
+                                $query->where('name', 'like', '%' . $this->search . '%');
+                            });
                     });
             });
         }
@@ -197,10 +231,11 @@ class ShowPersetujuanLogbook extends Component
             // Get the current authenticated user ID from pegawai guard
             $userId = Auth::guard('pegawai')->user()->id;
 
-            // Update multiple records at once
+            // Update multiple records at once with default comment
             Logbook::whereIn('id', $this->selectedItems)->update([
                 'pembimbing_id' => $userId,
-                'status_review' => 'diterima'
+                'status_review' => 'diterima',
+                'komentar' => 'Kerja bagus!' // Menambahkan default komentar untuk bulk action
             ]);
 
             // Get the count before resetting

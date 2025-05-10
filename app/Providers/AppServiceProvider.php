@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Guards\PegawaiSessionGuard;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use App\Http\ViewComposers\BadgeComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,5 +32,11 @@ class AppServiceProvider extends ServiceProvider
 
             return new PegawaiSessionGuard($name, $provider, $app['session.store'], $app['request']);
         });
+
+
+        View::composer([
+            'layouts.admin',
+            'layouts.pembimbing'
+        ], BadgeComposer::class);
     }
 }
