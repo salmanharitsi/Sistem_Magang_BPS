@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\FungsiBagian;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class ShowDaftarPegawai extends Component
 {
@@ -21,6 +22,7 @@ class ShowDaftarPegawai extends Component
     public $showModal = false;
     public $showEditModal = false;
     public $editingPegawaiId;
+    public $isAdmin;
 
     #[Validate]
     public $name, $email, $password, $confirm_password, $nomor_induk, $fungsi_bagian, $role_temp;
@@ -125,6 +127,8 @@ class ShowDaftarPegawai extends Component
     {
 
         $this->listFungsiBagian = FungsiBagian::orderBy('title')->get();
+
+        $this->isAdmin = Auth::guard('pegawai')->user()->role_temp == 'admin';
     }
 
     public function updating($key): void

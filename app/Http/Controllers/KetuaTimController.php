@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Magang;
 use App\Models\Pengajuan;
+use Illuminate\Http\Request;
 
-class PimpinanController
+class KetuaTimController
 {
-    public function get_dashboard_pimpinan()
+    public function get_dashboard_ketua_tim()
     {
         if (request()->pjax()) {
             return false;
@@ -118,7 +119,7 @@ class PimpinanController
         $magangBulanIni = Magang::whereMonth('created_at', Carbon::now()->month)->count();
 
 
-        return view('pimpinan.dashboard', compact(
+        return view('ketuatim.dashboard', compact(
             'monthlyStats',
             'chartData',
             'years',
@@ -132,27 +133,27 @@ class PimpinanController
         ));
     }
 
-    public function get_daftar_pegawai_pimpinan()
+    public function get_daftar_pegawai_ketua_tim()
     {
         if (request()->pjax()) {
             return false;
         }
-        return view('pimpinan.daftar-pegawai');
+        return view('ketuatim.daftar-pegawai');
     }
 
-    public function get_daftar_magang_pimpinan()
+    public function get_daftar_magang_ketua_tim()
     {
         if (request()->pjax()) {
             return false;
         }
-        return view('pimpinan.daftar-magang');
+        return view('ketuatim.daftar-magang');
     }
 
-    public function get_daftar_pembimbing()
+    public function get_daftar_pembimbing_ketua_tim()
     {
         if (request()->pjax()) {
             return false;
         }
-        return view('pimpinan.daftar-pembimbing');
+        return view('ketuatim.daftar-pembimbing');
     }
 }

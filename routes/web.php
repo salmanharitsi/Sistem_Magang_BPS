@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminPembimbingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KetuaTimController;
 use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\UserNormalController;
@@ -77,4 +78,17 @@ Route::group(['middleware' => ['admin-or-pembimbing', 'no-cache']], function () 
 //Route untuk pimpinan
 Route::group(['middleware' => ['pimpinan', 'no-cache']], function () {
     Route::get('dashboard-pimpinan', [PimpinanController::class, 'get_dashboard_pimpinan'])->name('pimpinan.dashboard');
+    Route::get('ubah-password-pimpinan', [HomeController::class, 'get_ubah_password'])->name('pimpinan.ubah-password');
+    Route::get('daftar-pegawai-pimpinan', [PimpinanController::class, 'get_daftar_pegawai_pimpinan'])->name('pimpinan.daftar-pegawai');
+    Route::get('daftar-magang-pimpinan', [PimpinanController::class, 'get_daftar_magang_pimpinan'])->name('pimpinan.daftar-magang');
+    Route::get('daftar-pembimbing', [PimpinanController::class, 'get_daftar_pembimbing'])->name('pimpinan.kelola-pembimbing');
+});
+
+//Route untuk ketua tim
+Route::group(['middleware' => ['ketua-tim', 'no-cache']], function () {
+    Route::get('dashboard-ketua-tim', [KetuaTimController::class, 'get_dashboard_ketua_tim'])->name('ketuatim.dashboard');
+    Route::get('ubah-password-ketua-tim', [HomeController::class, 'get_ubah_password'])->name('ketuatim.ubah-password');
+    Route::get('daftar-pegawai-ketua-tim', [KetuaTimController::class, 'get_daftar_pegawai_ketua_tim'])->name('ketuatim.daftar-pegawai');
+    Route::get('daftar-magang-ketua-tim', [KetuaTimController::class, 'get_daftar_magang_ketua_tim'])->name('ketuatim.daftar-magang');
+    Route::get('daftar-pembimbing-ketua-tim', [KetuaTimController::class, 'get_daftar_pembimbing_ketua_tim'])->name('ketuatim.kelola-pembimbing');
 });

@@ -58,7 +58,7 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
-                                href="/dashboard-pimpinan">
+                                href="/dashboard-ketua-tim">
                                 <i class="ti ti-layout-dashboard ps-2 text-xl"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -71,7 +71,7 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/daftar-pegawai-pimpinan">
+                                href="/daftar-pegawai-ketua-tim">
                                 <i class="ti ti-user-star ps-2 text-xl"></i>
                                 <span class="whitespace-nowrap">Daftar Pegawai</span>
                             </a>
@@ -79,14 +79,14 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/daftar-magang-pimpinan">
+                                href="/daftar-magang-ketua-tim  ">
                                 <i class="ti ti-building-carousel ps-2 text-xl"></i>
                                 <span class="whitespace-nowrap">Daftar Peserta Magang</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/daftar-pembimbing">
+                                href="/daftar-pembimbing-ketua-tim">
                                 <i class="ti ti-user-pentagon ps-2 text-xl"></i>
                                 <span class="whitespace-nowrap">Daftar Pembimbing</span>
                             </a>
@@ -192,15 +192,15 @@
                                                         <div>
                                                             <p class="text-lg text-gray-800 font-medium">
                                                                 {{ Auth::guard('pegawai')->user()->name }}</p>
-                                                            @if (Auth::guard('pegawai')->user()->role_temp == 'pimpinan')
-                                                                <p class="text-[12px] text-gray-600">Pimpinan</p>
+                                                            @if (Auth::guard('pegawai')->user()->role_temp == 'ketua_tim')
+                                                                <p class="text-[12px] text-gray-600">Ketua Tim {{ Auth::guard('pegawai')->user()->fungsi_bagian }}</p>
                                                             @else
                                                                 <p class="text-[12px] text-gray-600">Pembimbing</p>
                                                             @endif
                                                         </div>
                                                     </div>
 
-                                                    <a href="/ubah-password-pimpinan"
+                                                    <a href="/ubah-password-ketua-tim"
                                                         class="pjax-link flex justify-between items-center font-normal px-5 py-1 rounded-md transition duration-300 hover:text-blue-600">
                                                         <div class="flex gap-3 items-center">
                                                             <i

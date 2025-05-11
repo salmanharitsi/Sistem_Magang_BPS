@@ -18,11 +18,13 @@
         </div>
         <!-- Filter Button and Dropdown -->
         <div class="relative inline-block text-left">
-            <button wire:click="create"
-                class="text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-4 py-2 mr-2 inline-flex items-center">
-                <i class="ti ti-plus mr-2"></i>
-                Tambah Pegawai
-            </button>
+            @if ($isAdmin)
+                <button wire:click="create"
+                    class="text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-4 py-2 mr-2 inline-flex items-center">
+                    <i class="ti ti-plus mr-2"></i>
+                    Tambah Pegawai
+                </button>
+            @endif
             <button id="filterButton" type="button"
                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <i class="ti ti-filter mr-2"></i>
@@ -52,9 +54,10 @@
                         <select wire:model.defer="filterRole" id="role-filter"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
                             <option value="">Semua</option>
-                            <option value="pimpinan">Pimpinan</option>
-                            <option value="regular">Pembimbing</option>
                             <option value="admin">Admin</option>
+                            <option value="ketua_tim">Ketua Tim</option>
+                            <option value="regular">Pembimbing</option>
+                            <option value="pimpinan">Pimpinan</option>
                         </select>
                     </div>
 
@@ -110,7 +113,9 @@
                                 @elseif($data->role_temp == 'admin')
                                     <p class="text-blue-700 border-blue-600 bg-blue-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Admin</p>
                                 @elseif($data->role_temp == 'pimpinan')
-                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pimpinan</p>
+                                    <p class="text-red-700 border-red-600 bg-red-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pimpinan</p>
+                                @elseif($data->role_temp == 'ketua_tim')
+                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Ketua Tim</p>
                                 @endif
                             </div>
                         </td>
@@ -235,6 +240,7 @@
                                     <option value="">-- Pilih Role --</option>
                                     <option value="regular">Pembimbing</option>
                                     <option value="admin">Admin</option>
+                                    <option value="ketua_tim">Ketua Tim</option>
                                     @if (!$hasPimpinanUser)
                                         <option value="pimpinan">Pimpinan</option>
                                     @endif
@@ -340,6 +346,10 @@
                                     <option value="">-- Pilih Role --</option>
                                     <option value="regular">Pembimbing</option>
                                     <option value="admin">Admin</option>
+                                    <option value="ketua_tim">Ketua Tim</option>
+                                    @if (!$hasPimpinanUser)
+                                        <option value="pimpinan">Pimpinan</option>
+                                    @endif
                                 </select>
                                 @if ($errors->has('role_temp'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('role_temp') }}</span>
