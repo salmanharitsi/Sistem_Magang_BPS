@@ -50,7 +50,7 @@ class PengajuanApproved extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'usernormal.pengajuan-approved',
+            markdown: 'emails.pengajuan-approved',
         );
     }
 

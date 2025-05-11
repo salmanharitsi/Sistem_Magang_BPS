@@ -47,7 +47,7 @@ class NotifSeleksiPertama extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'usernormal.notif-seleksi-pertama',
+            view: 'emails.notif-seleksi-pertama',
             with: [
                 'status' => $this->status,
                 'name' => $this->name,

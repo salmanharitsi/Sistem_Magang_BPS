@@ -43,10 +43,9 @@ class NotifSuratPengantar extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'admin.notif-surat-pengantar',
+            markdown: 'emails.notif-surat-pengantar',
             with: [
                 'userName' => $this->user->name,
-                'pengajuanId' => $this->pengajuan->id,
                 'suratPengantar' => $this->pengajuan->surat_pengantar,
                 'uploadedAt' => now()->format('d M Y H:i:s'),
             ]

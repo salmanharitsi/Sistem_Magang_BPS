@@ -43,7 +43,7 @@ class NotifPengajuanPeserta extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'usernormal.notif-pengajuan-peserta',
+            markdown: 'emails.notif-pengajuan-peserta',
             with: [
                 'userName' => $this->user->name,
                 'jensMagang' => $this->pengajuan->jenis_magang,
