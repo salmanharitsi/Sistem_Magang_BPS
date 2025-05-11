@@ -158,34 +158,72 @@
                 }
             });
 
-            // Resend logic
+
             const resendForm = document.getElementById('resendForm');
             const resendBtn = document.getElementById('resendBtn');
             const cooldownTimer = document.getElementById('cooldownTimer');
-            let cooldownTime = 30;
 
-            function startCooldown() {
-                resendBtn.disabled = true;
-                const interval = setInterval(() => {
-                    if (cooldownTime <= 0) {
-                        clearInterval(interval);
-                        resendBtn.disabled = false;
-                        cooldownTimer.textContent = '';
-                        return;
-                    }
-                    cooldownTimer.textContent = `Tunggu ${cooldownTime} detik untuk kirim ulang`;
-                    cooldownTime--;
-                }, 1000);
+            const userId = window.location.pathname.split('/').pop();
+            const cooldownKey = `otp_cooldown_${userId}`;
+            const endTimeKey = `otp_end_time_${userId}`;
+
+            function getRemainingTime() {
+                const endTime = localStorage.getItem(endTimeKey);
+                if (!endTime) return 0;
+
+                const remaining = Math.ceil((parseInt(endTime) - Date.now()) / 1000);
+                return remaining > 0 ? remaining : 0;
             }
 
-            startCooldown();
+            function startCooldown(seconds) {
+                // Store end time in localStorage
+                const endTime = Date.now() + (seconds * 1000);
+                localStorage.setItem(endTimeKey, endTime.toString());
 
+                updateCooldownUI();
+            }
+
+            function updateCooldownUI() {
+                const remainingTime = getRemainingTime();
+
+                if (remainingTime <= 0) {
+                    resendBtn.disabled = false;
+                    cooldownTimer.textContent = '';
+                    // Clean up localStorage when timer completes
+                    localStorage.removeItem(endTimeKey);
+                    return;
+                }
+
+                resendBtn.disabled = true;
+                cooldownTimer.textContent = `Tunggu ${remainingTime} detik untuk kirim ulang`;
+
+            
+                setTimeout(updateCooldownUI, 1000);
+            }
+
+            //  Initialize cooldown timer from localStorage or start fresh
+            let remainingTime = getRemainingTime();
+            if (remainingTime > 0) {
+                // Resume existing cooldown
+                resendBtn.disabled = true;
+                updateCooldownUI();
+            } else {
+                // Start with default cooldown time if this is the first visit
+                const initialCooldown = localStorage.getItem(cooldownKey);
+                if (initialCooldown === null) {
+                    localStorage.setItem(cooldownKey, 'true');
+                    startCooldown(30);
+                } else {
+                    resendBtn.disabled = false;
+                }
+            }
+
+            // [CHANGED] Updated submit handler to use the new startCooldown function
             resendForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (!resendBtn.disabled) {
+                    startCooldown(30);
                     this.submit();
-                    cooldownTime = 30;
-                    startCooldown();
                 }
             });
 
