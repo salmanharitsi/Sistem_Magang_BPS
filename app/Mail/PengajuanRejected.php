@@ -40,7 +40,7 @@ class PengajuanRejected extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'usernormal.pengajuan-rejected',
+            markdown: 'emails.pengajuan-rejected',
         );
     }
 
