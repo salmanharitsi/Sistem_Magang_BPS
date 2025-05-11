@@ -157,15 +157,44 @@ class ShowDaftarMagang extends Component
         if ($this->filterBulanMulai && $this->filterBulanSelesai && $this->filterBulanSelesai >= $this->filterBulanMulai) {
             $this->isFiltered = true;
             $query->where(function($q) {
-                $q->whereMonth('tanggal_mulai', '>=', $this->filterBulanMulai)
-                  ->whereMonth('tanggal_selesai', '<=', $this->filterBulanSelesai);
+                $q->where(function($subQ) {
+                    // Kasus 1: Periode magang dimulai dan selesai dalam range filter
+                    $subQ->whereMonth('tanggal_mulai', '>=', $this->filterBulanMulai)
+                         ->whereMonth('tanggal_selesai', '<=', $this->filterBulanSelesai);
+                })->orWhere(function($subQ) {
+                    // Kasus 2: Periode magang dimulai sebelum filter tapi selesai dalam range filter
+                    $subQ->whereMonth('tanggal_mulai', '<', $this->filterBulanMulai)
+                         ->whereMonth('tanggal_selesai', '>=', $this->filterBulanMulai)
+                         ->whereMonth('tanggal_selesai', '<=', $this->filterBulanSelesai);
+                })->orWhere(function($subQ) {
+                    // Kasus 3: Periode magang dimulai dalam range filter tapi selesai setelahnya
+                    $subQ->whereMonth('tanggal_mulai', '>=', $this->filterBulanMulai)
+                         ->whereMonth('tanggal_mulai', '<=', $this->filterBulanSelesai)
+                         ->whereMonth('tanggal_selesai', '>', $this->filterBulanSelesai);
+                })->orWhere(function($subQ) {
+                    // Kasus 4: Periode magang mencakup seluruh range filter (mulai sebelum dan selesai setelah)
+                    $subQ->whereMonth('tanggal_mulai', '<', $this->filterBulanMulai)
+                         ->whereMonth('tanggal_selesai', '>', $this->filterBulanSelesai);
+                });
             });
         } elseif ($this->filterBulanMulai) {
             $this->isFiltered = true;
-            $query->whereMonth('tanggal_mulai', $this->filterBulanMulai);
+            $query->where(function($q) {
+                $q->whereMonth('tanggal_mulai', $this->filterBulanMulai)
+                  ->orWhere(function($subQ) {
+                      $subQ->whereMonth('tanggal_mulai', '<', $this->filterBulanMulai)
+                           ->whereMonth('tanggal_selesai', '>=', $this->filterBulanMulai);
+                  });
+            });
         } elseif ($this->filterBulanSelesai) {
             $this->isFiltered = true;
-            $query->whereMonth('tanggal_selesai', $this->filterBulanSelesai);
+            $query->where(function($q) {
+                $q->whereMonth('tanggal_selesai', $this->filterBulanSelesai)
+                  ->orWhere(function($subQ) {
+                      $subQ->whereMonth('tanggal_mulai', '<=', $this->filterBulanSelesai)
+                           ->whereMonth('tanggal_selesai', '>', $this->filterBulanSelesai);
+                  });
+            });
         }
 
         // Get total count before pagination
