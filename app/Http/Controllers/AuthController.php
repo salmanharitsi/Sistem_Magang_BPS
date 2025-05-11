@@ -23,6 +23,9 @@ class AuthController
             else if($pegawai->role_temp == 'pimpinan') {
                 return redirect('dashboard-pimpinan');
             }
+            else if($pegawai->role_temp == 'ketua_tim') {
+                return redirect('dashboard-ketua-tim');
+            }
         }
         return view('auth.login');
     }
@@ -38,6 +41,9 @@ class AuthController
             }
             else if($pegawai->role_temp == 'pimpinan') {
                 return redirect('dashboard-pimpinan');
+            }
+            else if($pegawai->role_temp == 'ketua_tim') {
+                return redirect('dashboard-ketua-tim');
             }
         }
         if (!empty(Auth::check())) {

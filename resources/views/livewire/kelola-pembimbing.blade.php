@@ -56,9 +56,11 @@
                     <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
                         Pembimbing 2
                     </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
-                        Aksi
-                    </th>
+                    @if ($isAdmin)
+                        <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
+                            Aksi
+                        </th>
+                    @endif
                 </tr>
             </thead>
             <tbody>

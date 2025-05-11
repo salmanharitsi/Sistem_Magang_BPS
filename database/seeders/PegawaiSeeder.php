@@ -128,6 +128,14 @@ class PegawaiSeeder extends Seeder
                 "nomor_induk" => "149107822341009",
                 "role_temp" => "pimpinan"
             ],
+            [
+                "name" => "ACHMAD SOBARI, S.ST., S.E., M.Si.",
+                "fungsi_bagian" => 'Fungsi Nerwilis',
+                "email" => "ketuanerwilis@gmail.com",
+                "password" => "bps2025",
+                "nomor_induk" => "1490207822343009",
+                "role_temp" => "ketua_tim"
+            ],
         ];
 
         foreach ($pegawai as $data) {

@@ -9,6 +9,12 @@
         } elseif ($pegawai->role_temp == 'regular') {
             $layout = 'layouts.pembimbing';
         }
+        elseif ($pegawai->role_temp == 'pimpinan') {
+            $layout = 'layouts.pimpinan';
+        }
+        elseif ($pegawai->role_temp == 'ketua_tim') {
+            $layout = 'layouts.ketua-tim';
+        }
     }
 @endphp
 
