@@ -139,7 +139,7 @@ class InputSertifikat extends Component
             ];
             
             // Generate PDF
-            $pdf = PDF::loadView('certificates.internship', $data)
+            $pdf = PDF::loadView('pdf.certificate', $data)
                 ->setOption([
                     'fontDir' => public_path('/fonts'),
                     'fontCache' => public_path('/fonts'),

@@ -71,7 +71,7 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/daftar-pegawai">
+                                href="/daftar-pegawai-pimpinan">
                                 <i class="ti ti-user-star ps-2 text-xl"></i>
                                 <span class="whitespace-nowrap">Daftar Pegawai</span>
                             </a>
@@ -79,9 +79,16 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/daftar-magang">
+                                href="/daftar-magang-pimpinan">
                                 <i class="ti ti-building-carousel ps-2 text-xl"></i>
                                 <span class="whitespace-nowrap">Daftar Peserta Magang</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                href="/daftar-pembimbing">
+                                <i class="ti ti-user-pentagon ps-2 text-xl"></i>
+                                <span class="whitespace-nowrap">Daftar Pembimbing</span>
                             </a>
                         </li>
                     </ul>

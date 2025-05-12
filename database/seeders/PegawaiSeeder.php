@@ -57,7 +57,7 @@ class PegawaiSeeder extends Seeder
             ],
             [
                 "name" => "Agus Wardiman, S.E.",
-                "fungsi_bagian" => "Humas dan Unit Kerja Kepala",
+                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
                 "email" => "agus.wardiman@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "148507942341127",
@@ -65,7 +65,7 @@ class PegawaiSeeder extends Seeder
             ],
             [
                 "name" => "Rahmat Wahid, S.Si.",
-                "fungsi_bagian" => "Humas dan Unit Kerja Kepala",
+                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
                 "email" => "rwahid@bps.go.id",
                 "password" => "bps2025",
                 "nomor_induk" => "147607845959128",

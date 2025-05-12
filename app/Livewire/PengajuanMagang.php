@@ -84,108 +84,112 @@ class PengajuanMagang extends Component
 
     public function updatedTanggalMulai($value)
     {
-        if ($value) {
-            $tanggal = Carbon::parse($value);
-            if ($tanggal->isWeekend()) {
-                $this->addError('tanggal_mulai', 'Tanggal mulai tidak boleh di akhir pekan (Sabtu/Minggu).');
-            } else {
-                $this->resetErrorBag('tanggal_mulai');
-            }
+        $tanggalMulai = Carbon::parse($value);
+
+        if ($tanggalMulai->isWeekend()) {
+            $this->addError('tanggal_mulai', 'Tanggal mulai tidak boleh di akhir pekan (Sabtu/Minggu).');
+            return null;
+        } else {
+            $this->resetErrorBag('tanggal_mulai');
+        }
+
+        if ($this->tanggal_selesai && $tanggalMulai->gt(Carbon::parse($this->tanggal_selesai))) {
+            $this->addError('tanggal_selesai', 'Tanggal selesai magang harus setelah tanggal mulai.');
+            return null;
+        } else {
+            $this->resetErrorBag('tanggal_selesai');
         }
     }
 
     public function updatedTanggalSelesai($value)
     {
-        if ($value) {
-            $tanggal = Carbon::parse($value);
-            if ($tanggal->isWeekend()) {
-                $this->addError('tanggal_selesai', 'Tanggal selesai tidak boleh di akhir pekan (Sabtu/Minggu).');
-            } else {
-                $this->resetErrorBag('tanggal_selesai');
-            }
+        $tanggalSelesai = Carbon::parse($value);
+
+        if ($tanggalSelesai->isWeekend()) {
+            $this->addError('tanggal_selesai', 'Tanggal selesai tidak boleh di akhir pekan (Sabtu/Minggu).');
+            return null;
+        } else {
+            $this->resetErrorBag('tanggal_selesai');
+        }
+
+        if ($this->tanggal_mulai && $tanggalSelesai->lt(Carbon::parse($this->tanggal_mulai))) {
+            $this->addError('tanggal_selesai', 'Tanggal selesai magang harus setelah tanggal mulai.');
+            
+        } else {
+            $this->resetErrorBag('tanggal_selesai');
         }
     }
 
     public function create_pengajuan()
     {
-        try {
-            $validatedData = $this->validate();
+        $validatedData = $this->validate();
 
-            // Validasi tanggal mulai
-            $tanggalMulai = Carbon::parse($validatedData['tanggal_mulai']);
-            if ($tanggalMulai->isWeekend()) {
-                return $this->addError('tanggal_mulai', 'Tanggal mulai tidak boleh di akhir pekan (Sabtu/Minggu).');
-            }
-
-            // Validasi tanggal selesai
-            $tanggalSelesai = Carbon::parse($validatedData['tanggal_selesai']);
-            if ($tanggalSelesai->isWeekend()) {
-                return $this->addError('tanggal_selesai', 'Tanggal selesai tidak boleh di akhir pekan (Sabtu/Minggu).');
-            }
-
-            $user = Auth::user();
-
-            $pengajuan = new Pengajuan();
-            $pengajuan->user_id = $user->id;
-            $pengajuan->jenis_magang = $validatedData['jenis_magang'];
-            $pengajuan->bidang_tujuan = $validatedData['bidang_tujuan'];
-            $pengajuan->tanggal_mulai = $validatedData['tanggal_mulai'];
-            $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
-
-            $pengajuan->penanggung_jawab_name = $validatedData['penanggung_jawab_name'];
-            $pengajuan->penanggung_jawab_jabatan = $validatedData['penanggung_jawab_jabatan'];
-            $pengajuan->penanggung_jawab_email = $validatedData['penanggung_jawab_email'];
-            $pengajuan->penanggung_jawab_nomor_hp = $validatedData['penanggung_jawab_nomor_hp'];
-
-            // Data akademik
-            $pengajuan->institusi = $user->institusi;
-            $pengajuan->jurusan = $user->jurusan;
-            $pengajuan->nomor_induk = $user->nomor_induk;
-
-            // Data pribadi
-            $pengajuan->foto_profil = $user->foto_profil;
-            $pengajuan->name = $user->name;
-            $pengajuan->email = $user->email;
-            $pengajuan->nomor_hp = $user->nomor_hp;
-            $pengajuan->tentang_saya = $user->tentang_saya;
-            $pengajuan->jenis_kelamin = $user->jenis_kelamin;
-            $pengajuan->tempat_lahir = $user->tempat_lahir;
-            $pengajuan->tanggal_lahir = $user->tanggal_lahir;
-            $pengajuan->alamat = $user->alamat;
-
-            $pengajuan->kartu_penduduk = $user->kartu_penduduk;
-            $pengajuan->original_filename_ktp = $user->original_filename_ktp;
-            $pengajuan->kartu_tanda = $user->kartu_tanda;
-            $pengajuan->original_filename_kartu = $user->original_filename_kartu;
-
-            $pengajuan->save();
-
-            $user->status_magang = 'masa-daftar';
-            $user->save();
-
-            \Log::info('Mengirim email ke peserta: ' . $user->email);
-            Mail::to($user->email)->send(new NotifPengajuanPeserta($pengajuan, $user));
-
-            \Log::info('Email berhasil dikirim ke: ' . $user->email);
-            \Log::info('Mengirim email ke admin');
-            Mail::to('luxurialev@gmail.com')->send(new NotifPengajuanAdmin($pengajuan, $user));
-
-            UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
-
-            return redirect('/dashboard')->with([
-                'success' => [
-                    "title" => "Berhasil mengajukan magang"
-                ]
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('Gagal mengirim email: ' . $e->getMessage());
-            \Log::error('Error dalam pengajuan: ' . $e->getMessage());
-            return redirect('/dashboard')->with([
-                'error' => [
-                    "title" => "Terjadi kesalahan"
-                ]
-            ]);
+        // Validasi tanggal mulai
+        $tanggalMulai = Carbon::parse($validatedData['tanggal_mulai']);
+        if ($tanggalMulai->isWeekend()) {
+            return $this->addError('tanggal_mulai', 'Tanggal mulai tidak boleh di akhir pekan (Sabtu/Minggu).');
         }
+
+        // Validasi tanggal selesai
+        $tanggalSelesai = Carbon::parse($validatedData['tanggal_selesai']);
+        if ($tanggalSelesai->isWeekend()) {
+            return $this->addError('tanggal_selesai', 'Tanggal selesai tidak boleh di akhir pekan (Sabtu/Minggu).');
+        }
+
+        $user = Auth::user();
+
+        $pengajuan = new Pengajuan();
+        $pengajuan->user_id = $user->id;
+        $pengajuan->jenis_magang = $validatedData['jenis_magang'];
+        $pengajuan->bidang_tujuan = $validatedData['bidang_tujuan'];
+        $pengajuan->tanggal_mulai = $validatedData['tanggal_mulai'];
+        $pengajuan->tanggal_selesai = $validatedData['tanggal_selesai'];
+
+        $pengajuan->penanggung_jawab_name = $validatedData['penanggung_jawab_name'];
+        $pengajuan->penanggung_jawab_jabatan = $validatedData['penanggung_jawab_jabatan'];
+        $pengajuan->penanggung_jawab_email = $validatedData['penanggung_jawab_email'];
+        $pengajuan->penanggung_jawab_nomor_hp = $validatedData['penanggung_jawab_nomor_hp'];
+
+        // Data akademik
+        $pengajuan->institusi = $user->institusi;
+        $pengajuan->jurusan = $user->jurusan;
+        $pengajuan->nomor_induk = $user->nomor_induk;
+
+        // Data pribadi
+        $pengajuan->foto_profil = $user->foto_profil;
+        $pengajuan->name = $user->name;
+        $pengajuan->email = $user->email;
+        $pengajuan->nomor_hp = $user->nomor_hp;
+        $pengajuan->tentang_saya = $user->tentang_saya;
+        $pengajuan->jenis_kelamin = $user->jenis_kelamin;
+        $pengajuan->tempat_lahir = $user->tempat_lahir;
+        $pengajuan->tanggal_lahir = $user->tanggal_lahir;
+        $pengajuan->alamat = $user->alamat;
+
+        $pengajuan->kartu_penduduk = $user->kartu_penduduk ?? null;
+        $pengajuan->original_filename_ktp = $user->original_filename_ktp;
+        $pengajuan->kartu_tanda = $user->kartu_tanda;
+        $pengajuan->original_filename_kartu = $user->original_filename_kartu;
+
+        $pengajuan->save();
+
+        $user->status_magang = 'masa-daftar';
+        $user->save();
+
+        \Log::info('Mengirim email ke peserta: ' . $user->email);
+        Mail::to($user->email)->send(new NotifPengajuanPeserta($pengajuan, $user));
+
+        \Log::info('Email berhasil dikirim ke: ' . $user->email);
+        \Log::info('Mengirim email ke admin');
+        Mail::to('luxurialev@gmail.com')->send(new NotifPengajuanAdmin($pengajuan, $user));
+
+        UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
+
+        return redirect('/dashboard')->with([
+            'success' => [
+                "title" => "Berhasil mengajukan magang"
+            ]
+        ]);
     }
 
     public function render()

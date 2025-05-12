@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\AdminOrPembimbingMiddleware;
-use App\Http\Middleware\NoCacheMiddleware;
-use App\Http\Middleware\PembimbingMiddleware;
-use App\Http\Middleware\PimpinanMiddleware;
-use App\Http\Middleware\UserNormalMiddleware;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\NoCacheMiddleware;
+use App\Http\Middleware\PimpinanMiddleware;
+use App\Http\Middleware\PembimbingMiddleware;
+use App\Http\Middleware\UserNormalMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\AdminOrPembimbingMiddleware;
+use App\Http\Middleware\KetuaTimMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'pembimbing' => PembimbingMiddleware::class,
             'admin-or-pembimbing' => AdminOrPembimbingMiddleware::class,
             'pimpinan' => PimpinanMiddleware::class,
+            'ketua-tim' => KetuaTimMiddleware::class,
             'no-cache' => NoCacheMiddleware::class
         ]);
     })

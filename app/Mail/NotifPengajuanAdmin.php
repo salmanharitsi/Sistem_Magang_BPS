@@ -43,7 +43,7 @@ class NotifPengajuanAdmin extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'admin.notif-pengajuan-magang',
+            markdown: 'emails.notif-pengajuan-magang',
             with: [
                 'userName' => $this->user->name,
                 'userEmail' => $this->user->email,
@@ -51,6 +51,7 @@ class NotifPengajuanAdmin extends Mailable implements ShouldQueue
                 'bidangTujuan' => $this->pengajuan->bidang_tujuan,
                 'tanggalMulai' => $this->pengajuan->tanggal_mulai,
                 'tanggalSelesai' => $this->pengajuan->tanggal_selesai,
+                'pengajuanId' => $this->pengajuan->id,
             ]
         );
     }

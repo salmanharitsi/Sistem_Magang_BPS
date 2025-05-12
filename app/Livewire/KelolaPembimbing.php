@@ -2,13 +2,14 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Magang;
 use App\Models\Pegawai;
-use App\Models\FungsiBagian;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
+use App\Models\FungsiBagian;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class KelolaPembimbing extends Component
 {
@@ -20,6 +21,7 @@ class KelolaPembimbing extends Component
     public $pembimbingList = [];
     public $pembimbingList2 = [];
     public $showEditModal = false;
+    public $isAdmin;
     
     // Form fields
     public $selectedMagangId;
@@ -52,6 +54,8 @@ class KelolaPembimbing extends Component
     public function mount()
     {
         $this->listFungsiBagian = FungsiBagian::orderBy('title')->get();
+
+        $this->isAdmin = Auth::guard('pegawai')->user()->role_temp == 'admin';
     }
 
     public function updatedSelectedBidangTujuan()

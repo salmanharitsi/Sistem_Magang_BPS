@@ -47,7 +47,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nomor_induk')->unique();
-            $table->enum('role_temp', ['regular', 'admin', 'pimpinan'])->default('regular')->nullable();
+            $table->enum('role_temp', ['regular', 'admin', 'pimpinan', 'ketua_tim'])->default('regular')->nullable();
             $table->timestamps();
         });
 
@@ -80,8 +80,8 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('alamat');
 
-            $table->string('kartu_penduduk');
-            $table->string('original_filename_ktp');
+            $table->string('kartu_penduduk')->nullable();
+            $table->string('original_filename_ktp')->nullable();
             $table->string('kartu_tanda');
             $table->string('original_filename_kartu');
 
@@ -215,6 +215,17 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
+        //autentikasi
+        Schema::create('otps', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('email'); 
+            $table->string('otp_code');
+            $table->boolean('verified')->default(false);
+            $table->timestamp('resend_time')->nullable();
+            $table->json('registration_data')->nullable(); // Tambah kolom untuk data registrasi
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -228,6 +239,7 @@ return new class extends Migration
         Schema::dropIfExists('magang');
         Schema::dropIfExists('pengajuan');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('otps');
         Schema::dropIfExists('pegawai');
         Schema::dropIfExists('password_reset_tokens');
     }

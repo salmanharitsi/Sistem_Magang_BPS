@@ -123,4 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'office' => [
+        'latitude' => env('OFFICE_LATITUDE', 0.51001435),
+        'longitude' => env('OFFICE_LONGITUDE', 101.45457153),
+    ],
+
 ];

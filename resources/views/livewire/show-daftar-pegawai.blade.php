@@ -18,18 +18,21 @@
         </div>
         <!-- Filter Button and Dropdown -->
         <div class="relative inline-block text-left">
-            <button wire:click="create"
-                class="text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-4 py-2 mr-2 inline-flex items-center">
-                <i class="ti ti-plus mr-2"></i>
-                Tambah Pegawai
-            </button>
+            @if ($isAdmin)
+                <button wire:click="create"
+                    class="text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-4 py-2 mr-2 inline-flex items-center">
+                    <i class="ti ti-plus mr-2"></i>
+                    Tambah Pegawai
+                </button>
+            @endif
             <button id="filterButton" type="button"
                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <i class="ti ti-filter mr-2"></i>
                 Filter
             </button>
             <div id="filterDropdown"
-                class="hidden origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
+                class="hidden fixed rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
+                style="z-index: 9999;">
                 <div class="p-4">
 
                     <!-- Fungsi Bagian Filter -->
@@ -51,9 +54,10 @@
                         <select wire:model.defer="filterRole" id="role-filter"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2">
                             <option value="">Semua</option>
-                            <option value="pimpinan">Pimpinan</option>
-                            <option value="regular">Pembimbing</option>
                             <option value="admin">Admin</option>
+                            <option value="ketua_tim">Ketua Tim</option>
+                            <option value="regular">Pembimbing</option>
+                            <option value="pimpinan">Pimpinan</option>
                         </select>
                     </div>
 
@@ -69,7 +73,7 @@
         </div>
     </div>
     <!-- Minimum height container untuk tabel -->
-    <div class="overflow-x-auto min-h-screen-half">
+    <div class="overflow-x-auto">
         <table id="dataIkuTable" class="w-full text-sm text-left rtl:text-left">
             <thead class="text-md text-gray-700 uppercase bg-gray-100 h-full">
                 <tr class="h-full">
@@ -85,9 +89,11 @@
                     <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
                         Role
                     </th>
-                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
-                        Aksi
-                    </th>
+                    @if ($isAdmin)
+                        <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
+                            Aksi
+                        </th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -109,16 +115,20 @@
                                 @elseif($data->role_temp == 'admin')
                                     <p class="text-blue-700 border-blue-600 bg-blue-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Admin</p>
                                 @elseif($data->role_temp == 'pimpinan')
-                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pimpinan</p>
+                                    <p class="text-red-700 border-red-600 bg-red-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Pimpinan</p>
+                                @elseif($data->role_temp == 'ketua_tim')
+                                    <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Ketua Tim</p>
                                 @endif
                             </div>
                         </td>
-                        <td class="py-4 px-6">
-                            <button wire:click="edit('{{ $data->id }}')" wire:key="edit-{{ $data->id }}"
-                                class="mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
-                                <i class="ti ti-eye"></i>
-                            </button>
-                        </td>
+                        @if ($isAdmin)
+                            <td class="py-4 px-6">
+                                <button wire:click="edit('{{ $data->id }}')" wire:key="edit-{{ $data->id }}"
+                                    class="mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                    <i class="ti ti-eye"></i>
+                                </button>
+                            </td>
+                        @endif
                     </tr>
                 @empty
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
@@ -234,6 +244,7 @@
                                     <option value="">-- Pilih Role --</option>
                                     <option value="regular">Pembimbing</option>
                                     <option value="admin">Admin</option>
+                                    <option value="ketua_tim">Ketua Tim</option>
                                     @if (!$hasPimpinanUser)
                                         <option value="pimpinan">Pimpinan</option>
                                     @endif
@@ -339,6 +350,10 @@
                                     <option value="">-- Pilih Role --</option>
                                     <option value="regular">Pembimbing</option>
                                     <option value="admin">Admin</option>
+                                    <option value="ketua_tim">Ketua Tim</option>
+                                    @if (!$hasPimpinanUser)
+                                        <option value="pimpinan">Pimpinan</option>
+                                    @endif
                                 </select>
                                 @if ($errors->has('role_temp'))
                                     <span class="text-red-500 text-[11px]">{{ $errors->first('role_temp') }}</span>
@@ -358,12 +373,6 @@
         @endif
     </div>
 
-    <style>
-        .min-h-screen-half {
-            min-height: 50vh;
-        }
-    </style>
-
     <script>
         function togglePasswordVisibility(fieldId) {
             const field = document.getElementById(fieldId);
@@ -382,18 +391,36 @@
         document.addEventListener('DOMContentLoaded', function() {
             const filterButton = document.getElementById('filterButton');
             const filterDropdown = document.getElementById('filterDropdown');
+            const filterContainer = document.getElementById('filterContainer');
 
             filterButton.addEventListener('click', function(event) {
                 event.stopPropagation();
                 filterDropdown.classList.toggle('hidden');
-
+                
+                // Position the dropdown based on the button's position
                 const buttonRect = filterButton.getBoundingClientRect();
-                filterDropdown.style.top = (buttonRect.height + 5) + 'px';
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Set the dropdown position
+                filterDropdown.style.top = (buttonRect.bottom + scrollTop) + 'px';
+                filterDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
+                filterDropdown.style.width = '320px'; // Fixed width for the dropdown
             });
 
             document.addEventListener('click', function(event) {
                 if (!filterButton.contains(event.target) && !filterDropdown.contains(event.target)) {
                     filterDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Add resize event listener to reposition dropdown when window is resized
+            window.addEventListener('resize', function() {
+                if (!filterDropdown.classList.contains('hidden')) {
+                    const buttonRect = filterButton.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    filterDropdown.style.top = (buttonRect.bottom + scrollTop) + 'px';
+                    filterDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
                 }
             });
         });

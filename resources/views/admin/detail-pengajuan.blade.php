@@ -29,7 +29,25 @@
             </div>
         @endif
 
-        @if (!is_null($pengajuan->surat_pengantar))
+        @if (Carbon::parse($pengajuan->tenggat)->addDays()->isPast() && !$pengajuan->surat_pengantar)
+            <form
+                action="{{ route('admin.tolak-pengajuan-tenggat', $pengajuan->id) }}" method="POST" 
+                class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                @csrf
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-3 justify-between p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center ">
+                        <i class="ti ti-alert-triangle text-lg"></i>
+                        <p class="text-sm">Peserta magang melewati tenggat upload surat pengantar!</p>
+                    </div>
+                    <button type="submit"
+                        class="pjax-link bg-red-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
+                        <p class="text-sm whitespace-nowrap">Tolak Pengajuan</p>
+                    </button>
+                </div>
+            </form>
+        @endif
+
+        @if (!is_null($pengajuan->surat_pengantar) && $pengajuan->status_pengajuan != 'accept-final')
             <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 border">
                 <h6 class="text-[17px] font-semibold text-gray-800">Surat Pengantar</h6>
                 <div
@@ -201,13 +219,19 @@
                     class="flex items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
-                        <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_ktp }}</p>
+                        @if ($pengajuan->original_filename_ktp)
+                            <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_ktp }}</p>
+                        @else
+                            <p class="text-red-600 text-sm">Kartu Tanda Penduduk tidak ada</p>
+                        @endif
                     </div>
-                    <button
-                        class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
-                        onclick="openPreview('{{ Storage::url($pengajuan->kartu_penduduk) }}')">
-                        Lihat file
-                    </button>
+                    @if ($pengajuan->original_filename_ktp)
+                        <button
+                            class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
+                            onclick="openPreview('{{ Storage::url($pengajuan->kartu_penduduk) }}')">
+                            Lihat file
+                        </button>
+                    @endif
                 </div>
 
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Kartu Tanda Siswa/Mahasiswa</h6>

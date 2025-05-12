@@ -19,14 +19,18 @@ class AdminOrPembimbingMiddleware
         $pegawai = Auth::guard('pegawai')->user();
         
         // Check roles (pastikan nilai role_temp sesuai database)
-        if (!in_array($pegawai->role_temp, ['admin', 'regular'])) {
+        if (!in_array($pegawai->role_temp, ['admin', 'regular', 'ketua_tim'])) {
             return $this->forceLogout();
         }
 
         // Set layout based on role (opsional)
         if ($pegawai->role_temp === 'admin') {
             $request->attributes->set('layout', 'layouts.admin');
-        } else {
+        }
+        else if ($pegawai->role_temp === 'ketua_tim') {
+            $request->attributes->set('layout', 'layouts.ketua-tim');
+        }
+        else {
             $request->attributes->set('layout', 'layouts.pembimbing');
         }
 

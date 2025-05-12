@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Magang;
 use App\Models\Pengajuan;
-use Illuminate\Http\Request;
 
 class PimpinanController
 {
@@ -131,5 +130,29 @@ class PimpinanController
             'magangBulanIni',
             'magangActive'
         ));
+    }
+
+    public function get_daftar_pegawai_pimpinan()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('pimpinan.daftar-pegawai');
+    }
+
+    public function get_daftar_magang_pimpinan()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('pimpinan.daftar-magang');
+    }
+
+    public function get_daftar_pembimbing()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('pimpinan.daftar-pembimbing');
     }
 }
