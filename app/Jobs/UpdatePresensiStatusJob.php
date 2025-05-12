@@ -43,7 +43,7 @@ class UpdatePresensiStatusJob implements ShouldQueue
                         $presensi->jam_masuk === null &&
                         $presensi->status !== 'izin') {
                         $presensi->status = 'tidak-hadir';
-                        $presensi->point = 0;
+                        $presensi->point = 20;
                         $presensi->save();
                     }
                 }
