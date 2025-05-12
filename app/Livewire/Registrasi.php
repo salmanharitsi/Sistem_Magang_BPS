@@ -112,7 +112,7 @@ class Registrasi extends Component
             ]
         ]);
 
-        OTPJob::dispatch($validatedData['email'], $otp);
+        OTPJob::dispatch($validatedData['email'], $otp, $otpRecord->id);
 
         return redirect()->route('verify.otp', ['id' => $otpRecord->id])->with([
             'success' => [

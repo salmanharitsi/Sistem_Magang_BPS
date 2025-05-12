@@ -16,15 +16,17 @@ class OTPJob implements ShouldQueue
 
     protected $email;
     protected $otp;
+    protected $otpId;
 
 
     /**
      * Create a new job instance.
      */
-    public function __construct($email, $otp)
+    public function __construct($email, $otp, $otpId)
     {
         $this->email = $email;
         $this->otp = $otp;
+        $this->otpId = $otpId;
         //
     }
 
@@ -33,6 +35,7 @@ class OTPJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->email)->send(new OTPMail($this->email, $this->otp));
+        Mail::to($this->email)->send(new OTPMail($this->otpId, $this->otp));
+
     }
 }

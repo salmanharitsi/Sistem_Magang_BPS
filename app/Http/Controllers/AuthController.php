@@ -254,7 +254,8 @@ class AuthController
                     'registration_data' => $lastOTP->registration_data ?? null
                 ]);
 
-                OTPJob::dispatch($lastOTP->email, $newOTP);
+                OTPJob::dispatch($lastOTP->email, $newOTP, $newOTPRecord->id);
+
             });
 
             // Redirect to new OTP verification page with new ID
