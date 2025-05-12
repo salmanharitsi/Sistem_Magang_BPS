@@ -2,8 +2,7 @@
     <div class="grid md:grid-cols-1 gap-4">
 
         <div>
-            <h6 class="text-[17px] font-semibold text-gray-800">Kartu Tanda Penduduk<span
-                    class="text-red-500 ml-1">*</span></h6>
+            <h6 class="text-[17px] font-semibold text-gray-800">Kartu Tanda Penduduk</h6>
             @if (!empty(Auth::user()->kartu_penduduk))
                 <div
                     class="flex flex-col md:flex-row items-center px-2 py-3 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">

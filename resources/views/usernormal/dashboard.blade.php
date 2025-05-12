@@ -149,8 +149,7 @@
                     Auth::user()->jenis_kelamin == null ||
                     Auth::user()->tempat_lahir == null ||
                     Auth::user()->tanggal_lahir == null ||
-                    Auth::user()->alamat == null ||
-                    Auth::user()->kartu_penduduk == null)
+                    Auth::user()->alamat == null)
                 <div
                     class="w-full h-fit p-3 mt-5 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                     <div class="flex gap-3 items-start lg:items-center">
@@ -170,7 +169,6 @@
                     Auth::user()->tempat_lahir != null &&
                     Auth::user()->tanggal_lahir != null &&
                     Auth::user()->alamat != null &&
-                    Auth::user()->kartu_penduduk != null &&
                     Auth::user()->status_magang == 'tidak-aktif')
                 <div class="w-full h-fit mt-9">
                     <h1 class="text-gray-800 text-2xl font-medium">Pengajuan Magang</h1>
@@ -502,8 +500,7 @@
                     Auth::user()->jenis_kelamin != null &&
                     Auth::user()->tempat_lahir != null &&
                     Auth::user()->tanggal_lahir != null &&
-                    Auth::user()->alamat != null &&
-                    Auth::user()->kartu_penduduk != null)
+                    Auth::user()->alamat != null)
                 var step1 = document.querySelector('.step1-active');
                 if (step1) {
                     var span = step1.querySelector('span');

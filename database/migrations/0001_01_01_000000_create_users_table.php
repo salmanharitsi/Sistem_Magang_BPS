@@ -80,8 +80,8 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('alamat');
 
-            $table->string('kartu_penduduk');
-            $table->string('original_filename_ktp');
+            $table->string('kartu_penduduk')->nullable();
+            $table->string('original_filename_ktp')->nullable();
             $table->string('kartu_tanda');
             $table->string('original_filename_kartu');
 
