@@ -40,15 +40,15 @@ class UploadSuratPengantar extends Component
 
         $user = Auth::user();
         $pengajuan = Pengajuan::where('user_id', $user->id)
-                                ->where('status_pengajuan', 'accept-first')
-                                ->first();
+            ->where('status_pengajuan', 'accept-first')
+            ->first();
         $pengajuan->surat_pengantar = $this->surat_pengantar;
         $pengajuan->tenggat = null;
         $pengajuan->save();
 
-        Mail::to('luxurialev@gmail.com')->queue(
+        Mail::to('amrizal@bps.go.id')->queue(
             new NotifSuratPengantar($pengajuan, $user)
-       );
+        );
 
         return redirect(to: '/dashboard')->with([
             'success' => [
@@ -56,7 +56,7 @@ class UploadSuratPengantar extends Component
             ]
         ]);
 
-        
+
     }
 
     public function render()

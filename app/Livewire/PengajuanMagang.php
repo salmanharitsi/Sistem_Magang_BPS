@@ -19,13 +19,13 @@ class PengajuanMagang extends Component
 {
     #[Validate]
     public $jenis_magang,
-        $bidang_tujuan,
-        $tanggal_mulai,
-        $tanggal_selesai,
-        $penanggung_jawab_name,
-        $penanggung_jawab_jabatan,
-        $penanggung_jawab_email,
-        $penanggung_jawab_nomor_hp;
+    $bidang_tujuan,
+    $tanggal_mulai,
+    $tanggal_selesai,
+    $penanggung_jawab_name,
+    $penanggung_jawab_jabatan,
+    $penanggung_jawab_email,
+    $penanggung_jawab_nomor_hp;
 
     public $listFungsiBagian = [];
 
@@ -114,7 +114,7 @@ class PengajuanMagang extends Component
 
         if ($this->tanggal_mulai && $tanggalSelesai->lt(Carbon::parse($this->tanggal_mulai))) {
             $this->addError('tanggal_selesai', 'Tanggal selesai magang harus setelah tanggal mulai.');
-            
+
         } else {
             $this->resetErrorBag('tanggal_selesai');
         }
@@ -181,7 +181,7 @@ class PengajuanMagang extends Component
 
         \Log::info('Email berhasil dikirim ke: ' . $user->email);
         \Log::info('Mengirim email ke admin');
-        Mail::to('luxurialev@gmail.com')->send(new NotifPengajuanAdmin($pengajuan, $user));
+        Mail::to('amrizal@bps.go.id')->send(new NotifPengajuanAdmin($pengajuan, $user));
 
         UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
 
