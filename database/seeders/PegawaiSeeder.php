@@ -20,11 +20,11 @@ class PegawaiSeeder extends Seeder
             // Akun Admin
             // ==============
             [
-                "name" => "Lionel Messi",
+                "name" => "Amrizal, SST., M.M.",
                 "fungsi_bagian" => "Bagian Umum",
-                "email" => "admin@gmail.com",
+                "email" => "amrizal@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341122",
+                "nomor_induk" => "147107839341130",
                 "role_temp" => "admin"
             ],
 
@@ -36,15 +36,7 @@ class PegawaiSeeder extends Seeder
                 "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
                 "email" => "afdi@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341123",
-                "role_temp" => "regular"
-            ],
-            [
-                "name" => "Dadang Sunandar, S.ST., M.T.",
-                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
-                "email" => "dadangsunandar@bps.go.id",
-                "password" => "bps2025",
-                "nomor_induk" => "147107822341124",
+                "nomor_induk" => "147808552341123",
                 "role_temp" => "regular"
             ],
             [
@@ -52,7 +44,7 @@ class PegawaiSeeder extends Seeder
                 "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
                 "email" => "adinata@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341125",
+                "nomor_induk" => "148704042341125",
                 "role_temp" => "regular"
             ],
             [
@@ -60,7 +52,7 @@ class PegawaiSeeder extends Seeder
                 "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
                 "email" => "khaerulanas@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341126",
+                "nomor_induk" => "148807822340526",
                 "role_temp" => "regular"
             ],
             [
@@ -68,7 +60,7 @@ class PegawaiSeeder extends Seeder
                 "fungsi_bagian" => "Humas dan Unit Kerja Kepala",
                 "email" => "agus.wardiman@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341127",
+                "nomor_induk" => "148507942341127",
                 "role_temp" => "regular"
             ],
             [
@@ -76,7 +68,7 @@ class PegawaiSeeder extends Seeder
                 "fungsi_bagian" => "Humas dan Unit Kerja Kepala",
                 "email" => "rwahid@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341128",
+                "nomor_induk" => "147607845959128",
                 "role_temp" => "regular"
             ],
             [
@@ -84,31 +76,7 @@ class PegawaiSeeder extends Seeder
                 "fungsi_bagian" => "Neraca Wilayah dan Analisis Statistik",
                 "email" => "oldestia@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341129",
-                "role_temp" => "regular"
-            ],
-            [
-                "name" => "Amrizal, SST., M.M.",
-                "fungsi_bagian" => "Bagian Umum",
-                "email" => "amrizal@bps.go.id",
-                "password" => "bps2025",
-                "nomor_induk" => "147107822341130",
-                "role_temp" => "admin"
-            ],
-            [
-                "name" => "Muji Basuki, S.ST., M.Si.",
-                "fungsi_bagian" => "Statistik Produksi",
-                "email" => "mudji@bps.go.id",
-                "password" => "bps2025",
-                "nomor_induk" => "147107822341131",
-                "role_temp" => "regular"
-            ],
-            [
-                "name" => "Emilia Dharmayanthi, S.ST., M.Si.",
-                "fungsi_bagian" => "Pembinaan Statistik Sektoral",
-                "email" => "emiliad@bps.go.id",
-                "password" => "bps2025",
-                "nomor_induk" => "147107822341132",
+                "nomor_induk" => "1469074592341129",
                 "role_temp" => "regular"
             ],
             [
@@ -116,19 +84,104 @@ class PegawaiSeeder extends Seeder
                 "fungsi_bagian" => "Neraca Wilayah dan Analisis Statistik",
                 "email" => "renyza@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "147107822341133",
+                "nomor_induk" => "149637422341133",
                 "role_temp" => "regular"
+            ],
+
+            // ================
+            // Akun Ketua Tim
+            // ================
+
+            [
+                "name" => "Dadang Sunandar, S.ST., M.T.",
+                "fungsi_bagian" => "Pengolahan dan Teknologi Informasi",
+                "email" => "dadangsunandar@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "147107822341124",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Ajid Hajiji, S.ST., M.Si.",
+                "fungsi_bagian" => "Bagian Umum",
+                "email" => "ajid.hajiji@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "149207822341139",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Marthasari Julita Tambunan, S.ST., M.M.",
+                "fungsi_bagian" => "Administrasi",
+                "email" => "marthasari_jt@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "148907822340324",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Muji Basuki, S.ST., M.Si.",
+                "fungsi_bagian" => "Statistik Produksi",
+                "email" => "mudji@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "1495078452590324",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Meita Komalasari, S.ST., M.Si.",
+                "fungsi_bagian" => "Statistik Sosial",
+                "email" => "meita@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "149307822590324",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Dr. Fitri Hariyanti, S.ST., M.M.",
+                "fungsi_bagian" => "Statistik Distribusi",
+                "email" => "fhariyanti@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "149907820850324",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Achmad Sobari, S.ST., S.E., M.Si.",
+                "fungsi_bagian" => "Neraca Wilayah dan Analisis Statistik",
+                "email" => "achmad.sobari@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "149607820850324",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Agung Gumilar Triyanto, S.ST., M.Si.",
+                "fungsi_bagian" => "Diseminasi dan Layanan Statistik",
+                "email" => "gumilar@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "1497078200485824",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Emilia Dharmayanthi, S.ST., M.Si.",
+                "fungsi_bagian" => "Pembinaan Statistik Sektoral",
+                "email" => "emiliad@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "147107822341132",
+                "role_temp" => "ketua_tim"
+            ],
+            [
+                "name" => "Irfarial, S.E.",
+                "fungsi_bagian" => "Humas dan Unit Kerja Kepala",
+                "email" => "ifrar@bps.go.id",
+                "password" => "bps2025",
+                "nomor_induk" => "1489078209485024",
+                "role_temp" => "ketua_tim"
             ],
             
             // ================
             // Akun Pimpinan
             // ================
             [
-                "name" => "Dr. Gianluci, M.M.",
+                "name" => "Asep Riyadi",
                 "fungsi_bagian" => "Pimpinan",
-                "email" => "pimpinan@bps.go.id",
+                "email" => "asepriyadi@bps.go.id",
                 "password" => "bps2025",
-                "nomor_induk" => "149107822341009",
+                "nomor_induk" => "148807445341009",
                 "role_temp" => "pimpinan"
             ],
         ];
