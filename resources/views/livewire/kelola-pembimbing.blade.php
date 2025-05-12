@@ -132,7 +132,7 @@
                             <option value="">Pilih Bidang Tujuan</option>
                             @foreach ($listFungsiBagian as $fungsi)
                                 @if ($fungsi->title != 'Pimpinan')
-                                    <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                                    <option value="{{ $fungsi->id }}">{{ $fungsi->title }}</option>
                                 @endif
                             @endforeach
                         </select>

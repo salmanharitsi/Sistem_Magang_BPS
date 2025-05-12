@@ -55,7 +55,7 @@
                         <td class="py-4 px-6 text-left">
                             {{$data->jenis_magang}}
                         </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
+                        <td class="py-4 px-6 text-left">{{ $data->bidang_tujuan }}</td>
                         </td>
                         <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j F Y') }}
                         </td>
