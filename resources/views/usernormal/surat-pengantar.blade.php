@@ -92,8 +92,7 @@
                     Auth::user()->jenis_kelamin != null &&
                     Auth::user()->tempat_lahir != null &&
                     Auth::user()->tanggal_lahir != null &&
-                    Auth::user()->alamat != null &&
-                    Auth::user()->kartu_penduduk != null)
+                    Auth::user()->alamat != null)
                 var step1 = document.querySelector('.step1-active');
                 if (step1) {
                     var span = step1.querySelector('span');
