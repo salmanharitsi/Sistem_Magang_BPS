@@ -69,12 +69,13 @@ class ShowPersetujuanLogbook extends Component
     public function approveLogbook()
     {
         // Validasi komentar wajib diisi
-        if (!isset($this->selectedData['komentar']) || empty(trim($this->selectedData['komentar']))) {
-            session()->flash('error', [
-                'title' => 'Komentar wajib diisi!'
-            ]);
-            return;
-        }
+        if ($this->selectedData['status'] === 'mengisi' && 
+        (!isset($this->selectedData['komentar']) || empty(trim($this->selectedData['komentar'])))) {
+        session()->flash('error', [
+            'title' => 'Komentar wajib diisi!'
+        ]);
+        return;
+    }
 
         if (isset($this->selectedData['id'])) {
             if ($this->selectedData['status'] === 'mengisi') {
@@ -84,14 +85,14 @@ class ShowPersetujuanLogbook extends Component
                     'status' => $this->selectedData['status'],
                     'deskripsi' => $this->selectedData['deskripsi'],
                     'lampiran' => $this->selectedData['lampiran'],
-                    'komentar' => $this->selectedData['komentar']
+                    'komentar' => $this->selectedData['komentar'] ?? null
                 ]);
             } else {
                 Logbook::where('id', $this->selectedData['id'])->update([
                     'pembimbing_id' => Auth::guard('pegawai')->user()->id,
                     'status_review' => 'diterima',
                     'status' => $this->selectedData['status'],
-                    'komentar' => $this->selectedData['komentar']
+                    'komentar' => $this->selectedData['komentar'] ?? null
                 ]);
             }
 
@@ -109,19 +110,20 @@ class ShowPersetujuanLogbook extends Component
     public function tolakLogbook()
     {
         // Validasi komentar wajib diisi
-        if (!isset($this->selectedData['komentar']) || empty(trim($this->selectedData['komentar']))) {
-            session()->flash('error', [
-                'title' => 'Anda harus mengisi komentar!'
-            ]);
-            return;
-        }
+        if ($this->selectedData['status'] === 'mengisi' && 
+        (!isset($this->selectedData['komentar']) || empty(trim($this->selectedData['komentar'])))) {
+        session()->flash('error', [
+            'title' => 'Komentar wajib diisi untuk status mengisi!'
+        ]);
+        return;
+    }
 
         if (isset($this->selectedData['id'])) {
             Logbook::where('id', $this->selectedData['id'])->update([
                 'pembimbing_id' => Auth::guard('pegawai')->user()->id,
                 'status_review' => 'ditolak',
                 'status' => $this->selectedData['status'],
-                'komentar' => $this->selectedData['komentar']
+                'komentar' => $this->selectedData['komentar'] ?? null
             ]);
 
             $this->closeModal();
@@ -232,10 +234,18 @@ class ShowPersetujuanLogbook extends Component
             $userId = Auth::guard('pegawai')->user()->id;
 
             // Update multiple records at once with default comment
-            Logbook::whereIn('id', $this->selectedItems)->update([
+            Logbook::whereIn('id', $this->selectedItems)
+            ->where('status', 'mengisi')
+            ->update([
                 'pembimbing_id' => $userId,
                 'status_review' => 'diterima',
                 'komentar' => 'Kerja bagus!' // Menambahkan default komentar untuk bulk action
+            ]);
+            Logbook::whereIn('id', $this->selectedItems)
+            ->where('status', 'tidak-mengisi')
+            ->update([
+                'pembimbing_id' => $userId,
+                'status_review' => 'diterima'
             ]);
 
             // Get the count before resetting
