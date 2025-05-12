@@ -17,12 +17,24 @@ class AdminPembimbingController
     private function getAuthData()
     {
         $user = Auth::guard('pegawai')->user();
-        
-        if (!$user || !in_array($user->role_temp, ['admin', 'regular'])) {
+
+        if (!$user || !in_array($user->role_temp, ['admin', 'regular', 'ketua_tim'])) {
             abort(403, 'Unauthorized access');
         }
-
-        $layout = ($user->role_temp === 'admin') ? 'layouts.admin' : 'layouts.pembimbing';
+        
+        switch ($user->role_temp) {
+            case 'admin':
+                $layout = 'layouts.admin';
+                break;
+            case 'regular':
+                $layout = 'layouts.pembimbing';
+                break;
+            case 'ketua_tim':
+                $layout = 'layouts.ketua-tim';
+                break;
+            default:
+                abort(403, 'Unauthorized access');
+        }
         
         return compact('user', 'layout');
     }
