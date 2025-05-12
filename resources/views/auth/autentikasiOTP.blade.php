@@ -14,7 +14,7 @@
 <body>
 
     <div class="flex flex-col lg:flex-row relative">
-        <div class="m-0 p-0 w-full h-[100vh] relative gradient-overlay-login z-[0] basis-[65%]">
+        <div class="m-0 p-0 w-full h-[15vh] md:h-[100vh] relative gradient-overlay-login z-[0] basis-[65%]">
             <a href="{{ url('/') }}"
                 class="w-fit text-gray-800 text-sm absolute flex items-center justify-center gap-4 top-5 md:top-10 left-4 md:left-10 px-5 py-2 bg-white hover:bg-gray-200 transition-all ease-in rounded-lg">
                 <i class="fa-solid fa-arrow-left"></i>
