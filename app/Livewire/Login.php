@@ -39,7 +39,7 @@ class Login extends Component
         $remember = !empty($this->remember) ? true : false;
 
         if (!User::where('email', $this->email)->exists()) {
-            
+
             return redirect('/login')->with([
                 'error' => [
                     "title" => "Email tidak terdaftar!",
@@ -48,12 +48,19 @@ class Login extends Component
         }
 
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $remember)) {
-            return redirect()->intended('dashboard')->with([
+            // Only redirect to OTP verification if email is not verified AND user just registered
+            $user = Auth::user();
+            if (!$user->email_verified_at && session()->has('new_registration')) {
+                return redirect()->route('verify.otp', ['user' => $user->id]);
+            }
+
+            // Otherwise, go directly to dashboard
+            return redirect()->route('usernormal.dashboard')->with([
                 'success' => [
                     "title" => "Berhasil masuk",
                 ]
             ]);
-        } 
+        }
 
         return redirect('/login')->with([
             'error' => [
