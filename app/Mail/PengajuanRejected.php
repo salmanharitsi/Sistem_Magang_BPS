@@ -30,7 +30,7 @@ class PengajuanRejected extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pengajuan Magang Anda Perlu Perbaikan',
+            subject: 'Pengajuan Magang Anda Ditolak',
         );
     }
 
