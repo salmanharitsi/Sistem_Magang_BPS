@@ -91,6 +91,43 @@
                                 <span class="whitespace-nowrap">Daftar Pembimbing</span>
                             </a>
                         </li>
+
+                        <li class="text-xs font-bold pb-[5px] mt-6">
+                            <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                            <span class="text-xs text-gray-600 font-semibold">MENU</span>
+                        </li>
+
+                        <!-- Menu Daftar Persetujuan dengan Badge -->
+                        <li class="sidebar-item relative">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
+                                href="/daftar-persetujuan">
+                                <i class="ti ti-progress-check ps-2 text-xl"></i>
+                                <span>Daftar Persetujuan</span>
+
+                                @isset($countPersetujuan)
+                                    @if ($countPersetujuan > 0)
+                                        <!-- Badge untuk sidebar normal -->
+                                        <div
+                                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center block">
+                                            {{ $countPersetujuan }}
+                                        </div>
+
+                                        <!-- Badge untuk sidebar collapsed -->
+                                        <div
+                                            class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center hidden">
+                                            {{ $countPersetujuan }}
+                                        </div>
+                                    @endif
+                                @endisset
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
+                                href="/daftar-bimbingan">
+                                <i class="ti ti-users-group ps-2 text-xl"></i>
+                                <span>Daftar Bimbingan</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>

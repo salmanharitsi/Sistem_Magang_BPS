@@ -36,7 +36,8 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer([
             'layouts.admin',
-            'layouts.pembimbing'
+            'layouts.pembimbing',
+            'layouts.ketua-tim'
         ], BadgeComposer::class);
     }
 }
