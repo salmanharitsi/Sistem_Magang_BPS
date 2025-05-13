@@ -14,6 +14,8 @@ class DaftarLogbookBimbingan extends Component
     public $magang; 
     public $search;
     public $statusFilter = '';
+    public $showModal = false;
+    public $selectedData = [];
 
     public function updating($key): void
     {
@@ -26,6 +28,34 @@ class DaftarLogbookBimbingan extends Component
     {
         $this->magang = $magang;
         Magang::findOrFail($this->magang); 
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->selectedData = [];
+    }
+
+    public function showDetail($id)
+    {
+        $logbook = Logbook::with('magang.user')->find($id);
+
+        if ($logbook) {
+            $this->originalStatus = $logbook->status;
+            $this->selectedData = [
+                'id' => $logbook->id,
+                'nama' => $logbook->magang->user->name,
+                'jenis_magang' => $logbook->magang->jenis_magang,
+                'tanggal' => $logbook->tanggal,
+                'deskripsi' => $logbook->deskripsi,
+                'lampiran' => $logbook->lampiran,
+                'status' => $logbook->status,
+                'komentar' => $logbook->komentar,
+                'updated_at' => $logbook->updated_at,
+                'pembimbing_id' => $logbook->pembimbing->name ?? null
+            ];
+            $this->showModal = true;
+        }
     }
 
     public function render()

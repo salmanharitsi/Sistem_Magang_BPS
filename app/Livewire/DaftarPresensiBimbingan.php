@@ -15,6 +15,8 @@ class DaftarPresensiBimbingan extends Component
     public $magang; 
     public $search;
     public $statusFilter = '';
+    public $showModal = false;
+    public $selectedData = [];
 
     public function updating($key): void
     {
@@ -27,6 +29,38 @@ class DaftarPresensiBimbingan extends Component
     {
         $this->magang = $magang;
         Magang::findOrFail($this->magang); 
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->selectedData = [];
+    }
+
+    public function showDetail($id)
+    {
+        $presensi = Presensi::with(['magang.user', 'pembimbing'])->find($id);
+
+        if ($presensi) {
+            $this->selectedData = [
+                'id' => $presensi->id,
+                'name' => $presensi->magang->user->name,
+                'tanggal' => $presensi->tanggal,
+                'jenis_magang' => $presensi->magang->jenis_magang,
+                'status' => $presensi->status,
+                'jam_masuk' => $presensi->jam_masuk,
+                'jam_keluar' => $presensi->jam_keluar,
+                'foto_masuk' => $presensi->foto_masuk ? 'storage/' . $presensi->foto_masuk : null, // Path ke foto_masuk
+                'foto_keluar' => $presensi->foto_keluar ? 'storage/' . $presensi->foto_keluar : null, // Path ke foto_keluar
+                'keterangan_izin' => $presensi->keterangan_izin,
+                'updated_at' => $presensi->updated_at,
+                'point' => $presensi->point,
+                'lampiran' => $presensi->lampiran,
+                'pembimbing_id' => $presensi->pembimbing->name ?? null,
+                'status_review' => $presensi->status_review
+            ];
+            $this->showModal = true;
+        }
     }
 
     public function render()
