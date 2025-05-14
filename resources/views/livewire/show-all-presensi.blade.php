@@ -336,7 +336,7 @@
                                             @if ($selectedPresensi->jam_keluar === null)
                                                 <div class="flex gap-1 items-center text-gray-900">
                                                     <i class="ti ti-logout text-2xl text-blue-500"></i>
-                                                    <div class="w-full flex justify-between items-center">
+                                                    <div class="w-full flex flex-col md:flex-row justify-between items-center">
                                                         <span>--:--:--</span>
                                                         <div class="font-medium text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full">tidak lapor pulang</div>
                                                     </div>
