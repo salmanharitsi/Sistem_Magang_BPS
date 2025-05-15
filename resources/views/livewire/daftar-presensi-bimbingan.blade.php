@@ -98,7 +98,7 @@
                                     <div
                                         class="w-fit px-3 py-1 border border-red-800 bg-red-100 text-red-800 rounded-full font-medium text-sm flex items-center gap-1">
                                         <i class="ti ti-x"></i>
-                                        <p class="text-xs">Belum Disetujui</p>
+                                        <p class="text-xs">Belum Diperiksa</p>
                                     </div>
                                 @endif
                             </div>

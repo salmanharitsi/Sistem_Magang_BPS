@@ -40,6 +40,9 @@
                     <th scope="col" class="px-6 py-3 border-l border-white text-center">
                         Status
                     </th>
+                    <th scope="col" class="px-6 py-3 border-l border-white text-center whitespace-nowrap">
+                        Aksi
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -78,6 +81,12 @@
                                     <p class="text-gray-700 border-gray-600 bg-gray-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Selesai</p>
                                 @endif
                             </div>
+                        </td>
+                        <td class="py-4 px-6">
+                            <a href="/magang-saya/{{ $data->id }}"
+                                class="pjax-link mx-auto w-fit flex items-center gap-1 bg-blue-600 border border-transparent px-2 py-2 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                                <i class="ti ti-eye"></i>
+                            </a>
                         </td>
                     </tr>
                 @empty

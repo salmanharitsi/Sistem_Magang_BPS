@@ -130,7 +130,7 @@ class ShowDaftarPresensi extends Component
             $query->where('status', $this->statusFilter);
         }
 
-        $presensi = $query->latest()->paginate(5);
+        $presensi = $query->latest()->paginate(3);
 
         return view('livewire.show-daftar-presensi', [
             'presensi' => $presensi,
