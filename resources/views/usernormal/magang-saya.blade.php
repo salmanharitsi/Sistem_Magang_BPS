@@ -57,19 +57,17 @@
                     {{ $magang->pengajuan->alamat }}
                 </p>
             </div>
-            <div class="flex gap-10">
-                <div>
-                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nomor HP</h6>
-                    <p class="text-gray-600 text-sm">
-                        {{ $magang->pengajuan->nomor_hp }}
-                    </p>
-                </div>
-                <div>
-                    <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tempat, Tanggal Lahir</h6>
-                    <p class="text-gray-600 text-sm">
-                        {{ $magang->pengajuan->tempat_lahir }}, {{ Carbon::parse($magang->pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
-                    </p>
-                </div>
+            <div>
+                <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nomor HP</h6>
+                <p class="text-gray-600 text-sm">
+                    {{ $magang->pengajuan->nomor_hp }}
+                </p>
+            </div>
+            <div>
+                <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tempat, Tanggal Lahir</h6>
+                <p class="text-gray-600 text-sm">
+                    {{ $magang->pengajuan->tempat_lahir }}, {{ Carbon::parse($magang->pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
+                </p>
             </div>
         </div>
 
@@ -139,7 +137,7 @@
                     <div class="px-3 py-1 mt-2 w-fit bg-red-50 border border-red-700 rounded-full text-red-700 text-xs">{{ Carbon::parse($magang->tanggal_selesai)->translatedFormat('j F Y') }}</div>
                 </div>
             </div>
-            <div class="flex flex-col md:flex-row gap-0 md:gap-10">
+            <div class="flex flex-col">
                 <div>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Pembimbing 1</h6>
                     <div class="mt-1 flex items-center gap-1 text-gray-600 text-sm">

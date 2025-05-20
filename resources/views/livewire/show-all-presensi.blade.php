@@ -4,7 +4,7 @@
 @endphp
 
 <div>
-    <div class="flex flex-col md:flex-row gap-6">
+    <div class="flex flex-col-reverse md:flex-row gap-6">
         <!-- Bagian Kiri: Carousel Tanggal -->
         <div class="flex flex-col gap-6 w-full md:w-1/2">
             <div
@@ -344,7 +344,7 @@
                                             @else
                                                 <div class="flex gap-1 items-center text-gray-900">
                                                     <i class="ti ti-logout text-2xl text-blue-500"></i>
-                                                    <div class="w-full flex justify-between items-center">
+                                                    <div class="w-full flex flex-col md:flex-row justify-between items-center">
                                                         {{ $selectedPresensi->jam_keluar }}
                                                         @if($statusKeluar)
                                                             <div class="font-medium text-xs text-{{ $statusKeluar['color'] }}-600 bg-{{ $statusKeluar['color'] }}-100 px-2 py-0.5 rounded-full">
@@ -454,12 +454,9 @@
     document.addEventListener('DOMContentLoaded', function() {
         var locationInput = document.getElementById('location');
         var map, userMarker, officeMarker, officeCircle;
-        // var officeLatitude = 0.51001435; // Koordinat BPS
-        // var officeLongitude = 101.45457153; 
-        var officeLatitude = 0.444011; // Koordinat Rumah
-        var officeLongitude = 101.459271;
-        // var officeLatitude = 0.445742; // Koordinat nyasar
-        // var officeLongitude = 101.466078;
+        // koordinat kantor
+        var officeLatitude = {{ config('app.office.latitude') }};
+        var officeLongitude = {{ config('app.office.longitude') }}; 
         var officeRadius = 50; // Radius dalam meter
         var locationStatus = document.getElementById('location-status'); // Elemen untuk menampilkan status
         var mapLoading = document.getElementById('map-loading'); // Elemen loading
