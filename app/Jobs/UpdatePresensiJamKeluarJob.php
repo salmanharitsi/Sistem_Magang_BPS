@@ -2,60 +2,43 @@
 
 namespace App\Jobs;
 
-use App\Models\Presensi;
-use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class UpdatePresensiJamKeluarJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Execute the job.
      */
     public function handle(): void
     {
-        try {
-            DB::transaction(function () {
-                $now = Carbon::now();
-                $today = $now->toDateString();
+        // Get today's date
+        $today = Carbon::now()->toDateString();
 
-                // Ambil semua presensi yang tanggalnya hari ini
-                $presensis = Presensi::where('tanggal', $today)->get();
- 
-                foreach ($presensis as $presensi) {
+        // Find presensi records for today where jam_masuk is not null and jam_keluar is null
+        $presensis = DB::table('presensi')
+            ->where('tanggal', $today)
+            ->whereNotNull('jam_masuk')
+            ->whereNull('jam_keluar')
+            ->get();
 
-                    $pointKeluar = 75;
-
-                    $pointAkhir = $presensi->point_masuk 
-                    ? ($presensi->point_masuk + $pointKeluar) / 2 
-                    : $pointKeluar;
-
-                    // Kondisi 2: Jika jam_masuk !== null dan jam_keluar == null hingga jam 7 malam
-                    if ($presensi->jam_masuk !== null && $presensi->jam_keluar === null && $now->gt(Carbon::parse($today . ' 23:59:59'))) {
-                        $presensi->point_keluar = $pointKeluar;
-                        $presensi->point = $pointAkhir;
-                        $presensi->save();
-                    }
-                }
-            });
-        } catch (\Exception $e) {
-            Log::error('UpdatePresensiStatusJob failed: ' . $e->getMessage());
-            $this->fail($e);
+        // Update each record
+        foreach ($presensis as $presensi) {
+            DB::table('presensi')
+                ->where('id', $presensi->id)
+                ->update([
+                    'point_keluar' => 75,
+                    'point' => ($presensi->point_masuk + 75) / 2,
+                    // Optionally, you might want to set jam_keluar to the current time
+                    // 'jam_keluar' => Carbon::now()->toTimeString()
+                ]);
         }
     }
 }
