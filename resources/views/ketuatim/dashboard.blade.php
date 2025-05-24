@@ -61,6 +61,102 @@
             datang di<span class="font-medium ml-1 md:ml-2 z-10">SIMAGANG</span></p>
     </div>
 
+    @if (count($perluSertifikat) > 0)
+        <div class="card rounded-lg bg-gradient-to-r from-green-600 to-green-200 p-5 h-full dark:bg-[#14181b] transition-all duration-200 mt-6 cursor-pointer relative" id="perluSertifikatHeader">
+            <div class="flex justify-between items-center">
+                <div class="text-white font-medium text-xl dark:text-white flex items-center gap-2">
+                    Perlu Sertifikat
+                    <span class="bg-red-600 text-white text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full">{{ count($perluSertifikat) }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="ti ti-chevron-down text-xl transition-transform duration-300 chevron-icon-sertifikat"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="perluSertifikatContent" class="max-h-0 overflow-hidden transition-all duration-300">
+            <div class="p-0.5 overflow-y-auto mt-4 grid grid-cols-1 gap-4">
+                @foreach ($perluSertifikat as $magang)
+                    <div class="card h-fit rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div class="flex items-center gap-3">
+                                @if (!empty($magang->user->foto_profil))
+                                    <img id="profile-image"
+                                        src="{{ Storage::url($magang->user->foto_profil) }}"
+                                        alt="Preview Foto Profil"
+                                        class="w-[50px] h-[50px] object-cover rounded-full outline outline-blue-600 cursor-pointer"
+                                        onclick="openPreview('{{ Storage::url($magang->user->foto_profil) }}')">
+                                @else
+                                    <h1
+                                        class="flex w-[50px] h-[50px] items-center justify-center text-xl text-white bg-blue-600 rounded-full">
+                                        {{ strtoupper(substr($magang->user->name, 0, 1)) }}
+                                    </h1>
+                                @endif
+                                <div>
+                                    <div>
+                                        <h5 class="font-semibold">{{ $magang->user->name }}</h5>
+                                    </div>
+                                    <p class="text-xs text-gray-500">{{ $magang->jenis_magang }}</p>
+                                </div>
+                            </div>
+                            <a href="/input-sertifikat/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200 text-sm">
+                                Berikan Sertifikat
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    @if (count($perluDinilai) > 0)
+        <div class="card rounded-lg bg-gradient-to-r from-blue-600 to-blue-200 p-5 h-full dark:bg-[#14181b] transition-all duration-200 mt-6 cursor-pointer relative" id="perluDinilaiHeader">
+            <div class="flex justify-between items-center">
+                <div class="text-white font-medium text-xl dark:text-white flex items-center gap-2">
+                    Perlu Dinilai
+                    <span class="bg-red-600 text-white text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full">{{ count($perluDinilai) }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="ti ti-chevron-down text-xl transition-transform duration-300 chevron-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="perluDinilaiContent" class="max-h-0 overflow-hidden transition-all duration-300">
+            <div class="p-0.5 overflow-y-auto mt-4 grid grid-cols-1 gap-4">
+                @foreach ($perluDinilai as $magang)
+                    <div class="card h-fit rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div class="flex items-center gap-3">
+                                @if (!empty($magang->user->foto_profil))
+                                    <img id="profile-image"
+                                        src="{{ Storage::url($magang->user->foto_profil) }}"
+                                        alt="Preview Foto Profil"
+                                        class="w-[50px] h-[50px] object-cover rounded-full outline outline-blue-600 cursor-pointer"
+                                        onclick="openPreview('{{ Storage::url($magang->user->foto_profil) }}')">
+                                @else
+                                    <h1
+                                        class="flex w-[50px] h-[50px] items-center justify-center text-xl text-white bg-blue-600 rounded-full">
+                                        {{ strtoupper(substr($magang->user->name, 0, 1)) }}
+                                    </h1>
+                                @endif
+                                <div>
+                                    <div>
+                                        <h5 class="font-semibold">{{ $magang->user->name }}</h5>
+                                    </div>
+                                    <p class="text-xs text-gray-500">{{ $magang->jenis_magang }}</p>
+                                </div>
+                            </div>
+                            <a href="/penilaian/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-sm">
+                                Berikan Penilaian
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <div class="relative grid grid-cols-1 mt-6 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
         <div class="w-full bg-white rounded-lg card dark:bg-gray-800 p-4 !pb-0">
             <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -303,6 +399,68 @@
             <div id="column-chart"></div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Script untuk Perlu Dinilai
+            const dinilaiHeader = document.getElementById('perluDinilaiHeader');
+            const dinilaiContent = document.getElementById('perluDinilaiContent');
+            const dinilaiChevron = document.querySelector('.chevron-icon');
+            
+            if (dinilaiHeader && dinilaiContent && dinilaiChevron) {
+                dinilaiHeader.addEventListener('mouseenter', function() {
+                    dinilaiChevron.classList.add('text-blue-600');
+                });
+                
+                dinilaiHeader.addEventListener('mouseleave', function() {
+                    if (!dinilaiContent.classList.contains('expanded')) {
+                        dinilaiChevron.classList.remove('text-blue-600');
+                    }
+                });
+                
+                dinilaiHeader.addEventListener('click', function() {
+                    if (dinilaiContent.classList.contains('expanded')) {
+                        dinilaiContent.style.maxHeight = '0px';
+                        dinilaiContent.classList.remove('expanded');
+                        dinilaiChevron.classList.remove('rotate-180');
+                    } else {
+                        dinilaiContent.style.maxHeight = dinilaiContent.scrollHeight + 'px';
+                        dinilaiContent.classList.add('expanded');
+                        dinilaiChevron.classList.add('rotate-180');
+                    }
+                });
+            }
+            
+            // Script untuk Perlu Sertifikat
+            const sertifikatHeader = document.getElementById('perluSertifikatHeader');
+            const sertifikatContent = document.getElementById('perluSertifikatContent');
+            const sertifikatChevron = document.querySelector('.chevron-icon-sertifikat');
+            
+            if (sertifikatHeader && sertifikatContent && sertifikatChevron) {
+                sertifikatHeader.addEventListener('mouseenter', function() {
+                    sertifikatChevron.classList.add('text-green-600');
+                });
+                
+                sertifikatHeader.addEventListener('mouseleave', function() {
+                    if (!sertifikatContent.classList.contains('expanded')) {
+                        sertifikatChevron.classList.remove('text-green-600');
+                    }
+                });
+                
+                sertifikatHeader.addEventListener('click', function() {
+                    if (sertifikatContent.classList.contains('expanded')) {
+                        sertifikatContent.style.maxHeight = '0px';
+                        sertifikatContent.classList.remove('expanded');
+                        sertifikatChevron.classList.remove('rotate-180');
+                    } else {
+                        sertifikatContent.style.maxHeight = sertifikatContent.scrollHeight + 'px';
+                        sertifikatContent.classList.add('expanded');
+                        sertifikatChevron.classList.add('rotate-180');
+                    }
+                });
+            }
+        });
+    </script>
 
     <script>
         // hover modal positioning

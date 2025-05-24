@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Magang;
 use App\Models\Pengajuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class KetuaTimController
 {
@@ -109,8 +111,18 @@ class KetuaTimController
         // Data bulanan
         $pengajuanBulanIni = Pengajuan::whereMonth('created_at', Carbon::now()->month)->count();
 
-        // // Hitung Total Magang
-        $magangActive = Magang::where('status_magang', 'active')->count();
+        // // Hitung Total Magang Aktif
+        $magangActive = Magang::where('status_magang', 'active')
+            ->where('tanggal_mulai', '<=', Carbon::now())
+            ->where('tanggal_selesai', '>=', Carbon::now()->subDay())
+            ->count();
+
+        // Data bulanan magang aktif
+        $magangAktifBulanIni = Magang::where('status_magang', 'active')
+            ->where('tanggal_mulai', '<=', Carbon::now())
+            ->where('tanggal_selesai', '>=', Carbon::now()->subDay())
+            ->whereMonth('tanggal_mulai', Carbon::now()->month)
+            ->count();
 
         // Hitung total pengajuan
         $totalMagang = Magang::count();
@@ -118,6 +130,34 @@ class KetuaTimController
         // Data bulanan
         $magangBulanIni = Magang::whereMonth('created_at', Carbon::now()->month)->count();
 
+        // Fetch magang yang perlu dinilai
+        $perluDinilai = Magang::where(function (Builder $builder) {
+            $builder->where('pembimbing_pertama', Auth::guard('pegawai')->id())
+                ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
+        })
+            ->whereDate('tanggal_selesai', '<', Carbon::now())
+            ->where('nilai_magang', 0)
+            ->with('user')
+            ->orderBy('tanggal_selesai', 'desc')
+            ->get();
+        
+        $perluSertifikat = Magang::whereDate('tanggal_selesai', '<', Carbon::now())
+            ->whereNull('sertifikat_magang')
+            ->where('nilai_magang', '!=', 0)
+            ->with('user')
+            ->orderBy('tanggal_selesai', 'desc')
+            ->get();
+      
+        // Calculate magangSelesai with the specified condition
+        $magangSelesai = Magang::where('status_magang', 'active')
+            ->where('tanggal_selesai', '<', Carbon::now()->subDay())
+            ->count();
+
+        // Calculate magangSelesaiBulanIni
+        $magangSelesaiBulanIni = Magang::where('status_magang', 'active')
+            ->where('tanggal_selesai', '<', Carbon::now()->subDay())
+            ->whereMonth('tanggal_selesai', Carbon::now()->month)
+            ->count();
 
         return view('ketuatim.dashboard', compact(
             'monthlyStats',
@@ -129,7 +169,12 @@ class KetuaTimController
             'pengajuanBulanIni',
             'totalMagang',
             'magangBulanIni',
-            'magangActive'
+            'magangActive',
+            'perluDinilai',
+            'perluSertifikat',
+            'magangAktifBulanIni',
+            'magangSelesai',
+            'magangSelesaiBulanIni'
         ));
     }
 
