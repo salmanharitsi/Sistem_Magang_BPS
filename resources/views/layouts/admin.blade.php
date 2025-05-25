@@ -109,13 +109,13 @@
                                     @if ($countPengajuan > 0)
                                         <!-- Badge untuk sidebar normal -->
                                         <div
-                                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center block">
+                                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center block">
                                             {{ $countPengajuan }}
                                         </div>
 
                                         <!-- Badge untuk sidebar collapsed -->
                                         <div
-                                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center hidden">
+                                            class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center hidden">
                                             {{ $countPengajuan }}
                                         </div>
                                     @endif

@@ -260,7 +260,8 @@ class AdminController
         $pengajuan->save();
 
         // Dispatch job untuk memperbarui status setelah tenggat
-        UpdatePengajuanStatusJob::dispatch($pengajuan)->delay($pengajuan->tenggat);
+        // non aktifkan job karna permintaan BPS
+        // UpdatePengajuanStatusJob::dispatch($pengajuan)->delay($pengajuan->tenggat);
 
         Mail::to($pengajuan->email)->send(
             new NotifSeleksiPertama('accepted', $pengajuan->name)
@@ -269,6 +270,36 @@ class AdminController
         return redirect(url('/daftar-pengajuan'))->with([
             'success' => [
                 "title" => "Berhasil menerima pengajuan",
+            ]
+        ]);
+    }
+
+    public function tolak_pengajuan_tenggat($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $pengajuan = Pengajuan::find($id);
+
+        if ($pengajuan == null) {
+            abort(404);
+        }
+
+        $komentar = 'Kamu melewati tenggat waktu upload surat pengantar!';
+        
+        $pengajuan->status_pengajuan = 'reject-time';
+        $pengajuan->komentar = $komentar; 
+        $pengajuan->tenggat = null;
+        $pengajuan->save();
+
+        Mail::to($pengajuan->email)->send(
+            new NotifSeleksiPertama('rejected', $pengajuan->name, $komentar)
+        );
+
+        return redirect(url('/daftar-pengajuan'))->with([
+            'success' => [
+                "title" => "Berhasil menolak pengajuan",
             ]
         ]);
     }
