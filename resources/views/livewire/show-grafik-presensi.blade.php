@@ -12,7 +12,7 @@
             </a>
         </div>
     @endif
-    @if ($todayPresensi->jam_masuk && !$todayPresensi->jam_keluar)
+    @if ($todayPresensi && $todayPresensi->jam_masuk && !$todayPresensi->jam_keluar)
         <div class="w-full h-fit p-3 mt-5 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-green-100 rounded-lg border text-green-700 border-green-700">
             <div class="flex gap-3 items-start lg:items-center">
                 <i class="ti ti-alert-circle text-lg"></i>

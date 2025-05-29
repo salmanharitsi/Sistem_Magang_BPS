@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Models\Logbook;
 use App\Models\Magang;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,6 +18,19 @@ class ShowDaftarLogbook extends Component
     public $showModal = false;
     public $selectedData = [];
     public $statusFilter = '';
+    public $mangId; // Property to store the magang ID from URL
+
+    public function mount()
+    {
+        // Get magang ID from URL if available
+        $currentUrl = Request::url();
+        if (Str::contains($currentUrl, 'magang-saya/')) {
+            $parts = explode('magang-saya/', $currentUrl);
+            if (count($parts) > 1) {
+                $this->mangId = $parts[1];
+            }
+        }
+    }
 
     public function updating($key): void
     {
@@ -54,24 +69,39 @@ class ShowDaftarLogbook extends Component
 
     public function render()
     {
-
         $user = Auth::user();
-
-        // Get the user's latest active magang
-        $magang = Magang::where('user_id', $user->id)
-                        ->where('status_magang', 'active')
-                        ->latest()
-                        ->first();
-
         $query = Logbook::query();
 
-        if ($magang) {
-            $query->where('magang_id', $magang->id)
-                  ->where('status', '!=', 'waiting')
-                  ->orderBy('tanggal', 'desc');
+        // If we're on a specific magang detail page
+        if ($this->mangId) {
+            // Get the specific magang by ID from URL
+            $magang = Magang::where('id', $this->mangId)
+                            ->where('user_id', $user->id)
+                            ->first();
+            
+            if ($magang) {
+                $query->where('magang_id', $magang->id)
+                      ->where('status', '!=', 'waiting')
+                      ->orderBy('tanggal', 'desc');
+            } else {
+                // If no magang found with this ID, return empty results
+                $query->whereNull('magang_id');
+            }
         } else {
-            // If no active magang found, return empty results
-            $query->whereNull('magang_id');
+            // We're on the dashboard - show data for latest active magang
+            $magang = Magang::where('user_id', $user->id)
+                            ->where('status_magang', 'active')
+                            ->latest()
+                            ->first();
+            
+            if ($magang) {
+                $query->where('magang_id', $magang->id)
+                      ->where('status', '!=', 'waiting')
+                      ->orderBy('tanggal', 'desc');
+            } else {
+                // If no active magang found, return empty results
+                $query->whereNull('magang_id');
+            }
         }
 
         if ($this->search) {
@@ -130,7 +160,7 @@ class ShowDaftarLogbook extends Component
 
         return view('livewire.show-daftar-logbook', [
             'logbook' => $logbook,
-            'magang'=> $magang
+            'magang' => $magang ?? null
         ]);
     }
 }

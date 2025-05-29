@@ -14,7 +14,7 @@
         <div class="flex justify-center items-center space-x-2">
             <i class="ti ti-device-imac-off text-2xl"></i>
             <p class="text-sm font-medium">
-                Silakan lakukan presensi menggunakan HP atau tablet.
+                Silakan lakukan presensi menggunakan HP atau tablet untuk mendapatkan lokasi yang lebih akurat.
             </p>
         </div>
     </div>
