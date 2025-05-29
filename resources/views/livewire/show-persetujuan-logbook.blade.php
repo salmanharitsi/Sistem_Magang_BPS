@@ -201,7 +201,7 @@
                             </tr>
                         @endif
                     </table>
-
+                    @if ($selectedData['status'] === 'mengisi')
                     <div class="mt-6">
                         <div class="w-2/5 text-black font-semibold mb-2">
                             Komentar Pembimbing <span class="text-red-500">*</span>
@@ -214,7 +214,9 @@
                                 {{ session('error')['title'] }}
                             </p>
                         @endif
-                    </div>
+                    </div>            
+                    @endif
+                    
 
                     <div class="mt-4 flex gap-5">
                         <button wire:click="tolakLogbook"
