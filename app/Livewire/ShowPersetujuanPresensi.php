@@ -92,7 +92,7 @@ class ShowPersetujuanPresensi extends Component
                             $updateData['foto_masuk'] = null;
                             $updateData['foto_keluar'] = null;
                             $updateData['status'] = 'tidak-hadir';
-                            $updateData['point'] = 50;
+                            $updateData['point'] = 0;
                         }
                     } elseif ($this->originalStatus === 'izin') {
                         if ($this->selectedData['status'] === 'hadir') {
@@ -104,7 +104,7 @@ class ShowPersetujuanPresensi extends Component
                         } elseif ($this->selectedData['status'] === 'tidak-hadir') {
                             // izin -> tidak-hadir
                             $updateData['status'] = 'tidak-hadir';
-                            $updateData['point'] = 50;
+                            $updateData['point'] = 0;
                         }
                     } elseif ($this->originalStatus === 'tidak-hadir') {
                         if ($this->selectedData['status'] === 'hadir') {

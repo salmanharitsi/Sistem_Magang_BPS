@@ -17,18 +17,25 @@
                 </div>
             </form>
         </div>
-        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-            <div class="flex items-center gap-2">
-                <p class="font-semibold">Filter:</p>
-                <div class="relative">
-                    <select wire:model.live="statusFilter" id="status-filter" 
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
-                        <option value="">Semua Status</option>
-                        <option value="mengisi">Mengisi</option>
-                        <option value="tidak-mengisi">Tidak Mengisi</option>
-                    </select>
+        <div class="flex flex-col md:flex-row items-start gap-4">
+            <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <p class="font-semibold">Filter:</p>
+                    <div class="relative">
+                        <select wire:model.live="statusFilter" id="status-filter" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5">
+                            <option value="">Semua Status</option>
+                            <option value="mengisi">Mengisi</option>
+                            <option value="tidak-mengisi">Tidak Mengisi</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+            <button wire:click="downloadLogbookPdf"
+                class="text-sm text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-4 py-2 inline-flex items-center">
+                <i class="ti ti-download mr-2"></i>
+                Download Dokumen
+            </button>
         </div>
     </div>
     <div class="overflow-x-auto">
