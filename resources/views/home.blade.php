@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="icon" href="{{ asset('bps.png') }}" type="image/png"/>
+
     <script>
         document.documentElement.classList.add('js')
     </script>
@@ -170,7 +173,7 @@
                                     </div>
                                     <div>
                                         <h2
-                                            class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end whitespace-nowrap">
+                                            class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end">
                                             {{ $item['title'] }}</h2>
                                         <div class="w-full flex justify-end mt-[-5px]">
                                             <img class="w-[50%]"

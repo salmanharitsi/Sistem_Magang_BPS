@@ -439,170 +439,241 @@
                 }
             });
         });
-        
-        // Original script content follows...
-        let chartData = @json($chartData);
-        let years = @json($years);
+    </script>
+
+    <script>
+        // Chart Configuration - FIXED VERSION
+        document.addEventListener('DOMContentLoaded', function() {
+            let chartData = @json($chartData);
+            let years = @json($years);
 
         //  initial selected year to the most recent year
-        let selectedYear = 2025;
+            let selectedYear = 2025;
 
-        function getSeriesData(year) {
-            return [{
-                    name: "Peserta Masuk",
-                    color: "#1c64f2",
-                    data: chartData[year].map(item => ({
-                        x: item.month,
-                        y: Math.round(item.masuk)
-                    }))
-                },
-                {
-                    name: "Peserta Keluar",
-                    color: "#75b547",
-                    data: chartData[year].map(item => ({
-                        x: item.month,
-                        y: Math.round(item.keluar)
-                    }))
-                }
-            ];
-        }
-
-        // Update the year dropdown options
-        const yearDropdown = document.getElementById("yearDropdown").querySelector("ul");
-        yearDropdown.innerHTML = years.map(year =>
-            `<li><a href="#" class="block px-4 py-2" onclick="updateChartYear(event, ${year})">${year}</a></li>`
-        ).join('');
-
-        const yearDropdownRekap = document.getElementById("yearDropdownRekap").querySelector("ul");
-        yearDropdownRekap.innerHTML = years.map(year =>
-            `<li><a href="#" class="block px-4 py-2" onclick="updateData(event, ${year})">${year}</a></li>`
-        ).join('');
-
-        // Update the initial selected year display
-        document.getElementById("selectedYear").textContent = selectedYear;
-
-        const options = {
-            colors: ["#1c64f2", "#75b547"],
-            series: getSeriesData(selectedYear),
-            chart: {
-                type: "bar",
-                height: "320px",
-                fontFamily: "Inter, sans-serif",
-                toolbar: {
-                    show: false,
-                },
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: "70%",
-                },
-            },
-            tooltip: {
-                shared: true,
-                intersect: false,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                },
-            },
-            states: {
-                hover: {
-                    filter: {
-                        type: "darken",
-                        value: 1,
+            function getSeriesData(year) {
+                return [{
+                        name: "Peserta Masuk",
+                        color: "#1c64f2",
+                        data: chartData[year].map(item => ({
+                            x: item.month,
+                            y: Math.round(item.masuk)
+                        }))
                     },
-                },
-            },
-            stroke: {
-                show: true,
-                width: 0,
-                colors: ["transparent"],
-            },
-            grid: {
-                show: false,
-                strokeDashArray: 4,
-                padding: {
-                    left: 2,
-                    right: 2,
-                    top: -14
-                },
-            },
-            dataLabels: {
-                enabled: true,
-                formatter: function(val) {
-                    return Math.round(val);
-                }
-            },
-            legend: {
-                show: true,
-                position: "top",
-            },
-            xaxis: {
-                categories: chartData[selectedYear].map(item => item.month),
-                labels: {
-                    style: {
-                        fontFamily: "Inter, sans-serif",
-                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                    {
+                        name: "Peserta Keluar",
+                        color: "#75b547",
+                        data: chartData[year].map(item => ({
+                            x: item.month,
+                            y: Math.round(item.keluar)
+                        }))
                     }
-                }
-            },
-            yaxis: {
-                min: 0,
-                max: 4,
-                tickAmount: 4,
-                labels: {
-                    formatter: function(val) {
-                        return Math.floor(val);
-                    },
-                    style: {
-                        fontFamily: "Inter, sans-serif",
-                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
-                    }
-                }
-            },
-            fill: {
-                opacity: 1,
+                ];
             }
-        };
 
-        const chart = new ApexCharts(document.getElementById("column-chart"), options);
-        chart.render();
+            // Function untuk mendapatkan maksimum value dari data untuk mengatur y-axis
+            function getMaxValue(year) {
+                const series = getSeriesData(year);
+                let maxValue = 0;
+                
+                series.forEach(serie => {
+                    serie.data.forEach(point => {
+                        if (point.y > maxValue) {
+                            maxValue = point.y;
+                        }
+                    });
+                });
+                
+                // Tambahkan sedikit padding di atas maksimum value
+                return Math.ceil(maxValue * 1.2);
+            }
 
-        function updateChartYear(event, year) {
-            event.preventDefault();
-            selectedYear = year;
-            document.getElementById("selectedYear").textContent = year;
-            chart.updateSeries(getSeriesData(year));
+            // Update the year dropdown options
+            const yearDropdown = document.getElementById("yearDropdown").querySelector("ul");
+            yearDropdown.innerHTML = years.map(year =>
+                `<li><a href="#" class="block px-4 py-2" onclick="updateChartYear(event, ${year})">${year}</a></li>`
+            ).join('');
+
+            const yearDropdownRekap = document.getElementById("yearDropdownRekap").querySelector("ul");
+            yearDropdownRekap.innerHTML = years.map(year =>
+                `<li><a href="#" class="block px-4 py-2" onclick="updateData(event, ${year})">${year}</a></li>`
+            ).join('');
+
+            // Update the initial selected year display
+            document.getElementById("selectedYear").textContent = selectedYear;
+            document.getElementById("selectedYearRekap").textContent = selectedYear;
+
+            const options = {
+                colors: ["#1c64f2", "#75b547"],
+                series: getSeriesData(selectedYear),
+                chart: {
+                    type: "bar",
+                    height: "320px",
+                    fontFamily: "Inter, sans-serif",
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: "70%",
+                    },
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                    },
+                },
+                states: {
+                    hover: {
+                        filter: {
+                            type: "darken",
+                            value: 1,
+                        },
+                    },
+                },
+                stroke: {
+                    show: true,
+                    width: 0,
+                    colors: ["transparent"],
+                },
+                grid: {
+                    show: false,
+                    strokeDashArray: 4,
+                    padding: {
+                        left: 2,
+                        right: 2,
+                        top: -14
+                    },
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function(val) {
+                        return Math.round(val);
+                    }
+                },
+                legend: {
+                    show: true,
+                    position: "top",
+                },
+                xaxis: {
+                    categories: chartData[selectedYear].map(item => item.month),
+                    labels: {
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                        }
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: getMaxValue(selectedYear), // FIXED: Dinamis berdasarkan data
+                    tickAmount: Math.min(8, getMaxValue(selectedYear)), // FIXED: Maksimal 8 tick
+                    labels: {
+                        formatter: function(val) {
+                            return Math.floor(val);
+                        },
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                        }
+                    }
+                },
+                fill: {
+                    opacity: 1,
+                }
+            };
+
+            const chart = new ApexCharts(document.getElementById("column-chart"), options);
+            chart.render();
+
+            // FIXED: Function untuk update chart year dengan recalculate y-axis
+            window.updateChartYear = function(event, year) {
+                event.preventDefault();
+                selectedYear = year;
+                document.getElementById("selectedYear").textContent = year;
+                
+                // Update series data
+                chart.updateSeries(getSeriesData(year));
+                
+                // FIXED: Update y-axis max value berdasarkan data baru
+                chart.updateOptions({
+                    yaxis: {
+                        min: 0,
+                        max: getMaxValue(year),
+                        tickAmount: Math.min(8, getMaxValue(year)),
+                        labels: {
+                            formatter: function(val) {
+                                return Math.floor(val);
+                            },
+                            style: {
+                                fontFamily: "Inter, sans-serif",
+                                cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                            }
+                        }
+                    },
+                    xaxis: {
+                        categories: chartData[year].map(item => item.month)
+                    }
+                });
+            };
+
+            // Function untuk update data (redirect)
+            window.updateData = function(event, year) {
+                event.preventDefault();
+                selectedYear = year;
+                document.getElementById("selectedYear").textContent = year;
+                document.getElementById("selectedYearRekap").textContent = year;
+                window.location.href = `{{ route('admin.dashboard') }}?year=${year}`;
+            };
+
+            // Fungsi untuk mengunduh data sebagai CSV
+            window.downloadCSV = function() {
+                let csvContent = "Month,Peserta Masuk,Peserta Keluar\n";
+
+                chartData[selectedYear].forEach(row => {
+                    csvContent += `${row.month},${Math.round(row.masuk)},${Math.round(row.keluar)}\n`;
+                });
+
+                const blob = new Blob([csvContent], {
+                    type: 'text/csv;charset=utf-8;'
+                });
+                const link = document.createElement("a");
+                const url = window.URL.createObjectURL(blob);
+
+                link.setAttribute("href", url);
+                link.setAttribute("download", `peserta-data-${selectedYear}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
         }
 
-        function updateData(event, year) {
-            event.preventDefault();
-            selectedYear = year;
-            document.getElementById("selectedYear").textContent = year;
-            window.location.href = `{{ route('admin.dashboard') }}?year=${year}`;
-        }
+            // Function untuk preview gambar
+            window.openPreview = function(url) {
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+                const width = screenWidth / 2;
+                const height = screenHeight / 2;
+                const left = (screenWidth - width) / 2;
+                const top = (screenHeight - height) / 2;
 
-        // Fungsi untuk mengunduh data sebagai CSV
-        function downloadCSV() {
-            let csvContent = "Month,Peserta Masuk,Peserta Keluar\n";
+                const newWindow = window.open(
+                    '',
+                    '',
+                    `width=${width},height=${height},top=${top},left=${left}`
+                );
 
-            chartData[selectedYear].forEach(row => {
-                csvContent += `${row.month},${Math.round(row.masuk)},${Math.round(row.keluar)}\n`;
-            });
-
-            const blob = new Blob([csvContent], {
-                type: 'text/csv;charset=utf-8;'
-            });
-            const link = document.createElement("a");
-            const url = window.URL.createObjectURL(blob);
-
-            link.setAttribute("href", url);
-            link.setAttribute("download", `peserta-data-${selectedYear}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        }
+                if (newWindow) {
+                    newWindow.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
+                    newWindow.document.title = "Image Preview";
+                } else {
+                    alert('Preview dokumen tidak tersedia di tampilan mobile');
+                }
+            };
+        });
     </script>
 
 @endsection

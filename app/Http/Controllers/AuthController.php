@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\OTPJob;
-use App\Models\User;
 use App\Models\OTP;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Mail\OTPMail;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class AuthController
@@ -266,7 +265,7 @@ class AuthController
                     'registration_data' => $lastOTP->registration_data ?? null
                 ]);
 
-                OTPJob::dispatch($lastOTP->email, $newOTP, $newOTPRecord->id);
+                Mail::to($lastOTP->email)->send(new OTPMail($newOTPRecord->id, $newOTP));
 
             });
 

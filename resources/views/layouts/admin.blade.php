@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <link rel="icon" href="{{ asset('bps.png') }}" type="image/png"/>
+
     <!-- Favicon icon-->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
@@ -128,6 +130,14 @@
                                 href="/kelola-pembimbing">
                                 <i class="ti ti-user-pentagon ps-2 text-xl"></i>
                                 <span class="whitespace-nowrap">Kelola Pembimbing</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                href="/jam-kerja">
+                                <i class="ti ti-clock-plus ps-2 text-xl"></i>
+                                <span class="whitespace-nowrap">Jam Kerja</span>
                             </a>
                         </li>
 

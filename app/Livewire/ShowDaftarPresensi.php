@@ -9,7 +9,7 @@ use App\Models\Magang;
 use App\Models\Presensi;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -131,7 +131,7 @@ class ShowDaftarPresensi extends Component
             ];
             
             // Generate PDF
-            $pdf = PDF::loadView('pdf.presensi-report', $data);
+            $pdf = Pdf::loadView('pdf.presensi-report', $data);
             
             $this->isDownloading = false;
             

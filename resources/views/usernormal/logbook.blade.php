@@ -28,7 +28,7 @@
             <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
                     <i class="ti ti-alert-circle text-lg"></i>
-                    <p class="text-sm">Logbook harus diisi pada hari yang sama sebelum pukul <span class="font-bold">17:00</span></p>
+                    <p class="text-sm">Logbook harus diisi pada hari yang sama sebelum pukul <span class="font-bold">23:50</span></p>
                 </div>
             </div>
             <!-- Start coding here -->

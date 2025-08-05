@@ -20,15 +20,15 @@ class FaqSeeder extends Seeder
             ],
             [
                 'question' => 'Bisakah untuk konversi mata kuliah?',
-                'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
+                'answer' => 'Ya, magang di BPS Provinsi Riau ini dapat dikonversikan menjadi mata kuliah, sesuai dengan kebijakan masing-masing perguruan tinggi. Mahasiswa disarankan untuk berkoordinasi dengan pihak kampus, seperti dosen pembimbing akademik atau bagian akademik, guna memastikan bahwa kegiatan magang yang dilakukan memenuhi syarat konversi, baik dari segi durasi, jenis kegiatan, maupun dokumen pendukung yang diperlukan.',
             ],
             [
-                'question' => 'Apakah magang ini paid atau unpaid?',
-                'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
+                'question' => 'Apa saja benefit magang di BPS Provinsi Riau?',
+                'answer' => 'Peserta magang di BPS Provinsi Riau akan mendapatkan sertifikat sebagai bukti partisipasi, pengalaman kerja di lingkungan instansi pemerintah, serta ilmu dan wawasan yang bermanfaat.',
             ],
             [
                 'question' => 'Apakah penempatan ditentukan langsung oleh BPS?',
-                'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda voluptatem vitae, repudiandae sunt dolorem reprehenderit distinctio est unde sequi rem soluta quis perspiciatis laborum eum. Eaque aliquid dolores saepe repellendus!',
+                'answer' => 'Tidak, penempatan tidak ditentukan langsung oleh BPS. Calon peserta magang memilih sendiri unit penempatannya saat mengajukan permohonan. Namun, BPS Provinsi Riau dapat melakukan penyesuaian atau pemindahan penempatan sesuai dengan kebutuhan instansi dan pertimbangan tertentu.',
             ]
         ];
 

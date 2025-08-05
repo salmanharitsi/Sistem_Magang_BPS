@@ -139,7 +139,7 @@ class ShowAllLogbook extends Component
     {
         $today = Carbon::today()->toDateString();
         $now = Carbon::now();
-        $cutoffTime = Carbon::today()->setHour(17)->setMinute(0)->setSecond(0);
+        $cutoffTime = Carbon::today()->setHour(23)->setMinute(0)->setSecond(0);
         $tanggalCarbon = Carbon::parse($tanggal);
 
         // Cek jika tanggal lebih besar dari hari ini, maka tidak bisa diklik

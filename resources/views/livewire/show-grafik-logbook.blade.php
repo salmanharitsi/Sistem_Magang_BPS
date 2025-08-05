@@ -2,13 +2,13 @@
     <div class="text-xl font-semibold">Logbook</div>
     @if ($todayLogbook && $todayLogbook->status === 'waiting' && !$todayLogbook->tanggal->isWeekend())
         <div
-            class="w-full h-fit p-3 mt-5 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+            class="w-full h-fit p-3 mt-5 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
             <div class="flex gap-3 items-start lg:items-center">
                 <i class="ti ti-alert-circle text-lg"></i>
                 <p class="text-sm">Kamu belum mengisi logbook hari ini</p>
             </div>
             <a href="/logbook"
-                class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
+                class="pjax-link bg-blue-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                 <p class="text-sm whitespace-nowrap">Isi Logbook</p>
             </a>
         </div>
@@ -89,7 +89,7 @@
                     (mengisi / total) * 100,
                     (tidakMengisi / total) * 100
                 ];
-                labels = ["Mengisi", "Tidak Mengisi"];
+                labels = ["Disetujui", "Ditolak"];
             } else {
                 series = [100];
                 labels = ["Belum Ada Data"];

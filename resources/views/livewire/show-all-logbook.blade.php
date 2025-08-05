@@ -144,7 +144,7 @@
                         $today = Carbon::today()->toDateString();
                         $selectedDate = Carbon::parse($selectedLogbook->tanggal)->toDateString();
                         $hasContent = $selectedLogbook->status === 'mengisi';
-                        $isPastCutoff = Carbon::now()->gte(Carbon::today()->setHour(17));
+                        $isPastCutoff = Carbon::now()->gt(Carbon::today()->setTime(23, 00));
                     @endphp
                         
                     @if ($selectedDate == $today && $selectedLogbook->status === 'waiting' && !$isPastCutoff)
@@ -181,7 +181,7 @@
                                         <p class="text-sm text-center">Laporkan kehadiran terlebih dahulu sebelum mengisi logbook</p>
                                     </div>
                                     <a href="/presensi"
-                                        class="pjax-link bg-red-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
+                                        class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
                                         <p class="text-sm whitespace-nowrap">Lapor Kehadiran</p>
                                     </a>
                                 </div>

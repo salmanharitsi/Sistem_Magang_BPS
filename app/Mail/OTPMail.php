@@ -32,7 +32,7 @@ class OTPMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verifikasi OTP - Sistem Maganga BPS',
+            subject: 'Verifikasi OTP - Sistem Magang BPS',
         );
     }
 

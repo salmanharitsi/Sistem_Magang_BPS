@@ -18,7 +18,7 @@ class AdminPembimbingController
     {
         $user = Auth::guard('pegawai')->user();
 
-        if (!$user || !in_array($user->role_temp, ['admin', 'regular', 'ketua_tim'])) {
+        if (!$user || !in_array($user->role_temp, ['admin', 'regular', 'ketua_tim', 'pimpinan'])) {
             abort(403, 'Unauthorized access');
         }
         
@@ -31,6 +31,9 @@ class AdminPembimbingController
                 break;
             case 'ketua_tim':
                 $layout = 'layouts.ketua-tim';
+                break;
+            case 'pimpinan':
+                $layout = 'layouts.pimpinan';
                 break;
             default:
                 abort(403, 'Unauthorized access');

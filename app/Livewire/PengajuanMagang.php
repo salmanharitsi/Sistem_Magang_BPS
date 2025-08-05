@@ -183,7 +183,8 @@ class PengajuanMagang extends Component
         \Log::info('Mengirim email ke admin');
         Mail::to('amrizal@bps.go.id')->send(new NotifPengajuanAdmin($pengajuan, $user));
 
-        UpdatePengajuanOverLimit::dispatch($pengajuan)->delay(now()->addDay());
+        $delayUntil = Carbon::parse($validatedData['tanggal_mulai'])->startOfDay()->addHours(1);
+        UpdatePengajuanOverLimit::dispatch($pengajuan)->delay($delayUntil);
 
         return redirect('/dashboard')->with([
             'success' => [

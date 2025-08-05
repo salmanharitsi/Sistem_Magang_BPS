@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Jobs\OTPJob;
 use App\Mail\OTPMail;
 use App\Models\OTP;
 use App\Models\User;
@@ -112,7 +111,7 @@ class Registrasi extends Component
             ]
         ]);
 
-        OTPJob::dispatch($validatedData['email'], $otp, $otpRecord->id);
+        Mail::to($validatedData['email'])->send(new OTPMail($otpRecord->id, $otp));
 
         return redirect()->route('verify.otp', ['id' => $otpRecord->id])->with([
             'success' => [

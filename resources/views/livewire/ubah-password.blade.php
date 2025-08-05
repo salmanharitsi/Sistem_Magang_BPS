@@ -38,7 +38,7 @@
         @endif
     </div>
     <div class="mt-1">
-        <label for="confirm_password" class="block mb-1 text-sm font-normal">Konfirmasi Password</label>
+           <label for="confirm_password" class="block mb-1 text-sm font-normal">Konfirmasi Password</label>
         <input type="password" name="confirm_password" id="confirm_password" placeholder="Konfirmasi password"
             wire:model.live="confirm_password"
             class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]" />

@@ -73,7 +73,7 @@
                         <td class="py-4 px-6 text-left">
                             {{$data->pengajuan->institusi}}
                         </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
+                        <td class="py-4 px-6 text-left">{{ $data->bidang_tujuan }}</td>
                         <td class="py-4 px-6 text-left">
                             <div class="flex items-center justify-center gap-1 whitespace-nowrap">
                                 <i class="ti ti-user-circle text-lg"></i>

@@ -409,7 +409,7 @@
                             Math.round((mengisi / totalDiisi) * 100),
                             Math.round((tidak_mengisi / totalDiisi) * 100)
                         ];
-                        labels = ["Mengisi", "Tidak Mengisi"];
+                        labels = ["Valid", "Tidak Valid"];
                     }
                 } else {
                     series = [100];

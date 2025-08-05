@@ -222,6 +222,14 @@ class AdminController
         return view('admin.kelola-pembimbing');
     }
 
+    public function get_jam_kerja()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('admin.jam-kerja');
+    }
+
     public function get_detail_pengajuan($id)
     {
         if (request()->pjax()) {

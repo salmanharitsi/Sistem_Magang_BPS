@@ -1,9 +1,515 @@
 @php
     use Carbon\Carbon;
     Carbon::setLocale('id');
+    $isRamadhan = $selectedPresensi && $selectedPresensi->aturan_jam_masuk === '08:00:00';
 @endphp
 
+<style>
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) translateX(0px); }
+        50% { transform: translateY(-10px) translateX(5px); }
+    }
+    
+    @keyframes drift {
+        0%, 100% { transform: translateX(0px); }
+        50% { transform: translateX(10px); }
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .animate-drift {
+        animation: drift 4s ease-in-out infinite;
+    }
+</style>
+
 <div>
+    <!-- Card Aturan Jam Masuk -->
+    <div class="schedule-card-wrapper">
+        @if($isRamadhan)
+            <!-- Card Ramadhan -->
+            <div class="schedule-card ramadhan-card">
+                <!-- Animated Background Elements -->
+                <div class="bg-elements">
+                    <!-- Masjid SVG -->
+                    <div class="masjid-icon">
+                        <svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60 10L50 20H70L60 10Z" fill="white"/>
+                            <rect x="55" y="5" width="10" height="15" fill="white"/>
+                            <path d="M20 30C20 25 25 20 35 20C45 20 50 25 50 30H20Z" fill="white"/>
+                            <path d="M70 30C70 25 75 20 85 20C95 20 100 25 100 30H70Z" fill="white"/>
+                            <rect x="15" y="30" width="90" height="35" fill="white"/>
+                            <rect x="25" y="35" width="15" height="25" fill="rgba(0,0,0,0.3)"/>
+                            <rect x="45" y="35" width="30" height="30" fill="rgba(0,0,0,0.3)" rx="15"/>
+                            <rect x="80" y="35" width="15" height="25" fill="rgba(0,0,0,0.3)"/>
+                            <rect x="10" y="65" width="100" height="15" fill="white"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Animated Moon -->
+                    <div class="moon-icon animate-moon">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 5C25 10 25 25 25 30C25 45 35 55 45 55C50 55 55 50 55 45C45 50 35 45 30 35C25 30 25 15 30 5Z" fill="white" style="opacity: 0.9;"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Floating Stars -->
+                    <div class="star-1 animate-star-1">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 0L12 8L20 10L12 12L10 20L8 12L0 10L8 8L10 0Z" fill="white" style="opacity: 0.7;"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="star-2 animate-star-2">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0L9.6 6.4L16 8L9.6 9.6L8 16L6.4 9.6L0 8L6.4 6.4L8 0Z" fill="white" style="opacity: 0.6;"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="star-3 animate-star-3">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 0L7.2 4.8L12 6L7.2 7.2L6 12L4.8 7.2L0 6L4.8 4.8L6 0Z" fill="white" style="opacity: 0.5;"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Content -->
+                <div class="card-content">
+                    <div class="card-inner">
+                        <div class="card-header">
+                            <div class="icon-container ramadhan-icon">
+                                <!-- Clock Icon -->
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12,6 12,12 16,14"/>
+                                </svg>
+                            </div>
+                            <div class="card-title">
+                                <h3>Jadwal Ramadhan</h3>
+                                <p class="ramadhan-subtitle">Waktu masuk selama bulan suci</p>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-info">
+                            <div class="schedule-container ramadhan-schedule">
+                                <div class="time-block">
+                                    <p class="time-label ramadhan-label">MASUK</p>
+                                    <p class="time-value">{{ substr($selectedPresensi->aturan_jam_masuk, 0, 5) }}</p>
+                                </div>
+                                <div class="time-separator">—</div>
+                                <div class="time-block">
+                                    <p class="time-label ramadhan-label">KELUAR</p>
+                                    <p class="time-value">{{ substr($selectedPresensi->aturan_jam_keluar, 0, 5) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        @else
+            <!-- Card Normal -->
+            <div class="schedule-card normal-card">
+                <!-- Animated Background Elements -->
+                <div class="bg-elements">
+                    <!-- Animated Sun -->
+                    <div class="sun-icon animate-sun">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="30" r="15" fill="white" style="opacity: 0.9;"/>
+                            <path d="M30 0V8M30 52V60M60 30H52M8 30H0M51.2 8.8L45.6 14.4M14.4 45.6L8.8 51.2M51.2 51.2L45.6 45.6M14.4 14.4L8.8 8.8" stroke="white" stroke-width="3" style="opacity: 0.7;"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Floating Clouds -->
+                    <div class="cloud-1 animate-cloud-1">
+                        <svg width="80" height="40" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 25C15 25 10 20 10 15C10 10 15 5 20 5C25 5 30 10 30 15C35 10 45 10 50 15C55 20 50 25 45 25H20Z" fill="white" style="opacity: 0.6;"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="cloud-2 animate-cloud-2">
+                        <svg width="60" height="30" viewBox="0 0 60 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 20C10 20 5 15 5 10C5 5 10 0 15 0C20 0 25 5 25 10C30 5 40 5 45 10C50 15 45 20 40 20H15Z" fill="white" style="opacity: 0.5;"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="cloud-3 animate-cloud-3">
+                        <svg width="40" height="20" viewBox="0 0 40 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 15C7 15 4 12 4 9C4 6 7 3 10 3C13 3 16 6 16 9C19 6 25 6 28 9C31 12 28 15 25 15H10Z" fill="white" style="opacity: 0.4;"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Content -->
+                <div class="card-content">
+                    <div class="card-inner">
+                        <div class="card-header">
+                            <div class="icon-container normal-icon">
+                                <!-- Briefcase Icon -->
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                    <path d="m16 21v-5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v5"/>
+                                </svg>
+                            </div>
+                            <div class="card-title">
+                                <h3>Jadwal Masuk Normal</h3>
+                                <p class="normal-subtitle">Waktu masuk standar harian</p>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-info">
+                            <div class="schedule-container normal-schedule">
+                                <div class="time-block">
+                                    <p class="time-label normal-label">MASUK</p>
+                                    <p class="time-value">{{ substr($selectedPresensi->aturan_jam_masuk, 0, 5) }}</p>
+                                </div>
+                                <div class="time-separator">—</div>
+                                <div class="time-block">
+                                    <p class="time-label normal-label">KELUAR</p>
+                                    <p class="time-value">{{ substr($selectedPresensi->aturan_jam_keluar, 0, 5) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <style>
+    /* Base Styles */
+    .schedule-card-wrapper {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .schedule-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        min-height: 120px;
+    }
+
+    .ramadhan-card {
+        background: linear-gradient(135deg, #1e1b4b 0%, #7c3aed 50%, #1e40af 100%);
+    }
+
+    .normal-card {
+        background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #4f46e5 100%);
+    }
+
+    /* Background Elements */
+    .bg-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .masjid-icon {
+        position: absolute;
+        bottom: 0;
+        left: 1rem;
+        opacity: 0.2;
+    }
+
+    .moon-icon {
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+    }
+
+    .sun-icon {
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+    }
+
+    .star-1 {
+        position: absolute;
+        top: 2rem;
+        left: 3rem;
+    }
+
+    .star-2 {
+        position: absolute;
+        bottom: 3rem;
+        right: 5rem;
+    }
+
+    .star-3 {
+        position: absolute;
+        top: 4rem;
+        right: 8rem;
+    }
+
+    .cloud-1 {
+        position: absolute;
+        top: 1.5rem;
+        left: 2rem;
+    }
+
+    .cloud-2 {
+        position: absolute;
+        bottom: 2rem;
+        right: 4rem;
+    }
+
+    .cloud-3 {
+        position: absolute;
+        top: 3rem;
+        left: 8rem;
+    }
+
+    /* Content Styles */
+    .card-content {
+        position: relative;
+        z-index: 10;
+        padding: 1rem;
+    }
+
+    .card-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .icon-container {
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        border-radius: 50%;
+        width: 4rem;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-title h3 {
+        color: white;
+        font-weight: bold;
+        font-size: 1rem;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .ramadhan-subtitle {
+        color: #e0e7ff;
+        font-size: 0.75rem;
+        margin: 0;
+    }
+
+    .normal-subtitle {
+        color: #dbeafe;
+        font-size: 0.75rem;
+        margin: 0;
+    }
+
+    .schedule-info {
+        width: 100%;
+    }
+
+    .schedule-container {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .time-block {
+        text-align: center;
+    }
+
+    .time-label {
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .ramadhan-label {
+        color: #e0e7ff;
+    }
+
+    .normal-label {
+        color: #dbeafe;
+    }
+
+    .time-value {
+        color: white;
+        font-size: 1.125rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .time-separator {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 1.25rem;
+    }
+
+    /* Animations */
+    @keyframes bounce-gentle {
+        0%, 20%, 53%, 80%, 100% {
+            transform: translate3d(0,0,0);
+        }
+        40%, 43% {
+            transform: translate3d(0,-10px,0);
+        }
+        70% {
+            transform: translate3d(0,-5px,0);
+        }
+        90% {
+            transform: translate3d(0,-2px,0);
+        }
+    }
+
+    @keyframes pulse-gentle {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes ping-gentle {
+        75%, 100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    @keyframes spin-slow {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px) translateX(0px);
+        }
+        50% {
+            transform: translateY(-8px) translateX(3px);
+        }
+    }
+
+    @keyframes drift {
+        0%, 100% {
+            transform: translateX(0px);
+        }
+        50% {
+            transform: translateX(8px);
+        }
+    }
+
+    /* Animation Classes */
+    .animate-moon {
+        animation: bounce-gentle 3s ease-in-out infinite;
+    }
+
+    .animate-star-1 {
+        animation: ping-gentle 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .animate-star-2 {
+        animation: pulse-gentle 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .animate-star-3 {
+        animation: ping-gentle 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .animate-sun {
+        animation: spin-slow 8s linear infinite;
+    }
+
+    .animate-cloud-1 {
+        animation: pulse-gentle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .animate-cloud-2 {
+        animation: bounce-gentle 4s ease-in-out infinite;
+    }
+
+    .animate-cloud-3 {
+        animation: pulse-gentle 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Responsive Design */
+    @media (min-width: 640px) {
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-inner {
+            flex-direction: row;
+            align-items: center;
+        }
+        
+        .card-header {
+            gap: 1rem;
+        }
+        
+        .card-title h3 {
+            font-size: 1.125rem;
+        }
+        
+        .ramadhan-subtitle,
+        .normal-subtitle {
+            font-size: 0.875rem;
+        }
+        
+        .schedule-info {
+            width: auto;
+        }
+        
+        .schedule-container {
+            padding: 1rem 1.5rem;
+            gap: 1.5rem;
+        }
+        
+        .time-value {
+            font-size: 1.25rem;
+        }
+        
+        .time-separator {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* Fallback for older browsers */
+    @supports not (backdrop-filter: blur()) {
+        .icon-container {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .schedule-container {
+            background: rgba(255, 255, 255, 0.25);
+        }
+    }
+    </style>
+
     <div class="flex flex-col-reverse md:flex-row gap-6">
         <!-- Bagian Kiri: Carousel Tanggal -->
         <div class="flex flex-col gap-6 w-full md:w-1/2">
@@ -541,9 +1047,12 @@
                 var officeCoords = [officeLatitude, officeLongitude];
                 var distance = map.distance(userCoords, officeCoords);
 
+                // Simpan status lokasi di sessionStorage
+                sessionStorage.setItem('isWithinRadius', distance <= officeRadius ? 'true' : 'false');
+
                 // Perbarui status lokasi berdasarkan jarak
                 if (distance <= officeRadius) {
-                    // Jika dalam radius, tampilkan tombol "Lapor Kehadiran"
+                    // Jika dalam radius, tampilkan tombol "Lapor Kehadiran" atau "Lapor Pulang" sesuai kondisi
                     locationStatus.innerHTML = `
                     @if ($selectedPresensi)
                         @php
@@ -552,20 +1061,22 @@
                             $waktuSekarang = now();
                         @endphp
 
-                        @if ($selectedPresensi->jam_masuk)
+                        @if ($selectedPresensi->jam_masuk && !$selectedPresensi->jam_keluar)
                             <div class="mt-5 flex flex-col gap-5">
                                 <form action="{{ route('usernormal.lapor-harian', $selectedPresensi->id) }}" method="get" class="w-full">
                                     <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
+                                    <input type="hidden" name="is_within_radius" value="true">
                                     <button type="submit" class="w-full bg-green-600 px-4 border-2 border-transparent text-white py-1.5 rounded-lg whitespace-nowrap hover:bg-white hover:text-green-600 hover:border-green-600 transition-all duration-200 text-center cursor-pointer">
                                         Laporkan Pulang
                                     </button>
                                 </form>
                             </div>
-                        @else
+                        @elseif (!$selectedPresensi->jam_masuk)
                             @if ($waktuSekarang >= $batasPresensi)
                                 <div class="mt-5 flex">
                                     <form action="{{ route('usernormal.lapor-harian', $selectedPresensi->id) }}" method="get" class="w-full">
                                         <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
+                                        <input type="hidden" name="is_within_radius" value="true">
                                         <button type="submit" class="w-full bg-blue-600 px-4 border-2 border-transparent text-white py-1.5 rounded-lg whitespace-nowrap hover:bg-white hover:text-blue-600 hover:border-blue-600 transition-all duration-200 text-center cursor-pointer">
                                             Laporkan Kehadiran
                                         </button>
@@ -581,30 +1092,29 @@
                     @endif
                     `;
                 } else {
-                    // Jika di luar radius, tampilkan pesan dan tombol "Lapor Izin"
+                    // Jika di luar radius, tampilkan pesan dan tombol "Lapor Izin" (jika belum lapor masuk)
                     locationStatus.innerHTML = `
                     @if ($selectedPresensi)
-                        @if ($selectedPresensi->jam_masuk)
-                            <div class="mt-5 flex flex-col gap-5">
-                                <div class="w-full h-fit flex gap-3 items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
-                                    <i class="ti ti-alert-triangle text-lg"></i>
-                                    <p class="text-sm">Kamu tidak berada dalam radius kantor!</p>
-                                </div>
-                            </div>
-                        @else
-                            <div class="mt-5 flex flex-col gap-5">
+                        <div class="mt-5 flex flex-col gap-5">
+                            @if (!$selectedPresensi->jam_masuk)
                                 <div class="w-full h-fit flex gap-3 items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                                     <i class="ti ti-alert-triangle text-lg"></i>
                                     <p class="text-sm">Kamu tidak berada dalam radius kantor!</p>
                                 </div>
                                 <form action="{{ route('usernormal.lapor-izin', $selectedPresensi->id) }}" method="get">
                                     <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
+                                    <input type="hidden" name="is_within_radius" value="false">
                                     <button type="submit" class="w-full bg-red-600 px-4 py-1.5 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-red-600 hover:border-red-600 transition-all duration-200 text-center cursor-pointer">
                                         Laporkan Izin
                                     </button>
                                 </form>
-                            </div>
-                        @endif
+                            @elseif (!$selectedPresensi->jam_keluar)
+                                <div class="w-full h-fit flex gap-3 items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
+                                    <i class="ti ti-alert-triangle text-lg"></i>
+                                    <p class="text-sm">Untuk lapor pulang, Kamu harus berada dalam radius kantor.</p>
+                                </div>
+                            @endif
+                        </div>
                     @endif
                     `;
                 }
@@ -621,14 +1131,16 @@
                     <div class="mt-4 text-red-500 text-sm text-center">
                         Gagal mendapatkan lokasi. Pastikan izin lokasi pada browser diaktifkan.
                     </div>
-                    <div class="mt-5 flex flex-col gap-5">
-                        <form action="{{ route('usernormal.lapor-izin', $selectedPresensi->id) }}" method="get">
-                            <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
-                            <button type="submit" class="w-full bg-red-600 px-4 py-1.5 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-red-600 hover:border-red-600 transition-all duration-200 text-center cursor-pointer">
-                                Laporkan Izin
-                            </button>
-                        </form>
-                    </div>
+                    @if (!$selectedPresensi->jam_masuk)
+                        <div class="mt-5 flex flex-col gap-5">
+                            <form action="{{ route('usernormal.lapor-izin', $selectedPresensi->id) }}" method="get">
+                                <input type="hidden" name="location" value="${userLatitude},${userLongitude}">
+                                <button type="submit" class="w-full bg-red-600 px-4 py-1.5 border-2 border-transparent text-white rounded-lg whitespace-nowrap hover:bg-white hover:text-red-600 hover:border-red-600 transition-all duration-200 text-center cursor-pointer">
+                                    Laporkan Izin
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                 @endif
                 `;
                 if (mapLoading) {

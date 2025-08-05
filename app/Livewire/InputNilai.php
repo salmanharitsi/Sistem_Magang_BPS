@@ -84,7 +84,10 @@ class InputNilai extends Component
         $this->jumlahLogbook = $logbooks->count();
         
         if ($this->jumlahLogbook > 0) {
-            $this->logbookTerisi = $logbooks->where('status', 'mengisi')->count();
+            $this->logbookTerisi = $logbooks
+                ->where('status', 'mengisi')
+                ->where('status_review', 'diterima')
+                ->count();
             $persentase = ($this->logbookTerisi / $this->jumlahLogbook) * 100;
             $this->nilaiLogbook = round($persentase);
         } else {

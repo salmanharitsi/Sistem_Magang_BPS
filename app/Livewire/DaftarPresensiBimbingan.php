@@ -4,7 +4,10 @@ namespace App\Livewire;
 
 use App\Models\Magang;
 use App\Models\Presensi;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,6 +20,7 @@ class DaftarPresensiBimbingan extends Component
     public $statusFilter = '';
     public $showModal = false;
     public $selectedData = [];
+    public $isDownloading = false;
 
     public function updating($key): void
     {
@@ -60,6 +64,68 @@ class DaftarPresensiBimbingan extends Component
                 'status_review' => $presensi->status_review
             ];
             $this->showModal = true;
+        }
+    }
+
+    public function downloadPresensiPdf()
+    {
+        $this->isDownloading = true;
+        
+        try {            
+            // Determine which magang to use
+            if ($this->magang) {
+                $magang = Magang::where('id', $this->magang)
+                                ->first();
+            }
+
+            if (!$magang) {
+                session()->flash('error', 'Data magang tidak ditemukan.');
+                $this->isDownloading = false;
+                return;
+            }
+            
+            // Get all presensi data for this magang (not just the paginated ones)
+            $presensiData = Presensi::where('magang_id', $magang->id)
+                                  ->where('status', '!=', 'waiting')
+                                  ->orderBy('tanggal', 'desc')
+                                  ->get();
+            
+            // Apply status filter if selected
+            if ($this->statusFilter) {
+                $presensiData = $presensiData->where('status', $this->statusFilter);
+            }
+            
+            // Get user and magang data
+            $userData = [
+                'nama' => $magang->user->name,
+                'institusi' => $magang->pengajuan->institusi ?? '-',
+                'nomor_induk' => $magang->user->nomor_induk ?? '-',
+                'jenis_magang' => $magang->jenis_magang,
+                'tanggal_mulai' => Carbon::parse($magang->tanggal_mulai)->format('d F Y'),
+                'tanggal_selesai' => Carbon::parse($magang->tanggal_selesai)->format('d F Y'),
+                'pembimbing' => $magang->pembimbingPertama->name ?? '-',
+            ];
+            
+            // Prepare data for the PDF
+            $data = [
+                'userData' => $userData,
+                'presensi' => $presensiData,
+                'tanggal_cetak' => Carbon::now()->locale('id')->translatedFormat('d F Y'),
+            ];
+            
+            // Generate PDF
+            $pdf = Pdf::loadView('pdf.presensi-report', $data);
+            
+            $this->isDownloading = false;
+            
+            // Return the PDF for download
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, 'laporan-presensi-' . Str::slug($magang->user->name) . '.pdf');
+            
+        } catch (\Exception $e) {
+            $this->isDownloading = false;
+            session()->flash('error', 'Gagal mengunduh laporan: ' . $e->getMessage());
         }
     }
 

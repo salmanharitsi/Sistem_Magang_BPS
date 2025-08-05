@@ -74,7 +74,7 @@
                     (mengisi / total) * 100,
                     (tidakMengisi / total) * 100
                 ];
-                labels = ["Mengisi", "Tidak Mengisi"];
+                labels = ["Disetujui", "Ditolak"];
             } else {
                 series = [100];
                 labels = ["Belum Ada Data"];

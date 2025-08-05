@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class ShowDaftarLogbook extends Component
@@ -126,7 +126,7 @@ class ShowDaftarLogbook extends Component
             ];
             
             // Generate PDF
-            $pdf = PDF::loadView('pdf.logbook-report', $data);
+            $pdf = Pdf::loadView('pdf.logbook-report', $data);
             
             $this->isDownloading = false;
             

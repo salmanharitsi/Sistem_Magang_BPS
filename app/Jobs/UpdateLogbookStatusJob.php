@@ -36,7 +36,7 @@ class UpdateLogbookStatusJob implements ShouldQueue
                     ->get();
 
                 // Jika sudah lewat jam 5 sore
-                if ($now->gt(Carbon::parse($today . ' 17:00:00'))) {
+                if ($now->gt(Carbon::parse($today . ' 23:50:00'))) {
                     foreach ($logbooks as $logbook) {
                         $logbook->status = 'tidak-mengisi';
                         $logbook->updated_at = now();

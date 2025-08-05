@@ -27,6 +27,12 @@
             <div class="flex w-full items-center justify-start md:justify-center md:mb-8">
                 <img class="w-[90px]" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
             </div>
+            <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0">
+                    <path d="M12 9V13M12 17H12.01M10.29 3.86L1.82 18A2 2 0 003.64 21H20.36A2 2 0 0022.18 18L13.71 3.86A2 2 0 0010.29 3.86Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="text-sm">Cek spam jika email tidak ada di kotak masuk</p>
+            </div>
             <div class="flex flex-col w-full items-start gap-4 text-gray-800">
                 <h1 class="font-semibold text-lg md:text-2xl">Masukkan Kode OTP<br>yang Dikirim ke Email Anda</h1>
             </div>

@@ -22,10 +22,18 @@ class GrafikLogbookBimbingan extends Component
         if ($magangData) {
             // Hitung jumlah logbook berdasarkan status
             $this->mengisi = Logbook::where('magang_id', $this->magang)
-                ->where('status', 'mengisi')
+                ->whereNotNull('pembimbing_id')
+                ->where(function ($query) {
+                    $query->where('status', 'mengisi')
+                        ->where('status_review', 'diterima');
+                })
                 ->count();
             $this->tidakMengisi = Logbook::where('magang_id', $this->magang)
-                ->where('status', 'tidak-mengisi')
+                ->whereNotNull('pembimbing_id')
+                ->where(function ($query) {
+                    $query->where('status', 'tidak-mengisi')
+                        ->orWhere('status_review', 'ditolak');
+                })
                 ->count();
         }
     }
