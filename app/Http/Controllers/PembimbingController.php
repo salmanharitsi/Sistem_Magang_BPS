@@ -98,7 +98,7 @@ class PembimbingController
                 ->orWhere('pembimbing_kedua', Auth::guard('pegawai')->id());
         })
             ->whereDate('tanggal_selesai', '<', Carbon::now())
-            ->where('nilai_magang', 0)
+            ->where('status_final', '=', 'waiting')
             ->with('user')
             ->orderBy('tanggal_selesai', 'desc')
             ->get();

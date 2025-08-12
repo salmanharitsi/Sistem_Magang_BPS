@@ -147,6 +147,7 @@ class AdminController
         
         $perluSertifikat = Magang::whereDate('tanggal_selesai', '<', Carbon::now())
             ->whereNull('sertifikat_magang')
+            ->where('status_final', 'final')
             ->where('nilai_magang', '!=', 0)
             ->with('user')
             ->orderBy('tanggal_selesai', 'desc')

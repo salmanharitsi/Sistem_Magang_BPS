@@ -191,13 +191,26 @@
                 </a>
             </div>
         </div>
-    @elseif (Auth::guard('pegawai')->user()->role_temp === 'regular' && $magang->nilai_magang && !$magang->sertifikat_magang)
+    @elseif (Auth::guard('pegawai')->user()->role_temp === 'regular' && $magang->nilai_magang && !$magang->sertifikat_magang && $magang->status_final === 'final')
         <div class="col-span-3 mt-6 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
                 <div class="flex gap-3 items-start lg:items-center">
                     <i class="ti ti-alert-circle text-lg"></i>
                         <p class="text-sm">Menunggu sertifikat diberikan oleh Admin</p>
                 </div>
+            </div>
+        </div>
+    @elseif (Auth::guard('pegawai')->user()->role_temp === 'regular' && $magang->nilai_magang && !$magang->sertifikat_magang && $magang->status_final === 'waiting')
+        <div class="col-span-3 mt-6 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                <div class="flex gap-3 items-start lg:items-center">
+                    <i class="ti ti-alert-circle text-lg"></i>
+                        <p class="text-sm">Menunggu finalisasi nilai</p>
+                </div>
+                <a href="/penilaian/{{ $magang->id }}"
+                    class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
+                    <p class="text-sm whitespace-nowrap">finalisasi nilai</p>
+                </a>
             </div>
         </div>
     @endif

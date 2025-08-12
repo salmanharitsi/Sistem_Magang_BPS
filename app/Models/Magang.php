@@ -34,6 +34,7 @@ class Magang extends Model
         'nilai_lainnya',
         'nilai_magang',
         'sertifikat_magang',
+        'status_final'
     ];
 
     protected static function boot()

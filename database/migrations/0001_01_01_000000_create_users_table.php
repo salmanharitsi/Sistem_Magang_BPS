@@ -126,6 +126,9 @@ return new class extends Migration
             
             // Untuk nilai custom 
             $table->json('nilai_lainnya')->nullable(); 
+
+            // Status final nilai
+            $table->enum('status_final', ['waiting', 'final'])->default('waiting');
             
             // Total nilai (bisa dihitung otomatis)
             $table->integer('nilai_magang')->default(0); 
