@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\OTP;
+use App\Jobs\OTPJob;
 use App\Models\User;
 use App\Mail\OTPMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-    use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -88,13 +90,20 @@ class AuthController
             return redirect('dashboard');
         }
 
-        $user = User::where('remember_token', '=', $token);
-        if ($user->count() == 0) {
-            abort(403);
+        $tokenData = DB::table('password_reset_tokens')
+            ->where('token', $token)
+            ->first();
+        
+        if (!$tokenData) {
+            abort(403, 'Invalid or expired token');
         }
-        $user = $user->first();
-        $data['token'] = $token;
+        
+        if (now()->diffInMinutes(Carbon::parse($tokenData->created_at)) > 60) {
+            DB::table('password_reset_tokens')->where('token', $token)->delete();
+            abort(403, 'Token has expired');
+        }
 
+        $data['token'] = $token;
         return view('auth.resetPassword', $data);
     }
 
@@ -265,7 +274,7 @@ class AuthController
                     'registration_data' => $lastOTP->registration_data ?? null
                 ]);
 
-                Mail::to($lastOTP->email)->send(new OTPMail($newOTPRecord->id, $newOTP));
+                OTPJob::dispatch($lastOTP->email, $newOTP, $newOTPRecord->id);
 
             });
 
