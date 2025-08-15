@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Favicon icon-->
@@ -15,6 +16,15 @@
     <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Webcam JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -26,6 +36,8 @@
 
 @php
     $firstLetter = strtoupper(substr(Auth::user()->name, 0, 1));
+    $latestMagang = Auth::user()->magang()->latest('created_at')->first();
+    use Carbon\Carbon;
 @endphp
 
 <body class="bg-[#f8f9fa] dark:bg-[#0f1214] transition-all duration-200">
@@ -52,14 +64,6 @@
                         <li class="text-xs font-bold pb-[5px]">
                             <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
                             <span class="text-xs text-gray-600 font-semibold">HOME</span>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
-                                href="/">
-                                <i class="ti ti-home ps-2 text-xl"></i>
-                                <span>Beranda</span>
-                            </a>
                         </li>
 
                         <li class="sidebar-item">
@@ -91,14 +95,38 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a class="menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/logout">
-                                <i class="ti ti-logout ps-2 text-xl"></i>
-                                <span>Keluar</span>
-                            </a>
-                        </li>
+                        @if ($latestMagang)
+                            <li class="text-xs font-bold pb-[5px] mt-6">
+                                <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                                <span class="text-xs text-gray-600 font-semibold">MAGANG</span>
+                            </li>
 
+                            <li class="sidebar-item">
+                                <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                    href="/magang">
+                                    <i class="ti ti-list-check ps-2 text-xl"></i>
+                                    <span class="whitespace-nowrap">Riwayat Magang</span>
+                                </a>
+                            </li>
+
+                            @if ($latestMagang->status_magang == 'active' && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isFuture())
+                                <li class="sidebar-item">
+                                    <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                        href="/logbook">
+                                        <i class="ti ti-notebook ps-2 text-xl"></i>
+                                        <span class="whitespace-nowrap">Logbook</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                        href="/presensi">
+                                        <i class="ti ti-brand-google-maps ps-2 text-xl"></i>
+                                        <span class="whitespace-nowrap">Presensi</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
                     </ul>
                 </nav>
             </div>
@@ -113,7 +141,7 @@
                     <!-- -------------- -->
                     <!-- Layout Header -->
                     <!-- -------------- -->
-                    <div class="flex gap-[23px] sticky top-5 z-50">
+                    <div class="flex gap-[23px] z-50">
                         <div
                             class="bg-white dark:bg-[#14181b] lg:flex items-center justify-center px-5 rounded-lg card hidden transition duration-200">
                             <button id="toggle-sidebar" class="text-gray-700 dark:text-white hover:text-blue-600">
@@ -255,6 +283,10 @@
         </div>
     </div>
 
+    <button id="scrollToTop"
+        class="hidden fixed bottom-5 right-5 bg-blue-600 text-white w-10 h-10 flex items-center justify-center rounded-lg card hover:bg-blue-700 transition-all duration-300 z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Add your scripts here -->
     @livewireScripts
@@ -287,6 +319,22 @@
             if (window.location.pathname === targetUrl) {
                 e.preventDefault();
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const scrollToTopBtn = document.getElementById("scrollToTop");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 30) {
+                    scrollToTopBtn.classList.remove("hidden");
+                } else {
+                    scrollToTopBtn.classList.add("hidden");
+                }
+            });
+
+            scrollToTopBtn.addEventListener("click", function () {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
         });
     </script>
 

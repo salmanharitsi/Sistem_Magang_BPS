@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use function PHPUnit\Framework\isNull;
 
 class UpdatePengajuanStatusJob implements ShouldQueue
 {
@@ -34,11 +35,19 @@ class UpdatePengajuanStatusJob implements ShouldQueue
      */
     public function handle()
     {
+         // Ambil data pengajuan terbaru dari database
+         $pengajuan = Pengajuan::find($this->pengajuan->id);
+
+        if ($pengajuan->status_pengajuan === 'accept-final') {
+            return;
+        }
+
         // Cek apakah tenggat waktu telah berlalu
-        if ($this->pengajuan->tenggat <= Carbon::now()) {
-            $this->pengajuan->status_pengajuan = 'reject-time';
-            $this->pengajuan->komentar = 'Kamu melewati tenggat waktu upload surat pengantar!';
-            $this->pengajuan->save();
+        if (!is_null($pengajuan->tenggat) && $pengajuan->tenggat <= Carbon::now()) {
+            $pengajuan->status_pengajuan = 'reject-time';
+            $pengajuan->komentar = 'Kamu melewati tenggat waktu upload surat pengantar!';
+            $pengajuan->tenggat = null;
+            $pengajuan->save();
         }
     }
 }

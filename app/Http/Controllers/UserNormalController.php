@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Magang;
 use App\Models\Pengajuan;
+use App\Models\Presensi;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserNormalController
 {
@@ -23,12 +28,168 @@ class UserNormalController
         return view('usernormal.pengajuan');
     }
 
+    public function get_magang(){
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('usernormal.magang');
+    }
+
+    public function get_presensi(){
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $magang = Auth::user()->magang()->latest()->first();
+
+        return view('usernormal.presensi', [
+            'magang' => $magang
+        ]);
+    }
+
     public function get_logbook()
     {
         if (request()->pjax()) {
             return false;
         }
-        return view('usernormal.pengisian-logbook');
+
+        $magang = Auth::user()->magang()->latest()->first();
+
+        return view('usernormal.logbook', [
+            'magang' => $magang
+        ]);
+    }
+
+    public function get_lapor_harian($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $presensi = Presensi::find($id);
+        if (!$presensi) {
+            abort(404);
+        }
+
+        $user = auth()->user();
+        $magang = $user->magang()->first(); // Mengambil satu data magang
+        if (!$magang) {
+            abort(404);
+        }
+
+        $presensiList = Presensi::where('magang_id', $magang->id)
+            ->orderBy('tanggal', 'asc')
+            ->get();
+        if ($presensiList->isEmpty()) {
+            abort(404);
+        }
+
+        // Calculate working days (excluding weekends)
+        $hariKe = 0;
+        $startDate = Carbon::parse($magang->tanggal_mulai);
+        $currentDate = Carbon::parse($presensi->tanggal);
+        
+        while ($startDate <= $currentDate) {
+            // Skip weekends
+            if (!$startDate->isWeekend()) {
+                $hariKe++;
+            }
+            $startDate->addDay();
+        }
+
+        if ($presensi->jam_masuk && $presensi->jam_keluar) {
+            return redirect('/presensi');
+        } 
+        
+        if ($presensi->status === 'izin') {
+            return redirect('/presensi');
+        }
+
+        if ($presensi->tanggal < now()->toDateString()) {
+            return redirect('/presensi');
+        }
+
+        // Cek route yang dipanggil
+        $routeName = request()->route()->getName();
+        
+        // Tambahkan validasi lokasi jika route adalah 'lapor-harian'
+        if ($routeName === 'usernormal.lapor-harian') {
+            // Ambil lokasi user dari request (perlu ditambahkan di form)
+            $userLocation = request()->input('location');
+            
+            // Jika lokasi tidak tersedia dalam request, gunakan session (jika tersimpan)
+            if (!$userLocation && session()->has('user_location')) {
+                $userLocation = session('user_location');
+            }
+            
+            // Jika lokasi tersedia, validasi jarak
+            if ($userLocation) {
+                list($userLat, $userLng) = explode(',', $userLocation);
+                
+                // Koordinat kantor
+                $officeLat = config('app.office.latitude');
+                $officeLng = config('app.office.longitude');
+                
+                $officeRadius = 50; // dalam meter
+                
+                // Hitung jarak menggunakan Haversine formula
+                $distance = $this->calculateDistance($userLat, $userLng, $officeLat, $officeLng);
+                
+                // Jika user di luar radius kantor, redirect ke presensi
+                if ($distance > $officeRadius) {
+                    return redirect('/presensi')->with([
+                        'error' => [
+                            'title' => 'Kamu tidak di dalam radius kantor',
+                        ]
+                    ]);
+                }
+            } else {
+                // Jika lokasi tidak tersedia sama sekali, redirect dengan pesan
+                return redirect('/presensi')->with([
+                    'error' => [
+                        'title' => 'Lokasi tidak tersedia, silahkan coba lagi',
+                    ]
+                ]);
+            }
+        }
+
+        // Tentukan view yang digunakan berdasarkan route
+        $view = ($routeName === 'usernormal.lapor-izin') ? 'usernormal.lapor-izin' : 'usernormal.lapor-harian';
+
+        return view($view, [
+            'presensi' => $presensi,
+            'hariKe' => $hariKe, // Now using the calculated working day count
+        ]);
+    }
+
+    /**
+     * Menghitung jarak antara dua koordinat menggunakan Haversine formula
+     * 
+     * @param float $lat1 Latitude lokasi pertama
+     * @param float $lng1 Longitude lokasi pertama
+     * @param float $lat2 Latitude lokasi kedua
+     * @param float $lng2 Longitude lokasi kedua
+     * @return float Jarak dalam meter
+     */
+    private function calculateDistance($lat1, $lng1, $lat2, $lng2)
+    {
+        $earthRadius = 6371000; // Radius bumi dalam meter
+        
+        $lat1Rad = deg2rad($lat1);
+        $lng1Rad = deg2rad($lng1);
+        $lat2Rad = deg2rad($lat2);
+        $lng2Rad = deg2rad($lng2);
+        
+        $latDelta = $lat2Rad - $lat1Rad;
+        $lngDelta = $lng2Rad - $lng1Rad;
+        
+        $a = sin($latDelta / 2) * sin($latDelta / 2) +
+            cos($lat1Rad) * cos($lat2Rad) *
+            sin($lngDelta / 2) * sin($lngDelta / 2);
+        
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        
+        return $earthRadius * $c; // Jarak dalam meter
     }
 
     public function get_upload_surat_pengantar_page()
@@ -45,7 +206,7 @@ class UserNormalController
 
         if (!$pengajuan) {
             return redirect('/dashboard')->withErrors([
-                'error' => "Pengajuan not found or is not in 'accept-first' status."
+                'error' => "Pengajuan tidak ditemukan atau tidak belum diterima."
             ]);
         }
 
@@ -65,6 +226,40 @@ class UserNormalController
         }
 
         return view('usernormal.pengajuan-saya', compact('pengajuan'));
+    }
+
+    public function get_magang_saya($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $magang = Magang::find($id);
+
+        if ($magang == null) {
+            abort(404);
+        }
+
+        return view('usernormal.magang-saya', compact('magang'));
+    }
+
+    public function get_nilai_sertifikat($id)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $magang = Magang::find($id);
+
+        if ($magang == null) {
+            abort(404);
+        }
+
+        if (!$magang->nilai_magang || !$magang->sertifikat_magang) {
+            return redirect()->back();
+        }
+
+        return view('usernormal.nilai-sertifikat', compact('magang'));
     }
 
     public function delete_pengajuan($id)
@@ -116,5 +311,140 @@ class UserNormalController
                 "title" => "Silahkan ajukan magang kembali",
             ]
         ]);
+    }
+
+    public function ajukan_magang_lagi()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $user = Auth::user();
+
+        $user->status_magang = 'tidak-aktif';
+        $user->save();
+
+        return redirect(url('/dashboard'))->with([
+            'success' => [
+                "title" => "Silahkan ajukan magang lagi",
+            ]
+        ]);
+    }
+
+    public function submit_laporan(Request $request, $id)
+    {
+        try {
+            // Validasi input
+            $request->validate([
+                'image' => 'required',
+                'type' => 'required|in:kehadiran,pulang', // Pastikan hanya bisa "kehadiran" atau "pulang"
+            ]);
+
+            // Temukan data presensi berdasarkan ID
+            $presensi = Presensi::findOrFail($id);
+
+            // Simpan gambar ke storage
+            $imageData = $request->image;
+            $image = str_replace('data:image/png;base64,', '', $imageData);
+            $image = str_replace(' ', '+', $image);
+            $imageName = $request->type . '_' . uniqid() . '.png'; // Nama file dinamis
+            Storage::disk('public')->put('laporan_presensi/' . $imageName, base64_decode($image));
+
+            // Variabel untuk menyimpan point
+            $point = 0;
+
+            // Perbarui data berdasarkan tipe (kehadiran atau pulang)
+            if ($request->type === 'kehadiran') {
+                // Konversi waktu masuk ke datetime
+                $jamMasuk = now();
+                $aturanJamMasuk = Carbon::today()->setTimeFromTimeString($presensi->aturan_jam_masuk);
+
+                // Hitung selisih waktu
+                $selisihMenit = $aturanJamMasuk->diffInMinutes($jamMasuk, false);
+
+                // Tentukan point berdasarkan selisih waktu
+                if ($selisihMenit <= 0) {
+                    // Tepat waktu
+                    $point = 100;
+                } elseif ($selisihMenit > 0 && $selisihMenit <= 30) {
+                    // Terlambat <= 30 menit
+                    $point = 90;
+                } elseif ($selisihMenit > 30 && $selisihMenit <= 60) {
+                    // Terlambat 31-60 menit
+                    $point = 80;
+                } elseif ($selisihMenit > 60) {
+                    // Terlambat > 60 menit
+                    $point = 75;
+                }
+
+                $presensi->update([
+                    'jam_masuk' => $jamMasuk->format('H:i:s'),
+                    'foto_masuk' => 'laporan_presensi/' . $imageName,
+                    'status' => 'hadir',
+                    'point_masuk' => $point,
+                    'updated_at' => now()
+                ]);
+            } elseif ($request->type === 'pulang') {
+                // Konversi waktu pulang ke datetime
+                $jamPulang = now();
+                $aturanJamPulang = Carbon::today()->setTimeFromTimeString($presensi->aturan_jam_keluar);
+
+                // Hitung selisih waktu
+                $selisihMenit = $aturanJamPulang->diffInMinutes($jamPulang, false);
+
+                // Tentukan point berdasarkan selisih waktu
+                if ($selisihMenit >= 0) {
+                    // Tepat waktu
+                    $point = 100;
+                } elseif ($selisihMenit < 0 && $selisihMenit >= -30) {
+                    // Pulang cepat <= 30 menit
+                    $point = 90;
+                } elseif ($selisihMenit < -30 && $selisihMenit >= -60) {
+                    // Pulang cepat 31-60 menit
+                    $point = 80;
+                } elseif ($selisihMenit < -60) {
+                    // Pulang cepat > 60 menit
+                    $point = 75;
+                }
+
+                // Ambil poin       t_masuk yang sudah tersimpan
+                $pointMasuk = $presensi->point_masuk ?? 0;
+
+                // Hitung total point
+                $totalPoint = round(($pointMasuk + $point) / 2);
+
+                $presensi->update([
+                    'jam_keluar' => $jamPulang->format('H:i:s'),
+                    'foto_keluar' => 'laporan_presensi/' . $imageName,
+                    'point_keluar' => $point,
+                    'point' => $totalPoint,
+                    'updated_at' => now()
+                ]);
+            }
+
+            // Flash message sukses
+            session()->flash('success', [
+                'title' => 'Data ' . ucfirst($request->type) . ' berhasil disimpan!',
+            ]);
+
+            // Return response JSON
+            return response()->json([
+                'redirect' => url('/presensi'),
+                'success' => true,
+                'message' => 'Data ' . ucfirst($request->type) . ' berhasil disimpan!',
+                'point' => $point
+            ]);
+            
+        } catch (\Exception $e) {
+            // Log error
+            \Log::error('Error submit ' . $request->type . ': ' . $e->getMessage());
+
+            // Return response JSON dengan error
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan ' . $request->type . '.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

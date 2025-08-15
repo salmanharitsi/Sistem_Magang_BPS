@@ -29,7 +29,7 @@
 
     {{-- Navbar section --}}
     <nav
-        class="sticky top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[100]">
+        class="fixed top-0 px-[20px] md:px-[10%] py-3 w-full flex justify-between items-center bg-gradient-to-r from-blue-900 to-blue-500 z-[100]">
         <div class="flex gap-3">
             <div class="flex items-center justify-start md:justify-center border-r md:border-white border-transparent">
                 <img class="w-[80%] mr-1" src="{{ asset('assets/bps-logo.svg') }}" alt="BPS logo image">
@@ -88,15 +88,19 @@
             </button>
         </div>
     </nav>
+
+    <!-- Add spacing to prevent content from hiding behind fixed navbar -->
+    <div class="h-[62px]"></div>
+
     <div id="mobile-menu"
-        class="hidden fixed lg:hidden rounded-b-lg py-3 w-[100vw] bg-gradient-to-r from-blue-900 to-blue-500 text-white text-sm flex items-center gap-5 justify-center flex-col z-30 overflow-hidden">
+        class="hidden fixed lg:hidden top-[62px] rounded-b-lg py-3 w-full bg-gradient-to-r from-blue-900 to-blue-500 text-white text-sm flex items-center gap-5 justify-center flex-col z-30 overflow-hidden">
         <div class="border-b border-white text-white w-full py-3 text-center flex flex-col gap-3">
             <h1 class="font-regular text-[21px]">Badan Pusat Statistik</h1>
             <p class="font-light text-[16px]">Provinsi Riau</p>
         </div>
-        <a href="#beranda" class="nav-link py-1">Beranda</a>
-        <a href="#fungsi-bagian" class="nav-link py-1">Informasi bidang</a>
-        <a href="#faqs" class="nav-link py-1">FAQs</a>
+        <a href="#beranda" class="nav-link py-3">Beranda</a>
+        <a href="#fungsi-bagian" class="nav-link py-3">Informasi bidang</a>
+        <a href="#faqs" class="nav-link py-3">FAQs</a>
         @if (Auth::check())
             <a href="{{ url('/login') }}"
                 class="px-2 py-2 rounded-3xl flex items-center justify-center gap-3 bg-white text-blue-500">
@@ -127,12 +131,13 @@
                 Pusat Statistik Provinsi Riau. Kembangkan potensi diri <br> bersama statistisi berpengalaman.</p>
             <div
                 class="flex flex-col md:flex-row gap-5 items-center text-center w-full md:w-fit delay-[1000ms] duration-[600ms] taos:scale-[1.1] taos:opacity-0">
-                <a href=""
+                <a href="#alur-pendaftaran"
                     class="rounded-[10px] w-full md:px-9 py-3 bg-blue-600 text-white text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-blue-500">Alur
                     Pendaftaran</a>
-                <a href="{{ Auth::check() ? '/dashboard' : '/login' }}"
-                    class="rounded-[10px] w-full md:px-9 py-3 bg-white text-[#514E4E] text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-[#e2e2e2]">Telusuri
-                    Program</a>
+                <a href="{{ Auth::check() ? '/dashboard' : '/registrasi' }}"
+                    class="rounded-[10px] w-full md:px-9 py-3 bg-white text-[#514E4E] text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-[#e2e2e2]">
+                    Ikuti Program
+                </a>
             </div>
         </div>
     </section>
@@ -157,52 +162,65 @@
                     @foreach ($fungsi_bagian as $item)
                         <li class="px-2 py-2 md:py-5 md:px-5">
                             <div
-                                class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col h-full relative overflow-hidden">
-                                <div class="w-[20%]">
-                                    <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
-                                        alt="">
-                                </div>
+                                class="fungsi-card-parent rounded-lg border p-5 bg-white flex flex-col justify-between h-full relative overflow-hidden">
                                 <div>
-                                    <h2
-                                        class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end whitespace-nowrap">
-                                        {{ $item['title'] }}</h2>
-                                    <div class="w-full flex justify-end mt-[-5px]">
-                                        <img class="w-[50%]"
-                                            src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
+                                    <div class="w-[20%]">
+                                        <img class="w-full" src="{{ asset('assets/home/fungsi_bagian/koma.svg') }}"
                                             alt="">
                                     </div>
-                                    <p class="mt-5 text-[15px] text-gray-500">{{ $item['description'] }}</p>
+                                    <div>
+                                        <h2
+                                            class="text-[20px] md:text-[25px] text-[#5d5d5d] font-bold text-end whitespace-nowrap">
+                                            {{ $item['title'] }}</h2>
+                                        <div class="w-full flex justify-end mt-[-5px]">
+                                            <img class="w-[50%]"
+                                                src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
+                                                alt="">
+                                        </div>
+                                        <p class="mt-5 text-[15px] text-gray-500 line-clamp-5 text-justify">{{ $item['description'] }}</p>
+                                    </div>
                                 </div>
                                 <div class="flex justify-end">
-                                    <div class="mt-3 w-fit text-end text-white relative z-10 icon-container">
-                                        <i
-                                            class="icon-info fa-solid fa-arrow-left p-3 bg-gradient-to-r from-blue-400 to-blue-700 rounded-full cursor-pointer rotate-45"></i>
-                                    </div>
-                                    <div
-                                        class="overlay absolute top-0 left-0 w-full h-full flex items-center justify-center text-white text-center p-5 opacity-0 pointer-events-none transition-opacity duration-500 bg-gradient-to-r from-blue-100 to-blue-200 border border-blue-700">
-                                        <div class="p-5">
-                                            <h2 class="text-[22px] font-semibold text-blue-700">Rekomendasi Jurusan
-                                            </h2>
-                                            <div class="w-full flex justify-end mt-[-5px]">
-                                                <img class="w-[70%]"
-                                                    src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}"
-                                                    alt="">
-                                            </div>
-                                            <div class="mt-3 text-[14px] text-gray-800 font-normal flex">
-                                                <p>
-                                                    @foreach ($item['jurusan'] as $jurusan)
-                                                        {{ $jurusan }},
-                                                    @endforeach
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button onclick="openDetailModal(
+                                        '{{ $item['title'] }}',
+                                        '{{ $item['description'] }}',
+                                        @json($item['jurusan']->pluck('jurusan'))
+                                    )" 
+                                class="mt-3 w-fit text-end text-white relative z-10 icon-container">
+                                    <i class="icon-info fa-solid fa-arrow-left p-3 bg-gradient-to-r from-blue-400 to-blue-700 rounded-full cursor-pointer rotate-45"></i>
+                                </button>
                                 </div>
                             </div>
                         </li>
                     @endforeach
                 </ul>
             </div>
+            
+            <!-- Modal -->
+            <div id="detailFungsiBagianModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000] hidden">
+                <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-5">
+                    <div class="flex justify-between items-center border-b pb-4">
+                        <h3 class="text-2xl font-semibold text-blue-600" id="fungsiTitle"></h3>
+                        <button onclick="closeDetailModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-x"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <div class="">
+                            <h4 class="text-lg font-bold text-gray-900">Deskripsi</h4>
+                            <p id="fungsiDescription" class="text-gray-600 text-justify max-h-[290px] overflow-y-auto"></p>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="text-lg font-bold text-gray-900">Jurusan yang Direkomendasikan</h4>
+                            <div 
+                              id="jurusanList"
+                              class="grid grid-cols-2 md:grid-cols-3 gap-1 text-gray-600 max-h-[80px] overflow-y-auto pr-2">
+                            </div>  
+                        </div>                          
+                    </div>
+                </div>
+            </div>
+
             <div class="flex items-center">
                 <div class="w-full flex justify-start">
                     <button class="prev-slider p-3 rounded-lg bg-white border border-[#767676] shadow-lg ml-3 flex">
@@ -237,10 +255,178 @@
         </div>
     </section>
 
+    {{-- Alur Pendaftaran Section --}}
+    <section id="alur-pendaftaran" class="relative w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100 overflow-hidden">     
+        <div class="w-full flex flex-col items-start justify-start gap-1">
+            <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Alur Pendaftaran Magang BPS</h1>
+            <p class="text-gray-600 text-[16px]">Ikuti langkah-langkah berikut untuk mengikuti program magang di Badan Pusat Statistik Provinsi Riau</p>
+        </div>
+        
+        <div class="w-full flex flex-col items-center justify-center delay-[700ms] duration-[600ms] taos:scale-[0.8] taos:opacity-0" data-taos-offset="100">
+            <!-- Timeline untuk Desktop (md and up) -->
+            <div class="hidden lg:flex w-full relative">
+                <!-- Timeline line -->
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-700 transform -translate-y-1/2 rounded-full"></div>
+                
+                <!-- Step 1 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">1</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Registrasi Akun</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-user-plus text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Buat akun baru dengan mengisi formulir pendaftaran</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">2</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Lengkapi Profil</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-id-card text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Isi data diri, pendidikan, dan unggah berkas yang diperlukan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">3</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Ajukan Lamaran</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-file-signature text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Pilih bagian yang sesuai dengan jurusan dan minat Anda</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">4</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Proses Seleksi</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-list-check text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Tim BPS akan menyeleksi lamaran kamu secara bertahap</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="w-1/5 px-2 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold mb-4 z-10">5</div>
+                        <div class="bg-white shadow-lg rounded-lg p-4 text-center h-fit flex flex-col gap-4">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <h3 class="font-bold text-[#5d5d5d] text-lg">Mulai Magang</h3>
+                                <div class="w-full flex justify-center">
+                                    <i class="fa-solid fa-briefcase text-4xl text-blue-600"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">Jika diterima, Anda akan mengikuti program magang sesuai jadwal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timeline untuk Mobile (sm and below) -->
+            <div class="lg:hidden w-full relative pb-8">
+                <!-- Timeline vertical line -->
+                <div class="absolute top-0 left-[25px] w-1 h-full bg-gradient-to-b from-blue-400 to-blue-700 rounded-full"></div>
+                
+                <!-- Step 1 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">1</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Registrasi Akun</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-user-plus text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Buat akun baru dengan mengisi formulir pendaftaran</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">2</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Lengkapi Profil</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-id-card text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Isi data diri, pendidikan, dan unggah berkas yang diperlukan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">3</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Ajukan Lamaran</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-file-signature text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Pilih bagian yang sesuai dengan jurusan dan minat Anda</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="flex mb-10 relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">4</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Proses Seleksi</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-list-check text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Tim BPS akan menyeleksi lamaran yang masuk</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="flex relative">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 flex items-center justify-center text-white text-xl font-bold z-10 flex-shrink-0">5</div>
+                    <div class="ml-4 bg-white shadow-lg rounded-lg p-4 flex-grow">
+                        <h3 class="font-bold text-[#5d5d5d] text-lg">Mulai Magang</h3>
+                        <div class="w-full flex items-center mt-2">
+                            <i class="fa-solid fa-briefcase text-2xl text-blue-600 mr-3"></i>
+                            <p class="text-sm text-gray-500">Jika diterima, Anda akan mengikuti program magang sesuai jadwal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex justify-center mt-8">
+            <a href="{{ Auth::check() ? '/dashboard' : '/registrasi' }}" class="rounded-[10px] px-9 py-3 bg-blue-600 text-white text-[14px] whitespace-nowrap transition duration-300 ease-in-out hover:bg-blue-500 delay-[900ms] duration-[600ms] taos:translate-y-[50px] taos:opacity-0" data-taos-offset="100">
+                Mulai Pendaftaran
+            </a>
+        </div>
+    </section>
+
     {{-- FaQs Section --}}
     <section id="faqs"
         class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100 overflow-hidden">
-        <div class="w-[87%] flex flex-col items-start justify-center gap-1">
+        <div class="w-full flex flex-col items-start justify-start gap-1">
             <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Frequently asked questions</h1>
             <p class="text-gray-600 text-[16px]">Butuh bantuan? Coba cek terlebih dahulu pertanyaan yang sering
                 ditanyakan berikut</p>
@@ -311,6 +497,65 @@
     </footer>
 
     <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach event listeners to all icon containers
+            const iconContainers = document.querySelectorAll('.icon-container');
+            const fungsiItem = @json($fungsi_bagian); // Pindahkan ke atas, biar nggak diulang-ulang dalam foreach
+    
+            iconContainers.forEach(function(container, index) {
+                container.addEventListener('click', function() {
+                    if (fungsiItem && fungsiItem[index]) {
+                        openDetailModal(fungsiItem[index]);
+                    }
+                });
+            });
+        });
+    
+        // Function to open modal with fungsi bagian details
+        function openDetailModal(fungsiData) {
+        document.getElementById('fungsiTitle').textContent = fungsiData.title;
+        document.getElementById('fungsiDescription').textContent = fungsiData.description;
+
+        const jurusanList = document.getElementById('jurusanList');
+        jurusanList.innerHTML = ''; // bersihin dulu
+
+        if (fungsiData.jurusan?.length) {
+            fungsiData.jurusan.forEach(j => {
+            const d = document.createElement('div');
+            d.className = 'flex items-start';
+            d.innerHTML = `
+                <span class="mr-2 text-blue-600">•</span>
+                <span>${j.jurusan}</span>
+            `;
+            jurusanList.appendChild(d);
+            });
+        } else {
+            jurusanList.innerHTML =
+            '<div class="text-gray-400 col-span-3">Tidak ada jurusan tersedia.</div>';
+        }
+
+        document
+            .getElementById('detailFungsiBagianModal')
+            .classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        }
+    
+        // Function to close the modal
+        function closeDetailModal() {
+            document.getElementById('detailFungsiBagianModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        }
+    
+        // Close modal when clicking outside
+        document.getElementById('detailFungsiBagianModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeDetailModal();
+            }
+        });
+    </script>
+    
 </body>
 
 </html>

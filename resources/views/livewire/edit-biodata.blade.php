@@ -4,7 +4,8 @@
 
 <form class="flex flex-col gap-5" wire:submit="update_data">
     <div class="">
-        <label for="" class="block mb-1 text-md font-medium text-gray-700">Foto Profil</label>
+        <label for="" class="block mb-1 text-md font-medium text-gray-700">Foto Profil<span
+            class="text-red-500 ml-1">*</span></label>
         @if ($foto_profil)
             @if (is_string($foto_profil))
                 <div class="relative w-28 h-28 mt-3 rounded-full overflow-hidden cursor-pointer bg-gray-200 border-2 group"
@@ -54,9 +55,9 @@
     <div>
         <label for="tentang_saya" class="block mb-1 text-md font-medium text-gray-700">Tentang Saya<span
                 class="text-red-500 ml-1">*</span></label>
-        <textarea maxlength="250" name="tentang_saya" id="tentang_saya" wire:model.live="tentang_saya"
+        <textarea name="tentang_saya" id="tentang_saya" wire:model.live="tentang_saya"
             class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
-            placeholder="Masukkan deskripsi diri kamu"></textarea>
+            placeholder="Deskripsikan keahlian kamu pada peminatan yang kamu pilih"></textarea>
         @error('tentang_saya')
             <span class="text-red-500 text-[11px]">{{ $message }}</span>
         @enderror
@@ -104,7 +105,7 @@
                     class="text-red-500 ml-1">*</span></label>
             <input type="date" name="tanggal_lahir" id="tanggal_lahir" wire:model.live="tanggal_lahir"
                 class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
-                placeholder="Pilih tanggal lahir" max="{{ date('Y-m-d', strtotime('-1 day')) }}" />
+                placeholder="Pilih tanggal lahir" max="{{ date('Y-m-d', strtotime('-15 years')) }}" />
             @error('tanggal_lahir')
                 <span class="text-red-500 text-[11px]">{{ $message }}</span>
             @enderror

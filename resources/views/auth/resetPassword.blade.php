@@ -14,7 +14,7 @@
 <body>
     
     <div class="flex flex-col lg:flex-row relative">
-        <div class="m-0 p-0 w-full h-[100vh] relative gradient-overlay-login z-[0] basis-[65%]">
+        <div class="m-0 p-0 w-full h-[15vh] md:h-[100vh] relative gradient-overlay-login z-[0] basis-[65%]">
             <img src="{{ asset('assets/home/beranda/BPS.jpg') }}" alt="BPS image" class= "object-cover w-full h-full">
         </div>
         <div class="relative px-5 py-5 md:px-20 md:py-10 flex flex-col items-center justify-center gap-7 z-10 basis-[35%]">

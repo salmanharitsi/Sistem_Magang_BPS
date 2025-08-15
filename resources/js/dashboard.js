@@ -6,12 +6,24 @@ document.addEventListener("DOMContentLoaded", function () {
 //fungsi memberikan highlight ke menu yg sedang dipilih
 function highlightActiveMenuItem() {
     const links = document.querySelectorAll("a.menu-item");
-    const currentPath = window.location.pathname;
+    const currentUrl = new URL(window.location.href);
+    const currentPath = currentUrl.pathname;
+    const currentParams = currentUrl.searchParams;
 
     links.forEach((link) => {
-        const linkPath = link.getAttribute("href");
+        const linkUrl = new URL(link.href, window.location.origin);
+        const linkPath = linkUrl.pathname;
+        const linkParams = linkUrl.searchParams;
 
-        if (currentPath.includes(linkPath) && linkPath !== "/") {
+        // Cek kesesuaian path utama
+        const isPathMatch = currentPath === linkPath;
+
+        // Cek kesesuaian parameter 'selected' jika ada
+        const isSelectedMatch =
+            !linkParams.has("selected") ||
+            currentParams.get("selected") === linkParams.get("selected");
+
+        if (isPathMatch && isSelectedMatch) {
             link.classList.add(
                 "bg-blue-600",
                 "text-white",
@@ -21,62 +33,70 @@ function highlightActiveMenuItem() {
                 "dark:from-blue-400",
                 "dark:to-blue-700"
             );
-        } else {
             link.classList.remove("bg-blue-50", "text-blue-600");
+        } else {
+            link.classList.remove(
+                "bg-blue-600",
+                "text-white",
+                "hover:text-white",
+                "font-regular",
+                "dark:text-[#0f1214]",
+                "dark:from-blue-400",
+                "dark:to-blue-700"
+            );
         }
     });
 }
 
-
 function toggleSidebar() {
-    const toggleSidebarButton = document.getElementById('toggle-sidebar');
-    const sidebar = document.getElementById('application-sidebar-brand');
-    const pageWrapper = document.querySelector('.page-wrapper');
-    const loaderItem = document.querySelector('.img-loader');
-    const menuItems = document.querySelectorAll('.menu-item');
-    const icons = document.querySelectorAll('.menu-item i');
+    const toggleSidebarButton = document.getElementById("toggle-sidebar");
+    const sidebar = document.getElementById("application-sidebar-brand");
+    const pageWrapper = document.querySelector(".page-wrapper");
+    const loaderItem = document.querySelector(".img-loader");
+    const menuItems = document.querySelectorAll(".menu-item");
+    const icons = document.querySelectorAll(".menu-item i");
 
     // Function to update sidebar based on window width
     function updateSidebar() {
         const clientWidth = document.documentElement.clientWidth;
         if (clientWidth < 1280) {
-            sidebar.classList.remove('aside-collapsed');
-            pageWrapper.style.marginLeft = '0';
-            localStorage.setItem('sidebarCollapsed', 'false');
-            menuItems.forEach(item => {
-                item.classList.add('justify-start');
-                item.classList.remove('justify-center');
+            sidebar.classList.remove("aside-collapsed");
+            pageWrapper.style.marginLeft = "0";
+            localStorage.setItem("sidebarCollapsed", "false");
+            menuItems.forEach((item) => {
+                item.classList.add("justify-start");
+                item.classList.remove("justify-center");
             });
-            icons.forEach(icon => {
-                icon.classList.add('ps-2');
+            icons.forEach((icon) => {
+                icon.classList.add("ps-2");
             });
-            loaderItem.classList.add('lg:ml-[18%]');
-            loaderItem.classList.remove('lg:ml-[5%]');
+            loaderItem.classList.add("lg:ml-[18%]");
+            loaderItem.classList.remove("lg:ml-[5%]");
         } else {
-            if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                sidebar.classList.add('aside-collapsed');
-                pageWrapper.style.marginLeft = '80px';
-                menuItems.forEach(item => {
-                    item.classList.remove('justify-start');
-                    item.classList.add('justify-center');
+            if (localStorage.getItem("sidebarCollapsed") === "true") {
+                sidebar.classList.add("aside-collapsed");
+                pageWrapper.style.marginLeft = "80px";
+                menuItems.forEach((item) => {
+                    item.classList.remove("justify-start");
+                    item.classList.add("justify-center");
                 });
-                icons.forEach(icon => {
-                    icon.classList.remove('ps-2');
+                icons.forEach((icon) => {
+                    icon.classList.remove("ps-2");
                 });
-                loaderItem.classList.add('lg:ml-[5%]');
-                loaderItem.classList.remove('lg:ml-[18%]');
+                loaderItem.classList.add("lg:ml-[5%]");
+                loaderItem.classList.remove("lg:ml-[18%]");
             } else {
-                sidebar.classList.remove('aside-collapsed');
-                pageWrapper.style.marginLeft = '270px';
-                menuItems.forEach(item => {
-                    item.classList.add('justify-start');
-                    item.classList.remove('justify-center');
+                sidebar.classList.remove("aside-collapsed");
+                pageWrapper.style.marginLeft = "270px";
+                menuItems.forEach((item) => {
+                    item.classList.add("justify-start");
+                    item.classList.remove("justify-center");
                 });
-                icons.forEach(icon => {
-                    icon.classList.add('ps-2');
+                icons.forEach((icon) => {
+                    icon.classList.add("ps-2");
                 });
-                loaderItem.classList.add('ml-[18%]');
-                loaderItem.classList.remove('ml-[5%]');
+                loaderItem.classList.add("ml-[18%]");
+                loaderItem.classList.remove("ml-[5%]");
             }
         }
     }
@@ -85,36 +105,51 @@ function toggleSidebar() {
     updateSidebar();
 
     // Add event listener for the toggle button
-    toggleSidebarButton.addEventListener('click', function () {
-        sidebar.classList.toggle('aside-collapsed');
+    toggleSidebarButton.addEventListener("click", function () {
+        sidebar.classList.toggle("aside-collapsed");
 
-        if (sidebar.classList.contains('aside-collapsed')) {
-            pageWrapper.style.marginLeft = '80px'; // Margin left after the sidebar is collapsed
-            localStorage.setItem('sidebarCollapsed', 'true'); // Save the state to localStorage
-            menuItems.forEach(item => {
-                item.classList.remove('justify-start');
-                item.classList.add('justify-center');
+        if (sidebar.classList.contains("aside-collapsed")) {
+            pageWrapper.style.marginLeft = "80px"; // Margin left after the sidebar is collapsed
+            localStorage.setItem("sidebarCollapsed", "true"); // Save the state to localStorage
+            menuItems.forEach((item) => {
+                item.classList.remove("justify-start");
+                item.classList.add("justify-center");
             });
-            icons.forEach(icon => {
-                icon.classList.remove('ps-2');
+            icons.forEach((icon) => {
+                icon.classList.remove("ps-2");
             });
-            loaderItem.classList.add('ml-[5%]');
-            loaderItem.classList.remove('ml-[18%]');
+            loaderItem.classList.add("ml-[5%]");
+            loaderItem.classList.remove("ml-[18%]");
         } else {
-            pageWrapper.style.marginLeft = '270px'; // Normal margin left
-            localStorage.setItem('sidebarCollapsed', 'false'); // Save the state to localStorage
-            menuItems.forEach(item => {
-                item.classList.add('justify-start');
-                item.classList.remove('justify-center');
+            pageWrapper.style.marginLeft = "270px"; // Normal margin left
+            localStorage.setItem("sidebarCollapsed", "false"); // Save the state to localStorage
+            menuItems.forEach((item) => {
+                item.classList.add("justify-start");
+                item.classList.remove("justify-center");
             });
-            icons.forEach(icon => {
-                icon.classList.add('ps-2');
+            icons.forEach((icon) => {
+                icon.classList.add("ps-2");
             });
-            loaderItem.classList.add('ml-[18%]');
-            loaderItem.classList.remove('ml-[5%]');
+            loaderItem.classList.add("ml-[18%]");
+            loaderItem.classList.remove("ml-[5%]");
         }
+
+        const normalBadges = document.querySelectorAll(
+            ".sidebar-item .absolute:not(.-top-2)"
+        );
+        const collapsedBadges = document.querySelectorAll(
+            ".sidebar-item .absolute.-top-2"
+        );
+
+        normalBadges.forEach((badge) => {
+            badge.classList.toggle("hidden");
+        });
+
+        collapsedBadges.forEach((badge) => {
+            badge.classList.toggle("hidden");
+        });
     });
 
     // Add event listener for window resize
-    window.addEventListener('resize', updateSidebar);
+    window.addEventListener("resize", updateSidebar);
 }

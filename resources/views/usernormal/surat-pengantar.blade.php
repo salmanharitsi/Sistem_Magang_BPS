@@ -18,7 +18,7 @@
                 <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                     <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                         <i class="ti ti-alert-triangle text-lg"></i>
-                        <p class="text-sm"><span class="font-semibold">Peringatan: </span>Surat pengantar tidak valid / tidak jelas dapat menyebabkan pengajuan kamu ditolak</p>
+                        <p class="text-sm"><span class="font-semibold">Peringatan: </span>Surat pengantar <span class="font-semibold">tidak valid / tidak dapat diakses / tidak jelas</span> menyebabkan pengajuan kamu ditolak</p>
                     </div>
                 </div>
         @endif
@@ -92,8 +92,7 @@
                     Auth::user()->jenis_kelamin != null &&
                     Auth::user()->tempat_lahir != null &&
                     Auth::user()->tanggal_lahir != null &&
-                    Auth::user()->alamat != null &&
-                    Auth::user()->kartu_penduduk != null)
+                    Auth::user()->alamat != null)
                 var step1 = document.querySelector('.step1-active');
                 if (step1) {
                     var span = step1.querySelector('span');

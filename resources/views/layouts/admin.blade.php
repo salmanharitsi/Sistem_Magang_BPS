@@ -58,17 +58,22 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
-                                href="/">
-                                <i class="ti ti-home ps-2 text-xl"></i>
-                                <span>Beranda</span>
+                                href="/dashboard-admin">
+                                <i class="ti ti-layout-dashboard ps-2 text-xl"></i>
+                                <span>Dashboard</span>
                             </a>
+                        </li>
+
+                        <li class="text-xs font-bold pb-[5px] mt-6">
+                            <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                            <span class="text-xs text-gray-600 font-semibold">KONTEN</span>
                         </li>
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
-                                href="/dashboard-admin">
-                                <i class="ti ti-layout-dashboard ps-2 text-xl"></i>
-                                <span>Dashboard</span>
+                                href="/edit-home?selected=fungsi-bagian">
+                                <i class="ti ti-photo-edit ps-2 text-xl"></i>
+                                <span>Edit Konten</span>
                             </a>
                         </li>
 
@@ -79,17 +84,87 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/daftar-pengajuan">
-                                <i class="ti ti-list-check ps-2 text-xl"></i>
-                                <span class="whitespace-nowrap">Daftar Pengajuan</span>
+                                href="/daftar-pegawai">
+                                <i class="ti ti-user-star ps-2 text-xl"></i>
+                                <span class="whitespace-nowrap">Daftar Pegawai</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
-                                href="/logout">
-                                <i class="ti ti-logout ps-2 text-xl"></i>
-                                <span>Keluar</span>
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                href="/daftar-magang">
+                                <i class="ti ti-building-carousel ps-2 text-xl"></i>
+                                <span class="whitespace-nowrap">Daftar Peserta Magang</span>
+                            </a>
+                        </li>
+
+                        <!-- Menu Daftar Pengajuan dengan Badge -->
+                        <li class="sidebar-item relative">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                href="/daftar-pengajuan">
+                                <i class="ti ti-list-check ps-2 text-xl"></i>
+                                <span class="whitespace-nowrap">Daftar Pengajuan</span>
+
+                                @isset($countPengajuan)
+                                    @if ($countPengajuan > 0)
+                                        <!-- Badge untuk sidebar normal -->
+                                        <div
+                                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center block">
+                                            {{ $countPengajuan }}
+                                        </div>
+
+                                        <!-- Badge untuk sidebar collapsed -->
+                                        <div
+                                            class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center hidden">
+                                            {{ $countPengajuan }}
+                                        </div>
+                                    @endif
+                                @endisset
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                href="/kelola-pembimbing">
+                                <i class="ti ti-user-pentagon ps-2 text-xl"></i>
+                                <span class="whitespace-nowrap">Kelola Pembimbing</span>
+                            </a>
+                        </li>
+
+                        <li class="text-xs font-bold pb-[5px] mt-6">
+                            <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                            <span class="text-xs text-gray-600 font-semibold">MAGANG</span>
+                        </li>
+
+                        <li class="sidebar-item relative">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
+                                href="/daftar-persetujuan">
+                                <i class="ti ti-progress-check ps-2 text-xl"></i>
+                                <span>Daftar Persetujuan</span>
+
+                                @isset($countPersetujuan)
+                                    @if ($countPersetujuan > 0)
+                                        <!-- Badge untuk sidebar normal -->
+                                        <div
+                                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center block">
+                                            {{ $countPersetujuan }}
+                                        </div>
+
+                                        <!-- Badge untuk sidebar collapsed -->
+                                        <div
+                                            class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center hidden">
+                                            {{ $countPersetujuan }}
+                                        </div>
+                                    @endif
+                                @endisset
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-700"
+                                href="/daftar-bimbingan">
+                                <i class="ti ti-users-group ps-2 text-xl"></i>
+                                <span>Daftar Bimbingan</span>
                             </a>
                         </li>
 
@@ -107,7 +182,7 @@
                     <!-- -------------- -->
                     <!-- Layout Header -->
                     <!-- -------------- -->
-                    <div class="flex gap-[23px] sticky top-5 z-50">
+                    <div class="flex gap-[23px] z-50">
                         <div
                             class="bg-white dark:bg-[#14181b] lg:flex items-center justify-center px-5 rounded-lg card hidden transition duration-200">
                             <button id="toggle-sidebar" class="text-gray-700 dark:text-white hover:text-blue-600">
@@ -247,6 +322,10 @@
         </div>
     </div>
 
+    <button id="scrollToTop"
+        class="hidden fixed bottom-5 right-5 bg-blue-600 text-white w-10 h-10 flex items-center justify-center rounded-lg card hover:bg-blue-700 transition-all duration-300 z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Add your scripts here -->
     @livewireScripts
@@ -280,6 +359,27 @@
                 e.preventDefault();
             }
         });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const scrollToTopBtn = document.getElementById("scrollToTop");
+
+            window.addEventListener("scroll", function() {
+                if (window.scrollY > 30) {
+                    scrollToTopBtn.classList.remove("hidden");
+                } else {
+                    scrollToTopBtn.classList.add("hidden");
+                }
+            });
+
+            scrollToTopBtn.addEventListener("click", function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        });
     </script>
 
 </body>
+
+</html>

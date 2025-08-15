@@ -1,5 +1,6 @@
 @php
     use Carbon\Carbon;
+    Carbon::setLocale('id');
 @endphp
 <div>
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -12,7 +13,7 @@
                     </div>
                     <input wire:model.live="search" type="text" id="simple-search"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="cari pengajuan..." required="">
+                        placeholder="cari magang..." required="">
                 </div>
             </form>
         </div>
@@ -54,21 +55,21 @@
                         <td class="py-4 px-6 text-left">
                             {{$data->jenis_magang}}
                         </td>
-                        <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->bidang_tujuan }}</td>
+                        <td class="py-4 px-6 text-left">{{ $data->bidang_tujuan }}</td>
                         </td>
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->format('j-F-Y') }}
+                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_mulai)->translatedFormat('j F Y') }}
                         </td>
-                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->format('j-F-Y') }}
+                        <td class="py-4 px-6 text-left">{{ Carbon::parse($data->tanggal_selesai)->translatedFormat('j F Y') }}
                         </td>
-                        <td class="py-4 px-6 text-left">{{ $data->created_at->format('j-F-Y') }}</td>
+                        <td class="py-4 px-6 text-left">{{ $data->created_at->translatedFormat('j F Y') }}</td>
                         <td class="py-4 px-6 text-center">
                             <div
                                 class="text-[13px] mx-auto items-center w-fit">
                                 @if ($data->status_pengajuan == 'waiting')
                                     <p class="text-amber-700 border-amber-600 bg-amber-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Menunggu</p>
-                                @elseif($data->status_pengajuan == 'accept-first')
+                                @elseif($data->status_pengajuan == 'accept-first' || $data->status_pengajuan == 'accept-final')
                                     <p class="text-green-700 border-green-600 bg-green-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Diterima</p>
-                                @elseif($data->status_pengajuan == 'reject-time' || $data->status_pengajuan == 'reject-admin' || $data->status_pengajuan == 'reject-final')
+                                @elseif($data->status_pengajuan == 'reject-time' || $data->status_pengajuan == 'reject-admin' || $data->status_pengajuan == 'reject-final' || $data->status_pengajuan == 'reject-days')
                                     <p class="text-red-700 border-red-600 bg-red-50 border-2 rounded-full whitespace-nowrap px-3 py-1 ">Ditolak</p>
                                 @endif
                             </div>
@@ -84,7 +85,7 @@
                     <tr class="bg-white border-b hover:bg-gray-50 text-center">
                         <td colspan="8" class="py-10 text-gray-300">
                             <i class="ti ti-file-x text-4xl"></i>
-                            <p class="font-semibold text-md">Belum ada data pengajuan</p>
+                            <p class="font-semibold text-md">data pengajuan tidak ditemukan</p>
                             <a href="/dashboard"
                                 class="pjax-link flex items-center justify-center mx-[45%] mt-3 gap-1 bg-blue-600 border border-transparent px-2 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                                 <i class="ti ti-files"></i>

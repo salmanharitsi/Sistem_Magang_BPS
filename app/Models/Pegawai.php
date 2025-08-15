@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -127,5 +128,10 @@ class Pegawai extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(RolePegawai::class, 'pegawai_role', 'pegawai_id', 'role_pegawai_id');
+    }
+
+    public function presensi(): HasMany
+    {
+        return $this->hasMany(Presensi::class);
     }
 }

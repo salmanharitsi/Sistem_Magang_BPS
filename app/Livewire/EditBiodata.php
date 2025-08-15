@@ -40,8 +40,8 @@ class EditBiodata extends Component
     {
         return [
             'name' => 'required|min:5',
-            'foto_profil' => 'max:2048',
-            'tentang_saya' => 'required|max:250',
+            'foto_profil' => 'required|max:2048',
+            'tentang_saya' => 'required|max:500',
             'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
@@ -58,11 +58,12 @@ class EditBiodata extends Component
                 "min" => 'Nama minimal 5 karakter',
             ],
             'foto_profil' => [
+                "required" => 'Foto Profil tidak boleh kosong',
                 "max" => 'File tidak boleh lebih dari 2mb'
             ],
             'tentang_saya' => [
                 "required" => 'Tentang saya tidak boleh kosong',
-                "max" => 'Maksimal 250 karakter'
+                "max" => 'Maksimal 500 karakter'
             ],
             'jenis_kelamin' => [
                 "required" => 'Jenis Kelamin tidak boleh kosong',
@@ -113,8 +114,7 @@ class EditBiodata extends Component
         if (!$isDataChanged) {
             return redirect('/profil-edit?selected=biodata')->with([
                 'warning' => [
-                    "title" => "Tidak ada perubahan data",
-                    "message" => "Akun berhasil diperbarui"
+                    "title" => "Tidak ada perubahan data"
                 ]
             ]);
         }
@@ -132,8 +132,7 @@ class EditBiodata extends Component
 
         return redirect('/profil')->with([
             'success' => [
-                "title" => "Data Berhasil diperbarui",
-                "message" => "Akun berhasil diperbarui"
+                "title" => "Data Berhasil diperbarui"
             ]
         ]);
     }

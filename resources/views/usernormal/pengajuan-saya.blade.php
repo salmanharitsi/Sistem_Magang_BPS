@@ -6,6 +6,7 @@
     @php
         $firstLetter = strtoupper(substr($pengajuan->name, 0, 1));
         use Carbon\Carbon;
+        Carbon::setLocale('id');
     @endphp
 
     <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
@@ -25,7 +26,7 @@
                     <div class="col-span-4 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                         <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                             <i class="ti ti-alert-circle text-lg"></i>
-                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ \Carbon\Carbon::parse($pengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
+                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ Carbon::parse($pengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
                         </div>
                     </div>
                 </div>
@@ -58,9 +59,9 @@
             </div>
         @endif
 
-        <div class="col-span-4 grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
+        <div class="col-span-4 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
 
-            <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="col-span-2 lg:col-span-1 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <div class="">
                     <h4 class="text-gray-800 text-[22px] pb-3 border-b border-gray-300 font-semibold dark:text-white">
                         Pengajuan Program
@@ -77,20 +78,20 @@
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Mulai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_mulai)->format('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_mulai)->translatedFormat('j F Y') }}
                             </p>
                         </div>
                         <div>
                             <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal selesai</h6>
                             <p class="text-gray-600 text-sm">
-                                {{ Carbon::parse($pengajuan->tanggal_selesai)->format('j-F-Y') }}
+                                {{ Carbon::parse($pengajuan->tanggal_selesai)->translatedFormat('j F Y') }}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+            <div class="col-span-2 lg:col-span-1 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <div class="">
                     <h4 class="text-gray-800 text-[22px] pb-3 border-b border-gray-300 font-semibold dark:text-white">
                         Informasi Akademik
@@ -107,6 +108,38 @@
                     <p class="text-gray-600 text-sm">
                         {{ $pengajuan->nomor_induk }}
                     </p>
+                </div>
+            </div>
+
+            <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <h4 class="text-gray-800 text-[22px] pb-3 border-b border-gray-300 font-semibold dark:text-white">
+                    Penanggung Jawab
+                </h4>
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nama</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_name }}
+                        </p>
+                    </div>
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Jabatan</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_jabatan }}
+                        </p>
+                    </div>
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Email</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_email }}
+                        </p>
+                    </div>
+                    <div>
+                        <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Nomor HP</h6>
+                        <p class="text-gray-600 text-sm">
+                            {{ $pengajuan->penanggung_jawab_nomor_hp }}
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -151,7 +184,7 @@
                     <div>
                         <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Tanggal Lahir</h6>
                         <p class="text-gray-600 text-sm">
-                            {{ Carbon::parse($pengajuan->tanggal_lahir)->format('j-F-Y') }}
+                            {{ Carbon::parse($pengajuan->tanggal_lahir)->translatedFormat('j F Y') }}
                         </p>
                     </div>
                 </div>
@@ -180,13 +213,19 @@
                     class="flex flex-col md:flex-row items-center px-2 py-2 mt-2 justify-between text-red-600 border-2 border-dashed border-gray-300 bg-gray-100 rounded-lg">
                     <div class="flex items-center gap-2">
                         <i class="ti ti-file-text text-2xl text-gray-700"></i>
-                        <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_ktp }}</p>
+                        @if ($pengajuan->original_filename_ktp)
+                            <p class="text-gray-600 text-sm">{{ $pengajuan->original_filename_ktp }}</p>
+                        @else
+                            <p class="text-red-600 text-sm">Kartu Tanda Penduduk tidak ada</p>
+                        @endif
                     </div>
-                    <button
-                        class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
-                        onclick="openPreview('{{ Storage::url($pengajuan->kartu_penduduk) }}')">
-                        Lihat file
-                    </button>
+                    @if ($pengajuan->original_filename_ktp)
+                        <button
+                            class="px-3 py-1 text-sm text-blue-700 bg-blue-200 rounded-md font-medium transition-all duration-200 hover:bg-blue-600 hover:text-white whitespace-nowrap"
+                            onclick="openPreview('{{ Storage::url($pengajuan->kartu_penduduk) }}')">
+                            Lihat file
+                        </button>
+                    @endif
                 </div>
 
                 <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Kartu Tanda Siswa/Mahasiswa</h6>

@@ -163,11 +163,6 @@ li .fungsi-card-parent {
     z-index: 2;
 }
 
-.icon-container:hover ~ .overlay {
-    opacity: 1;
-    pointer-events: auto;
-}
-
 li .fungsi-card-parent .overlay {
     /* background: linear-gradient(to left, #2162cc, #1845da); */
     transition: opacity 0.3s ease-in-out;
@@ -214,4 +209,29 @@ li .fungsi-card-parent .overlay {
     to {
         opacity: 1;
     }
+}
+
+.hover-gradient-purple {
+    border: none;
+    background-image: linear-gradient(to left, #4c00ce, #1c64f2);
+    position: relative;
+    z-index: 20; /* Memastikan teks tetap di atas */
+}
+
+.hover-gradient-purple::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right, #9557ff, #1c64f2);
+    opacity: 0;
+    transition: opacity .7s;
+    z-index: -1; /* Menempatkan di belakang konten */
+    border-radius: inherit; /* Mewarisi border radius */
+}
+
+.hover-gradient-purple:hover::before {
+    opacity: 1;
 }

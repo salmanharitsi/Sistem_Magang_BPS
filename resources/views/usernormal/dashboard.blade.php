@@ -5,6 +5,7 @@
 @section('content')
     @php
         use Carbon\Carbon;
+        Carbon::setLocale('id');
     @endphp
 
     <div class="w-full h-44 rounded-lg bg-blue-500 relative overflow-hidden">
@@ -18,8 +19,10 @@
         @php
             // Get the latest pengajuan record for the user
             $latestPengajuan = Auth::user()->pengajuan()->latest('created_at')->first();
+            // Get the latest magang record for the user
+            $latestMagang = Auth::user()->magang()->latest('created_at')->first();
         @endphp
-    
+
         @if (!is_null($latestPengajuan) && Auth::user()->status_magang === 'masa-daftar')
             {{-- Check if status is 'accept-first' and surat_pengantar is null --}}
             @if ($latestPengajuan->status_pengajuan === 'accept-first')
@@ -27,7 +30,7 @@
                     <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                         <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
                             <i class="ti ti-alert-circle text-lg"></i>
-                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ \Carbon\Carbon::parse($latestPengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
+                            <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ Carbon::parse($latestPengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
                         </div>
                     </div>
                     <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
@@ -49,11 +52,18 @@
                 <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                     <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                         <i class="ti ti-alert-triangle text-lg"></i>
-                        <p class="text-sm">Kamu melewati tenggat upload surat pengantar!</p>
+                        <p class="text-sm">Admin menolak pengajuan kamu karena melewati tenggat upload surat pengantar!</p>
+                    </div>
+                </div>
+            @elseif ($latestPengajuan->status_pengajuan === 'reject-days')
+                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
+                        <i class="ti ti-alert-triangle text-lg"></i>
+                        <p class="text-sm">Masa pendaftaran melewati tanggal mulai magang, silahkan ajukan kembali</p>
                     </div>
                 </div>
             {{-- Check if status is 'reject-admin' --}}
-            @elseif ($latestPengajuan->status_pengajuan === 'reject-admin')
+            @elseif ($latestPengajuan->status_pengajuan === 'reject-admin' || $latestPengajuan->status_pengajuan === 'reject-final')
                 <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                     <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                         <i class="ti ti-sparkles text-lg"></i>
@@ -77,9 +87,9 @@
             </div>
         @endif
     </div>
-    
 
-    <div class="grid grid-cols-1 mt-6 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6 {{($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar') ? 'mt-6' : 'mt-0'}}">
+        @if (($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar'))
         <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <ol class="flex items-center w-full px-[5%] md:px-[15%]">
                 <li
@@ -134,12 +144,12 @@
                     </div>
                 </li>
             </ol>
-            @if (Auth::user()->tentang_saya == null ||
+            @if (Auth::user()->foto_profil == null ||
+                    Auth::user()->tentang_saya == null ||
                     Auth::user()->jenis_kelamin == null ||
                     Auth::user()->tempat_lahir == null ||
                     Auth::user()->tanggal_lahir == null ||
-                    Auth::user()->alamat == null ||
-                    Auth::user()->kartu_penduduk == null)
+                    Auth::user()->alamat == null)
                 <div
                     class="w-full h-fit p-3 mt-5 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                     <div class="flex gap-3 items-start lg:items-center">
@@ -153,12 +163,12 @@
                     </a>
                 </div>
             @endif
-            @if (Auth::user()->tentang_saya != null &&
+            @if (Auth::user()->foto_profil != null &&
+                    Auth::user()->tentang_saya != null &&
                     Auth::user()->jenis_kelamin != null &&
                     Auth::user()->tempat_lahir != null &&
                     Auth::user()->tanggal_lahir != null &&
                     Auth::user()->alamat != null &&
-                    Auth::user()->kartu_penduduk != null &&
                     Auth::user()->status_magang == 'tidak-aktif')
                 <div class="w-full h-fit mt-9">
                     <h1 class="text-gray-800 text-2xl font-medium">Pengajuan Magang</h1>
@@ -178,13 +188,13 @@
                         sudah berhasil terkirim
                     </p>
                     <p class="text-sm">Untuk periode:
-                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                     </p>
                     <a href="/pengajuan"
                         class="pjax-link bg-green-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
-                        <p class="text-sm whitespace-nowrap">Cek pengajuan</p>
+                        <p class="text-sm whitespace-nowrap">Cek Pengajuan</p>
                     </a>
                 </div>
                 <div class="w-full h-fit p-3 mt-5 flex gap-3 flex-row items-start lg:items-center bg-green-100 rounded-lg text-green-600">
@@ -205,9 +215,9 @@
                             </p>
                             <p class="text-sm text-white">
                                 Untuk periode:
-                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                                 sampai dengan
-                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                             </p>
                             <div class="w-full flex items-center justify-center mt-5">
                                 <a href="/dashboard/surat-pengantar"
@@ -227,7 +237,7 @@
                     </div>
                 @endif
             @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'reject-time')
+            @if (!is_null($latestPengajuan) && ($latestPengajuan->status_pengajuan === 'reject-time' || $latestPengajuan->status_pengajuan === 'reject-final') && Auth::user()->status_magang == 'masa-daftar')
                 <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
                     <i class="ti ti-circle-x text-4xl md:text-5xl"></i>
                     <p class="text-sm">
@@ -238,15 +248,15 @@
                         ditolak
                     </p>
                     <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                     </p>
                     <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
                         @csrf
                         <button type="submit"
                             class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan kembali</p>
+                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
                         </button>
                     </form>
                 </div>
@@ -261,30 +271,236 @@
                         </span>
                     </p>
                     <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
                         sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->format('j-F-Y') }}</span>
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
                     </p>
                     <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
                         @csrf
                         <button type="submit"
                             class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan kembali</p>
+                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
+                        </button>
+                    </form>
+                </div>
+            @endif
+            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'reject-days')
+                <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
+                    <h1 class="md:text-xl font-semibold rounded-full text-white px-10 py-1.5 bg-gradient-to-r from-[#FF0000] to-[#6C2323]">Pengajuan Kamu Ditolak</h1>
+                    <p class="text-sm">
+                        jenis magang
+                        <span class="text-red-700 font-semibold">
+                            {{ $latestPengajuan->jenis_magang }}
+                        </span>
+                    </p>
+                    <p class="text-sm -mt-2">Untuk periode:
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
+                        sampai dengan
+                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
+                    </p>
+                    <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
+                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
                         </button>
                     </form>
                 </div>
             @endif
         </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isFuture())
+            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <i class="ti ti-calendar-time text-lg"></i>
+                    <p class="text-sm">Magang kamu akan dimulai pada <span class="font-bold">{{ Carbon::parse($latestMagang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+                </div>
+            </div>
+        @endif
+        @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Auth::user()->status_magang === 'aktif')
+            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <ol class="flex items-center w-full px-[5%] md:px-[15%]">
+                    <li class="intern-step1 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-orientasi">
+                            <i class="ti ti-flag text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-orientasi" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Mulai Magang
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                    <li class="intern-step2 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-project">
+                            <i class="ti ti-briefcase text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-project" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Mengumpulkan Laporan Akhir
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                    <li class="intern-step3 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-feedback">
+                            <i class="ti ti-calendar-stats text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-feedback" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Mengisi Feedback
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                    <li class="intern-step4 flex items-center w-fit">
+                        <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-sertifikat">
+                            <i class="ti ti-certificate text-2xl text-gray-500"></i>
+                        </span>
+                        <div id="tooltip-sertifikat" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                            Menerima Sertifikat
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isFuture())
+            <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-browser text-lg"></i>
+                            <p class="text-sm">Kamu terdaftar magang <span class="font-semibold">{{ $latestMagang->jenis_magang }}</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 col-span-2">
+                    <div class="col-span-1">
+                        @livewire('show-grafik-presensi')
+                    </div>
+                    <div class="col-span-1">
+                        @livewire('show-grafik-logbook')
+                    </div>
+                </div>
+                <div class="col-span-2 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
+                    <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Riwayat
+                        Presensi</div>
+                    @livewire('show-daftar-presensi')
+                </div>
+                <div class="col-span-2 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden">
+                    <div class="text-xl font-semibold text-gray-900 dark:text-white pt-5 pb-4 px-4 border-b border-gray-200">Riwayat
+                        Logbook</div>
+                    @livewire('show-daftar-logbook')
+                </div>
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && !$latestMagang->laporan_magang)
+            <div class="col-span-3 grid grid-cols-1 gap-6 lg:mt-6">
+                <div class="col-span-3 card rounded-lg bg-white p-5">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-sparkles text-lg"></i>
+                            <p class="text-sm">Upload projek magang jika kamu memiliki projek yang dikerjakan selama magang</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-3 card rounded-lg bg-white p-5">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-red-100 rounded-lg border text-red-700 border-red-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-alert-triangle text-lg"></i>
+                            <p class="text-sm">Pastikan link yang di submit dapat diakses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-3 card rounded-lg mt-0 bg-white p-5 h-fit dark:bg-[#14181b] transition-all duration-200">
+                    @livewire('upload-laporan-akhir', ['magangId' => $latestMagang->id])
+                </div>
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->laporan_magang && !$latestMagang->feedback)
+            <div class="col-span-3 grid grid-cols-1 gap-6 lg:mt-6">
+                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-browser text-lg"></i>
+                            <p class="text-sm">Kamu telah selesai magang <span class="font-semibold">{{ $latestMagang->jenis_magang }}</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex flex-col md:flex-row items-start gap-3 md:items-center justify-between rounded-lg">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
+                                Form Feedback Pengalaman Magang
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-3 relative rounded-lg overflow-hidden">
+                    @livewire('feedback-form', ['magangId' => $latestMagang->id])
+                </div>
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && (!$latestMagang->nilai_magang || !$latestMagang->sertifikat_magang))
+            <div class="col-span-3 card rounded-lg bg-white p-5 lg:mt-6">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-sparkles text-lg"></i>
+                        <p class="text-sm">Tunggu pembimbing memberikan nilai magang dan nantikan sertifikat magang kamu</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && $latestMagang->nilai_magang && $latestMagang->sertifikat_magang)
+            <div class="col-span-3 grid grid-cols-1 gap-6 lg:mt-6">
+                <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-alert-circle text-lg"></i>
+                            <p class="text-sm">Ingin mengajukan program magang lagi?</p>
+                        </div>
+                        <form action="{{ route('usernormal.ajukan-magang') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
+                                <p class="text-sm whitespace-nowrap">Ajukan Program</p>
+                            </button>
+                        </form>
+                    </div>
+                </div>  
+    
+                <div class="card rounded-lg bg-white p-5">
+                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                        <div class="flex gap-3 items-start lg:items-center">
+                            <i class="ti ti-sparkles text-lg"></i>
+                            <p class="text-sm">Nilai dan sertifikat magang kamu sudah diberikan</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="relative w-full h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
+                    <div class="flex flex-col gap-3 items-start">
+                        <p class="text-2xl font-medium italic">Nilai & Sertifikat Magang Kamu</p>
+                        <a href="/nilai-sertifikat/{{ $latestMagang->id }}"
+                            class="pjax-link bg-blue-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                            <p class="text-xs whitespace-nowrap">
+                                Lihat Nilai & Sertifikat
+                            </p>
+                        </a>
+                    </div>
+                    <div class="px-4 z-20">
+                        <p class="text-4xl font-bold">{{ $latestMagang->nilai_magang }}</p>
+                    </div>
+                    <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
+                </div>
+            </div>
+        @endif
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            //daftar step
             @if (Auth::user()->tentang_saya != null &&
                     Auth::user()->jenis_kelamin != null &&
                     Auth::user()->tempat_lahir != null &&
                     Auth::user()->tanggal_lahir != null &&
-                    Auth::user()->alamat != null &&
-                    Auth::user()->kartu_penduduk != null)
+                    Auth::user()->alamat != null)
                 var step1 = document.querySelector('.step1-active');
                 if (step1) {
                     var span = step1.querySelector('span');
@@ -344,7 +560,7 @@
                     }
                 }
             @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'accept-first' && Auth::user()->status_magang == 'masa-daftar')
+            @if (!is_null($latestPengajuan) && ($latestPengajuan->status_pengajuan === 'accept-first' || $latestPengajuan->status_pengajuan === 'reject-final') && Auth::user()->status_magang == 'masa-daftar')
                 var step2 = document.querySelector('.step2-active');
                 var step3 = document.querySelector('.step3-active');
                 if (step2) {
@@ -384,7 +600,7 @@
                     }
                 }
             @endif
-            @if(!is_null($latestPengajuan) && !is_null($latestPengajuan->surat_pengantar))
+            @if(!is_null($latestPengajuan) && !is_null($latestPengajuan->surat_pengantar) && $latestPengajuan->status_pengajuan !== 'reject-days' && Auth::user()->status_magang == 'masa-daftar')
                 var step3 = document.querySelector('.step3-active');
                 var step4 = document.querySelector('.step4-active');
                 if (step3) {
@@ -409,6 +625,150 @@
                 if (step4) {
                     var span = step4.querySelector('span');
                     var div = step4.querySelector('#tooltip-surat-pengantar');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step4.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+            @endif
+
+            //intern step
+            @if (!is_null($latestMagang) && $latestMagang->status_magang == 'active'){
+                var step1 = document.querySelector('.intern-step1');
+                if (step1) {
+                    var span = step1.querySelector('span');
+                    var div = step1.querySelector('#tooltip-orientasi');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step1.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+            }
+            @endif
+            @if (!is_null($latestMagang) && $latestMagang->status_magang == 'active' && $latestMagang->laporan_magang){
+                var step1 = document.querySelector('.intern-step1');
+                var step2 = document.querySelector('.intern-step2');
+                if (step1) {
+                    step1.classList.remove('after:border-gray-100', 'after:bg-gray-100');
+                    step1.classList.add('after:border-blue-600', 'after:bg-blue-600');
+                    var span = step1.querySelector('span');
+                    var div = step1.querySelector('#tooltip-orientasi');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step1.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+                if (step2) {
+                    var span = step2.querySelector('span');
+                    var div = step2.querySelector('#tooltip-project');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step2.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+            }
+            @endif
+            @if (!is_null($latestMagang) && $latestMagang->status_magang == 'active' && $latestMagang->laporan_magang && $latestMagang->feedback)
+                var step2 = document.querySelector('.intern-step2');
+                var step3 = document.querySelector('.intern-step3');
+                if (step2) {
+                    step2.classList.remove('after:border-gray-100', 'after:bg-gray-100');
+                    step2.classList.add('after:border-blue-600', 'after:bg-blue-600');
+                    var span = step2.querySelector('span');
+                    var div = step2.querySelector('#tooltip-project');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step2.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+                if (step3) {
+                    var span = step3.querySelector('span');
+                    var div = step3.querySelector('#tooltip-feedback');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step3.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+            @endif
+            @if(!is_null($latestMagang) && $latestMagang->status_magang == 'active' && $latestMagang->laporan_magang && $latestMagang->feedback && $latestMagang->nilai_magang && $latestMagang->sertifikat_magang)
+                var step3 = document.querySelector('.intern-step3');
+                var step4 = document.querySelector('.intern-step4');
+                if (step3) {
+                    step3.classList.remove('after:border-gray-100', 'after:bg-gray-100');
+                    step3.classList.add('after:border-blue-600', 'after:bg-blue-600');
+                    var span = step3.querySelector('span');
+                    var div = step3.querySelector('#tooltip-feedback');
+                    if (span) {
+                        span.classList.remove('bg-gray-100');
+                        span.classList.add('bg-blue-600');
+                        div.classList.remove('bg-white');
+                        div.classList.add('bg-blue-600');
+                        div.classList.remove('text-gray-600');
+                        div.classList.add('text-white');
+                    }
+                    var icon = step3.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-gray-500');
+                        icon.classList.add('text-white');
+                    }
+                }
+                if (step4) {
+                    var span = step4.querySelector('span');
+                    var div = step4.querySelector('#tooltip-sertifikat');
                     if (span) {
                         span.classList.remove('bg-gray-100');
                         span.classList.add('bg-blue-600');

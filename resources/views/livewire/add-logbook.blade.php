@@ -51,7 +51,7 @@
             Kirim Logbook
         </button>
     </div>
-</div </div>
+</div>
 
 <script>
     function displayFileName(input) {

@@ -1,4 +1,4 @@
-<form class="flex flex-col gap-3" wire:submit="create_pengajuan">
+<form class="flex flex-col gap-3" wire:submit.prevent="create_pengajuan">
 
     <div class="grid md:grid-cols-2 gap-5">
 
@@ -18,22 +18,21 @@
         </div>
 
         <div>
-            <label for="bidang_tujuan" class="block mb-1 text-md font-medium text-gray-700">Bidang Tujuan<span
-                    class="text-red-500 ml-1">*</span></label>
+            <label for="bidang_tujuan" class="block mb-1 text-md font-medium text-gray-700">
+                Bidang Tujuan<span class="text-red-500 ml-1">*</span>
+            </label>
             <select name="bidang_tujuan" id="bidang_tujuan" wire:model.live="bidang_tujuan"
                 class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5">
                 <option value="" disabled selected hidden>Pilih bidang yang dituju</option>
-                <option value="Fungsi Statistik Sosial">Fungsi Statistik Sosial</option>
-                <option value="Fungsi Statistik Produksi">Fungsi Statistik Produksi</option>
-                <option value="Fungsi Statistik Distribusi">Fungsi Statistik Distribusi</option>
-                <option value="Fungsi Nerwilis">Fungsi Nerwilis</option>
-                <option value="Fungsi IPDS">Fungsi IPDS</option>
-                <option value="Bagian Umum">Bagian Umum</option>
+                @foreach ($listFungsiBagian as $fungsi)
+                    <option value="{{ $fungsi->title }}">{{ $fungsi->title }}</option>
+                @endforeach
             </select>
             @error('bidang_tujuan')
                 <span class="text-red-500 text-[11px]">{{ $message }}</span>
             @enderror
         </div>
+        
 
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
@@ -43,7 +42,7 @@
             <p class="text-sm mb-1 text-gray-500">Tentukan rencana mulai magang</p>
             <input type="date" name="tanggal_mulai" id="tanggal_mulai" wire:model.live="tanggal_mulai"
                 class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"
-                min="{{ date('Y-m-d') }}" />
+                min="{{ date('Y-m-d', strtotime('+2 day')) }}" />
             @error('tanggal_mulai')
                 <span class="text-red-500 text-[11px]">{{ $message }}</span>
             @enderror
@@ -60,9 +59,53 @@
             @enderror
         </div>
 
+        <span class ="border-b border-gray-300 col-span-2"></span>
+
+        <div class="col-span-2 text-lg font-medium text-gray-900">Data Penanggung Jawab</div>
+
+        <div>
+            <label for="penanggung_jawab_name" class="block text-md font-medium text-gray-700">Nama<span
+                    class="text-red-500 ml-1">*</span></label>
+            <input type="text" name="penanggung_jawab_name" id="penanggung_jawab_name" wire:model.live="penanggung_jawab_name" placeholder="Masukkan nama penanggung jawab beserta gelar"
+                class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"/>
+            @error('penanggung_jawab_name')
+                <span class="text-red-500 text-[11px]">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div>
+            <label for="penanggung_jawab_jabatan" class="block text-md font-medium text-gray-700">Jabatan<span
+                    class="text-red-500 ml-1">*</span></label>
+            <input type="text" name="penanggung_jawab_jabatan" id="penanggung_jawab_jabatan" wire:model.live="penanggung_jawab_jabatan" placeholder="Masukkan jabatan penanggung jawab"
+                class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"/>
+            @error('penanggung_jawab_jabatan')
+                <span class="text-red-500 text-[11px]">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div>
+            <label for="penanggung_jawab_email" class="block text-md font-medium text-gray-700">Email<span
+                    class="text-red-500 ml-1">*</span></label>
+            <input type="text" name="penanggung_jawab_email" id="penanggung_jawab_email" wire:model.live="penanggung_jawab_email" placeholder="Masukkan email penanggung jawab"
+                class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"/>
+            @error('penanggung_jawab_email')
+                <span class="text-red-500 text-[11px]">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div>
+            <label for="penanggung_jawab_nomor_hp" class="block text-md font-medium text-gray-700">Nomor HP<span
+                    class="text-red-500 ml-1">*</span></label>
+            <input type="number" name="penanggung_jawab_nomor_hp" id="penanggung_jawab_nomor_hp" wire:model.live="penanggung_jawab_nomor_hp" placeholder="Masukkan nomor hp penanggung jawab"
+                class="bg-gray-50 border border-gray-500 outline-none text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:outline-2 w-full p-2.5 placeholder:text-[12px]"/>
+            @error('penanggung_jawab_nomor_hp')
+                <span class="text-red-500 text-[11px]">{{ $message }}</span>
+            @enderror
+        </div>
+
     </div>
 
-    <div class="flex flex-col justify-start w-full gap-2">
+    <div class="mt-4 flex flex-col justify-start w-full gap-2">
         <div class="flex gap-2 items-center">
             <input id="checkbox1" type="checkbox" onchange="toggleSubmitButton()"
                 class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300">
@@ -76,7 +119,7 @@
     </div>
 
     <button id="submitBtn" type="submit" disabled
-        class="w-full text-white bg-blue-600 hover:bg-blue-700 transition duration-300 ease-in-out focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-not-allowed disabled:bg-blue-400">Kirim
+        class="w-full mt-4 text-white bg-blue-600 hover:bg-blue-700 transition duration-300 ease-in-out focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-not-allowed disabled:bg-blue-400">Kirim
         Pengajuan</button>
 </form>
 
