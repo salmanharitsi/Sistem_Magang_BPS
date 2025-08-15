@@ -244,7 +244,7 @@
                                 <a href="https://github.com/salmanharitsi" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white social-icon">
                                     <i class="fab fa-github"></i>
                                 </a>
-                                <a href="mailto:fajarrahmat934@gmail.com" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
+                                <a href="mailto:salmanalharitsi14@gmail.com" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
                                     <i class="fas fa-envelope"></i>
                                 </a>
                                 <a href="https://wa.me/6282214978008" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white social-icon">
