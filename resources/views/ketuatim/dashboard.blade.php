@@ -301,8 +301,8 @@
             </div>
             <div>
                 <h1 class="text-xl font-medium">Peserta Magang Selesai</h1>
-                <p class="text-2xl font-bold">100</p>
-                <p class="text-sm font-normal text-blue-600">+10 perbulan ini</p>
+                <p class="text-2xl font-bold">{{ $magangSelesai ?? 0 }}</p>
+                <p class="text-sm font-normal text-blue-600">+{{ $magangSelesai ?? 0 }} perbulan ini</p>
             </div>
         </div>
     </div>

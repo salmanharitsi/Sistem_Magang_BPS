@@ -2,11 +2,13 @@
 
 namespace App\Livewire;
 
-use App\Mail\ForgotPasswordMail;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use App\Mail\ForgotPasswordMail;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ForgotPassword extends Component
 {
@@ -37,9 +39,21 @@ class ForgotPassword extends Component
         $count = User::where('email', '=', $this->email)->count();
         if ($count > 0) {
             $user = User::where('email', '=', $this->email)->first();
-            $user->save();
+            
+            // Generate a random token
+            $token = Str::random(60);
+            
+            // Store the token in the password_reset_tokens table
+            DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $user->email],
+                [
+                    'token' => $token,
+                    'created_at' => now()
+                ]
+            );
 
-            Mail::to($user->email)->send(new ForgotPasswordMail($user));
+            // Send the user an email with the token
+            Mail::to($user->email)->send(new ForgotPasswordMail($user, $token));
 
             return redirect('/forgot-password')->with([
                 'success' => [

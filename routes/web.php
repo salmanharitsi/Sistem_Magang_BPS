@@ -25,6 +25,10 @@ Route::get('/registrasi', [AuthController::class, 'get_registrasi_page']);
 Route::get('/forgot-password', [AuthController::class, 'get_forgot_password_page']);
 Route::get('/reset/{token}', [AuthController::class, 'get_reset_password_page']);
 
+Route::get('/tim-pengembang', function () {
+    return view('tim-pengembang'); // resources/views/tim-pengembang.blade.php
+})->name('tim-pengembang');
+
 // Route OTP verification (hanya untuk verifikasi pertama kali)
 Route::get('/verify-otp/{id}', [AuthController::class, 'showOTPVerification'])
     ->name('verify.otp');

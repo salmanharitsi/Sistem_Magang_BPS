@@ -4,18 +4,17 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class ResetPassword extends Component
 {
     #[Validate]
-
-    public $password,
-    $confirm_password,
-    $token;
+    public $password;
+    public $confirm_password;
+    public $token;
 
     public function mount($token)
     {
@@ -25,7 +24,7 @@ class ResetPassword extends Component
     public function rules()
     {
         return [
-            'password' => 'required|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
+            'password' => 'required|min:8|regex:/^(?=.[a-zA-Z])(?=.\d).+$/',
             'confirm_password' => 'required_with:password|same:password',
         ];
     }
@@ -49,15 +48,27 @@ class ResetPassword extends Component
     {
         $this->validate();
         
-        $user = User::where('remember_token', $this->token);
-        if ($user->count() == 0) {
-            abort(403);
+        // Find token in password_reset_tokens table
+        $tokenData = DB::table('password_reset_tokens')
+                      ->where('token', $this->token)
+                      ->first();
+        
+        if (!$tokenData) {
+            abort(403, 'Invalid token');
         }
-        $user = $user->first();
 
+        // Find user by email
+        $user = User::where('email', $tokenData->email)->first();
+        if (!$user) {
+            abort(403, 'User not found');
+        }
+
+        // Update user password
         $user->password = Hash::make($this->password);
-        $user->remember_token = Str::random(50);
         $user->save();
+
+        // Delete the token after successful password reset
+        DB::table('password_reset_tokens')->where('token', $this->token)->delete();
 
         return redirect('/login')->with([
             'success' => [
