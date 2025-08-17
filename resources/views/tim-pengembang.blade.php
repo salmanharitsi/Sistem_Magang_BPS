@@ -126,7 +126,7 @@
                                 <div class="relative">
                                     <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
                                         <img src="{{ asset('storage/tim-pengembang/Fajar.jpg') }}" 
-                                             alt="Fajar Rahmar" 
+                                             alt="Fajar Rahmat" 
                                              class="w-full h-full object-cover">
                                     </div>                                    
                                     <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center md:text-left flex-1">
-                                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Fajar Rahmar</h3>
+                                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Fajar Rahmat</h3>
                                     <p class="text-blue-600 font-semibold mb-2">NIM: 2107112738                                    </p>
                                     <p class="text-gray-600">Teknik Informatika - Universitas Riau</p>
                                 </div>
