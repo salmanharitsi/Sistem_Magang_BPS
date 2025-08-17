@@ -489,7 +489,12 @@
         <div class="flex flex-col-reverse md:flex-row gap-3 items-center justify-between">
             <div class="text-white font-light">
                 <h1>Hak Cipta © 2024 Badan Pusat Statistik</h1>
-            </div>
+                <span>Website hasil kolaborasi BPS dan </span>
+                <a href="/tim-pengembang" 
+                   class="text-blue-200 hover:text-white transition-colors duration-300 text-sm font-normal">
+                    Mahasiswa Teknik Informatika Universitas Riau
+                </a>
+            </div>            
             <div class="flex gap-5 text-white">
                 <a href=""><i class="fa-brands fa-instagram"></i></a>
                 <a href=""><i class="fa-brands fa-youtube"></i></a>
