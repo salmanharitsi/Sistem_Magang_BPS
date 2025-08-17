@@ -305,6 +305,176 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Informasi Magang Section -->
+            <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <!-- Header Informasi -->
+                <div class="col-span-2 card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                            <i class="ti ti-info-circle text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white">Informasi Penting Magang</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Bacalah informasi berikut dengan teliti untuk mempersiapkan diri sebelum magang dimulai</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 col-span-2">
+                    <!-- Dress Code -->
+                    <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="ti ti-shirt text-green-600 text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800 dark:text-white mb-2">Cara Berpakaian</h4>
+                                <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+                                        <span>Gunakan pakaian formal atau semi-formal</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+                                        <span>Hindari pakaian terlalu ketat atau terbuka</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+                                        <span>Warna netral: hitam, navy, abu-abu, putih</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Jam Kerja -->
+                    <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="ti ti-clock text-orange-600 text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800 dark:text-white mb-2">Jam Kerja</h4>
+                                <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-orange-500 rounded-full"></div>
+                                        <span>Senin - Kamis: 07:00 - 16:00</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-orange-500 rounded-full"></div>
+                                        <span>Jumat: 07:30 - 16:30</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-orange-500 rounded-full"></div>
+                                        <span>Istirahat: 12:00 - 13:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Persiapan Dokumen -->
+                    <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="ti ti-file-description text-purple-600 text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800 dark:text-white mb-2">Dokumen yang Dibawa</h4>
+                                <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-purple-500 rounded-full"></div>
+                                        <span>KTP/Kartu Identitas</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-purple-500 rounded-full"></div>
+                                        <span>Surat pengantar dari sekolah/kampus</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-purple-500 rounded-full"></div>
+                                        <span>Alat tulis dan laptop (jika ada)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Etika dan Sikap -->
+                    <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="ti ti-users text-blue-600 text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800 dark:text-white mb-2">Etika Kerja</h4>
+                                <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-blue-500 rounded-full"></div>
+                                        <span>Datang tepat waktu</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-blue-500 rounded-full"></div>
+                                        <span>Bersikap sopan dan ramah</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1 h-1 bg-blue-500 rounded-full"></div>
+                                        <span>Aktif bertanya dan belajar</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kontak Darurat -->
+                <div class="col-span-2 card rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 p-5 border border-indigo-200 dark:border-gray-600">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="ti ti-phone text-white text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Kontak Penting</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div class="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600">
+                                    <p class="font-medium text-gray-700 dark:text-gray-300">Koordinator Magang</p>
+                                    <p class="text-gray-600 dark:text-gray-400">Tel: (0761) 21162</p>
+                                    <p class="text-gray-600 dark:text-gray-400">Email: koordinator@bps.go.id</p>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600">
+                                    <p class="font-medium text-gray-700 dark:text-gray-300">Keamanan Kantor</p>
+                                    <p class="text-gray-600 dark:text-gray-400">Tel: (0761) 21162 ext. 100</p>
+                                    <p class="text-gray-600 dark:text-gray-400">Jam: 24 Jam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips Sukses -->
+                <div class="col-span-2 card rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-gray-800 dark:to-gray-700 p-5 border border-emerald-200 dark:border-gray-600">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="ti ti-bulb text-white text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-3">Tips Sukses Magang</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600 text-center">
+                                    <i class="ti ti-target text-2xl text-emerald-500 mb-2"></i>
+                                    <p class="text-xs font-medium text-gray-700 dark:text-gray-300">Tetapkan tujuan yang jelas</p>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600 text-center">
+                                    <i class="ti ti-network text-2xl text-teal-500 mb-2"></i>
+                                    <p class="text-xs font-medium text-gray-700 dark:text-gray-300">Bangun networking yang baik</p>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600 text-center">
+                                    <i class="ti ti-book text-2xl text-blue-500 mb-2"></i>
+                                    <p class="text-xs font-medium text-gray-700 dark:text-gray-300">Catat setiap pembelajaran</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @elseif (Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isFuture())
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
