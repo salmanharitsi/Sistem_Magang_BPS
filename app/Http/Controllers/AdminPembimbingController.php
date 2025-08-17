@@ -139,7 +139,9 @@ class AdminPembimbingController
             ->whereRaw('DAYOFWEEK(tanggal) NOT IN (1, 7)')
             ->exists();
 
-        if (!$isPembimbing || Carbon::parse($magang->tanggal_selesai)->addDays()->isFuture() || $magang->nilai_magang) {
+        if (!$isPembimbing || 
+            Carbon::parse($magang->tanggal_selesai)->addDays()->isFuture() || 
+            $magang->status_final == 'final') {
             return redirect()->back();
         }
 

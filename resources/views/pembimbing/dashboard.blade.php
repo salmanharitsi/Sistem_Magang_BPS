@@ -95,9 +95,20 @@
                                     <p class="text-xs text-gray-500">{{ $magang->jenis_magang }}</p>
                                 </div>
                             </div>
-                            <a href="/penilaian/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-sm">
-                                Berikan Penilaian
-                            </a>
+                            @if ($magang->nilai_lainnya != null)
+                                <div class="flex gap-4">
+                                    <a href="/penilaian/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200 text-sm whitespace-nowrap">
+                                        Finalisasi Nilai
+                                    </a>
+                                    <a href="/penilaian/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-sm whitespace-nowrap">
+                                        Edit Penilaian
+                                    </a>
+                                </div>
+                            @else
+                                <a href="/penilaian/{{ $magang->id }}" class="pjax-link w-full md:w-fit text-center bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-sm">
+                                    Berikan Penilaian
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @endforeach
