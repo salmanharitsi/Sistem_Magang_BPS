@@ -389,12 +389,55 @@
     @endif
 
     <!-- Setelah Feedback - Tunggu Nilai dan Sertifikat -->
-    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && (!$latestMagang->nilai_magang || !$latestMagang->sertifikat_magang))
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && !$latestMagang->nilai_magang && (!$latestMagang->sertifikat_magang || $latestMagang->status_final === 'waiting' ) && $latestMagang->laporan_magang)
         <div class="col-span-3 card rounded-lg bg-white p-5 mt-6">
             <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                 <div class="flex gap-3 items-start lg:items-center">
                     <i class="ti ti-sparkles text-lg"></i>
-                    <p class="text-sm">Tunggu pembimbing memberikan nilai magang dan nantikan sertifikat magang kamu</p>
+                    <p class="text-sm">Tunggu pembimbing memberikan nilai magang</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Nilai belumm final -->
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && $latestMagang->nilai_magang && (!$latestMagang->sertifikat_magang || $latestMagang->status_final === 'waiting' ) && $latestMagang->laporan_magang && $latestMagang->status_final !== 'final')
+        <div class="col-span-3 grid grid-cols-1 gap-6 mt-6">
+            
+            {{-- Card Message --}}
+            <div class="card rounded-lg bg-white p-5">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-alert-circle text-lg"></i>
+                        <p class="text-sm">Apabila ada komplain atau pertanyaan terkait nilai, silakan hubungi pembimbing sebelum proses finalisasi.</p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Card Nilai Magang --}}
+            <div class="relative w-full h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
+                <div class="flex flex-col gap-3 items-start">
+                    <p class="text-2xl font-medium italic">Nilai Magang Kamu</p>
+                </div>
+                <div class="px-4 z-20">
+                    <p class="text-4xl font-bold">{{ $latestMagang->nilai_magang }}</p>
+                </div>
+                <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
+            </div>
+
+            <div class="">
+                @livewire('nilai-sertifikat', ['magang' => $latestMagang])
+            </div>
+        </div>
+    @endif
+
+    <!-- Nilai sudah final -->
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && $latestMagang->nilai_magang && (!$latestMagang->sertifikat_magang || $latestMagang->status_final === 'waiting' ) && $latestMagang->laporan_magang && $latestMagang->status_final === 'final')
+        <div class="col-span-3 card rounded-lg bg-white p-5 mt-6">
+            <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                <div class="flex gap-3 items-start lg:items-center">
+                    <i class="ti ti-sparkles text-lg"></i>
+                    <p class="text-sm">Nilai sudah final, silahkan tunggu pemberian sertifikat.</p>
                 </div>
             </div>
         </div>

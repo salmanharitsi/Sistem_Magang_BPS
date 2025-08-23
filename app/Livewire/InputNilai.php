@@ -21,6 +21,7 @@ class InputNilai extends Component
     public $logbookTerisi;
 
     public $showSubmitModal = false;
+    public $showFinalizationModal = false;
     
     public $nilaiCustoms = [
         ['indikator' => '', 'deskripsi' => '', 'nilai' => null]
@@ -30,6 +31,8 @@ class InputNilai extends Component
     public function rules()
     {
         return [
+            'nilaiPresensi' => 'required|numeric|min:0|max:100',
+            'nilaiLogbook' => 'required|numeric|min:0|max:100',
             'nilaiCustoms.*.indikator' => 'required|string|min:3',
             'nilaiCustoms.*.deskripsi' => 'required|string',
             'nilaiCustoms.*.nilai' => 'required|numeric|min:0|max:100',
@@ -39,6 +42,16 @@ class InputNilai extends Component
     public function messages()
     {
         return [
+            'nilaiPresensi.required' => 'Nilai presensi tidak boleh kosong',
+            'nilaiPresensi.numeric' => 'Nilai presensi harus berupa angka',
+            'nilaiPresensi.min' => 'Nilai presensi minimal adalah 0',
+            'nilaiPresensi.max' => 'Nilai presensi maksimal adalah 100',
+            
+            'nilaiLogbook.required' => 'Nilai logbook tidak boleh kosong',
+            'nilaiLogbook.numeric' => 'Nilai logbook harus berupa angka',
+            'nilaiLogbook.min' => 'Nilai logbook minimal adalah 0',
+            'nilaiLogbook.max' => 'Nilai logbook maksimal adalah 100',
+
             'nilaiCustoms.*.indikator.required' => 'Indikator tidak boleh kosong',
             'nilaiCustoms.*.indikator.string' => 'Indikator harus berupa teks',
             'nilaiCustoms.*.indikator.min' => 'Indikator minimal 3 karakter',
@@ -56,12 +69,46 @@ class InputNilai extends Component
     public function mount($magang)
     {
         $this->magang = $magang;
+        
+        // Selalu hitung nilai kalkulasi terlebih dahulu
         $this->hitungNilaiPresensi();
         $this->hitungNilaiLogbook();
+        
+        // Cek apakah sudah ada data nilai yang tersimpan dan load jika ada
+        if ($this->magang->nilai_presensi !== null && 
+            $this->magang->nilai_logbook !== null && 
+            $this->magang->nilai_lainnya !== null) {
+            // Load data yang tersimpan, tapi tetap pertahankan nilai kalkulasi jika user belum mengubahnya
+            $this->loadSavedData();
+        } else {
+            // Jika belum ada data tersimpan, gunakan nilai dari kalkulasi
+            // Nilai presensi dan logbook sudah di-set dari fungsi hitung di atas
+            
+            // Set nilai custom default atau load jika ada
+            if ($this->magang->nilai_lainnya) {
+                $this->nilaiCustoms = json_decode($this->magang->nilai_lainnya, true);
+            } else {
+                $this->nilaiCustoms = [['indikator' => '', 'deskripsi' => '', 'nilai' => null]];
+            }
+        }
+        
         $this->hitungTotalNilai();
     }
 
-    // Fungsi hitung nilai presensi (tetap sama)
+    // Load data yang tersimpan
+    public function loadSavedData()
+    {
+        $this->nilaiPresensi = (int) $this->magang->nilai_presensi;
+        $this->nilaiLogbook = (int) $this->magang->nilai_logbook;
+        
+        if ($this->magang->nilai_lainnya) {
+            $this->nilaiCustoms = json_decode($this->magang->nilai_lainnya, true);
+        } else {
+            $this->nilaiCustoms = [['indikator' => '', 'deskripsi' => '', 'nilai' => null]];
+        }
+    }
+
+    // Fungsi hitung nilai presensi (untuk kalkulasi awal)
     public function hitungNilaiPresensi()
     {
         $presensi = Presensi::where('magang_id', $this->magang->id)
@@ -70,11 +117,18 @@ class InputNilai extends Component
 
         $this->jumlahPresensi = $presensi->count();
         $this->totalPointPresensi = $presensi->sum('point');
-        $this->nilaiPresensi = $this->jumlahPresensi > 0 ? 
-            round($this->totalPointPresensi / $this->jumlahPresensi) : 0;
+        
+        if ($this->jumlahPresensi > 0) {
+            $this->nilaiPresensi = (int) round($this->totalPointPresensi / $this->jumlahPresensi);
+        } else {
+            $this->nilaiPresensi = 0;
+        }
+        
+        // Pastikan nilai dalam range 0-100
+        $this->nilaiPresensi = min(max($this->nilaiPresensi, 0), 100);
     }
 
-    // Fungsi hitung nilai logbook (tetap sama)
+    // Fungsi hitung nilai logbook (untuk kalkulasi awal)
     public function hitungNilaiLogbook()
     {
         $logbooks = Logbook::where('magang_id', $this->magang->id)
@@ -89,19 +143,26 @@ class InputNilai extends Component
                 ->where('status_review', 'diterima')
                 ->count();
             $persentase = ($this->logbookTerisi / $this->jumlahLogbook) * 100;
-            $this->nilaiLogbook = round($persentase);
+            $this->nilaiLogbook = (int) round($persentase);
         } else {
             $this->logbookTerisi = 0;
             $this->nilaiLogbook = 0;
         }
+        
+        // Pastikan nilai dalam range 0-100
+        $this->nilaiLogbook = min(max($this->nilaiLogbook, 0), 100);
     }
 
     // Fungsi hitung total nilai (diupdate)
     public function hitungTotalNilai()
     {
+        // Pastikan nilai presensi dan logbook adalah integer
+        $nilaiPresensiInt = is_numeric($this->nilaiPresensi) ? (int) $this->nilaiPresensi : 0;
+        $nilaiLogbookInt = is_numeric($this->nilaiLogbook) ? (int) $this->nilaiLogbook : 0;
+        
         // Hitung komponen nilai
-        $nilaiPresensi = $this->nilaiPresensi * 0.7; // 70%
-        $nilaiLogbook = $this->nilaiLogbook * 0.2;  // 20%
+        $nilaiPresensi = $nilaiPresensiInt * 0.7; // 70%
+        $nilaiLogbook = $nilaiLogbookInt * 0.2;  // 20%
         
         // Hitung nilai custom (10%)
         $nilaiCustom = 0;
@@ -134,6 +195,26 @@ class InputNilai extends Component
         }
     }
 
+    public function updatedNilaiPresensi($value)
+    {
+        if ($value === '' || $value === null) {
+            $this->nilaiPresensi = 0;
+        } else {
+            $this->nilaiPresensi = is_numeric($value) ? min(max((int) $value, 0), 100) : 0;
+        }
+        $this->hitungTotalNilai();
+    }
+
+    public function updatedNilaiLogbook($value)
+    {
+        if ($value === '' || $value === null) {
+            $this->nilaiLogbook = 0;
+        } else {
+            $this->nilaiLogbook = is_numeric($value) ? min(max((int) $value, 0), 100) : 0;
+        }
+        $this->hitungTotalNilai();
+    }
+
     public function updatedNilaiCustoms($value, $key)
     {
         // Ambil index dan field dari key, misalnya "0.nilai"
@@ -164,6 +245,12 @@ class InputNilai extends Component
         $this->showSubmitModal = true;
     }
 
+    // Konfirmasi finalisasi
+    public function confirmFinalization()
+    {
+        $this->showFinalizationModal = true;
+    }
+
     public function submitNilai()
     {
         // Validasi lagi untuk memastikan data valid saat submit
@@ -192,6 +279,24 @@ class InputNilai extends Component
         return redirect('/daftar-bimbingan/' . $this->magang->id)->with([
             'success' => [
                 "title" => "Nilai berhasil disimpan",
+            ]
+        ]);
+    }
+
+    // Finalisasi nilai
+    public function finalizeNilai()
+    {
+        // Update status final menjadi 'final'
+        $this->magang->update([
+            'status_final' => 'final'
+        ]);
+
+        // Tutup modal
+        $this->showFinalizationModal = false;
+
+        return redirect('/daftar-bimbingan/' . $this->magang->id)->with([
+            'success' => [
+                "title" => "Nilai berhasil difinalisasi",
             ]
         ]);
     }
