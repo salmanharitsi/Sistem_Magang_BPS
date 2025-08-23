@@ -76,6 +76,121 @@
                             </a>
                         </li>
 
+                        @php
+                            $user = Auth::user();
+                            $latestPengajuan = $user->pengajuan()->latest('created_at')->first();
+                            
+                            // Kondisi untuk setiap step
+                            $step1_completed = $user->foto_profil != null &&
+                                            $user->jenis_kelamin != null &&
+                                            $user->tempat_lahir != null &&
+                                            $user->tanggal_lahir != null &&
+                                            $user->alamat != null;
+                            
+                            $step2_completed = $user->pengajuan()->exists() && $user->status_magang == 'masa-daftar';
+                            
+                            $step3_completed = !is_null($latestPengajuan) && 
+                                            ($latestPengajuan->status_pengajuan === 'accept-first' || 
+                                            $latestPengajuan->status_pengajuan === 'reject-final') && 
+                                            $user->status_magang == 'masa-daftar';
+                            
+                            $step4_completed = !is_null($latestPengajuan) && 
+                                            !is_null($latestPengajuan->surat_pengantar) && 
+                                            $latestPengajuan->status_pengajuan !== 'reject-days' && 
+                                            $user->status_magang == 'masa-daftar';
+                        @endphp
+                    
+                        <!-- Menu Tahapan Magang -->
+                        @if (($latestMagang && $latestMagang->status_magang === 'non-active') || 
+                            ($user->status_magang === 'tidak-aktif' || $user->status_magang === 'masa-daftar'))
+                            
+                            <li class="text-xs font-bold pb-[5px] mt-6">
+                                <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                                <span class="text-xs text-gray-600 font-semibold">TAHAPAN MAGANG</span>
+                            </li>
+                        
+                            <!-- Step 1: Lengkapi Profil -->
+                            <li class="sidebar-item">
+                                <a class="pjax-link gap-3 py-2 my-1 text-[14px] flex items-center justify-between relative rounded-md w-full transition-all duration-200 
+                                        {{ request()->is('dashboard/lengkapi-profil') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ($step1_completed ? 'hover:bg-gray-50 text-gray-700' : 'hover:bg-gray-50 text-gray-400') }}"
+                                href="/dashboard/lengkapi-profil">
+                                    <div class="flex items-center gap-3">
+                                        <i class="ti ti-user ps-2 text-xl 
+                                                {{ request()->is('dashboard/lengkapi-profil') ? 'text-blue-600' : ($step1_completed ? 'text-green-500' : 'text-gray-400') }}"></i>
+                                        <span>Lengkapi Profil</span>
+                                    </div>
+                                    @if($step1_completed)
+                                        <i class="ti ti-check text-green-500 text-sm"></i>
+                                    @else
+                                        <i class="ti ti-lock text-gray-400 text-sm"></i>
+                                    @endif
+                                </a>
+                            </li>
+                        
+                            <!-- Step 2: Ajukan Program -->
+                            <li class="sidebar-item">
+                                <a class="pjax-link gap-3 py-2 my-1 text-[14px] flex items-center justify-between relative rounded-md w-full transition-all duration-200 
+                                        {{ request()->is('dashboard/ajukan-program') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ($step1_completed ? ($step2_completed ? 'hover:bg-gray-50 text-gray-700' : 'hover:bg-gray-50 text-gray-700') : 'hover:bg-gray-50 text-gray-400 cursor-not-allowed') }}"
+                                href="{{ $step1_completed ? '/dashboard/ajukan-program' : '#' }}"
+                                {{ !$step1_completed ? 'onclick="return false;"' : '' }}>
+                                    <div class="flex items-center gap-3">
+                                        <i class="ti ti-clipboard-text ps-2 text-xl 
+                                                {{ request()->is('dashboard/ajukan-program') ? 'text-blue-600' : ($step2_completed ? 'text-green-500' : ($step1_completed ? 'text-blue-500' : 'text-gray-400')) }}"></i>
+                                        <span>Ajukan Program</span>
+                                    </div>
+                                    @if($step2_completed)
+                                        <i class="ti ti-check text-green-500 text-sm"></i>
+                                    @elseif($step1_completed)
+                                        <i class="ti ti-arrow-right text-blue-500 text-sm"></i>
+                                    @else
+                                        <i class="ti ti-lock text-gray-400 text-sm"></i>
+                                    @endif
+                                </a>
+                            </li>
+                        
+                            <!-- Step 3: Lolos Seleksi -->
+                            <li class="sidebar-item">
+                                <a class="pjax-link gap-3 py-2 my-1 text-[14px] flex items-center justify-between relative rounded-md w-full transition-all duration-200 
+                                        {{ request()->is('dashboard/lolos-seleksi') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ($step1_completed && $step2_completed ? ($step3_completed ? 'hover:bg-gray-50 text-gray-700' : 'hover:bg-gray-50 text-gray-700') : 'hover:bg-gray-50 text-gray-400 cursor-not-allowed') }}"
+                                href="{{ $step1_completed && $step2_completed ? '/dashboard/lolos-seleksi' : '#' }}"
+                                {{ !$step1_completed || !$step2_completed ? 'onclick="return false;"' : '' }}>
+                                    <div class="flex items-center gap-3">
+                                        <i class="ti ti-clipboard-check ps-2 text-xl 
+                                                {{ request()->is('dashboard/lolos-seleksi') ? 'text-blue-600' : ($step3_completed ? 'text-green-500' : ($step1_completed && $step2_completed ? 'text-blue-500' : 'text-gray-400')) }}"></i>
+                                        <span>Lolos Seleksi</span>
+                                    </div>
+                                    @if($step3_completed)
+                                        <i class="ti ti-check text-green-500 text-sm"></i>
+                                    @elseif($step1_completed && $step2_completed)
+                                        <i class="ti ti-clock text-amber-500 text-sm"></i>
+                                    @else
+                                        <i class="ti ti-lock text-gray-400 text-sm"></i>
+                                    @endif
+                                </a>
+                            </li>
+                        
+                            <!-- Step 4: Upload Surat -->
+                            <li class="sidebar-item">
+                                <a class="pjax-link gap-3 py-2 my-1 text-[14px] flex items-center justify-between relative rounded-md w-full transition-all duration-200 
+                                        {{ request()->is('dashboard/upload-surat') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : ($step1_completed && $step2_completed && $step3_completed ? ($step4_completed ? 'hover:bg-gray-50 text-gray-700' : 'hover:bg-gray-50 text-gray-700') : 'hover:bg-gray-50 text-gray-400 cursor-not-allowed') }}"
+                                href="{{ $step1_completed && $step2_completed && $step3_completed ? '/dashboard/upload-surat' : '#' }}"
+                                {{ !$step1_completed || !$step2_completed || !$step3_completed ? 'onclick="return false;"' : '' }}>
+                                    <div class="flex items-center gap-3">
+                                        <i class="ti ti-file-info ps-2 text-xl 
+                                                {{ request()->is('dashboard/upload-surat') ? 'text-blue-600' : ($step4_completed ? 'text-green-500' : ($step1_completed && $step2_completed && $step3_completed ? 'text-blue-500' : 'text-gray-400')) }}"></i>
+                                        <span>Upload Surat</span>
+                                    </div>
+                                    @if($step4_completed)
+                                        <i class="ti ti-check text-green-500 text-sm"></i>
+                                    @elseif($step1_completed && $step2_completed && $step3_completed)
+                                        <i class="ti ti-arrow-right text-blue-500 text-sm"></i>
+                                    @else
+                                        <i class="ti ti-lock text-gray-400 text-sm"></i>
+                                    @endif
+                                </a>
+                            </li>
+                        @endif
+
                         <li class="text-xs font-bold pb-[5px] mt-6">
                             <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
                             <span class="text-xs text-gray-600 font-semibold">MENU</span>
@@ -97,6 +212,7 @@
                             </a>
                         </li>
 
+                        <!-- Sisanya tetap sama seperti sebelumnya -->
                         @if ($latestMagang)
                             <li class="text-xs font-bold pb-[5px] mt-6">
                                 <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>

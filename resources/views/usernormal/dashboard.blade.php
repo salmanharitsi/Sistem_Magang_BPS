@@ -15,28 +15,20 @@
             datang di<span class="font-medium ml-1 md:ml-2 z-10">SIMAGANG</span></p>
     </div>
 
+    <!-- Quick Status Cards -->
     <div class="grid grid-cols-1 mt-6 lg:grid-cols-3 lg:gap-x-6 gap-x-0 gap-y-6">
         @php
-            // Get the latest pengajuan record for the user
             $latestPengajuan = Auth::user()->pengajuan()->latest('created_at')->first();
-            // Get the latest magang record for the user
             $latestMagang = Auth::user()->magang()->latest('created_at')->first();
         @endphp
 
         @if (!is_null($latestPengajuan) && Auth::user()->status_magang === 'masa-daftar')
-            {{-- Check if status is 'accept-first' and surat_pengantar is null --}}
             @if ($latestPengajuan->status_pengajuan === 'accept-first')
                 @if (is_null($latestPengajuan->surat_pengantar))
                     <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                         <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
                             <i class="ti ti-alert-circle text-lg"></i>
                             <p class="text-sm">Segera kirim surat pengantar dari sekolah atau universitas, tenggat <span class="font-bold">{{ Carbon::parse($latestPengajuan->tenggat)->translatedFormat('j F Y') }}</span></p>
-                        </div>
-                    </div>
-                    <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                        <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
-                            <i class="ti ti-alert-triangle text-lg"></i>
-                            <p class="text-sm">Tidak mengirim surat pengantar sesuai tenggat menyebabkan pengajuan kamu ditolak</p>
                         </div>
                     </div>
                 @else
@@ -47,34 +39,26 @@
                         </div>
                     </div>
                 @endif
-            {{-- Check if status is 'reject-time' --}}
-            @elseif ($latestPengajuan->status_pengajuan === 'reject-time')
+            @elseif (in_array($latestPengajuan->status_pengajuan, ['reject-time', 'reject-admin', 'reject-final', 'reject-days']))
                 <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                     <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
                         <i class="ti ti-alert-triangle text-lg"></i>
-                        <p class="text-sm">Admin menolak pengajuan kamu karena melewati tenggat upload surat pengantar!</p>
-                    </div>
-                </div>
-            @elseif ($latestPengajuan->status_pengajuan === 'reject-days')
-                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
-                        <i class="ti ti-alert-triangle text-lg"></i>
-                        <p class="text-sm">Masa pendaftaran melewati tanggal mulai magang, silahkan ajukan kembali</p>
-                    </div>
-                </div>
-            {{-- Check if status is 'reject-admin' --}}
-            @elseif ($latestPengajuan->status_pengajuan === 'reject-admin' || $latestPengajuan->status_pengajuan === 'reject-final')
-                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-red-100 rounded-lg border text-red-700 border-red-700">
-                        <i class="ti ti-sparkles text-lg"></i>
-                        <p class="text-sm">Baca pesan penolakan pada <span class="font-semibold underline"><a href="/pengajuan" class="pjax-link">detail pengajuan</a></span></p>
+                        <p class="text-sm">
+                            @if($latestPengajuan->status_pengajuan === 'reject-time')
+                                Admin menolak pengajuan kamu karena melewati tenggat upload surat pengantar!
+                            @elseif($latestPengajuan->status_pengajuan === 'reject-days')
+                                Masa pendaftaran melewati tanggal mulai magang, silahkan ajukan kembali
+                            @else
+                                Baca pesan penolakan pada <span class="font-semibold underline"><a href="/pengajuan" class="pjax-link">detail pengajuan</a></span>
+                            @endif
+                        </p>
                     </div>
                 </div>
             @elseif ($latestPengajuan->status_pengajuan === 'waiting')
                 <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
-                        <i class="ti ti-alert-circle text-lg"></i>
-                        <p class="text-sm">Kamu belum terdaftar program magang</p>
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-green-100 rounded-lg border text-green-700 border-green-700">
+                        <i class="ti ti-circle-check text-lg"></i>
+                        <p class="text-sm">Pengajuan magang kamu sudah terkirim dan sedang diproses</p>
                     </div>
                 </div>
             @endif
@@ -88,237 +72,186 @@
         @endif
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6 {{($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar') ? 'mt-6' : 'mt-0'}}">
-        @if (($latestMagang && $latestMagang->status_magang === 'non-active') || (Auth::user()->status_magang === 'tidak-aktif' || Auth::user()->status_magang === 'masa-daftar'))
-        <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+    <!-- Timeline Pendaftaran - PERBAIKAN KONDISI -->
+    @php
+        $showRegistrationTimeline = false;
+        
+        // Tampilkan timeline jika:
+        // 1. Belum ada pengajuan sama sekali
+        // 2. User sedang dalam masa daftar
+        // 3. User tidak aktif tapi pernah magang (untuk daftar lagi)
+        
+        if (is_null($latestPengajuan)) {
+            $showRegistrationTimeline = true;
+        } elseif (Auth::user()->status_magang === 'masa-daftar') {
+            $showRegistrationTimeline = true;
+        } elseif (Auth::user()->status_magang === 'tidak-aktif') {
+            $showRegistrationTimeline = true;
+        }
+        
+        // Jangan tampilkan jika user sedang aktif magang
+        if (Auth::user()->status_magang === 'aktif') {
+            $showRegistrationTimeline = false;
+        }
+    @endphp
+
+    @if($showRegistrationTimeline)
+    <div class="mt-6">
+        <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
             <ol class="flex items-center w-full px-[5%] md:px-[15%]">
-                <li
-                    class="step1-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-profil">
+                <li class="step1-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                    <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-profil">
                         <i class="ti ti-user text-2xl text-gray-500 "></i>
                     </span>
-                    <div id="tooltip-profil" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                    <div id="tooltip-profil" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
                         Melengkapi Profil
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </li>
-                <li
-                    class="step2-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-pengajuan">
+                <li class="step2-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                    <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-pengajuan">
                         <i class="ti ti-clipboard-text text-2xl text-gray-500"></i>
                     </span>
-                    <div id="tooltip-pengajuan" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                    <div id="tooltip-pengajuan" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
                         Mengajukan Program Magang
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </li>
-                <li
-                    class="step3-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-diterima">
+                <li class="step3-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
+                    <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-diterima">
                         <i class="ti ti-clipboard-check text-2xl text-gray-500"></i>
                     </span>
-                    <div id="tooltip-diterima" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                    <div id="tooltip-diterima" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
                         Lolos Seleksi Program
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </li>
                 <li class="step4-active flex items-center w-fit">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-surat-pengantar">
+                    <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-surat-pengantar">
                         <i class="ti ti-file-info text-2xl text-gray-500"></i>
                     </span>
-                    <div id="tooltip-surat-pengantar" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
+                    <div id="tooltip-surat-pengantar" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
                         Mengupload Surat Pengantar
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </li>
             </ol>
-            @if (Auth::user()->foto_profil == null ||
-                    Auth::user()->tentang_saya == null ||
-                    Auth::user()->jenis_kelamin == null ||
-                    Auth::user()->tempat_lahir == null ||
-                    Auth::user()->tanggal_lahir == null ||
-                    Auth::user()->alamat == null)
-                <div
-                    class="w-full h-fit p-3 mt-5 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                    <div class="flex gap-3 items-start lg:items-center">
-                        <i class="ti ti-sparkles text-lg"></i>
-                        <p class="text-sm">Lengkapi biodata, data akademik dan dokumen kamu agar bisa melakukan pendaftaran
-                            magang</p>
-                    </div>
-                    <a href="/profil"
-                        class="pjax-link bg-blue-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
-                        <p class="text-sm whitespace-nowrap">Lengkapi data</p>
-                    </a>
-                </div>
-            @endif
-            @if (Auth::user()->foto_profil != null &&
-                    Auth::user()->tentang_saya != null &&
-                    Auth::user()->jenis_kelamin != null &&
-                    Auth::user()->tempat_lahir != null &&
-                    Auth::user()->tanggal_lahir != null &&
-                    Auth::user()->alamat != null &&
-                    Auth::user()->status_magang == 'tidak-aktif')
-                <div class="w-full h-fit mt-9">
-                    <h1 class="text-gray-800 text-2xl font-medium">Pengajuan Magang</h1>
-                    <div class="md:px-[0%] pt-6 md:pt-[2%]">
-                        @livewire('pengajuan-magang')
-                    </div>
-                </div>
-            @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'waiting')
-                <div class="w-full h-fit p-3 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-green-100 rounded-lg text-green-600">
-                    <i class="ti ti-circle-check text-4xl md:text-5xl"></i>
-                    <p class="text-sm">
-                        Pengajuan magang kamu untuk jenis magang
-                        <span class="text-green-700 font-semibold">
-                            {{ $latestPengajuan->jenis_magang }}
-                        </span>
-                        sudah berhasil terkirim
-                    </p>
-                    <p class="text-sm">Untuk periode:
-                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
-                        sampai dengan
-                        <span class="text-green-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
-                    </p>
-                    <a href="/pengajuan"
-                        class="pjax-link bg-green-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
-                        <p class="text-sm whitespace-nowrap">Cek Pengajuan</p>
-                    </a>
-                </div>
-                <div class="w-full h-fit p-3 mt-5 flex gap-3 flex-row items-start lg:items-center bg-green-100 rounded-lg text-green-600">
-                    <i class="ti ti-sparkles text-lg -mt-1.5 md:-mt-0"></i>
-                    <p class="text-sm">Cek email atau aplikasi secara berkala untuk mengetahui hasil seleksi.
-                        Terimakasih sudah mengajukan magang di BPS Provinsi Riau</p>
-                </div>
-            @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'accept-first' && Auth::user()->status_magang == 'masa-daftar')
-                @if (is_null($latestPengajuan->surat_pengantar))
-                    <div class="w-full mt-6 min-h-[323px] rounded-lg bg-green-800 relative rotate-180 overflow-hidden flex items-center justify-center">
-                        <img class="absolute inset-0 w-full h-full object-cover" src="{{ asset('assets/images/usernormal/bg-diterima.svg') }}" alt="">
-                        <div class="text-center rotate-180">
-                            <p class="text-white text-xl md:text-3xl font-semibold">Selamat Kamu diterima 🎉 <span class="font-light">, pada</span></p>
-                            <p class="text-sm mt-2 text-white">
-                                jenis magang
-                                <span class="font-semibold">{{ $latestPengajuan->jenis_magang }}</span>
-                            </p>
-                            <p class="text-sm text-white">
-                                Untuk periode:
-                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
-                                sampai dengan
-                                <span class="font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
-                            </p>
-                            <div class="w-full flex items-center justify-center mt-5">
-                                <a href="/dashboard/surat-pengantar"
-                                    class="pjax-link w-fit flex justify-center bg-green-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-green-100 hover:border hover:border-green-600 hover:text-green-600 transition-all duration-200">
-                                    <p class="text-sm whitespace-nowrap">Upload Surat Pengantar</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @else
-                    <div
-                        class="w-full h-fit p-3 mt-5 flex items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <i class="ti ti-sparkles text-lg"></i>
-                            <p class="text-sm">Cek aplikasi dan email secara berkala untuk memulai perjalanan magang yang luar biasa!</p>
-                        </div>
-                    </div>
-                @endif
-            @endif
-            @if (!is_null($latestPengajuan) && ($latestPengajuan->status_pengajuan === 'reject-time' || $latestPengajuan->status_pengajuan === 'reject-final') && Auth::user()->status_magang == 'masa-daftar')
-                <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
-                    <i class="ti ti-circle-x text-4xl md:text-5xl"></i>
-                    <p class="text-sm">
-                        Pengajuan magang kamu untuk jenis magang
-                        <span class="text-red-700 font-semibold">
-                            {{ $latestPengajuan->jenis_magang }}
-                        </span>
-                        ditolak
-                    </p>
-                    <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
-                        sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
-                    </p>
-                    <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
-                        </button>
-                    </form>
-                </div>
-            @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'reject-admin')
-                <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
-                    <h1 class="md:text-xl font-semibold rounded-full text-white px-10 py-1.5 bg-gradient-to-r from-[#FF0000] to-[#6C2323]">Maaf Kamu Belum Diterima, <span class="font-normal">Pada</span></h1>
-                    <p class="text-sm">
-                        jenis magang
-                        <span class="text-red-700 font-semibold">
-                            {{ $latestPengajuan->jenis_magang }}
-                        </span>
-                    </p>
-                    <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
-                        sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
-                    </p>
-                    <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
-                        </button>
-                    </form>
-                </div>
-            @endif
-            @if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'reject-days')
-                <div class="w-full h-fit p-6 lg:p-10 mt-5 flex flex-col gap-3 items-center justify-center text-center bg-red-100 rounded-lg text-red-600">
-                    <h1 class="md:text-xl font-semibold rounded-full text-white px-10 py-1.5 bg-gradient-to-r from-[#FF0000] to-[#6C2323]">Pengajuan Kamu Ditolak</h1>
-                    <p class="text-sm">
-                        jenis magang
-                        <span class="text-red-700 font-semibold">
-                            {{ $latestPengajuan->jenis_magang }}
-                        </span>
-                    </p>
-                    <p class="text-sm -mt-2">Untuk periode:
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_mulai)->translatedFormat('j-F-Y') }}</span>
-                        sampai dengan
-                        <span class="text-red-700 font-semibold">{{ Carbon::parse($latestPengajuan->tanggal_selesai)->translatedFormat('j-F-Y') }}</span>
-                    </p>
-                    <form action="{{ route('usernormal.pengajuan-ulang', $latestPengajuan->id) }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="pjax-link bg-red-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-red-100 hover:border hover:border-red-600 hover:text-red-600 transition-all duration-200">
-                            <p class="text-sm whitespace-nowrap">Ajukan Kembali</p>
-                        </button>
-                    </form>
-                </div>
-            @endif
         </div>
-        @endif
-        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isFuture())
-            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                    <i class="ti ti-calendar-time text-lg"></i>
-                    <p class="text-sm">Magang kamu akan dimulai pada <span class="font-bold">{{ Carbon::parse($latestMagang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+    </div>
+    @endif
+
+    <!-- Progress Overview - Hidden when status is accept-final -->
+    @if($showRegistrationTimeline)
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                <h3 class="text-lg font-semibold mb-4">Progress Tahapan</h3>
+                <div class="space-y-3">
+                    @php
+                        $user = Auth::user();
+                        $step1_completed = $user->foto_profil != null && $user->tentang_saya != null && 
+                                        $user->jenis_kelamin != null && $user->tempat_lahir != null && 
+                                        $user->tanggal_lahir != null && $user->alamat != null;
+                        
+                        $step2_completed = $user->pengajuan()->exists() && $user->status_magang == 'masa-daftar';
+                        
+                        $step3_completed = !is_null($latestPengajuan) && 
+                                        ($latestPengajuan->status_pengajuan === 'accept-first' || 
+                                        $latestPengajuan->status_pengajuan === 'reject-final') && 
+                                        $user->status_magang == 'masa-daftar';
+                        
+                        $step4_completed = !is_null($latestPengajuan) && 
+                                        !is_null($latestPengajuan->surat_pengantar) && 
+                                        $latestPengajuan->status_pengajuan !== 'reject-days' && 
+                                        $user->status_magang == 'masa-daftar';
+                    @endphp
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full {{ $step1_completed ? 'bg-green-500' : 'bg-gray-300' }} flex items-center justify-center">
+                            <i class="ti {{ $step1_completed ? 'ti-check text-white' : 'ti-user text-gray-500' }}"></i>
+                        </div>
+                        <span class="{{ $step1_completed ? 'text-green-600' : 'text-gray-500' }}">Lengkapi Profil</span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full {{ $step2_completed ? 'bg-green-500' : 'bg-gray-300' }} flex items-center justify-center">
+                            <i class="ti {{ $step2_completed ? 'ti-check text-white' : 'ti-clipboard-text text-gray-500' }}"></i>
+                        </div>
+                        <span class="{{ $step2_completed ? 'text-green-600' : 'text-gray-500' }}">Ajukan Program Magang</span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full {{ $step3_completed ? 'bg-green-500' : 'bg-gray-300' }} flex items-center justify-center">
+                            <i class="ti {{ $step3_completed ? 'ti-check text-white' : 'ti-clipboard-check text-gray-500' }}"></i>
+                        </div>
+                        <span class="{{ $step3_completed ? 'text-green-600' : 'text-gray-500' }}">Lolos Seleksi Program</span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full {{ $step4_completed ? 'bg-green-500' : 'bg-gray-300' }} flex items-center justify-center">
+                            <i class="ti {{ $step4_completed ? 'ti-check text-white' : 'ti-file-info text-gray-500' }}"></i>
+                        </div>
+                        <span class="{{ $step4_completed ? 'text-green-600' : 'text-gray-500' }}">Upload Surat Pengantar</span>
+                    </div>
                 </div>
             </div>
-        @endif
-        @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Auth::user()->status_magang === 'aktif')
-            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+
+            <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
+                <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+                <div class="space-y-3">
+                    <a href="/profil-edit?selected=biodata" class="pjax-link block p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-200">
+                        <div class="flex items-center gap-3">
+                            <i class="ti ti-user text-blue-600"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Lengkapi Profil</p>
+                                <p class="text-sm text-gray-600">Isi data pribadi dan dokumen</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    @if($step1_completed)
+                    <a href="/dashboard/ajukan-program" class="pjax-link block p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-all duration-200">
+                        <div class="flex items-center gap-3">
+                            <i class="ti ti-clipboard-text text-green-600"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Ajukan Program Magang</p>
+                                <p class="text-sm text-gray-600">Daftar program magang yang tersedia</p>
+                            </div>
+                        </div>
+                    </a>
+                    @endif
+
+                    @if($step2_completed)
+                    <a href="/dashboard/lolos-seleksi" class="pjax-link block p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-all duration-200">
+                        <div class="flex items-center gap-3">
+                            <i class="ti ti-clipboard-check text-amber-600"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Hasil Seleksi</p>
+                                <p class="text-sm text-gray-600">Cek status pengajuan magang</p>
+                            </div>
+                        </div>
+                    </a>
+                    @endif
+
+                    @if($step3_completed)
+                    <a href="/dashboard/upload-surat" class="pjax-link block p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-all duration-200">
+                        <div class="flex items-center gap-3">
+                            <i class="ti ti-file-info text-purple-600"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Upload Surat Pengantar</p>
+                                <p class="text-sm text-gray-600">Upload dokumen surat pengantar</p>
+                            </div>
+                        </div>
+                    </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Timeline Magang Aktif -->
+    @if (!is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Auth::user()->status_magang === 'aktif')
+        <div class="">
+            <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                 <ol class="flex items-center w-full px-[5%] md:px-[15%]">
                     <li class="intern-step1 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
                         <span class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0" data-tooltip-target="tooltip-orientasi">
@@ -358,9 +291,22 @@
                     </li>
                 </ol>
             </div>
-        @endif
-        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isFuture())
-            <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        </div>
+    @endif
+
+    <!-- Magang Activity Section (if active) -->
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang))
+        @if (Carbon::parse($latestMagang->tanggal_mulai)->isFuture())
+            <div class="">
+                <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                    <div class="w-full h-fit flex gap-3 items-start lg:items-center p-3 bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                        <i class="ti ti-calendar-time text-lg"></i>
+                        <p class="text-sm">Magang kamu akan dimulai pada <span class="font-bold">{{ Carbon::parse($latestMagang->tanggal_mulai)->translatedFormat('j F Y') }}</span></p>
+                    </div>
+                </div>
+            </div>
+        @elseif (Carbon::parse($latestMagang->tanggal_mulai)->isPast() && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isFuture())
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 <div class="col-span-2 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
                     <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                         <div class="flex gap-3 items-start lg:items-center">
@@ -389,112 +335,119 @@
                 </div>
             </div>
         @endif
-        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && !$latestMagang->laporan_magang)
-            <div class="col-span-3 grid grid-cols-1 gap-6 lg:mt-6">
-                <div class="col-span-3 card rounded-lg bg-white p-5">
-                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <i class="ti ti-sparkles text-lg"></i>
-                            <p class="text-sm">Upload projek magang jika kamu memiliki projek yang dikerjakan selama magang</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-span-3 card rounded-lg bg-white p-5">
-                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-red-100 rounded-lg border text-red-700 border-red-700">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <i class="ti ti-alert-triangle text-lg"></i>
-                            <p class="text-sm">Pastikan link yang di submit dapat diakses</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-span-3 card rounded-lg mt-0 bg-white p-5 h-fit dark:bg-[#14181b] transition-all duration-200">
-                    @livewire('upload-laporan-akhir', ['magangId' => $latestMagang->id])
-                </div>
-            </div>
-        @endif
-        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->laporan_magang && !$latestMagang->feedback)
-            <div class="col-span-3 grid grid-cols-1 gap-6 lg:mt-6">
-                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <i class="ti ti-browser text-lg"></i>
-                            <p class="text-sm">Kamu telah selesai magang <span class="font-semibold">{{ $latestMagang->jenis_magang }}</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                    <div class="w-full h-fit flex flex-col md:flex-row items-start gap-3 md:items-center justify-between rounded-lg">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
-                                Form Feedback Pengalaman Magang
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-span-3 relative rounded-lg overflow-hidden">
-                    @livewire('feedback-form', ['magangId' => $latestMagang->id])
-                </div>
-            </div>
-        @endif
-        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && (!$latestMagang->nilai_magang || !$latestMagang->sertifikat_magang))
-            <div class="col-span-3 card rounded-lg bg-white p-5 lg:mt-6">
+    @endif
+
+    <!-- Setelah Magang Selesai - Upload Laporan Akhir -->
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && !$latestMagang->laporan_magang)
+        <div class="col-span-3 grid grid-cols-1 gap-6 mt-6">
+            <div class="col-span-3 card rounded-lg bg-white p-5">
                 <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
                     <div class="flex gap-3 items-start lg:items-center">
                         <i class="ti ti-sparkles text-lg"></i>
-                        <p class="text-sm">Tunggu pembimbing memberikan nilai magang dan nantikan sertifikat magang kamu</p>
+                        <p class="text-sm">Upload projek magang jika kamu memiliki projek yang dikerjakan selama magang</p>
                     </div>
                 </div>
             </div>
-        @endif
-        @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && $latestMagang->nilai_magang && $latestMagang->sertifikat_magang)
-            <div class="col-span-3 grid grid-cols-1 gap-6 lg:mt-6">
-                <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <i class="ti ti-alert-circle text-lg"></i>
-                            <p class="text-sm">Ingin mengajukan program magang lagi?</p>
-                        </div>
-                        <form action="{{ route('usernormal.ajukan-magang') }}" method="POST">
-                            @csrf
-                            <button type="submit"
-                                class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
-                                <p class="text-sm whitespace-nowrap">Ajukan Program</p>
-                            </button>
-                        </form>
+            <div class="col-span-3 card rounded-lg bg-white p-5">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-red-100 rounded-lg border text-red-700 border-red-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-alert-triangle text-lg"></i>
+                        <p class="text-sm">Pastikan link yang di submit dapat diakses</p>
                     </div>
-                </div>  
-    
-                <div class="card rounded-lg bg-white p-5">
-                    <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
-                        <div class="flex gap-3 items-start lg:items-center">
-                            <i class="ti ti-sparkles text-lg"></i>
-                            <p class="text-sm">Nilai dan sertifikat magang kamu sudah diberikan</p>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="relative w-full h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-col gap-3 items-start">
-                        <p class="text-2xl font-medium italic">Nilai & Sertifikat Magang Kamu</p>
-                        <a href="/nilai-sertifikat/{{ $latestMagang->id }}"
-                            class="pjax-link bg-blue-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
-                            <p class="text-xs whitespace-nowrap">
-                                Lihat Nilai & Sertifikat
-                            </p>
-                        </a>
-                    </div>
-                    <div class="px-4 z-20">
-                        <p class="text-4xl font-bold">{{ $latestMagang->nilai_magang }}</p>
-                    </div>
-                    <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
                 </div>
             </div>
-        @endif
-    </div>
+            <div class="col-span-3 card rounded-lg mt-0 bg-white p-5 h-fit dark:bg-[#14181b] transition-all duration-200">
+                @livewire('upload-laporan-akhir', ['magangId' => $latestMagang->id])
+            </div>
+        </div>
+    @endif
+
+    <!-- Setelah Laporan Diupload - Form Feedback -->
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->laporan_magang && !$latestMagang->feedback)
+        <div class="col-span-3 grid grid-cols-1 gap-6 mt-6">
+            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-browser text-lg"></i>
+                        <p class="text-sm">Kamu telah selesai magang <span class="font-semibold">{{ $latestMagang->jenis_magang }}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <div class="w-full h-fit flex flex-col md:flex-row items-start gap-3 md:items-center justify-between rounded-lg">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <h4 class="text-gray-900 font-semibold text-2xl dark:text-white">
+                            Form Feedback Pengalaman Magang
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-3 relative rounded-lg overflow-hidden">
+                @livewire('feedback-form', ['magangId' => $latestMagang->id])
+            </div>
+        </div>
+    @endif
+
+    <!-- Setelah Feedback - Tunggu Nilai dan Sertifikat -->
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && (!$latestMagang->nilai_magang || !$latestMagang->sertifikat_magang))
+        <div class="col-span-3 card rounded-lg bg-white p-5 mt-6">
+            <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                <div class="flex gap-3 items-start lg:items-center">
+                    <i class="ti ti-sparkles text-lg"></i>
+                    <p class="text-sm">Tunggu pembimbing memberikan nilai magang dan nantikan sertifikat magang kamu</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Setelah Dapat Nilai dan Sertifikat -->
+    @if (Auth::user()->status_magang === 'aktif' && !is_null($latestMagang) && Carbon::parse($latestMagang->tanggal_selesai)->addDays(1)->isPast() && $latestMagang->feedback && $latestMagang->nilai_magang && $latestMagang->sertifikat_magang)
+        <div class="col-span-3 grid grid-cols-1 gap-6 mt-6">
+            <div class="card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-amber-100 rounded-lg border text-amber-700 border-amber-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-alert-circle text-lg"></i>
+                        <p class="text-sm">Ingin mengajukan program magang lagi?</p>
+                    </div>
+                    <form action="{{ route('usernormal.ajukan-magang') }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="pjax-link bg-amber-600 ml-7 md:ml-0 border border-transparent px-3 py-1 rounded-lg text-white hover:bg-amber-100 hover:border hover:border-amber-600 hover:text-amber-600 transition-all duration-200">
+                            <p class="text-sm whitespace-nowrap">Ajukan Program</p>
+                        </button>
+                    </form>
+                </div>
+            </div>  
+
+            <div class="card rounded-lg bg-white p-5">
+                <div class="w-full h-fit p-3 flex flex-col md:flex-row items-start gap-3 md:items-center justify-between bg-blue-100 rounded-lg border text-blue-700 border-blue-700">
+                    <div class="flex gap-3 items-start lg:items-center">
+                        <i class="ti ti-sparkles text-lg"></i>
+                        <p class="text-sm">Nilai dan sertifikat magang kamu sudah diberikan</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative w-full h-fit flex gap-3 items-center justify-between p-5 bg-blue-100 rounded-lg text-blue-700 overflow-hidden hover:shadow-md transition-all duration-300">
+                <div class="flex flex-col gap-3 items-start">
+                    <p class="text-2xl font-medium italic">Nilai & Sertifikat Magang Kamu</p>
+                    <a href="/nilai-sertifikat/{{ $latestMagang->id }}"
+                        class="pjax-link bg-blue-600 border border-transparent px-3 py-1 rounded-md text-white hover:bg-blue-100 hover:border hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
+                        <p class="text-xs whitespace-nowrap">
+                            Lihat Nilai & Sertifikat
+                        </p>
+                    </a>
+                </div>
+                <div class="px-4 z-20">
+                    <p class="text-4xl font-bold">{{ $latestMagang->nilai_magang }}</p>
+                </div>
+                <i class="ti ti-sparkles text-[80px] absolute -bottom-5 -right-1 text-blue-300 z-10"></i>
+            </div>
+        </div>
+    @endif
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
             //daftar step
             @if (Auth::user()->tentang_saya != null &&
                     Auth::user()->jenis_kelamin != null &&
@@ -640,7 +593,6 @@
                     }
                 }
             @endif
-
             //intern step
             @if (!is_null($latestMagang) && $latestMagang->status_magang == 'active'){
                 var step1 = document.querySelector('.intern-step1');
@@ -786,5 +738,4 @@
             @endif
         });
     </script>
-
 @endsection

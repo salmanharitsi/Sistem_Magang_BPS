@@ -17,7 +17,12 @@ class UserNormalController
         if (request()->pjax()) {
             return false;
         }
-        return view('usernormal.dashboard');
+
+        $user = Auth::user();
+        $latestPengajuan = $user->pengajuan()->latest('created_at')->first();
+        $latestMagang = $user->magang()->latest('created_at')->first();
+
+        return view('usernormal.dashboard', compact('latestPengajuan', 'latestMagang'));
     }
 
     public function get_status_pengajuan()
@@ -446,5 +451,163 @@ class UserNormalController
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    // Helper method untuk cek kondisi step
+    private function getStepConditions()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $user = Auth::user();
+        $latestPengajuan = $user->pengajuan()->latest('created_at')->first();
+        
+        return [
+            'step1_completed' => $this->isStep1Completed($user),
+            'step2_completed' => $this->isStep2Completed($user),
+            'step3_completed' => $this->isStep3Completed($latestPengajuan),
+            'step4_completed' => $this->isStep4Completed($latestPengajuan),
+            'latest_pengajuan' => $latestPengajuan
+        ];
+    }
+
+    private function isStep1Completed($user)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        return $user->foto_profil != null &&
+               $user->tentang_saya != null &&
+               $user->jenis_kelamin != null &&
+               $user->tempat_lahir != null &&
+               $user->tanggal_lahir != null &&
+               $user->alamat != null;
+    }
+
+    private function isStep2Completed($user)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        return $user->pengajuan()->exists() && $user->status_magang == 'masa-daftar';
+    }
+
+    private function isStep3Completed($latestPengajuan)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        return !is_null($latestPengajuan) && 
+               ($latestPengajuan->status_pengajuan === 'accept-first' || 
+                $latestPengajuan->status_pengajuan === 'reject-final') && 
+               Auth::user()->status_magang == 'masa-daftar';
+    }
+
+    private function isStep4Completed($latestPengajuan)
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        return !is_null($latestPengajuan) && 
+               !is_null($latestPengajuan->surat_pengantar) && 
+               $latestPengajuan->status_pengajuan !== 'reject-days' && 
+               Auth::user()->status_magang == 'masa-daftar';
+    }
+
+    public function lengkapiProfil()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $conditions = $this->getStepConditions();
+        
+        // Cek apakah pengajuan terakhir sudah accept-final
+        $latestPengajuan = Auth::user()->pengajuan()->latest('created_at')->first();
+        if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'accept-final' && Auth::user()->status_magang !== 'tidak-aktif') {
+            return redirect('/dashboard')
+                        ->with('info', 'Pengajuan Anda sudah diterima secara final');
+        }
+        
+        return view('usernormal.dashboard.step1-lengkapi-profil', $conditions);
+    }
+
+    public function ajukanProgram()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $conditions = $this->getStepConditions();
+        
+        // Cek apakah pengajuan terakhir sudah accept-final
+        $latestPengajuan = Auth::user()->pengajuan()->latest('created_at')->first();
+        if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'accept-final' && Auth::user()->status_magang !== 'tidak-aktif') {
+            return redirect('/dashboard')
+                        ->with('info', 'Pengajuan Anda sudah diterima secara final');
+        }
+        
+        // Cek apakah step 1 sudah completed
+        if (!$conditions['step1_completed']) {
+            return redirect()->route('dashboard.lengkapi-profil')
+                        ->with('error', 'Silakan lengkapi profil terlebih dahulu');
+        }
+        
+        return view('usernormal.dashboard.step2-ajukan-program', $conditions);
+    }
+
+    public function lolosSeleksi()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+
+        $conditions = $this->getStepConditions();
+        
+        // Cek apakah pengajuan terakhir sudah accept-final
+        $latestPengajuan = Auth::user()->pengajuan()->latest('created_at')->first();
+        if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'accept-final' && Auth::user()->status_magang !== 'tidak-aktif') {
+            return redirect('/dashboard')
+                        ->with('info', 'Pengajuan Anda sudah diterima secara final');
+        }
+        
+        // Cek apakah step sebelumnya sudah completed
+        if (!$conditions['step1_completed'] || !$conditions['step2_completed']) {
+            return redirect()->route('dashboard.lengkapi-profil')
+                        ->with('error', 'Silakan selesaikan tahap sebelumnya');
+        }
+        
+        return view('usernormal.dashboard.step3-lolos-seleksi', $conditions);
+    }
+
+    public function uploadSurat()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        
+        $conditions = $this->getStepConditions();
+        
+        // Cek apakah pengajuan terakhir sudah accept-final
+        $latestPengajuan = Auth::user()->pengajuan()->latest('created_at')->first();
+        if (!is_null($latestPengajuan) && $latestPengajuan->status_pengajuan === 'accept-final' && Auth::user()->status_magang !== 'tidak-aktif') {
+            return redirect('/dashboard')
+                        ->with('info', 'Pengajuan Anda sudah diterima secara final');
+        }
+        
+        // Cek apakah step sebelumnya sudah completed
+        if (!$conditions['step1_completed'] || 
+            !$conditions['step2_completed'] || 
+            !$conditions['step3_completed']) {
+            return redirect()->route('dashboard.lengkapi-profil')
+                        ->with('error', 'Silakan selesaikan tahap sebelumnya');
+        }
+        
+        return view('usernormal.dashboard.step4-upload-surat', $conditions);
     }
 }

@@ -55,6 +55,10 @@ Route::group(['middleware' => ['usernormal', 'no-cache']], function () {
     Route::get('presensi/lapor-harian/{id}', [UserNormalController::class, 'get_lapor_harian'])->name('usernormal.lapor-harian');
     Route::post('presensi/lapor-harian/{id}/submit', [UserNormalController::class, 'submit_laporan'])->name('usernormal.submit_laporan');
     Route::get('presensi/lapor-izin/{id}', [UserNormalController::class, 'get_lapor_harian'])->name('usernormal.lapor-izin');
+    Route::get('/dashboard/lengkapi-profil', [UserNormalController::class, 'lengkapiProfil'])->name('dashboard.lengkapi-profil');
+    Route::get('/dashboard/ajukan-program', [UserNormalController::class, 'ajukanProgram'])->name('dashboard.ajukan-program');
+    Route::get('/dashboard/lolos-seleksi', [UserNormalController::class, 'lolosSeleksi'])->name('dashboard.lolos-seleksi');
+    Route::get('/dashboard/upload-surat', [UserNormalController::class, 'uploadSurat'])->name('dashboard.upload-surat');
 });
 
 // Route untuk admin
