@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Mail\OTPMail;
 use App\Models\OTP;
 use App\Models\User;
-use Illuminate\Container\Attributes\DB;
+use App\Models\Institusi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -21,7 +21,7 @@ class Registrasi extends Component
     public $name,
         $email,
         $nomor_induk,
-        $institusi,
+        $institusi_id,
         $jurusan,
         $nomor_hp,
         $kartu_tanda,
@@ -34,13 +34,59 @@ class Registrasi extends Component
             'name' => 'required|min:5',
             'email' => 'required|email|unique:users',
             'nomor_induk' => 'required|min:5|unique:users',
-            'institusi' => 'required',
+            'institusi_id' => 'required|exists:institusi,id',
             'jurusan' => 'required',
             'kartu_tanda' => 'required|max:2048',
             'nomor_hp' => 'required',
             'password' => 'required|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
             'confirm_password' => 'required_with:password|same:password',
         ];
+    }
+
+    public function updated($propertyName)
+    {
+        // Real-time validation
+        if (in_array($propertyName, ['name', 'email', 'nomor_induk', 'password', 'confirm_password'])) {
+            $this->validateOnly($propertyName);
+        }
+    }
+
+    public function create_user()
+    {
+        $validatedData = $this->validate();
+
+        // Store uploaded file
+        $imagePath = $this->kartu_tanda->store('kartu_tanda', 'public');
+        $originalFilename = $this->kartu_tanda->getClientOriginalName();
+
+        // Generate OTP
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        // Create OTP record
+        $otpRecord = OTP::create([
+            'email' => $validatedData['email'],
+            'otp_code' => $otp,
+            'verified' => false,
+            'registration_data' => [
+                'name' => ucwords(strtolower(trim($validatedData['name']))),
+                'nomor_induk' => $validatedData['nomor_induk'],
+                'institusi_id' => $validatedData['institusi_id'],
+                'jurusan' => ucwords(strtolower(trim($validatedData['jurusan']))),
+                'kartu_tanda' => $imagePath,
+                'original_filename_kartu' => $originalFilename,
+                'nomor_hp' => $validatedData['nomor_hp'],
+                'password' => Hash::make($validatedData['password']),
+            ]
+        ]);
+
+        // Send OTP email
+        Mail::to($validatedData['email'])->send(new OTPMail($otpRecord->id, $otp));
+
+        return redirect()->route('verify.otp', ['id' => $otpRecord->id])->with([
+            'success' => [
+                "title" => "Registrasi Berhasil!"
+            ]
+        ]);
     }
 
     public function messages()
@@ -60,8 +106,9 @@ class Registrasi extends Component
                 "min" => 'Nomor induk minimal 5 karakter',
                 "unique" => 'Nomor induk ini sudah terdaftar',
             ],
-            'institusi' => [
+            'institusi_id' => [
                 "required" => 'Institusi tidak boleh kosong',
+                "exists" => 'Institusi tidak valid',
             ],
             'jurusan' => [
                 "required" => 'Jurusan tidak boleh kosong',
@@ -85,38 +132,11 @@ class Registrasi extends Component
         ];
     }
 
-    public function create_user()
+
+    public function render()
     {
-        $validatedData = $this->validate();
-
-        $imagePath = $this->kartu_tanda->store('kartu_tanda', 'public');
-        $originalFilename = $this->kartu_tanda->getClientOriginalName();
-
-        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-
-        // Create OTP record and get the UUID
-        $otpRecord = OTP::create([
-            'email' => $validatedData['email'],
-            'otp_code' => $otp,
-            'verified' => false,
-            'registration_data' => [
-                'name' => ucwords(strtolower(trim($validatedData['name']))),
-                'nomor_induk' => $validatedData['nomor_induk'],
-                'institusi' => ucwords(strtolower(trim($validatedData['institusi']))),
-                'jurusan' => ucwords(strtolower(trim($validatedData['jurusan']))),
-                'kartu_tanda' => $imagePath,
-                'original_filename_kartu' => $originalFilename,
-                'nomor_hp' => $validatedData['nomor_hp'],
-                'password' => Hash::make($validatedData['password']),
-            ]
-        ]);
-
-        Mail::to($validatedData['email'])->send(new OTPMail($otpRecord->id, $otp));
-
-        return redirect()->route('verify.otp', ['id' => $otpRecord->id])->with([
-            'success' => [
-                "title" => "Registrasi Berhasil!"
-            ]
+        return view('livewire.registrasi', [
+            'institusiList' => Institusi::where('status', 'approved')->orderBy('nama')->get()
         ]);
     }
 }

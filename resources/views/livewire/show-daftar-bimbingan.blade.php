@@ -65,7 +65,7 @@
                             {{$data->pengajuan->name}}
                         </td>
                         <td class="py-4 px-6 text-left">
-                            {{$data->pengajuan->institusi}}
+                            {{$data->pengajuan->user->institusi->nama}}
                         </td>
                         <td class="py-4 px-6 text-left">
                             {{$data->jenis_magang}}

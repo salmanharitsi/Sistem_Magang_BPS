@@ -115,7 +115,7 @@ class ShowDaftarPresensi extends Component
             // Get user and magang data
             $userData = [
                 'nama' => $user->name,
-                'institusi' => $magang->pengajuan->institusi ?? '-',
+                'institusi' => $magang->pengajuan->user->institusi?->nama ?? '-',
                 'nomor_induk' => $user->nomor_induk ?? '-',
                 'jenis_magang' => $magang->jenis_magang,
                 'tanggal_mulai' => Carbon::parse($magang->tanggal_mulai)->format('d F Y'),

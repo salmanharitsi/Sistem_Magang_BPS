@@ -13,6 +13,8 @@
     </script>
     <title>Simagang</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 </head>
 
 @if (Auth::check())
@@ -426,9 +428,200 @@
         </div>
     </section>
 
+     {{-- Galeri & Fasilitas Section --}}
+    @if($galeris->count() > 0 || $fasilitas->count() > 0)
+        <section class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10 flex items-center flex-col gap-[24px bg-gray-100 overflow-hidden">
+            <div class="w-full flex flex-col items-start justify-start gap-1">
+                <h2 class="text-3xl font-bold text-blue-900">Galeri & Fasilitas</h2>
+                <p class="text-gray-600">Dokumentasi kegiatan dan fasilitas magang BPS</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="w-full flex justify-center mb-6">
+                <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
+                    @if($galeris->count() > 0)
+                        <button id="tab-galeri" class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-blue-900 hover:text-blue-700 bg-white shadow active" onclick="switchTab('galeri')">
+                            <i class="ti ti-photo text-lg"></i>
+                            Galeri
+                        </button>
+                    @endif
+                    @if($fasilitas->count() > 0)
+                        <button id="tab-fasilitas" class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm {{ !$galeris->count() ? 'text-blue-900 bg-white shadow active' : 'text-gray-500' }} hover:text-gray-700" onclick="switchTab('fasilitas')">
+                            <i class="ti ti-tools text-lg"></i>
+                            Fasilitas
+                        </button>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Galeri Slider -->
+            @if($galeris->count() > 0)
+                <div id="galeri-content" class="w-full swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        @foreach($galeris as $galeri)
+                            <div class="swiper-slide">
+                                <div class="relative group cursor-pointer" onclick="openImagePreview('{{ asset('storage/' . $galeri->image_path) }}', '{{ $galeri->judul }}')">
+                                    <img src="{{ asset('storage/' . $galeri->image_path) }}" class="w-full h-64 object-cover rounded-lg" alt="{{ $galeri->judul }}">
+                                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg">
+                                        <h3 class="text-white font-semibold">{{ $galeri->judul }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            @endif
+
+            <!-- Fasilitas Slider -->
+            @if($fasilitas->count() > 0)
+                <div id="fasilitas-content" class="w-full swiper mySwiper {{ $galeris->count() > 0 ? 'hidden' : '' }}">
+                    <div class="swiper-wrapper">
+                        @foreach($fasilitas as $item)
+                            <div class="swiper-slide">
+                                <div class="relative group cursor-pointer" onclick="openImagePreview('{{ asset('storage/' . $item->image_path) }}', '{{ $item->judul }}')">
+                                    <img src="{{ asset('storage/' . $item->image_path) }}" class="w-full h-64 object-cover rounded-lg" alt="{{ $item->judul }}">
+                                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg">
+                                        <h3 class="text-white font-semibold">{{ $item->judul }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            @endif
+
+            <!-- Image Preview Modal -->
+            <div id="imagePreviewModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[1000] hidden">
+                <div class="max-w-4xl w-full mx-4 bg-white rounded-lg overflow-hidden">
+                    <div class="p-4 bg-white flex justify-between items-center border-b">
+                        <h3 id="previewTitle" class="text-xl font-semibold text-gray-800"></h3>
+                        <button onclick="closeImagePreview()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <img id="previewImage" src="" alt="Preview" class="w-full h-auto">
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+
+     <!-- Testimoni Section -->
+    <!-- Testimoni Section - Menggunakan tema yang sudah ada -->
+@if($testimonis->where('is_displayed', true)->count() > 0)
+    <section class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10 flex items-center flex-col gap-[24px] bg-gray-100">
+        <div class="w-full flex flex-col items-start justify-start gap-1">
+            <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Apa Kata Mereka?</h1>
+            <p class="text-gray-600 text-[16px]">Testimoni dari peserta program magang BPS Provinsi Riau yang telah merasakan pengalaman berharga</p>
+        </div>
+        
+        <div class="flex w-full">
+            <!-- Left Arrow -->
+            <div class="flex items-center">
+                <div class="w-full flex justify-end">
+                    <button id="prevTestimoni" class="p-3 rounded-lg bg-white border border-[#767676] shadow-lg mr-3 flex">
+                        <i class="fa-solid fa-arrow-left" style="color: #767676"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Testimonial Container -->
+            <div id="testimoniContainer" class="w-full overflow-hidden delay-[400ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="100">
+                <ul id="testimoniSlider" class="flex w-full mt-5 md:mt-0 transition-transform duration-500 ease-in-out">
+                    @foreach ($testimonis->where('is_displayed', true) as $index => $testimoni)
+                        @php
+                            $firstLetter = strtoupper(substr($testimoni->magang->user->name ?? 'A', 0, 1));
+                        @endphp
+                        <li class="px-2 py-2 md:py-5 md:px-5 flex-shrink-0 w-full md:w-1/3">
+                            <div class="bg-white rounded-lg border p-5 flex flex-col justify-between h-full relative overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                                <!-- Quote Icon -->
+                                <div class="w-[20%] mb-4">
+                                    <i class="fa-solid fa-quote-left text-2xl text-blue-600"></i>
+                                </div>
+                                
+                                <!-- User Profile Section -->
+                                <div class="flex items-center gap-4 mb-4">
+                                    @if(!empty($testimoni->magang->user->foto_profil))
+                                        <img src="{{ Storage::url($testimoni->magang->user->foto_profil) }}" 
+                                             alt="Foto Profil" 
+                                             class="w-12 h-12 object-cover rounded-full border-2 border-blue-600">
+                                    @else
+                                        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold text-lg">
+                                            {{ $firstLetter }}
+                                        </div>
+                                    @endif
+                                    <div>
+                                        <h3 class="text-[18px] md:text-[20px] text-[#5d5d5d] font-bold">
+                                            {{ $testimoni->magang->user->name }}
+                                        </h3>
+                                        <p class="text-[13px] text-gray-500">
+                                            {{ $testimoni->magang->jurusan }}
+                                        </p>
+                                        <p class="text-[12px] text-gray-400">
+                                            {{ $testimoni->magang->user->institusi->nama }}
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Testimonial Content -->
+                                <div class="flex-grow">
+                                    <p class="text-[14px] text-gray-600 line-clamp-4 text-justify leading-relaxed">
+                                        "{{ $testimoni->testimoni }}"
+                                    </p>
+                                </div>
+                                
+                                <!-- Badge -->
+                                <div class="flex justify-between items-center">
+                                    <div class="bg-gradient-to-r from-blue-400 to-blue-700 text-white px-3 py-1 rounded-full text-[12px] font-medium">
+                                        {{ $testimoni->magang->lamaran->fungsiBagian->title ?? 'Magang BPS Provinsi Riau' }}
+                                    </div>
+                                    <div class="text-[12px] text-gray-400">
+                                        {{ \Carbon\Carbon::parse($testimoni->created_at)->format('M Y') }}
+                                    </div>
+                                </div>
+                                
+                                <!-- Decorative underline -->
+                                <div class="w-full flex justify-end mt-2">
+                                    <img class="w-[30%]" src="{{ asset('assets/home/fungsi_bagian/underline.svg') }}" alt="">
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            
+            <!-- Right Arrow -->
+            <div class="flex items-center">
+                <div class="w-full flex justify-start">
+                    <button id="nextTestimoni" class="p-3 rounded-lg bg-white border border-[#767676] shadow-lg ml-3 flex">
+                        <i class="fa-solid fa-arrow-right" style="color: #767676"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dots Indicator -->
+        @php
+            $totalTestimoni = $testimonis->where('is_displayed', true)->count();
+            $totalSlides = ceil($totalTestimoni / 3);
+        @endphp
+        
+        @if($totalSlides > 1)
+            <div class="flex justify-center gap-2 mt-5">
+                @for($i = 0; $i < $totalSlides; $i++)
+                    <div class="testimoni-dot w-3 h-3 rounded-full {{ $i === 0 ? 'bg-blue-600' : 'bg-gray-300' }} cursor-pointer transition-colors duration-300" data-slide="{{ $i }}"></div>
+                @endfor
+            </div>
+        @endif
+    </section>
+@endif
+
     {{-- FaQs Section --}}
     <section id="faqs"
-        class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100 overflow-hidden">
+        class="w-full h-fit px-2 py-5 md:px-[10%] md:py-10  flex items-center flex-col gap-[24px] bg-gray-100">
         <div class="w-full flex flex-col items-start justify-start gap-1">
             <h1 class="text-[#373737] text-[23px] md:text-[30px] font-bold">Frequently asked questions</h1>
             <p class="text-gray-600 text-[16px]">Butuh bantuan? Coba cek terlebih dahulu pertanyaan yang sering
@@ -455,6 +648,7 @@
             </div>
         </div>
     </section>
+
 
     {{-- Footer setion --}}
     <footer
@@ -502,6 +696,132 @@
     <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('testimoniSlider');
+    const prevBtn = document.getElementById('prevTestimoni');
+    const nextBtn = document.getElementById('nextTestimoni');
+    const dots = document.querySelectorAll('.testimoni-dot');
+    
+    if (!slider) return;
+    
+    const totalItems = slider.children.length;
+    const itemsPerView = window.innerWidth >= 768 ? 3 : 1; // 3 untuk desktop, 1 untuk mobile
+    const totalSlides = Math.ceil(totalItems / itemsPerView);
+    let currentSlide = 0;
+    
+    // Auto slide interval
+    let autoSlideInterval;
+    
+    function updateSlider() {
+        const translateX = -(currentSlide * (100 / (itemsPerView === 1 ? 1 : totalSlides)));
+        slider.style.transform = `translateX(${translateX}%)`;
+        
+        // Update dots
+        dots.forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.remove('bg-gray-300');
+                dot.classList.add('bg-blue-600');
+            } else {
+                dot.classList.remove('bg-blue-600');
+                dot.classList.add('bg-gray-300');
+            }
+        });
+        
+        // Update button states
+        if (prevBtn && nextBtn) {
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            if (currentSlide === 0) {
+                prevBtn.style.opacity = '0.5';
+            } else {
+                prevBtn.style.opacity = '1';
+            }
+            
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.style.opacity = '0.5';
+            } else {
+                nextBtn.style.opacity = '1';
+            }
+        }
+    }
+    
+    function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+        } else {
+            currentSlide = 0; // Loop back to first slide
+        }
+        updateSlider();
+    }
+    
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+        } else {
+            currentSlide = totalSlides - 1; // Loop to last slide
+        }
+        updateSlider();
+    }
+    
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(nextSlide, 5000); // Auto slide every 5 seconds
+    }
+    
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+    
+    // Event listeners
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            nextSlide();
+            setTimeout(startAutoSlide, 3000); // Restart auto slide after 3 seconds
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            prevSlide();
+            setTimeout(startAutoSlide, 3000); // Restart auto slide after 3 seconds
+        });
+    }
+    
+    // Dot navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            stopAutoSlide();
+            currentSlide = index;
+            updateSlider();
+            setTimeout(startAutoSlide, 3000); // Restart auto slide after 3 seconds
+        });
+    });
+    
+    // Pause auto slide on hover
+    const testimoniContainer = document.getElementById('testimoniContainer');
+    if (testimoniContainer) {
+        testimoniContainer.addEventListener('mouseenter', stopAutoSlide);
+        testimoniContainer.addEventListener('mouseleave', startAutoSlide);
+    }
+    
+    // Initialize
+    updateSlider();
+    
+    // Start auto slide if there are multiple slides
+    if (totalSlides > 1) {
+        startAutoSlide();
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const newItemsPerView = window.innerWidth >= 768 ? 3 : 1;
+        if (newItemsPerView !== itemsPerView) {
+            location.reload(); // Simple solution: reload page on significant resize
+        }
+    });
+});
         document.addEventListener('DOMContentLoaded', function() {
             // Attach event listeners to all icon containers
             const iconContainers = document.querySelectorAll('.icon-container');
@@ -555,6 +875,78 @@
         document.getElementById('detailFungsiBagianModal').addEventListener('click', function(event) {
             if (event.target === this) {
                 closeDetailModal();
+            }
+        });
+
+        // Inisialisasi Swiper
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                },
+            },
+        });
+
+        // Function untuk switch tab
+        function switchTab(tab) {
+            // Reset semua tab dan content
+            document.getElementById('tab-galeri').classList.remove('bg-white', 'shadow', 'text-blue-900');
+            document.getElementById('tab-fasilitas').classList.remove('bg-white', 'shadow', 'text-blue-900');
+            document.getElementById('galeri-content').classList.add('hidden');
+            document.getElementById('fasilitas-content').classList.add('hidden');
+            
+            // Aktifkan tab yang dipilih
+            document.getElementById('tab-' + tab).classList.add('bg-white', 'shadow', 'text-blue-900');
+            document.getElementById(tab + '-content').classList.remove('hidden');
+            
+            // Reinisialisasi Swiper untuk content yang baru ditampilkan
+            swiper.update();
+        }
+
+        // Function untuk membuka preview gambar
+        function openImagePreview(imageUrl, title) {
+            const modal = document.getElementById('imagePreviewModal');
+            const previewImage = document.getElementById('previewImage');
+            const previewTitle = document.getElementById('previewTitle');
+            
+            previewImage.src = imageUrl;
+            previewTitle.textContent = title;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Function untuk menutup preview gambar
+        function closeImagePreview() {
+            const modal = document.getElementById('imagePreviewModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Menutup modal ketika mengklik area di luar gambar
+        document.getElementById('imagePreviewModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeImagePreview();
+            }
+        });
+
+        // Menambahkan event listener untuk tombol ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeImagePreview();
             }
         });
     </script>

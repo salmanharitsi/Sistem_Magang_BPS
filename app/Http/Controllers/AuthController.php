@@ -197,7 +197,7 @@ class AuthController
                 $user->name = $userData['name'];
                 $user->email = $otp->email;
                 $user->nomor_induk = $userData['nomor_induk'];
-                $user->institusi = $userData['institusi'];
+                $user->institusi_id = $userData['institusi_id'];
                 $user->jurusan = $userData['jurusan'];
                 $user->kartu_tanda = $userData['kartu_tanda'];
                 $user->original_filename_kartu = $userData['original_filename_kartu'];

@@ -11,6 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //insitutusi
+        Schema::create('institusi', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama');
+            $table->string('alamat');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->timestamps();
+        });
+
+        
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamp('email_verified_at')->nullable();
@@ -28,7 +38,10 @@ return new class extends Migration
             $table->string('alamat')->nullable();
             $table->enum('status_magang', ['aktif', 'masa-daftar', 'tidak-aktif'])->default('tidak-aktif')->nullable();
             //akademik
-            $table->string('institusi');
+            $table->foreignId('institusi_id')
+                    ->nullable()
+                    ->constrained('institusi')
+                    ->nullOnDelete();
             $table->string('jurusan');
             $table->string('nomor_induk')->unique();
             $table->string('kartu_penduduk')->nullable();
@@ -65,7 +78,10 @@ return new class extends Migration
             $table->timestamps();
 
             //data akademik peserta
-            $table->string('institusi');
+            $table->foreignId('institusi_id')
+                    ->nullable()
+                    ->constrained('institusi')
+                    ->nullOnDelete();
             $table->string('jurusan');
             $table->string('nomor_induk');
 
@@ -199,7 +215,8 @@ return new class extends Migration
             $table->text('testimoni');
             $table->text('kritik');
             $table->text('saran');
-            
+            $table->boolean('is_displayed')->default(false);
+
             $table->timestamps();
         });
 
@@ -226,6 +243,23 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        //galeri
+        Schema::create('galeri', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul');
+            $table->string('image_path')->nullable();
+            $table->timestamps();
+        });
+
+        //fasilitas
+        Schema::create('fasilitas', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul');
+            $table->string('image_path')->nullable();
+            $table->timestamps();
+        });
+
+
     }
 
     /**
@@ -241,6 +275,9 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('otps');
         Schema::dropIfExists('pegawai');
+        Schema::dropIfExists('galeri');
+        Schema::dropIfExists('fasilitas');
+        Schema::dropIfExists('institusi');
         Schema::dropIfExists('password_reset_tokens');
     }
 };

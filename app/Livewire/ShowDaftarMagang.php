@@ -8,6 +8,7 @@ use App\Models\Pegawai;
 use Livewire\Component;
 use App\Models\Pengajuan;
 use App\Models\FungsiBagian;
+use App\Models\Institusi;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -83,12 +84,11 @@ class ShowDaftarMagang extends Component
     {
         $this->listFungsiBagian = FungsiBagian::orderBy('title')->get();
 
-        $this->listAsalInstansi = Pengajuan::select('institusi')
-            ->distinct()
-            ->orderBy('institusi')
-            ->pluck('institusi');
+        $this->listAsalInstansi = Institusi::orderBy('nama')->get();
 
         $this->listPembimbing = Pegawai::orderBy('name')->get();
+
+        
     }
 
     public function applyFilters()
@@ -141,8 +141,8 @@ class ShowDaftarMagang extends Component
         
         if ($this->filterAsalInstansi) {
             $this->isFiltered = true;
-            $query->whereHas('pengajuan', function($q) {
-                $q->where('institusi', $this->filterAsalInstansi);
+            $query->whereHas('pengajuan.user.institusi', function($q) {
+                $q->where('nama', $this->filterAsalInstansi);
             });
         }
 

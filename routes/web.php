@@ -1,20 +1,25 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminPembimbingController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KetuaTimController;
-use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\PimpinanController;
+use App\Http\Controllers\InstitusiController;
+use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\UserNormalController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminPembimbingController;
 
 // Route home page
 Route::get('/', [HomeController::class, 'index']);
 
 // Add name to the root route
 Route::get('/', [HomeController::class, 'index'])->name('login');
+
+// Route untuk halaman institusi (public)
+Route::get('/institusi', [InstitusiController::class, 'index'])->name('institusi.index');
+Route::post('/institusi', [InstitusiController::class, 'store'])->name('institusi.store');
 
 // Route auth page
 Route::get('/login', [AuthController::class, 'get_login_page']);
@@ -66,6 +71,7 @@ Route::group(['middleware' => ['admin', 'no-cache']], function () {
     Route::get('daftar-magang', [AdminController::class, 'get_daftar_magang'])->name('admin.daftar-magang');
     Route::get('review-logbook', [AdminController::class, 'get_review_logbook'])->name('admin.review-logbook');
     Route::get('jam-kerja', [AdminController::class, 'get_jam_kerja'])->name('admin.jam-kerja');
+    Route::get('kelola-institusi', [AdminController::class, 'get_institusi'])->name('admin.jam-institusi');
     Route::get('detail-pengajuan/{id}', [AdminController::class, 'get_detail_pengajuan'])->name('admin.detail-pengajuan');
     Route::post('terima-pengajuan/{id}', [AdminController::class, 'terima_pengajuan'])->name('admin.terima-pengajuan');
     Route::post('tolak-pengajuan/{id}', [AdminController::class, 'tolak_pengajuan'])->name('admin.tolak-pengajuan');

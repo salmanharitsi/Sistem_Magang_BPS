@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             FaqSeeder::class,
             FungsibagianSeeder::class,
             PegawaiSeeder::class,
+            InstitusiSeeder::class,
         ]);
     }
 }

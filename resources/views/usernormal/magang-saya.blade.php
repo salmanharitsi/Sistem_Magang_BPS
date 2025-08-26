@@ -34,7 +34,7 @@
                 @endif
                 <div class="flex flex-col justify-center">
                     <p class="text-lg font-semibold text-gray-800">{{ $magang->pengajuan->name }}</p>
-                    <div class="text-xs w-fit mt-1 px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 border border-blue-700">{{ $magang->pengajuan->institusi }}</div>
+                    <div class="text-xs w-fit mt-1 px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 border border-blue-700">{{ $magang->pengajuan->user->institusi->nama }}</div>
                 </div>
             </div>
             <div class="flex gap-10 border-b border-gray-300 pb-4">

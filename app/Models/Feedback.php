@@ -35,7 +35,8 @@ class Feedback extends Model
         // Kritik & Saran
         'testimoni',
         'kritik',
-        'saran'
+        'saran',
+        'is_displayed'
     ];
 
     protected static function boot()
