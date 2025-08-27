@@ -231,6 +231,14 @@ class AdminController
         return view('admin.jam-kerja');
     }
 
+    public function get_institusi()
+    {
+        if (request()->pjax()) {
+            return false;
+        }
+        return view('admin.kelola-institusi');
+    }
+
     public function get_detail_pengajuan($id)
     {
         if (request()->pjax()) {

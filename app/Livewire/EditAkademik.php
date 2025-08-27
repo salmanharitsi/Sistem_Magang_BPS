@@ -2,22 +2,23 @@
 
 namespace App\Livewire;
 
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
+use App\Models\Institusi;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Auth;
 
 class EditAkademik extends Component
 {
     #[Validate]
 
     public $nomor_induk,
-    $institusi,
+    $institusi_id,
     $jurusan;
 
     public function mount()
     {
         $user = Auth::user();
-        $this->institusi = $user->institusi;
+        $this->institusi_id = $user->institusi_id;
         $this->jurusan = $user->jurusan;
         $this->nomor_induk = $user->nomor_induk;
     }
@@ -26,7 +27,7 @@ class EditAkademik extends Component
     {
         return [
             'nomor_induk' => 'required|min:5|unique:users,nomor_induk,' . Auth::id(),
-            'institusi' => 'required',
+            'institusi_id' => 'required|exists:institusi,id',
             'jurusan' => 'required',
         ];
     }
@@ -39,8 +40,9 @@ class EditAkademik extends Component
                 "min" => 'Nomor induk minimal 5 karakter',
                 "unique" => 'Nomor induk ini sudah terdaftar',
             ],
-            'institusi' => [
+            'institusi_id' => [
                 "required" => 'Institusi tidak boleh kosong',
+                "exists" => 'Institusi tidak valid',
             ],
             'jurusan' => [
                 "required" => 'Jurusan tidak boleh kosong',
@@ -54,7 +56,7 @@ class EditAkademik extends Component
 
         // Cek jika data tidak berubah
         $isDataChanged =
-            $user->institusi !== ucwords(strtolower(trim($this->institusi))) ||
+            $user->institusi_id !== $this->institusi_id ||
             $user->jurusan !== ucwords(strtolower(trim($this->jurusan))) ||
             $user->nomor_induk !== $this->nomor_induk;
 
@@ -68,7 +70,7 @@ class EditAkademik extends Component
 
         // Build dynamic validation rules
         $rules = [
-            'institusi' => 'required',
+            'institusi_id' => 'required|exists:institusi,id',
             'jurusan' => 'required',
         ];
 
@@ -83,7 +85,7 @@ class EditAkademik extends Component
         $validatedData = $this->validate($rules);
 
         // Update user data with validated data
-        $user->institusi = ucwords(strtolower(trim($validatedData['institusi'])));
+        $user->institusi_id = $validatedData['institusi_id'];
         $user->jurusan = ucwords(strtolower(trim($validatedData['jurusan'])));
         $user->nomor_induk = $validatedData['nomor_induk'];
         $user->save();
@@ -92,6 +94,13 @@ class EditAkademik extends Component
             'success' => [
                 "title" => "Data Berhasil diperbarui"
             ]
+        ]);
+    }
+
+    public function render()
+    {
+        return view('livewire.edit-akademik', [
+            'institusiList' => Institusi::where('status', 'approved')->orderBy('nama')->get()
         ]);
     }
 }

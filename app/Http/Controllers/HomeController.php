@@ -4,17 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use App\Models\FungsiBagian;
+use App\Models\Galeri;
+use App\Models\Fasilitas;
+use App\Models\Feedback;
 use Database\Seeders\KontentFungsiBagianSeeder;
 use Illuminate\Http\Request;
 
 class HomeController
 {
-    public function index() {
+    public function index() 
+    {
         $fungsi_bagian = FungsiBagian::where('title', '!=', 'Pimpinan')->get();
 
         $faqs = Faq::all();
 
-        return view('home', compact('fungsi_bagian', 'faqs'));
+        $galeris = Galeri::latest()->take(6)->get();
+
+        $fasilitas = Fasilitas::latest()->take(6)->get();
+
+        $testimonis = Feedback::where('is_displayed', true)
+                             ->latest()
+                             ->take(6)
+                             ->with(['magang.user'])
+                             ->get();
+
+
+        return view('home', compact('fungsi_bagian', 'faqs', 'galeris', 'fasilitas', 'testimonis'));
     }
 
     public function get_user_profil()

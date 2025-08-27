@@ -155,7 +155,7 @@
                                     </div>
                                     <div class="flex flex-col mt-4">
                                         <h1 class="text-lg font-semibold">{{ $pesertaMagang->user->name }}</h1>
-                                        <h4 class="text-gray-500 text-sm">{{ $pesertaMagang->user->institusi }}</h4>
+                                        <h4 class="text-gray-500 text-sm">{{ $pesertaMagang->user->institusi->nama }}</h4>
                                         <div
                                             class="text-xs w-fit mt-3 px-2 py-1 rounded-md bg-blue-100 text-blue-600 border border-blue-600">
                                             <p>{{ $pesertaMagang->jenis_magang }}</p>

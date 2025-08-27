@@ -135,6 +135,14 @@
 
                         <li class="sidebar-item">
                             <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
+                                href="/kelola-institusi">
+                                <i class="ti ti-building ps-2 text-xl"></i>
+                                <span class="whitespace-nowrap">Kelola Institusi</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="pjax-link menu-item gap-3 py-2 my-1 text-[14px] flex items-center justify-start relative rounded-md w-full transition-all duration-200 hover:text-blue-600"
                                 href="/jam-kerja">
                                 <i class="ti ti-clock-plus ps-2 text-xl"></i>
                                 <span class="whitespace-nowrap">Jam Kerja</span>

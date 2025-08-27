@@ -98,7 +98,7 @@
                     </h4>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Asal Instansi</h6>
                     <p class="text-gray-600 text-sm">
-                        {{ $pengajuan->institusi }}
+                        {{ $pengajuan->user->institusi->nama }}
                     </p>
                     <h6 class="text-[17px] mt-4 font-semibold text-gray-800">Jurusan</h6>
                     <p class="text-gray-600 text-sm">

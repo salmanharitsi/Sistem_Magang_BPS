@@ -129,7 +129,7 @@ class InputSertifikat extends Component
                 'program_magang' => $magang->jenis_magang,
                 'tanggal_mulai' => \Carbon\Carbon::parse($magang->tanggal_mulai)->format('d F Y'),
                 'tanggal_selesai' => \Carbon\Carbon::parse($magang->tanggal_selesai)->format('d F Y'),
-                'asal_institusi' => $magang->pengajuan->institusi,
+                'asal_institusi' => $magang->pengajuan->user->institusi->nama,
                 'pembimbing' => $magang->pembimbingPertama->name,
                 'tanggal' => now()->format('d F Y'),
                 'nilai_presensi' => $magang->nilai_presensi,

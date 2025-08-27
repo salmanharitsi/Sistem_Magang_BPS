@@ -151,7 +151,7 @@ class PengajuanMagang extends Component
         $pengajuan->penanggung_jawab_nomor_hp = $validatedData['penanggung_jawab_nomor_hp'];
 
         // Data akademik
-        $pengajuan->institusi = $user->institusi;
+        $pengajuan->institusi_id = $user->institusi_id;
         $pengajuan->jurusan = $user->jurusan;
         $pengajuan->nomor_induk = $user->nomor_induk;
 
@@ -181,7 +181,7 @@ class PengajuanMagang extends Component
 
         \Log::info('Email berhasil dikirim ke: ' . $user->email);
         \Log::info('Mengirim email ke admin');
-        Mail::to('amrizal@bps.go.id')->send(new NotifPengajuanAdmin($pengajuan, $user));
+        Mail::to('fajarrahmat934@gmail.com')->send(new NotifPengajuanAdmin($pengajuan, $user));
 
         $delayUntil = Carbon::parse($validatedData['tanggal_mulai'])->startOfDay()->addHours(1);
         UpdatePengajuanOverLimit::dispatch($pengajuan)->delay($delayUntil);

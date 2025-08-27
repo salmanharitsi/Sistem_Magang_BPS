@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Fungsi Bagian')
+@section('title', 'Edit Konten')
 
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-6 gap-x-0 lg:gap-y-6 gap-y-6">
@@ -27,14 +27,41 @@
                         <p>FAQ</p>
                     </button>
                 </li>
+                <li role="presentation">
+                    <button class="inline-flex items-center px-4 py-2 text-white rounded-md active w-full transition-all duration-200 font-normal gap-3 tab-button" id="galeri-styled-tab" data-selected="galeri" data-tabs-target="#styled-galeri" type="button" role="tab" aria-controls="galeri" aria-selected="false">
+                        <i class="ti ti-photo-plus text-lg"></i>
+                        <p>Galeri</p>
+                    </button>
+                </li>
+                <li role="presentation">
+                    <button class="inline-flex items-center px-4 py-2 text-white rounded-md active w-full transition-all duration-200 font-normal gap-3 tab-button" id="fasilitas-styled-tab" data-selected="fasilitas" data-tabs-target="#styled-fasilitas" type="button" role="tab" aria-controls="fasilitas" aria-selected="false">
+                        <i class="ti ti-tools text-lg"></i>
+                        <p>Fasilitas Magang</p>
+                    </button>
+                </li>
+                <li role="presentation">
+                    <button class="inline-flex items-center px-4 py-2 text-white rounded-md active w-full transition-all duration-200 font-normal gap-3 tab-button" id="testimoni-styled-tab" data-selected="testimoni" data-tabs-target="#styled-testimoni" type="button" role="tab" aria-controls="testimoni" aria-selected="false">
+                        <i class="ti ti-message-question text-lg"></i>
+                        <p>Testimoni</p>
+                    </button>
+                </li>
             </ul>
         </div>
-        <div class="card rounded-lg col-span-5 bg-white h-fit" id="default-styled-tab-content">
+        <div class=" rounded-lg col-span-5 h-fit" id="default-styled-tab-content">
             <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden" id="styled-fungsi-bagian" role="tabpanel" aria-labelledby="profile-tab">
                 @livewire('edit-fungsi-bagian')
             </div>
             <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden" id="styled-faq" role="tabpanel" aria-labelledby="dashboard-tab">
                 @livewire('edit-faq')
+            </div>
+            <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden" id="styled-galeri" role="tabpanel" aria-labelledby="dashboard-tab">
+                @livewire('edit-galeri') 
+            </div>
+            <div class="col-span-4 card bg-white dark:bg-gray-800 relative rounded-lg overflow-hidden" id="styled-fasilitas" role="tabpanel" aria-labelledby="dashboard-tab">
+                @livewire('fasilitas-magang') 
+            </div>
+            <div class="col-span-4 !bg-transparent dark:bg-gray-800 relative rounded-lg overflow-hidden" id="styled-testimoni" role="tabpanel" aria-labelledby="dashboard-tab">
+                @livewire('edit-testimoni') 
             </div>
         </div>
     </div>
@@ -57,6 +84,15 @@
                     break;
                 case 'faq':
                     tabId = 'faq-styled-tab';
+                    break;
+                case 'galeri':
+                    tabId = 'galeri-styled-tab';
+                    break;
+                case 'fasilitas':
+                    tabId = 'fasilitas-styled-tab';
+                    break;
+                case 'testimoni':
+                    tabId = 'testimoni-styled-tab';
                     break;
                 default:
                     tabId = null;
