@@ -42,18 +42,12 @@ class InstitusiController extends Controller
             \Log::info('Mengirim email notifikasi institusi baru ke admin');
             
             try {
-                Mail::to('fajarrahmat0127@gmail.com')->send(new NotifInstitusiAdmin($institusi));
-                \Log::info('Email berhasil dikirim ke: fajarrahmat0127@gmail.com');
+                Mail::to('amrizal@bps.go.id')->send(new NotifInstitusiAdmin($institusi));
+                \Log::info('Email berhasil dikirim ke: amrizal@bps.go.id');
             } catch (\Exception $mailException) {
                 \Log::error('Gagal mengirim email: ' . $mailException->getMessage());
                 \Log::error('Email error trace: ' . $mailException->getTraceAsString());
             }
-
-            // Opsional: Jika ingin mengirim ke beberapa email sekaligus
-            // $adminEmails = ['fajarrahmat934@gmail.com', 'admin@bps.go.id'];
-            // foreach ($adminEmails as $adminEmail) {
-            //     Mail::to($adminEmail)->send(new NotifInstitusiAdmin($institusi));
-            // }
 
             return redirect()->route('institusi.index')->with('success', [
                 'title'   => 'Berhasil!',

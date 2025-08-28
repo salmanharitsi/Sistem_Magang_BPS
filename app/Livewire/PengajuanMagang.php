@@ -181,7 +181,7 @@ class PengajuanMagang extends Component
 
         \Log::info('Email berhasil dikirim ke: ' . $user->email);
         \Log::info('Mengirim email ke admin');
-        Mail::to('fajarrahmat934@gmail.com')->send(new NotifPengajuanAdmin($pengajuan, $user));
+        Mail::to('amrizal@bps.go.id')->send(new NotifPengajuanAdmin($pengajuan, $user));
 
         $delayUntil = Carbon::parse($validatedData['tanggal_mulai'])->startOfDay()->addHours(1);
         UpdatePengajuanOverLimit::dispatch($pengajuan)->delay($delayUntil);
