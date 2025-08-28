@@ -46,7 +46,7 @@ class UploadSuratPengantar extends Component
         $pengajuan->tenggat = null;
         $pengajuan->save();
 
-        Mail::to('afajarrahmat934@gmail.com')->queue(
+        Mail::to('amrizal@bps.go.id')->queue(
             new NotifSuratPengantar($pengajuan, $user)
         );
 
