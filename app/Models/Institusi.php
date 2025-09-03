@@ -14,4 +14,20 @@ class Institusi extends Model
         'status'
     ];
 
+    public function users()
+    {
+        return $this->hasMany(User::class, 'institusi_id', 'id');
+    }
+
+    public function magangs()
+    {
+        return $this->hasManyThrough(
+            Magang::class, 
+            User::class,   
+            'institusi_id',
+            'user_id',
+            'id',
+            'id'
+        );
+    }
 }

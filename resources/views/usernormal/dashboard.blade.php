@@ -196,7 +196,7 @@
             </div>
 
             <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200">
-                <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+                <h3 class="text-lg font-semibold mb-4">Akses Cepat</h3>
                 <div class="space-y-3">
                     <a href="/profil-edit?selected=biodata" class="pjax-link block p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-200">
                         <div class="flex items-center gap-3">
