@@ -24,174 +24,35 @@
         @endif
     </div>
 
-    <div class="grid grid-cols-1 mt-6 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-        <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200">
-            <ol class="flex items-center w-full px-[5%] md:px-[15%]">
-                <li
-                    class="step1-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-profil">
-                        <i class="ti ti-user text-2xl text-gray-500 "></i>
-                    </span>
-                    <div id="tooltip-profil" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                        Melengkapi Profil
-                        <div class="tooltip-arrow" data-popper-arrow></div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+        <!-- Requirements Checklist -->
+        <div class="card rounded-lg bg-white p-5 dark:bg-[#14181b] transition-all duration-200 col-span-3 mt-6">
+            <h3 class="text-lg font-semibold mb-4">Persyaratan Surat Pengantar</h3>
+            <div class="space-y-3">
+                @php
+                    $requirements = [
+                        ['Surat resmi dari sekolah/universitas', 'ti-school'],
+                        ['Surat tertandatangani kepala sekolah/dekan', 'ti-signature'],
+                        ['Mencantumkan nama dan data diri peserta', 'ti-user-check'],
+                        ['Periode magang sesuai pengajuan', 'ti-calendar-check']
+                    ];
+                @endphp
+
+                @foreach($requirements as $req)
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="ti {{ $req[1] }} text-blue-600"></i>
+                        </div>
+                        <span class="text-gray-700">{{ $req[0] }}</span>
                     </div>
-                </li>
-                <li
-                    class="step2-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-pengajuan">
-                        <i class="ti ti-clipboard-text text-2xl text-gray-500"></i>
-                    </span>
-                    <div id="tooltip-pengajuan" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                        Mengajukan Program Magang
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                </li>
-                <li
-                    class="step3-active flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:bg-gray-100 after:inline-block">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-diterima">
-                        <i class="ti ti-clipboard-check text-2xl text-gray-500"></i>
-                    </span>
-                    <div id="tooltip-diterima" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                        Lolos Seleksi Program
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                </li>
-                <li class="step4-active flex items-center w-fit">
-                    <span
-                        class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 shrink-0"
-                        data-tooltip-target="tooltip-surat-pengantar">
-                        <i class="ti ti-file-info text-2xl text-gray-500"></i>
-                    </span>
-                    <div id="tooltip-surat-pengantar" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-regular text-gray-600 transition-opacity duration-300 bg-white rounded-lg shadow-lg opacity-0 tooltip dark:bg-gray-700">
-                        Mengupload Surat Pengantar
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                </li>
-            </ol>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="col-span-3 card rounded-lg bg-white p-5 h-full dark:bg-[#14181b] transition-all duration-200 mt-0 md:mt-6">
             <div>
                 @livewire('upload-surat-pengantar')
             </div>
         </div>
     </div>
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if (Auth::user()->tentang_saya != null &&
-                    Auth::user()->jenis_kelamin != null &&
-                    Auth::user()->tempat_lahir != null &&
-                    Auth::user()->tanggal_lahir != null &&
-                    Auth::user()->alamat != null)
-                var step1 = document.querySelector('.step1-active');
-                if (step1) {
-                    var span = step1.querySelector('span');
-                    var div = step1.querySelector('#tooltip-profil');
-                    if (span) {
-                        span.classList.remove('bg-gray-100');
-                        span.classList.add('bg-blue-600');
-                        div.classList.remove('bg-white');
-                        div.classList.add('bg-blue-600');
-                        div.classList.remove('text-gray-600');
-                        div.classList.add('text-white');
-                    }
-                    var icon = step1.querySelector('i');
-                    if (icon) {
-                        icon.classList.remove('text-gray-500');
-                        icon.classList.add('text-white');
-                    }
-                }
-            @endif
-            @if (Auth::user()->pengajuan()->exists() && Auth::user()->status_magang == 'masa-daftar')
-                var step1 = document.querySelector('.step1-active');
-                var step2 = document.querySelector('.step2-active');
-                if (step1) {
-                    step1.classList.remove('after:border-gray-100', 'after:bg-gray-100');
-                    step1.classList.add('after:border-blue-600', 'after:bg-blue-600');
-                    var span = step1.querySelector('span');
-                    var div = step1.querySelector('#tooltip-profil');
-                    if (span) {
-                        span.classList.remove('bg-gray-100');
-                        span.classList.add('bg-blue-600');
-                        div.classList.remove('bg-white');
-                        div.classList.add('bg-blue-600');
-                        div.classList.remove('text-gray-600');
-                        div.classList.add('text-white');
-                    }
-                    var icon = step1.querySelector('i');
-                    if (icon) {
-                        icon.classList.remove('text-gray-500');
-                        icon.classList.add('text-white');
-                    }
-                }
-                if (step2) {
-                    var span = step2.querySelector('span');
-                    var div = step2.querySelector('#tooltip-pengajuan');
-                    if (span) {
-                        span.classList.remove('bg-gray-100');
-                        span.classList.add('bg-blue-600');
-                        div.classList.remove('bg-white');
-                        div.classList.add('bg-blue-600');
-                        div.classList.remove('text-gray-600');
-                        div.classList.add('text-white');
-                    }
-                    var icon = step2.querySelector('i');
-                    if (icon) {
-                        icon.classList.remove('text-gray-500');
-                        icon.classList.add('text-white');
-                    }
-                }
-            @endif
-            @if (Auth::user()->pengajuan()->where('status_pengajuan', 'accept-first')->exists())
-                var step2 = document.querySelector('.step2-active');
-                var step3 = document.querySelector('.step3-active');
-                if (step2) {
-                    step2.classList.remove('after:border-gray-100', 'after:bg-gray-100');
-                    step2.classList.add('after:border-blue-600', 'after:bg-blue-600');
-                    var span = step2.querySelector('span');
-                    var div = step2.querySelector('#tooltip-pengajuan');
-                    if (span) {
-                        span.classList.remove('bg-gray-100');
-                        span.classList.add('bg-blue-600');
-                        div.classList.remove('bg-white');
-                        div.classList.add('bg-blue-600');
-                        div.classList.remove('text-gray-600');
-                        div.classList.add('text-white');
-                    }
-                    var icon = step2.querySelector('i');
-                    if (icon) {
-                        icon.classList.remove('text-gray-500');
-                        icon.classList.add('text-white');
-                    }
-                }
-                if (step3) {
-                    var span = step3.querySelector('span');
-                    var div = step3.querySelector('#tooltip-diterima');
-                    if (span) {
-                        span.classList.remove('bg-gray-100');
-                        span.classList.add('bg-blue-600');
-                        div.classList.remove('bg-white');
-                        div.classList.add('bg-blue-600');
-                        div.classList.remove('text-gray-600');
-                        div.classList.add('text-white');
-                    }
-                    var icon = step3.querySelector('i');
-                    if (icon) {
-                        icon.classList.remove('text-gray-500');
-                        icon.classList.add('text-white');
-                    }
-                }
-            @endif
-        });
-    </script>
 @endsection

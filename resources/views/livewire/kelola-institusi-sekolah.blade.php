@@ -17,7 +17,7 @@
                 </button>
                 <button 
                     wire:click="setActiveTab('pending')"
-                    class="py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap {{ $activeTab === 'pending' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                    class="py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap {{ $activeTab === 'pending' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 m-2' }}">
                     Institusi Perlu Review
                     <span class="ml-2 bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                         {{ $pendingInstitusi->total() }}
@@ -74,7 +74,7 @@
                                     <td class="py-4 px-6 text-left">{{ $data->alamat }}</td>
                                     <td class="py-4 px-6 text-center">
                                         <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                            0 Mahasiswa
+                                            {{ $data->total_peserta_magang }} Mahasiswa
                                         </span>
                                     </td>
                                     <td class="py-4 px-6">

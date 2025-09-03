@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Institusi;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -77,9 +78,13 @@ class KelolaInstitusiSekolah extends Component
     public function render()
     {
         if ($this->activeTab === 'approved') {
-            // Query untuk institusi yang sudah diverifikasi (approved)
             $approvedQuery = Institusi::where('status', 'approved')
-                ->orderBy('created_at', 'desc');
+                ->orderBy('created_at', 'desc')
+                ->withCount([
+                    'magangs as total_peserta_magang' => function ($q) {
+                        $q->select(DB::raw('COUNT(DISTINCT user_id)'));
+                    }
+                ]);
 
             if ($this->search) {
                 $approvedQuery->where(function (Builder $builder) {
@@ -88,15 +93,25 @@ class KelolaInstitusiSekolah extends Component
                 });
             }
 
-            $approvedInstitusi = $approvedQuery->paginate(5);
-            
-            // Untuk tab pending, hanya ambil count
-            $pendingInstitusi = Institusi::where('status', 'pending')->paginate(1);
-            
+            $approvedInstitusi = $approvedQuery->paginate(10);
+
+            // Tab pending: cukup untuk badge/indikator (boleh tanpa withCount, tapi aman juga kalau disertakan)
+            $pendingInstitusi = Institusi::where('status', 'pending')
+                ->withCount([
+                    'magangs as total_peserta_magang' => function ($q) {
+                        $q->select(DB::raw('COUNT(DISTINCT user_id)'));
+                    }
+                ])
+                ->paginate(1);
+
         } else {
-            // Query untuk institusi yang perlu review (pending)
             $pendingQuery = Institusi::where('status', 'pending')
-                ->orderBy('created_at', 'desc');
+                ->orderBy('created_at', 'desc')
+                ->withCount([
+                    'magangs as total_peserta_magang' => function ($q) {
+                        $q->select(DB::raw('COUNT(DISTINCT user_id)'));
+                    }
+                ]);
 
             if ($this->searchApproved) {
                 $pendingQuery->where(function (Builder $builder) {
@@ -105,15 +120,20 @@ class KelolaInstitusiSekolah extends Component
                 });
             }
 
-            $pendingInstitusi = $pendingQuery->paginate(5);
-            
-            // Untuk tab approved, hanya ambil count
-            $approvedInstitusi = Institusi::where('status', 'approved')->paginate(1);
+            $pendingInstitusi = $pendingQuery->paginate(10);
+
+            $approvedInstitusi = Institusi::where('status', 'approved')
+                ->withCount([
+                    'magangs as total_peserta_magang' => function ($q) {
+                        $q->select(DB::raw('COUNT(DISTINCT user_id)'));
+                    }
+                ])
+                ->paginate(1);
         }
 
         return view('livewire.kelola-institusi-sekolah', [
             'approvedInstitusi' => $approvedInstitusi,
-            'pendingInstitusi' => $pendingInstitusi
+            'pendingInstitusi'  => $pendingInstitusi
         ]);
     }
 }
