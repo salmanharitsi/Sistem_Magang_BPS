@@ -125,42 +125,42 @@
     <!-- Supervisor Section -->
     <section id="supervisor-section" class="py-20 px-4 md:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
         <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-gradient mb-6">Tim Pembimbing</h2>
+            <div class="text-center mb-16 animate-fade-in-up">
+                <h2 class="text-4xl pb-4 md:text-5xl font-bold text-gradient mb-6">Tim Pembimbing</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Para profesional berpengalaman yang membimbing mahasiswa dalam program magang
                 </p>
             </div>
 
             <!-- Supervisor Cards -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 max-w-6xl mx-auto">
                 <!-- Pembimbing 1 -->
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover-effect">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover-effect animate-fade-in-up">
                     <div class="relative">
                         <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 opacity-10"></div>
-                        <div class="relative p-10 text-center">
+                        <div class="relative p-8 text-center">
                             <!-- Profile Section -->
                             <div class="flex flex-col items-center mb-6">
                                 <div class="relative">
-                                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
-                                        <img src="{{ asset('storage/pembimbing/pakedi.jpg') }}" 
+                                    <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
+                                        <img src="{{ asset('assets/images/pembimbing/pakedi.jpg') }}" 
                                              alt="Edi Susilo" 
                                              class="w-full h-full object-cover">
-                                    </div>  
+                                    </div> 
                                 </div>
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">Edi Susilo, S.Pd., M.Kom., M.Eng.</h3>
-                                <p class="text-purple-600 font-semibold mb-4">Dosen</p>
+                                <h3 class="text-lg font-bold text-gray-800 mb-2">Edi Susilo, S.Pd., M.Kom., M.Eng.</h3>
+                                <p class="text-purple-600 font-semibold mb-4 text-sm">Dosen Pembimbing - Universitas Riau</p>
                             </div>
 
                             <!-- Contact -->
-                            <div class="flex gap-3 justify-center">
-                                <a href="https://sinta.kemdikbud.go.id/authors/profile/6723247/" class="w-9 h-9 bg-red-500 rounded-full flex items-center justify-center text-white social-icon text-sm">
+                            <div class="flex gap-2 justify-center">
+                                <a href="https://sinta.kemdikbud.go.id/authors/profile/6723247/" class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white social-icon text-xs">
                                     <i class="fas fa-graduation-cap"></i>
                                 </a>
-                                <a href="https://pddikti.kemdikbud.go.id/detail-dosen/AoLL9VwId2fbHgbS2inP2GNjSCCMdEB6yaNEsJf_ZUqwcZ-SWHL12StpG8iFXov7G31PIw==" class="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white social-icon text-sm">
+                                <a href="https://pddikti.kemdikbud.go.id/detail-dosen/AoLL9VwId2fbHgbS2inP2GNjSCCMdEB6yaNEsJf_ZUqwcZ-SWHL12StpG8iFXov7G31PIw==" class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white social-icon text-xs">
                                     <i class="fas fa-university"></i>
                                 </a>
-                                <a href="https://www.edisusilo.com/" class="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center text-white social-icon text-sm">
+                                <a href="https://www.edisusilo.com/" class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white social-icon text-xs">
                                     <i class="fas fa-globe"></i>
                                 </a>
                             </div>
@@ -169,26 +169,52 @@
                 </div>
 
                 <!-- Pembimbing 2 -->
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover-effect">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover-effect animate-fade-in-up" style="animation-delay: 0.2s;">
                     <div class="relative">
                         <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-green-600 opacity-10"></div>
-                        <div class="relative p-10 text-center">
+                        <div class="relative p-8 text-center">
                             <!-- Profile Section -->
                             <div class="flex flex-col items-center mb-6">
                                 <div class="relative">
-                                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
-                                        <img src="{{ asset('storage/pembimbing/pakafdi.jpg') }}" 
+                                    <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800 mb-2">Dadang Sunandar, S.ST., M.T.</h3>
+                                <p class="text-green-600 font-semibold mb-4 text-sm">Pembimbing Magang - BPS Provinsi Riau</p>
+                            </div>
+
+                            <!-- Contact -->
+                            <div class="flex gap-2 justify-center">
+                                <a href="mailto:dadangsunandar@bps.go.id" class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon text-xs">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pembimbing 3 -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover-effect animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600 opacity-10"></div>
+                        <div class="relative p-8 text-center">
+                            <!-- Profile Section -->
+                            <div class="flex flex-col items-center mb-6">
+                                <div class="relative">
+                                    <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
+                                        <img src="{{ asset('assets/images/pembimbing/pakafdi.jpg') }}" 
                                              alt="Afdi Rizal" 
                                              class="w-full h-full object-cover">
                                     </div>
                                 </div>
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">Afdi Rizal, S.ST., M.T.</h3>
-                                <p class="text-green-600 font-semibold mb-3">Pengolahan dan Teknologi Informasi</p>
+                                <h3 class="text-lg font-bold text-gray-800 mb-2">Afdi Rizal, S.ST., M.T.</h3>
+                                <p class="text-orange-600 font-semibold mb-4 text-sm">Pembimbing Magang - BPS Provinsi Riau</p>
                             </div>
 
                             <!-- Contact -->
-                            <div class="flex gap-3 justify-center">
-                                <a href="mailto:afdi@bps.go.id" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
+                            <div class="flex gap-2 justify-center">
+                                <a href="mailto:afdi@bps.go.id" class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon text-xs">
                                     <i class="fas fa-envelope"></i>
                                 </a>
                             </div>
@@ -196,7 +222,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- Team Section -->
@@ -220,7 +245,7 @@
                             <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
                                 <div class="relative">
                                     <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
-                                        <img src="{{ asset('storage/tim-pengembang/Fajar.jpg') }}" 
+                                        <img src="{{ asset('assets/images/tim-pengembang/Fajar.jpg') }}" 
                                              alt="Fajar Rahmat" 
                                              class="w-full h-full object-cover">
                                     </div>                                    
@@ -286,7 +311,7 @@
                             <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
                                 <div class="relative">
                                     <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
-                                        <img src="{{ asset('storage/tim-pengembang/salman.jpg') }}" 
+                                        <img src="{{ asset('assets/images/tim-pengembang/salman.jpg') }}" 
                                              alt="Salman" 
                                              class="w-full h-full object-cover">
                                     </div>
@@ -353,7 +378,7 @@
                             <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
                                 <div class="relative">
                                     <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
-                                        <img src="{{ asset('storage/tim-pengembang/ranto.png') }}" 
+                                        <img src="{{ asset('assets/images/tim-pengembang/ranto.png') }}" 
                                              alt="Ranto" 
                                              class="w-full h-full object-cover">
                                     </div>
