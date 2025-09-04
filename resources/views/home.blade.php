@@ -685,7 +685,7 @@
                 <h1>Hak Cipta © 2024 Badan Pusat Statistik</h1>
                 <span>Website hasil kolaborasi BPS dan </span>
                 <a href="/tim-pengembang" 
-                   class="text-blue-200 hover:text-white transition-colors duration-300 text-sm font-normal">
+                   class="text-blue-200 underline hover:text-white transition-colors duration-300 text-sm font-normal">
                     Mahasiswa Teknik Informatika Universitas Riau
                 </a>
             </div>            

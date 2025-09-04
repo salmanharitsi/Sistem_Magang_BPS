@@ -191,9 +191,6 @@
                                 <a href="mailto:afdi@bps.go.id" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
                                     <i class="fas fa-envelope"></i>
                                 </a>
-                                <a href="https://wa.me/6282385162404" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white social-icon">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -275,9 +272,6 @@
                                 <a href="mailto:fajarrahmat934@gmail.com" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
                                     <i class="fas fa-envelope"></i>
                                 </a>
-                                <a href="https://wa.me/6282385162404" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white social-icon">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -345,9 +339,6 @@
                                 <a href="mailto:salmanalharitsi14@gmail.com" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
                                     <i class="fas fa-envelope"></i>
                                 </a>
-                                <a href="https://wa.me/6282214978008" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white social-icon">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -414,9 +405,6 @@
                                 </a>
                                 <a href="mailto:rantoanjasmaramarpaung@gmail.com" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
                                     <i class="fas fa-envelope"></i>
-                                </a>
-                                <a href="https://wa.me/6285211203802" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white social-icon">
-                                    <i class="fab fa-whatsapp"></i>
                                 </a>
                             </div>
                         </div>
