@@ -425,30 +425,6 @@
                     </div>
                 </div>
 
-                <!-- Kontak Darurat -->
-                <div class="col-span-2 card rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 p-5 border border-indigo-200 dark:border-gray-600">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <i class="ti ti-phone text-white text-xl"></i>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-medium text-gray-800 dark:text-white mb-2">Kontak Penting</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div class="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600">
-                                    <p class="font-medium text-gray-700 dark:text-gray-300">Koordinator Magang</p>
-                                    <p class="text-gray-600 dark:text-gray-400">Tel: (0761) 21162</p>
-                                    <p class="text-gray-600 dark:text-gray-400">Email: koordinator@bps.go.id</p>
-                                </div>
-                                <div class="bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600">
-                                    <p class="font-medium text-gray-700 dark:text-gray-300">Keamanan Kantor</p>
-                                    <p class="text-gray-600 dark:text-gray-400">Tel: (0761) 21162 ext. 100</p>
-                                    <p class="text-gray-600 dark:text-gray-400">Jam: 24 Jam</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Tips Sukses -->
                 <div class="col-span-2 card rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-gray-800 dark:to-gray-700 p-5 border border-emerald-200 dark:border-gray-600">
                     <div class="flex items-start gap-3">

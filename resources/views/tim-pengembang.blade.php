@@ -28,6 +28,14 @@
             box-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
         }
         
+        .profile-glow-purple {
+            box-shadow: 0 0 30px rgba(147, 51, 234, 0.3);
+        }
+        
+        .profile-glow-green {
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+        
         .text-gradient {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             -webkit-background-clip: text;
@@ -52,6 +60,16 @@
         .skill-badge-orange {
             background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(251, 146, 60, 0.1));
             border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+        
+        .skill-badge-purple {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(196, 181, 253, 0.1));
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+        
+        .skill-badge-green {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(134, 239, 172, 0.1));
+            border: 1px solid rgba(34, 197, 94, 0.2);
         }
         
         .social-icon {
@@ -86,26 +104,106 @@
                 </div>
                 
                 <div class="bg-white/10 backdrop-blur-sm rounded-full px-8 py-3 border border-white/20">
-                    <p class="text-lg font-light">Website hasil kolaborasi BPS dan Mahasiswa Teknik Informatika Universitas Riau</p>
+                    <p class="text-lg font-light">Tim Pembimbing & Pengembang Sistem Informasi Magang</p>
                 </div>
             </div>
             
             <h2 class="text-4xl md:text-6xl font-bold mb-6 floating-animation">Tim Pengembang</h2>
             <p class="text-xl md:text-2xl opacity-90 mb-12 max-w-3xl mx-auto">
-                Mengenal sosok di balik pengembangan sistem informasi magang BPS Provinsi Riau
+                Mengenal tim pembimbing dan developer di balik pengembangan sistem informasi magang BPS Provinsi Riau
             </p>
             
             <div class="flex justify-center">
                 <button onclick="scrollToTeam()" class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 shadow-lg">
-                    Lihat Tim Developer
+                    Lihat Tim Lengkap
                     <i class="fas fa-arrow-down ml-2"></i>
                 </button>
             </div>
         </div>
     </section>
 
+    <!-- Supervisor Section -->
+    <section id="supervisor-section" class="py-20 px-4 md:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gradient mb-6">Tim Pembimbing</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Para profesional berpengalaman yang membimbing mahasiswa dalam program magang
+                </p>
+            </div>
+
+            <!-- Supervisor Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
+                <!-- Pembimbing 1 -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover-effect">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 opacity-10"></div>
+                        <div class="relative p-10 text-center">
+                            <!-- Profile Section -->
+                            <div class="flex flex-col items-center mb-6">
+                                <div class="relative">
+                                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
+                                        <img src="{{ asset('storage/pembimbing/pakedi.jpg') }}" 
+                                             alt="Edi Susilo" 
+                                             class="w-full h-full object-cover">
+                                    </div>  
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Edi Susilo, S.Pd., M.Kom., M.Eng.</h3>
+                                <p class="text-purple-600 font-semibold mb-4">Dosen</p>
+                            </div>
+
+                            <!-- Contact -->
+                            <div class="flex gap-3 justify-center">
+                                <a href="https://sinta.kemdikbud.go.id/authors/profile/6723247/" class="w-9 h-9 bg-red-500 rounded-full flex items-center justify-center text-white social-icon text-sm">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </a>
+                                <a href="https://pddikti.kemdikbud.go.id/detail-dosen/AoLL9VwId2fbHgbS2inP2GNjSCCMdEB6yaNEsJf_ZUqwcZ-SWHL12StpG8iFXov7G31PIw==" class="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white social-icon text-sm">
+                                    <i class="fas fa-university"></i>
+                                </a>
+                                <a href="https://www.edisusilo.com/" class="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center text-white social-icon text-sm">
+                                    <i class="fas fa-globe"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pembimbing 2 -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover-effect">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-green-600 opacity-10"></div>
+                        <div class="relative p-10 text-center">
+                            <!-- Profile Section -->
+                            <div class="flex flex-col items-center mb-6">
+                                <div class="relative">
+                                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center profile-glow overflow-hidden">
+                                        <img src="{{ asset('storage/pembimbing/pakafdi.jpg') }}" 
+                                             alt="Afdi Rizal" 
+                                             class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Afdi Rizal, S.ST., M.T.</h3>
+                                <p class="text-green-600 font-semibold mb-3">Pengolahan dan Teknologi Informasi</p>
+                            </div>
+
+                            <!-- Contact -->
+                            <div class="flex gap-3 justify-center">
+                                <a href="mailto:afdi@bps.go.id" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white social-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="https://wa.me/6282385162404" class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white social-icon">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Team Section -->
-    <section id="team-section" class="py-20 px-4 md:px-10">
+    <section id="team-section" class="py-10 px-4 md:px-10">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-bold text-gradient mb-6">Tim Developer</h2>
@@ -388,7 +486,7 @@
 
     <script>
         function scrollToTeam() {
-            document.getElementById('team-section').scrollIntoView({ 
+            document.getElementById('supervisor-section').scrollIntoView({ 
                 behavior: 'smooth' 
             });
         }
