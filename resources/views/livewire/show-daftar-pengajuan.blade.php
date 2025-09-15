@@ -49,7 +49,7 @@
                             {{ $data->user->name }}
                         </td>
                         <td class="py-4 px-6 text-left whitespace-nowrap">{{ $data->user->institusi->nama }}</td>
-                        </td>a
+                        </td>
                         <td class="py-4 px-6 text-left">{{ $data->jenis_magang }}
                         </td>
                         <td class="py-4 px-6 text-center">
